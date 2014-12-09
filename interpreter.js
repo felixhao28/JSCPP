@@ -86,7 +86,7 @@ function Interpreter(rt) {
 						dimensions.push(dim);
 					}
 					init = interp.arrayInit(dimensions, init, 0, type, param);
-					interp.rt.defVar(name, init.t, init.v);
+					interp.rt.defVar(name, init.t, init);
 				} else {
 					if (init === null)
 						init = interp.rt.defaultValue(type);

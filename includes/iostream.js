@@ -43,6 +43,9 @@ module.exports = {
 					var r, v;
 					if (b.length === 0) {
 						b = _cin.v.istream.drain();
+						if (b === null) {
+							return rt.val(rt.boolTypeLiteral, false);
+						}
 					}
 					switch (t.t.name) {
 						case 'char':

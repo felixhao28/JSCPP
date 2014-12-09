@@ -7,7 +7,9 @@ var ast = require('./ast');
 var inputbuffer = '';
 var stdio = {
 	drain: function() {
-		return inputbuffer;
+		var x = inputbuffer;
+		inputbuffer = null;
+		return x;
 	},
 	write: function(s) {
 		process.stdout.write(s);

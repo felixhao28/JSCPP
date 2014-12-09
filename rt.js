@@ -756,7 +756,7 @@ CRuntime.prototype.makeValString = function(l) {
 
 CRuntime.prototype.makeParametersSigniture = function(args) {
 	var ret = new Array(args.length);
-	for (var i=0;i<args.length;i++){
+	for (var i = 0; i < args.length; i++) {
 		ret[i] = this.getTypeSigniture(args[i]);
 	}
 	return ret.join(',');
@@ -869,7 +869,7 @@ CRuntime.prototype.regFunc = function(f, lt, name, args, retType) {
 			throw 'method ' + name + ' with parameters (' + sig + ') is already defined';
 		}
 		var type = this.functionPointerType(retType, args);
-		this.defVar(name, type, this.makeFunctionPointerValue(f, name, lt, args, retType));
+		this.defVar(name, type, this.val(type, this.makeFunctionPointerValue(f, name, lt, args, retType)));
 		t[name][sig] = f;
 		t[name]['reg'].push(args);
 	} else {
@@ -926,19 +926,15 @@ CRuntime.prototype.defVar = function(varname, type, initval) {
 	if (varname in vc) {
 		throw 'variable ' + varname + ' already defined'
 	}
-	if (typeof initval === 'object' && 'v' in initval && 't' in initval) {
-		initval = this.cast(type, initval).v;
-	}
+	initval = this.cast(type, initval);
 
 	if (initval === undefined) {
-		if (this.isNumericType(type))
-			initval = 0;
-		else if (type === 'bool')
-			initval = false;
-		else
-			initval = null;
+		vc[varname] = this.defaultValue(type);
+		vc[varname].left = true;
+	} else {
+		vc[varname] = initval;
+		vc[varname].left = true;
 	}
-	vc[varname] = this.val(type, initval, true);
 };
 
 CRuntime.prototype.inrange = function(type, value) {
@@ -1157,7 +1153,11 @@ CRuntime.prototype.cast = function(type, value) {
 	} else if (this.isClassType(type)) {
 		throw 'not implemented';
 	} else if (this.isClassType(value.t)) {
-		throw 'not implemented';
+		if (this.isTypeEqualTo(this.boolTypeLiteral, type)) {
+			return this.val(this.boolTypeLiteral, true);
+		} else {
+			throw 'not implemented';
+		}
 	} else {
 		throw 'cast failed from type ' + this.makeTypeString(type) + ' to ' + this.makeTypeString(value.t);
 	}
