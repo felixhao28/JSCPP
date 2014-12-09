@@ -34,13 +34,14 @@ See _test.js_ for example.
 
 Or
 
-1. Building AST
+Building AST
 ```js
 var ast = require('./ast');
 var tree = ast.parse(code);
 console.log('passed syntax check');
 ```
-1. Interprete AST (from global main function)
+
+Interprete AST (from global main function)
 ```js
 var CRuntime = require('./rt')
 var rt = new CRuntime();
@@ -50,7 +51,8 @@ interpreter.run(tree);
 var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
 console.info('program exited with code ' + exitCode);
 ```
-1. Using standard IO
+
+Using standard IO
 ```js
 var inputbuffer = "1 2 3";
 var stdio = {
