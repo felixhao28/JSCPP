@@ -1163,6 +1163,10 @@ CRuntime.prototype.cast = function(type, value) {
 	}
 };
 
+CRuntime.prototype.clone = function(v) {
+	return this.val(v.t, v.v);
+}
+
 CRuntime.prototype.enterScope = function(scopename) {
 	this.scope.push({
 		"$name": scopename
