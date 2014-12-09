@@ -41,7 +41,7 @@ var tree = ast.parse(code);
 console.log('passed syntax check');
 ```
 
-Interprete AST (from global main function)
+Interpreting AST (from global main function)
 ```js
 var CRuntime = require('./rt')
 var rt = new CRuntime();
