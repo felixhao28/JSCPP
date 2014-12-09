@@ -16,7 +16,7 @@ function Interpreter(rt) {
 			var argTypes = [];
 			var argNames = [];
 			if (s.Declarator.right.length != 1) {
-				throw 'you cannot have ' + s.Declarator.right.length + ' parameter lists (1 expected)';
+				interp.rt.raiseException(interp, 'you cannot have ' + s.Declarator.right.length + ' parameter lists (1 expected)');
 			}
 			var ptl;
 			var varargs;
@@ -30,7 +30,7 @@ function Interpreter(rt) {
 				};
 				varargs = false;
 			} else {
-				throw 'unacceptable argument list';
+				interp.rt.raiseException(interp, 'unacceptable argument list');
 			}
 			for (var i = 0; i < ptl.ParameterList.length; i++) {
 				var _param = ptl.ParameterList[i];
@@ -44,11 +44,11 @@ function Interpreter(rt) {
 					for (var j = 0; j < _param.Declarator.right.length; j++) {
 						var dim = _param.Declarator.right[j];
 						if (dim.type !== 'DirectDeclarator_modifier_array')
-							throw 'unacceptable array initialization';
+							interp.rt.raiseException(interp, 'unacceptable array initialization');
 						if (dim.Expression !== null) {
 							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression)).v;
 						} else if (j > 0) {
-							throw 'multidimensional array must have bounds for all dimensions except the first';
+							interp.rt.raiseException(interp, 'multidimensional array must have bounds for all dimensions except the first');
 						} else {
 							dim = init.Initializers.length;
 						}
@@ -75,11 +75,11 @@ function Interpreter(rt) {
 					for (var j = 0; j < dec.Declarator.right.length; j++) {
 						var dim = dec.Declarator.right[j];
 						if (dim.type !== 'DirectDeclarator_modifier_array')
-							throw 'is interp really an array initialization?';
+							interp.rt.raiseException(interp, 'is interp really an array initialization?');
 						if (dim.Expression !== null) {
 							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression)).v;
 						} else if (j > 0) {
-							throw 'multidimensional array must have bounds for all dimensions except the first';
+							interp.rt.raiseException(interp, 'multidimensional array must have bounds for all dimensions except the first');
 						} else {
 							dim = init.Initializers.length;
 						}
@@ -99,22 +99,22 @@ function Interpreter(rt) {
 		Label_case: function(interp, s, param) {
 			var ce = interp.visit(interp, s.ConstantExpression);
 			if (param['switch'] === undefined) {
-				throw 'you cannot use case outside switch block';
+				interp.rt.raiseException(interp, 'you cannot use case outside switch block');
 			}
 			if (param.scope === 'SelectionStatement_switch_cs') {
 				return ['switch', interp.rt.cast(ce.t, param['switch']).v === ce.v];
 			} else {
-				throw 'you can only use case directly in a switch block';
+				interp.rt.raiseException(interp, 'you can only use case directly in a switch block');
 			}
 		},
 		Label_default: function(interp, s, param) {
 			if (param['switch'] === undefined) {
-				throw 'you cannot use default outside switch block';
+				interp.rt.raiseException(interp, 'you cannot use default outside switch block');
 			}
 			if (param.scope === 'SelectionStatement_switch_cs') {
 				return ['switch', true];
 			} else {
-				throw 'you can only use default directly in a switch block';
+				interp.rt.raiseException(interp, 'you can only use default directly in a switch block');
 			}
 		},
 		CompoundStatement: function(interp, s, param) {
@@ -263,7 +263,7 @@ function Interpreter(rt) {
 			param.scope = scope_bak;
 		},
 		JumpStatement_goto: function(interp, s, param) {
-			throw 'not implemented';
+			interp.rt.raiseException(interp, 'not implemented');
 		},
 		JumpStatement_continue: function(interp, s, param) {
 			return ['continue'];
@@ -300,11 +300,11 @@ function Interpreter(rt) {
 		},
 		PostfixExpression_MemberAccess: function(interp, s, param) {
 			var ret = interp.visit(interp, s.Expression);
-			throw 'not implemented';
+			interp.rt.raiseException(interp, 'not implemented');
 		},
 		PostfixExpression_MemberPointerAccess: function(interp, s, param) {
 			var ret = interp.visit(interp, s.Expression);
-			throw 'not implemented';
+			interp.rt.raiseException(interp, 'not implemented');
 		},
 		PostfixExpression_PostIncrement: function(interp, s, param) {
 			var ret = interp.visit(interp, s.Expression);
@@ -334,12 +334,12 @@ function Interpreter(rt) {
 		},
 		UnaryExpression_Sizeof_Expr: function(interp, s, param) {
 			var ret = interp.visit(interp, s.Expression);
-			throw 'not implemented';
+			interp.rt.raiseException(interp, 'not implemented');
 			return 1;
 		},
 		UnaryExpression_Sizeof_Type: function(interp, s, param) {
 			var type = s.TypeName;
-			throw 'not implemented';
+			interp.rt.raiseException(interp, 'not implemented');
 			return 1;
 		},
 		CastExpression: function(interp, s, param) {
@@ -406,7 +406,7 @@ function Interpreter(rt) {
 		CharacterConstant: function(interp, s, param) {
 			var a = s.Char;
 			if (a.length != 1)
-				throw 'a character constant must have and only have one character.';
+				interp.rt.raiseException(interp, 'a character constant must have and only have one character.');
 			return interp.rt.val(interp.rt.charTypeLiteral, a[0].charCodeAt(0));
 		},
 		FloatConstant: function(interp, s, param) {
@@ -429,7 +429,7 @@ function Interpreter(rt) {
 			return interp.rt.val(interp.rt.intTypeLiteral, parseInt(s.value, 8));
 		},
 		unknown: function(interp, s, param) {
-			throw 'unhandled syntax';
+			interp.rt.raiseException(interp, 'unhandled syntax');
 		},
 	};
 };
@@ -441,10 +441,14 @@ Interpreter.prototype.visit = function(interp, s, param) {
 		};
 	}
 	// logger.warn('visiting %j', s.type);
+	var _node = this.currentNode;
+	this.currentNode = s;
 	return this.visitors[s.type](interp, s, param);
+	this.currentNode = _node;
 };
 
 Interpreter.prototype.run = function(tree) {
+	this.rt.interp = this;
 	return this.visit(this, tree);
 }
 
@@ -496,7 +500,7 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 					init.Initializers = arr;
 				}
 			} else {
-				throw 'dimensions do not agree, ' + curDim + ' != ' + init.Initializers.length;
+				this.rt.raiseExecption(this, 'dimensions do not agree, ' + curDim + ' != ' + init.Initializers.length);
 			}
 		}
 		var arr = [];
@@ -514,7 +518,7 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 		return ret;
 	} else {
 		if (init && init.type !== 'Initializer_expr')
-			throw 'dimensions do not agree, too few initializers';
+			this.rt.raiseExecption(this, 'dimensions do not agree, too few initializers');
 		var initval;
 		if (init) {
 			if ('shorthand' in init) {

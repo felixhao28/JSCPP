@@ -35,45 +35,45 @@ module.exports = (function() {
         peg$consts = [
           peg$FAILED,
           [],
-          function(a) {return {type:'TranslationUnit', ExternalDeclarations: a};},
+          function(a) {return addPositionInfo({type:'TranslationUnit', ExternalDeclarations: a});},
           null,
           function(a, b, c, d) {
-                return {type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, DeclarationList:c, CompoundStatement:d};
+                return addPositionInfo({type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, DeclarationList:c, CompoundStatement:d});
               },
-          function(a) {return {type:'DeclarationList', Declarations:a};},
-          function(a) {return {type: 'Label_case', ConstantExpression: a};},
-          function() {return {type: 'Label_default'};},
+          function(a) {return addPositionInfo({type:'DeclarationList', Declarations:a});},
+          function(a) {return addPositionInfo({type: 'Label_case', ConstantExpression: a});},
+          function() {return addPositionInfo({type: 'Label_default'});},
           function(a) {
-                  return {type: 'CompoundStatement', Statements: a};
+                  return addPositionInfo({type: 'CompoundStatement', Statements: a});
                 },
           function(a) {
-                  return {type: 'ExpressionStatement', Expression: a};
+                  return addPositionInfo({type: 'ExpressionStatement', Expression: a});
                 },
           function(a, b, c) {
-                  return {type: 'SelectionStatement_if', Expression:a, Statement:b, ElseStatement:c?c[1]:null};
+                  return addPositionInfo({type: 'SelectionStatement_if', Expression:a, Statement:b, ElseStatement:c?c[1]:null});
                 },
           function(a, b) {
-                  return {type: 'SelectionStatement_switch', Expression:a, Statement:b};
+                  return addPositionInfo({type: 'SelectionStatement_switch', Expression:a, Statement:b});
                 },
-          function(a, b) {return {type:'IterationStatement_while', Expression:a, Statement:b};},
-          function(a, b) {return {type:'IterationStatement_do', Expression:b, Statement:a};},
+          function(a, b) {return addPositionInfo({type:'IterationStatement_while', Expression:a, Statement:b});},
+          function(a, b) {return addPositionInfo({type:'IterationStatement_do', Expression:b, Statement:a});},
           function(a, c, d, e) {
-                return {type:'IterationStatement_for', Initializer:a, Expression:c, Loop:d, Statement:e};
+                return addPositionInfo({type:'IterationStatement_for', Initializer:a, Expression:c, Loop:d, Statement:e});
               },
           function(a) {
-                return {type:'JumpStatement_goto', Identifier:a};
+                return addPositionInfo({type:'JumpStatement_goto', Identifier:a});
               },
           function() {
-                return {type: 'JumpStatement_continue'};
+                return addPositionInfo({type: 'JumpStatement_continue'});
               },
           function() {
-                return {type: 'JumpStatement_break'};
+                return addPositionInfo({type: 'JumpStatement_break'});
               },
           function(a) {
-                return {type: 'JumpStatement_return', Expression:a};
+                return addPositionInfo({type: 'JumpStatement_return', Expression:a});
               },
           function(a, b) {
-                return {type: 'Declaration', DeclarationSpecifiers:a, InitDeclaratorList:b};
+                return addPositionInfo({type: 'Declaration', DeclarationSpecifiers:a, InitDeclaratorList:b});
               },
           function(a, b, c) {
                   return a.push(b).concat(c);
@@ -89,7 +89,7 @@ module.exports = (function() {
           function(a, b) {
                 return [a].concat(b);
               },
-          function(a, b) {return {type:'InitDeclarator', Declarator:a, Initializers:b};},
+          function(a, b) {return addPositionInfo({type:'InitDeclarator', Declarator:a, Initializers:b});},
           void 0,
           function(a) {
                 return a;
@@ -98,38 +98,38 @@ module.exports = (function() {
                 b.Pointer = a;
                 return b;
               },
-          function(a) {return {type:'Identifier', Identifier:a};},
+          function(a) {return addPositionInfo({type:'Identifier', Identifier:a});},
           function(a, b) {
-                  return {type:'DirectDeclarator_modifier_array', Modifier:a||[], Expression: b};
+                  return addPositionInfo({type:'DirectDeclarator_modifier_array', Modifier:a||[], Expression: b});
                 },
           function(a, b) {
-                  return {type:'DirectDeclarator_modifier_array', Modifier:['static'].concat(a), Expression: b};
+                  return addPositionInfo({type:'DirectDeclarator_modifier_array', Modifier:['static'].concat(a), Expression: b});
                 },
           function(a) {
-                  return {type:'DirectDeclarator_modifier_star_array', Modifier:a.concat['*']};
+                  return addPositionInfo({type:'DirectDeclarator_modifier_star_array', Modifier:a.concat['*']});
                 },
           function(a) {
-                  return {type:'DirectDeclarator_modifier_ParameterTypeList', ParameterTypeList:a};
+                  return addPositionInfo({type:'DirectDeclarator_modifier_ParameterTypeList', ParameterTypeList:a});
                 },
           function(a) {
-                  return {type:'DirectDeclarator_modifier_IdentifierList', IdentifierList:a};
+                  return addPositionInfo({type:'DirectDeclarator_modifier_IdentifierList', IdentifierList:a});
                 },
           function(a, b) {
-                  return {type:'DirectDeclarator', left:a, right:b};
+                  return addPositionInfo({type:'DirectDeclarator', left:a, right:b});
                 },
           function(a, b) {
-                return {type:'ParameterTypeList', ParameterList:a, varargs:b!==null};
+                return addPositionInfo({type:'ParameterTypeList', ParameterList:a, varargs:b!==null});
               },
           function(a, b) {
-                  return {type:'ParameterDeclaration', DeclarationSpecifiers:a, Declarator:b};
+                  return addPositionInfo({type:'ParameterDeclaration', DeclarationSpecifiers:a, Declarator:b});
                 },
-          function(a) {return {type:'Initializer_expr', Expression:a};},
-          function(a) {return {type:'Initializer_array', Initializers:a};},
+          function(a) {return addPositionInfo({type:'Initializer_expr', Expression:a});},
+          function(a) {return addPositionInfo({type:'Initializer_array', Initializers:a});},
           function(a, b) {return [a].concat(b);},
-          function(a) {return {type:'IdentifierExpression', Identifier:a};},
-          function(a) {return {type:'ConstantExpression', Expression:a};},
-          function(a) {return {type:'StringLiteralExpression', value:a};},
-          function(a) {return {type:'ParenthesesExpression', Expression:a};},
+          function(a) {return addPositionInfo({type:'IdentifierExpression', Identifier:a});},
+          function(a) {return addPositionInfo({type:'ConstantExpression', Expression:a});},
+          function(a) {return addPositionInfo({type:'StringLiteralExpression', value:a});},
+          function(a) {return addPositionInfo({type:'ParenthesesExpression', Expression:a});},
           function(c) {return [0,c];},
           function(c) {return [1,c?c:[]];},
           function(c) {return [2,c];},
@@ -179,15 +179,15 @@ module.exports = (function() {
                   ret.push(b[i][1]);
                 return ret;
               },
-          function(a) {return {type: 'UnaryExpression_PreIncrement', Expression:a};},
-          function(a) {return {type: 'UnaryExpression_PreDecrement', Expression:a};},
+          function(a) {return addPositionInfo({type: 'UnaryExpression_PreIncrement', Expression:a});},
+          function(a) {return addPositionInfo({type: 'UnaryExpression_PreDecrement', Expression:a});},
           function(a, b) {
-                return {type:'UnaryExpression', op:a, Expression:b};
+                return addPositionInfo({type:'UnaryExpression', op:a, Expression:b});
               },
-          function(a) {return {type:'UnaryExpression_Sizeof_Expr', Expression:a};},
-          function(a) {return {type:'UnaryExpression_Sizeof_Type', TypeName:a};},
+          function(a) {return addPositionInfo({type:'UnaryExpression_Sizeof_Expr', Expression:a});},
+          function(a) {return addPositionInfo({type:'UnaryExpression_Sizeof_Type', TypeName:a});},
           function(a, b) {
-                return {type:'CastExpression', TypeName:a[1], Expression:b};
+                return addPositionInfo({type:'CastExpression', TypeName:a[1], Expression:b});
               },
           function(a, b) {
                 return buildRecursiveBinop(a, b);
@@ -195,12 +195,12 @@ module.exports = (function() {
           function(a, b) {
                 var ret = a;
                 for (var i=0;i<b.length;i++) {
-                  ret = {type:'ConditionalExpression', cond:ret, t:b[1], f:b[3]};
+                  ret = addPositionInfo({type:'ConditionalExpression', cond:ret, t:b[1], f:b[3]});
                 }
                 return ret;
               },
           function(a, b, c) {
-                return {type:'BinOpExpression', op:b, left:a, right:c};
+                return addPositionInfo({type:'BinOpExpression', op:b, left:a, right:c});
               },
           function(a) {
                   return a.join('');
@@ -311,18 +311,18 @@ module.exports = (function() {
           { type: "literal", value: "\\U", description: "\"\\\\U\"" },
           /^[1-9]/,
           { type: "class", value: "[1-9]", description: "[1-9]" },
-          function(a, b) {return {type:'DecimalConstant', value:a + b.join("")};},
+          function(a, b) {return addPositionInfo({type:'DecimalConstant', value:a + b.join("")});},
           "0",
           { type: "literal", value: "0", description: "\"0\"" },
           /^[0-7]/,
           { type: "class", value: "[0-7]", description: "[0-7]" },
           function(a) {
             if (a.length>0)
-              return {type:'OctalConstant', value:a.join("")};
+              return addPositionInfo({type:'OctalConstant', value:a.join("")});
             else
-              return {type:'OctalConstant', value:'0'};
+              return addPositionInfo({type:'OctalConstant', value:'0'});
           },
-          function(a) {return {type:'HexConstant', value:a.join("")};},
+          function(a) {return addPositionInfo({type:'HexConstant', value:a.join("")});},
           "0x",
           { type: "literal", value: "0x", description: "\"0x\"" },
           "0X",
@@ -341,14 +341,14 @@ module.exports = (function() {
           { type: "class", value: "[lL]", description: "[lL]" },
           function(a, b) {
                 if (b)
-                  return {type:'FloatConstant', Expression:a};
+                  return addPositionInfo({type:'FloatConstant', Expression:a});
                 else
                   return a;
               },
-          function(a, b) {return {type:'DecimalFloatConstant', value:a+b||''};},
-          function(a, b) {return {type:'DecimalFloatConstant', value:a.join('')+b};},
-          function(a, b, c) {return {type:'HexFloatConstant', value:a+b+c||''};},
-          function(a, b, c) {return {type:'HexFloatConstant', value:a+b.join('')+c};},
+          function(a, b) {return addPositionInfo({type:'DecimalFloatConstant', value:a+b||''});},
+          function(a, b) {return addPositionInfo({type:'DecimalFloatConstant', value:a.join('')+b});},
+          function(a, b, c) {return addPositionInfo({type:'HexFloatConstant', value:a+b+c||''});},
+          function(a, b, c) {return addPositionInfo({type:'HexFloatConstant', value:a+b.join('')+c});},
           ".",
           { type: "literal", value: ".", description: "\".\"" },
           function(a, b) {return a.join('')+'.'+b.join('');},
@@ -362,13 +362,13 @@ module.exports = (function() {
           { type: "class", value: "[pP]", description: "[pP]" },
           /^[flFL]/,
           { type: "class", value: "[flFL]", description: "[flFL]" },
-          function(a) {return {type:'EnumerationConstant', Identifier:a};},
+          function(a) {return addPositionInfo({type:'EnumerationConstant', Identifier:a});},
           "L",
           { type: "literal", value: "L", description: "\"L\"" },
           "'",
           { type: "literal", value: "'", description: "\"'\"" },
           function(a) {
-            return {type:'CharacterConstant', Char: a};
+            return addPositionInfo({type:'CharacterConstant', Char: a});
           },
           /^['\n\\]/,
           { type: "class", value: "['\\n\\\\]", description: "['\\n\\\\]" },
@@ -1106,13 +1106,20 @@ module.exports = (function() {
     }
 
 
-      function buildRecursiveBinop(a, b){
-          var ret = a;
-          for (var i=0; i<b.length; i++) {
-            ret = {type:'BinOpExpression', left:ret, op:b[i][0], right:b[i][1]};
-          }
-          return ret;
-      };
+    function buildRecursiveBinop(a, b){
+      var ret = a;
+      for (var i=0; i<b.length; i++) {
+        ret = addPositionInfo({type:'BinOpExpression', left:ret, op:b[i][0], right:b[i][1]});
+      }
+      return ret;
+    };
+
+    function addPositionInfo(r){
+        var posDetails = peg$computePosDetails(peg$currPos);
+        r.line = posDetails.line;
+        r.column = posDetails.column;
+        return r;
+    }
 
 
     peg$result = peg$parseRule(peg$startRuleIndex);

@@ -1,11 +1,18 @@
 {
-  function buildRecursiveBinop(a, b){
-      var ret = a;
-      for (var i=0; i<b.length; i++) {
-        ret = {type:'BinOpExpression', left:ret, op:b[i][0], right:b[i][1]};
-      }
-      return ret;
-  };
+function buildRecursiveBinop(a, b){
+  var ret = a;
+  for (var i=0; i<b.length; i++) {
+    ret = addPositionInfo({type:'BinOpExpression', left:ret, op:b[i][0], right:b[i][1]});
+  }
+  return ret;
+};
+
+function addPositionInfo(r){
+    var posDetails = peg$computePosDetails(peg$currPos);
+    r.line = posDetails.line;
+    r.column = posDetails.column;
+    return r;
+}
 }
 
 //-------------------------------------------------------------------------
@@ -13,7 +20,7 @@
 //-------------------------------------------------------------------------
 
 TranslationUnit
-    = Spacing a:ExternalDeclaration+ EOT {return {type:'TranslationUnit', ExternalDeclarations: a};}
+    = Spacing a:ExternalDeclaration+ EOT {return addPositionInfo({type:'TranslationUnit', ExternalDeclarations: a});}
     ;
 
 ExternalDeclaration
@@ -22,12 +29,12 @@ ExternalDeclaration
 
 FunctionDefinition
     = a:DeclarationSpecifiers b:Declarator c:DeclarationList? d:CompoundStatement {
-      return {type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, DeclarationList:c, CompoundStatement:d};
+      return addPositionInfo({type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, DeclarationList:c, CompoundStatement:d});
     }
     ;
 
 DeclarationList
-    = a:Declaration+ {return {type:'DeclarationList', Declarations:a};}
+    = a:Declaration+ {return addPositionInfo({type:'DeclarationList', Declarations:a});}
     ;
 
 //-------------------------------------------------------------------------
@@ -47,51 +54,51 @@ Statement
     ;
 
 Label
-    = CASE a:ConstantExpression COLON {return {type: 'Label_case', ConstantExpression: a};}
-    / DEFAULT COLON {return {type: 'Label_default'};}
+    = CASE a:ConstantExpression COLON {return addPositionInfo({type: 'Label_case', ConstantExpression: a});}
+    / DEFAULT COLON {return addPositionInfo({type: 'Label_default'});}
 
 CompoundStatement
     = LWING a:(Statement / Declaration)* RWING {
-        return {type: 'CompoundStatement', Statements: a};
+        return addPositionInfo({type: 'CompoundStatement', Statements: a});
       }
     ;
 
 ExpressionStatement
     = a:Expression? SEMI {
-        return {type: 'ExpressionStatement', Expression: a};
+        return addPositionInfo({type: 'ExpressionStatement', Expression: a});
       }
     ;
 
 SelectionStatement
     = IF LPAR a:Expression RPAR
       b:Statement c:(ELSE Statement)? {
-        return {type: 'SelectionStatement_if', Expression:a, Statement:b, ElseStatement:c?c[1]:null};
+        return addPositionInfo({type: 'SelectionStatement_if', Expression:a, Statement:b, ElseStatement:c?c[1]:null});
       }
     / SWITCH LPAR a:Expression RPAR b:Statement {
-        return {type: 'SelectionStatement_switch', Expression:a, Statement:b};
+        return addPositionInfo({type: 'SelectionStatement_switch', Expression:a, Statement:b});
       }
     ;
 
 IterationStatement
-    = WHILE LPAR a:Expression RPAR b:Statement {return {type:'IterationStatement_while', Expression:a, Statement:b};}
-    / DO a:Statement WHILE LPAR b:Expression RPAR SEMI {return {type:'IterationStatement_do', Expression:b, Statement:a};}
+    = WHILE LPAR a:Expression RPAR b:Statement {return addPositionInfo({type:'IterationStatement_while', Expression:a, Statement:b});}
+    / DO a:Statement WHILE LPAR b:Expression RPAR SEMI {return addPositionInfo({type:'IterationStatement_do', Expression:b, Statement:a});}
     / FOR LPAR a:(Declaration/ExpressionStatement)? c:Expression? SEMI d:Expression? RPAR e:Statement {
-      return {type:'IterationStatement_for', Initializer:a, Expression:c, Loop:d, Statement:e};
+      return addPositionInfo({type:'IterationStatement_for', Initializer:a, Expression:c, Loop:d, Statement:e});
     }
     ;
 
 JumpStatement
     = GOTO a:Identifier SEMI {
-      return {type:'JumpStatement_goto', Identifier:a};
+      return addPositionInfo({type:'JumpStatement_goto', Identifier:a});
     }
     / CONTINUE SEMI {
-      return {type: 'JumpStatement_continue'};
+      return addPositionInfo({type: 'JumpStatement_continue'});
     }
     / BREAK SEMI {
-      return {type: 'JumpStatement_break'};
+      return addPositionInfo({type: 'JumpStatement_break'});
     }
     / RETURN a:Expression? SEMI {
-      return {type: 'JumpStatement_return', Expression:a};
+      return addPositionInfo({type: 'JumpStatement_return', Expression:a});
     }
     ;
 
@@ -101,7 +108,7 @@ JumpStatement
 
 Declaration
     = a:DeclarationSpecifiers b:InitDeclaratorList? SEMI {
-      return {type: 'Declaration', DeclarationSpecifiers:a, InitDeclaratorList:b};
+      return addPositionInfo({type: 'Declaration', DeclarationSpecifiers:a, InitDeclaratorList:b});
     }
     ;
 
@@ -136,7 +143,7 @@ InitDeclaratorList
     ;
 
 InitDeclarator
-    = a:Declarator b:(EQU x:Initializer {return x;})? {return {type:'InitDeclarator', Declarator:a, Initializers:b};}
+    = a:Declarator b:(EQU x:Initializer {return x;})? {return addPositionInfo({type:'InitDeclarator', Declarator:a, Initializers:b});}
     ;
 
 StorageClassSpecifier
@@ -241,29 +248,29 @@ Declarator
     ;
 
 DirectDeclarator
-    = a:( a:Identifier {return {type:'Identifier', Identifier:a};}
+    = a:( a:Identifier {return addPositionInfo({type:'Identifier', Identifier:a});}
       / LPAR a:Declarator RPAR {return a;}
       )
       b:( LBRK a:TypeQualifier* b:AssignmentExpression? RBRK {
-        return {type:'DirectDeclarator_modifier_array', Modifier:a||[], Expression: b};
+        return addPositionInfo({type:'DirectDeclarator_modifier_array', Modifier:a||[], Expression: b});
       }
       / LBRK STATIC a:TypeQualifier* b:AssignmentExpression RBRK {
-        return {type:'DirectDeclarator_modifier_array', Modifier:['static'].concat(a), Expression: b};
+        return addPositionInfo({type:'DirectDeclarator_modifier_array', Modifier:['static'].concat(a), Expression: b});
       }
       / LBRK a:TypeQualifier+ STATIC b:AssignmentExpression RBRK {
-        return {type:'DirectDeclarator_modifier_array', Modifier:['static'].concat(a), Expression: b};
+        return addPositionInfo({type:'DirectDeclarator_modifier_array', Modifier:['static'].concat(a), Expression: b});
       }
       / LBRK a:TypeQualifier* STAR RBRK {
-        return {type:'DirectDeclarator_modifier_star_array', Modifier:a.concat['*']};
+        return addPositionInfo({type:'DirectDeclarator_modifier_star_array', Modifier:a.concat['*']});
       }
       / LPAR a:ParameterTypeList RPAR {
-        return {type:'DirectDeclarator_modifier_ParameterTypeList', ParameterTypeList:a};
+        return addPositionInfo({type:'DirectDeclarator_modifier_ParameterTypeList', ParameterTypeList:a});
       }
       / LPAR a:IdentifierList? RPAR {
-        return {type:'DirectDeclarator_modifier_IdentifierList', IdentifierList:a};
+        return addPositionInfo({type:'DirectDeclarator_modifier_IdentifierList', IdentifierList:a});
       }
       )* {
-        return {type:'DirectDeclarator', left:a, right:b};
+        return addPositionInfo({type:'DirectDeclarator', left:a, right:b});
       }
     ;
 
@@ -273,7 +280,7 @@ Pointer
 
 ParameterTypeList
     = a:ParameterList b:(COMMA ELLIPSIS)? {
-      return {type:'ParameterTypeList', ParameterList:a, varargs:b!==null};
+      return addPositionInfo({type:'ParameterTypeList', ParameterList:a, varargs:b!==null});
     }
     ;
 
@@ -288,7 +295,7 @@ ParameterDeclaration
       b:( Declarator
       / AbstractDeclarator
       )? {
-        return {type:'ParameterDeclaration', DeclarationSpecifiers:a, Declarator:b};
+        return addPositionInfo({type:'ParameterDeclaration', DeclarationSpecifiers:a, Declarator:b});
       }
     ;
 
@@ -322,8 +329,8 @@ TypedefName
     ;
 
 Initializer
-    = a:AssignmentExpression {return {type:'Initializer_expr', Expression:a};}
-    / LWING a:InitializerList COMMA? RWING {return {type:'Initializer_array', Initializers:a};}
+    = a:AssignmentExpression {return addPositionInfo({type:'Initializer_expr', Expression:a});}
+    / LWING a:InitializerList COMMA? RWING {return addPositionInfo({type:'Initializer_array', Initializers:a});}
     ;
 
 InitializerList
@@ -336,10 +343,10 @@ InitializerList
 //-------------------------------------------------------------------------
 
 PrimaryExpression
-    = a:Identifier {return {type:'IdentifierExpression', Identifier:a};}
-    / a:Constant {return {type:'ConstantExpression', Expression:a};}
-    / a:StringLiteral {return {type:'StringLiteralExpression', value:a};}
-    / LPAR a:Expression RPAR {return {type:'ParenthesesExpression', Expression:a};}
+    = a:Identifier {return addPositionInfo({type:'IdentifierExpression', Identifier:a});}
+    / a:Constant {return addPositionInfo({type:'ConstantExpression', Expression:a});}
+    / a:StringLiteral {return addPositionInfo({type:'StringLiteralExpression', value:a});}
+    / LPAR a:Expression RPAR {return addPositionInfo({type:'ParenthesesExpression', Expression:a});}
     ;
 
 PostfixExpression
@@ -401,13 +408,13 @@ ArgumentExpressionList
 
 UnaryExpression
     = PostfixExpression
-    / INC a:UnaryExpression {return {type: 'UnaryExpression_PreIncrement', Expression:a};}
-    / DEC a:UnaryExpression {return {type: 'UnaryExpression_PreDecrement', Expression:a};}
+    / INC a:UnaryExpression {return addPositionInfo({type: 'UnaryExpression_PreIncrement', Expression:a});}
+    / DEC a:UnaryExpression {return addPositionInfo({type: 'UnaryExpression_PreDecrement', Expression:a});}
     / a:UnaryOperator b:CastExpression {
-      return {type:'UnaryExpression', op:a, Expression:b};
+      return addPositionInfo({type:'UnaryExpression', op:a, Expression:b});
     }
-    / SIZEOF a:( a:UnaryExpression {return {type:'UnaryExpression_Sizeof_Expr', Expression:a};}
-      / LPAR a:TypeName RPAR {return {type:'UnaryExpression_Sizeof_Type', TypeName:a};}
+    / SIZEOF a:( a:UnaryExpression {return addPositionInfo({type:'UnaryExpression_Sizeof_Expr', Expression:a});}
+      / LPAR a:TypeName RPAR {return addPositionInfo({type:'UnaryExpression_Sizeof_Type', TypeName:a});}
       ) {return a;}
     ;
 
@@ -423,7 +430,7 @@ UnaryOperator
 CastExpression
     = UnaryExpression
     / a:(LPAR TypeName RPAR) b:CastExpression {
-      return {type:'CastExpression', TypeName:a[1], Expression:b};
+      return addPositionInfo({type:'CastExpression', TypeName:a[1], Expression:b});
     }
     ;
 
@@ -491,7 +498,7 @@ ConditionalExpression
     = a:LogicalORExpression b:(QUERY Expression COLON LogicalORExpression)* {
       var ret = a;
       for (var i=0;i<b.length;i++) {
-        ret = {type:'ConditionalExpression', cond:ret, t:b[1], f:b[3]};
+        ret = addPositionInfo({type:'ConditionalExpression', cond:ret, t:b[1], f:b[3]});
       }
       return ret;
     }
@@ -499,7 +506,7 @@ ConditionalExpression
 
 AssignmentExpression
     = a:UnaryExpression b:AssignmentOperator c:AssignmentExpression {
-      return {type:'BinOpExpression', op:b, left:a, right:c};
+      return addPositionInfo({type:'BinOpExpression', op:b, left:a, right:c});
     }
     / ConditionalExpression
     ;
@@ -690,16 +697,16 @@ IntegerConstant
     IntegerSuffix? Spacing {return a;}
     ;
 
-DecimalConstant = a:[1-9] b:[0-9]* {return {type:'DecimalConstant', value:a + b.join("")};};
+DecimalConstant = a:[1-9] b:[0-9]* {return addPositionInfo({type:'DecimalConstant', value:a + b.join("")});};
 
 OctalConstant   = "0" a:[0-7]* {
   if (a.length>0)
-    return {type:'OctalConstant', value:a.join("")};
+    return addPositionInfo({type:'OctalConstant', value:a.join("")});
   else
-    return {type:'OctalConstant', value:'0'};
+    return addPositionInfo({type:'OctalConstant', value:'0'});
 };
 
-HexConstant     = HexPrefix a:HexDigit+ {return {type:'HexConstant', value:a.join("")};};
+HexConstant     = HexPrefix a:HexDigit+ {return addPositionInfo({type:'HexConstant', value:a.join("")});};
 
 HexPrefix       = "0x" / "0X" ;
 
@@ -722,20 +729,20 @@ FloatConstant
       )
     b:FloatSuffix? Spacing {
       if (b)
-        return {type:'FloatConstant', Expression:a};
+        return addPositionInfo({type:'FloatConstant', Expression:a});
       else
         return a;
     }
     ;
 
 DecimalFloatConstant
-    = a:Fraction b:Exponent? {return {type:'DecimalFloatConstant', value:a+b||''};}
-    / a:[0-9]+ b:Exponent {return {type:'DecimalFloatConstant', value:a.join('')+b};}
+    = a:Fraction b:Exponent? {return addPositionInfo({type:'DecimalFloatConstant', value:a+b||''});}
+    / a:[0-9]+ b:Exponent {return addPositionInfo({type:'DecimalFloatConstant', value:a.join('')+b});}
     ;
 
 HexFloatConstant
-    = a:HexPrefix b:HexFraction c:BinaryExponent? {return {type:'HexFloatConstant', value:a+b+c||''};}
-    / a:HexPrefix b:HexDigit+ c:BinaryExponent {return {type:'HexFloatConstant', value:a+b.join('')+c};}
+    = a:HexPrefix b:HexFraction c:BinaryExponent? {return addPositionInfo({type:'HexFloatConstant', value:a+b+c||''});}
+    / a:HexPrefix b:HexDigit+ c:BinaryExponent {return addPositionInfo({type:'HexFloatConstant', value:a+b.join('')+c});}
     ;
 
 Fraction
@@ -754,10 +761,10 @@ BinaryExponent = a:[pP][+\-]? b:[0-9]+ {return a+b.join('');};
 
 FloatSuffix = a:[flFL] {return a;};
 
-EnumerationConstant = a:Identifier {return {type:'EnumerationConstant', Identifier:a};};
+EnumerationConstant = a:Identifier {return addPositionInfo({type:'EnumerationConstant', Identifier:a});};
 
 CharacterConstant = "L"? "'" a:Char* "'" Spacing {
-  return {type:'CharacterConstant', Char: a};
+  return addPositionInfo({type:'CharacterConstant', Char: a});
 };
 
 Char = a:Escape {return a;} / !['\n\\] a:_ {return a;};
