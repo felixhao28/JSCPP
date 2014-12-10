@@ -16,6 +16,9 @@
 				}
 			};
 			iostream.load(rt, stdio);
+			cmath.load(rt);
+			cstring.load(rt);
+			cctype.load(rt);
 			code = code.toString();
 			var ret = ast.parse(code);
 			interpreter.run(ret);

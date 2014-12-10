@@ -3273,24 +3273,387 @@ module.exports = {
 	}
 }
 var iostream = module.exports;
+module.exports = {
+	load: function(rt) {
+		rt.regFunc(function(rt, _this, x) {
+			return Math.cos(x);
+		}, 'global', 'cos', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.sin(x);
+		}, 'global', 'sin', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.tan(x);
+		}, 'global', 'tan', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.acos(x);
+		}, 'global', 'acos', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.asin(x);
+		}, 'global', 'asin', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.atan(x);
+		}, 'global', 'atan', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, y, x) {
+			return Math.atan(y / x);
+		}, 'global', 'atan2', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
 
-function run(code, input){
-	var rt = new _CRuntime();
-	var interpreter = new _Interpreter(rt);
-	var stdio = {
-		drain: function() {
-			var x = input;
-			input = null;
-			return x;
-		},
-		write: function(s) {
-			process.stdout.write(s);
-		}
-	};
-	iostream.load(rt, stdio);
-	code = code.toString();
-	var ret = ast.parse(code);
-	interpreter.run(ret);
-	ret = rt.getFunc('global', 'main', [])(rt, null, []).v;
-	return ret;
+		rt.regFunc(function(rt, _this, x) {
+			return Math.cosh(x);
+		}, 'global', 'cosh', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.sinh(x);
+		}, 'global', 'sinh', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.tanh(x);
+		}, 'global', 'tanh', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.acosh(x);
+		}, 'global', 'acosh', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.asinh(x);
+		}, 'global', 'asinh', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.atanh(x);
+		}, 'global', 'atanh', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+
+		rt.regFunc(function(rt, _this, x) {
+			return Math.exp(x);
+		}, 'global', 'exp', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.log(x);
+		}, 'global', 'log', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.log10(x);
+		}, 'global', 'log10', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x, y) {
+			return Math.pow(x, y);
+		}, 'global', 'pow', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.sqrt(x);
+		}, 'global', 'sqrt', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.ceil(x);
+		}, 'global', 'ceil', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.floor(x);
+		}, 'global', 'floor', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.abs(x);
+		}, 'global', 'fabs', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			return Math.abs(x);
+		}, 'global', 'abs', [rt.doubleTypeLiteral], rt.doubleTypeLiteral);
+	}
 }
+var cmath = module.exports;
+module.exports = {
+	load: function(rt) {
+		var pchar = rt.makeNormalPointerValue(rt.charTypeLiteral);
+		var sizet = rt.primitiveType('unsigned int');
+
+		rt.defVar('NULL', rt.normalPointerType(rt.voidTypeLiteral),
+			rt.val(rt.normalPointerType(rt.voidTypeLiteral), rt.nullPointerValue));
+
+		rt.regFunc(function(rt, _this, dest, src) {
+			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {
+				var srcarr = src.v.target;
+				var i = src.v.position;
+				var destarr = dest.v.target;
+				var j = dest.v.position;
+				for (; i < srcarr.length && j < destarr.length && srcarr[i].v != 0; i++, j++) {
+					destarr[j] = rt.clone(srcarr[i]);
+				}
+				if (i === srcarr.length) {
+					rt.raiseException('source string does not have a pending \'\\0\'');
+				} else if (j === destarr.length - 1) {
+					rt.raiseException('destination array is not big enough');
+				} else {
+					destarr[j] = rt.val(rt.charTypeLiteral, 0);
+				}
+			} else {
+				rt.raiseException('destination or source is not an array');
+			}
+			return dest;
+		}, 'global', 'strcpy', [pchar, pchar], pchar);
+
+		rt.regFunc(function(rt, _this, dest, src, num) {
+			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {
+				var srcarr = src.v.target;
+				var i = src.v.position;
+				var destarr = dest.v.target;
+				var j = dest.v.position;
+				for (; num > 0 && i < srcarr.length && j < destarr.length - 1 && srcarr[i].v != 0; i++, j++) {
+					destarr[j] = rt.clone(srcarr[i]);
+					num--;
+				}
+				if (srcarr[i].v == 0) {
+					// padding zeroes
+					while (num > 0 && j < destarr.length) {
+						destarr[j++] = rt.val(rt.charTypeLiteral, 0);
+					}
+				}
+				if (i === srcarr.length) {
+					rt.raiseException('source string does not have a pending \'\\0\'');
+				} else if (j === destarr.length - 1) {
+					rt.raiseException('destination array is not big enough');
+				}
+			} else {
+				rt.raiseException('destination or source is not an array');
+			}
+			return dest;
+		}, 'global', 'strncpy', [pchar, pchar, sizet], pchar);
+
+		rt.regFunc(function(rt, _this, dest, src) {
+			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {
+				var srcarr = src.v.target;
+				var destarr = dest.v.target;
+				if (srcarr === destarr) {
+					var i = src.v.position;
+					var j = dest.v.position;
+					if (i < j) {
+						var lensrc = rt.getFunc('global', 'strlen', [pchar])(rt, null, [src]).v;
+						if (i + lensrc + 1 >= j)
+							rt.raiseException('overlap is not allowed');
+					} else {
+						var lensrc = rt.getFunc('global', 'strlen', [pchar])(rt, null, [src]).v;
+						var lendest = rt.getFunc('global', 'strlen', [pchar])(rt, null, [dest]).v;
+						if (j + lensrc + lendest + 1 >= i)
+							rt.raiseException('overlap is not allowed');
+					}
+				}
+				var lendest = rt.getFunc('global', 'strlen', [pchar])(rt, null, [dest]).v;
+				var newDest = rt.val(
+					pchar,
+					rt.makeArrayPointerValue(dest.v.target, dest.v.position + lendest)
+				);
+				return rt.getFunc('global', 'strcpy', [pchar, pchar])(rt, null, [newDest, src])
+			} else {
+				rt.raiseException('destination or source is not an array');
+			}
+			return dest;
+		}, 'global', 'strcat', [pchar, pchar], pchar);
+
+		rt.regFunc(function(rt, _this, dest, src, num) {
+			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {
+				var srcarr = src.v.target;
+				var destarr = dest.v.target;
+				if (srcarr === destarr) {
+					var i = src.v.position;
+					var j = dest.v.position;
+					if (i < j) {
+						var lensrc = rt.getFunc('global', 'strlen', [pchar])(rt, null, [src]).v;
+						if (lensrc > num) lensrc = num;
+						if (i + lensrc + 1 >= j)
+							rt.raiseException('overlap is not allowed');
+					} else {
+						var lensrc = rt.getFunc('global', 'strlen', [pchar])(rt, null, [src]).v;
+						if (lensrc > num) lensrc = num;
+						var lendest = rt.getFunc('global', 'strlen', [pchar])(rt, null, [dest]).v;
+						if (j + lensrc + lendest + 1 >= i)
+							rt.raiseException('overlap is not allowed');
+					}
+				}
+				var lendest = rt.getFunc('global', 'strlen', [pchar])(rt, null, [dest]).v;
+				var newDest = rt.val(
+					pchar,
+					rt.makeArrayPointerValue(dest.v.target, dest.v.position + lendest)
+				);
+				return rt.getFunc('global', 'strncpy', [pchar, pchar, sizet])(rt, null, [newDest, src, num])
+			} else {
+				rt.raiseException('destination or source is not an array');
+			}
+			return dest;
+		}, 'global', 'strncat', [pchar, pchar, sizet], pchar);
+
+		rt.regFunc(function(rt, _this, str) {
+			if (rt.isArrayType(str.t)) {
+				var arr = str.v.target;
+				var i = str.v.position;
+				for (; i < arr.length && arr[i].v !== 0; i++) {};
+				if (i === arr.length) {
+					rt.raiseException('target string does not have a pending \'\\0\'');
+				} else {
+					return i - str.v.position;
+				}
+			} else {
+				rt.raiseException('target is not an array');
+			}
+		}, 'global', 'strlen', [pchar], sizet);
+
+		rt.regFunc(function(rt, _this, dest, src) {
+			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {
+				var srcarr = src.v.target;
+				var i = src.v.position;
+				var destarr = dest.v.target;
+				var j = dest.v.position;
+				for (; i < srcarr.length && j < destarr.length && srcarr[i].v === destarr[i].v; i++, j++) {};
+				return rt.val(rt.intTypeLiteral, destarr[i].v - srcarr[i].v);
+			} else {
+				rt.raiseException('str1 or str2 is not an array');
+			}
+		}, 'global', 'strcmp', [pchar, pchar], rt.intTypeLiteral);
+
+		rt.regFunc(function(rt, _this, dest, src, num) {
+			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {
+				var srcarr = src.v.target;
+				var i = src.v.position;
+				var destarr = dest.v.target;
+				var j = dest.v.position;
+				for (; num > 0 && i < srcarr.length && j < destarr.length && srcarr[i].v === destarr[i].v; i++, j++, num--) {};
+				return rt.val(rt.intTypeLiteral, destarr[i].v - srcarr[i].v);
+			} else {
+				rt.raiseException('str1 or str2 is not an array');
+			}
+		}, 'global', 'strncmp', [pchar, pchar, sizet], rt.intTypeLiteral);
+
+		rt.regFunc(function(rt, _this, str, ch) {
+			if (rt.isArrayType(str.t)) {
+				var arr = str.v.target;
+				var i = str.v.position;
+				for (; i < arr.length && arr[i].v !== 0 && arr[i].v !== ch.v; i++) {}
+				if (arr[i].v === 0) {
+					return rt.val(pchar, rt.nullPointerValue);
+				} else if (arr[i].v === ch.v) {
+					return rt.val(pchar, rt.makeArrayPointerValue(arr, i));
+				} else {
+					rt.raiseException('target string does not have a pending \'\\0\'');
+				}
+			} else {
+				rt.raiseException('str1 or str2 is not an array');
+			}
+		}, 'global', 'strchr', [pchar, rt.charTypeLiteral], pchar);
+
+		rt.regFunc(function(rt, _this, str, ch) {
+			if (rt.isArrayType(str.t)) {
+				var arr = str.v.target;
+				var i = str.v.position;
+				var lastpos = -1;
+				for (; i < arr.length && arr[i].v !== 0; i++) {
+					if (arr[i].v === ch.v)
+						lastpos = i;
+				}
+				if (arr[i].v === 0) {
+					if (lastpos >= 0) {
+						return rt.val(pchar, rt.makeArrayPointerValue(arr, lastpos));
+					} else {
+						return rt.val(pchar, rt.nullPointerValue);
+					}
+				} else {
+					rt.raiseException('target string does not have a pending \'\\0\'');
+				}
+			} else {
+				rt.raiseException('str1 or str2 is not an array');
+			}
+		}, 'global', 'strrchr', [pchar, rt.charTypeLiteral], pchar);
+
+
+		rt.regFunc(function(rt, _this, str1, str2) {
+			if (rt.isArrayType(str1.t) && rt.isArrayType(str2.t)) {
+				// BM?
+				var arr = str1.v.target;
+				var i = str1.v.position;
+				var tar = str2.v.target;
+				for (; i < arr.length && arr[i].v !== 0; i++) {
+					var j = str2.v.position;
+					var _i = i;
+					for (; j < tar.length && str1[_i].v === str2[j]; _i++, j++) {}
+					if (j === tar.length) {
+						break;
+					}
+				}
+				if (arr[i].v === 0) {
+					return rt.val(pchar, rt.nullPointerValue);
+				} else if (i === arr.length) {
+					rt.raiseException('target string does not have a pending \'\\0\'');
+				} else {
+					return rt.val(pchar, rt.makeArrayPointerValue(arr, i));
+				}
+			} else {
+				rt.raiseException('str1 or str2 is not an array');
+			}
+		}, 'global', 'strstr', [pchar, rt.charTypeLiteral], pchar);
+	}
+}
+var cstring = module.exports;
+module.exports = {
+	load: function(rt) {
+		rt.regFunc(function(rt, _this, x) {
+			var c = rt.getFunc('global', 'isdigit', [rt.intTypeLiteral])(rt, _this, x);
+			if (!c.v) {
+				return rt.getFunc('global', 'isalpha', [rt.intTypeLiteral])(rt, _this, x);
+			}
+			return c;
+		}, 'global', 'isalnum', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v >= '0'.charCodeAt(0) && x.v <= '9'.charCodeAt(0)) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'isdigit', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var c = rt.getFunc('global', 'isupper', [rt.intTypeLiteral])(rt, _this, x);
+			if (!c.v) {
+				return rt.getFunc('global', 'islower', [rt.intTypeLiteral])(rt, _this, x);
+			}
+			return c;
+		}, 'global', 'isalpha', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v in [0x20, 0x09, 0x0a, 0x0b, 0x0c, 0x0d]) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'isspace', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v >= 0x00 && x.v <= 0x1f || x.v === 0x7f) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'iscntrl', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v > 0x1f && x.v !== 0x7f) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'isprint', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var c = rt.getFunc('global', 'isspace', [rt.intTypeLiteral])(rt, _this, x);
+			if (!c.v) {
+				c = rt.getFunc('global', 'isgraph', [rt.intTypeLiteral])(rt, _this, x);
+				if (!c.v)
+					return rt.val(rt.intTypeLiteral, 1);
+			}
+			return rt.val(rt.intTypeLiteral, 0);
+		}, 'global', 'isgraph', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v >= 'a'.charCodeAt(0) && x.v <= 'z'.charCodeAt(0)) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'islower', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v >= 'A'.charCodeAt(0) && x.v <= 'Z'.charCodeAt(0)) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'isupper', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var c = rt.getFunc('global', 'isgraph', [rt.intTypeLiteral])(rt, _this, x);
+			if (c.v) {
+				c = rt.getFunc('global', 'isalnum', [rt.intTypeLiteral])(rt, _this, x);
+				if (!c.v)
+					return rt.val(rt.intTypeLiteral, 1);
+			}
+			return rt.val(rt.intTypeLiteral, 0);
+		}, 'global', 'ispunct', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var v = (x.v >= 'A'.charCodeAt(0) && x.v <= 'F'.charCodeAt(0) ||
+				x.v >= 'a'.charCodeAt(0) && x.v <= 'f'.charCodeAt(0) ||
+				x.v >= '0'.charCodeAt(0) && x.v <= '9'.charCodeAt(0)
+			) ? 1 : 0;
+			return rt.val(rt.intTypeLiteral, v);
+		}, 'global', 'isxdigit', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var c = rt.getFunc('global', 'isupper', [rt.intTypeLiteral])(rt, _this, x);
+			if (c.v) {
+				return rt.val(rt.intTypeLiteral, x.v + 32);
+			}
+			return x;
+		}, 'global', 'tolower', [rt.intTypeLiteral], rt.intTypeLiteral);
+		rt.regFunc(function(rt, _this, x) {
+			var c = rt.getFunc('global', 'islower', [rt.intTypeLiteral])(rt, _this, x);
+			if (c.v) {
+				return rt.val(rt.intTypeLiteral, x.v - 32);
+			}
+			return x;
+		}, 'global', 'toupper', [rt.intTypeLiteral], rt.intTypeLiteral);
+	}
+}
+var cctype = module.exports;
