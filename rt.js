@@ -475,7 +475,7 @@ function CRuntime() {
 			'#default': function(rt, l, r) {
 				if (rt.isTypeEqualTo(l.t, r.t)) {
 					if (l.t.ptrType === 'array') {
-						return l.v.target === r.v.target && l.v.position === r.v.position;
+						return l.v.target === r.v.target && (l.v.target === null || l.v.position === r.v.position);
 					} else {
 						return l.v.target === r.v.target;
 					}
@@ -1412,7 +1412,7 @@ CRuntime.prototype.raiseException = function(message) {
 		var ln = interp.currentNode.line;
 		var col = interp.currentNode.column;
 		throw ln + ':' + col + ' ' + message;
-	} else{
+	} else {
 		throw message;
 	}
 }

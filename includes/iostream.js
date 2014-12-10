@@ -6,7 +6,7 @@ function _skipSpace(s) {
 	return s;
 }
 
-function _read(reg, buf, type) {
+function _read(rt, reg, buf, type) {
 	var r = reg.exec(buf);
 	if (!r || r.length === 0) {
 		throw 'input format mismatch ' + rt.makeTypeString(type) + ' with buffer=' + buf;
@@ -52,7 +52,7 @@ module.exports = {
 						case 'signed char':
 						case 'unsigned char':
 							b = _skipSpace(b);
-							r = _read(/^./, b, t.t);
+							r = _read(rt, /^./, b, t.t);
 							v = r[0].charCodeAt(0);
 							break;
 						case 'short':
@@ -80,18 +80,18 @@ module.exports = {
 						case 'unsigned long long':
 						case 'unsigned long long int':
 							b = _skipSpace(b);
-							r = _read(/^[-+]?(?:([1-9][0-9]*)([eE]\+?[0-9]+)?)|0/, b, t.t);
+							r = _read(rt, /^[-+]?(?:([1-9][0-9]*)([eE]\+?[0-9]+)?)|0/, b, t.t);
 							v = parseInt(r[0]);
 							break;
 						case 'float':
 						case 'double':
 							b = _skipSpace(b);
-							r = _read(/^[-+]?(?:[0-9]*\.[0-9]+([eE][-+]?[0-9]+)?)|(?:([1-9][0-9]*)([eE]\+?[0-9]+)?)/, b, t.t)
+							r = _read(rt, /^[-+]?(?:[0-9]*\.[0-9]+([eE][-+]?[0-9]+)?)|(?:([1-9][0-9]*)([eE]\+?[0-9]+)?)/, b, t.t)
 							v = parseFloat(r[0]);
 							break;
 						case 'bool':
 							b = _skipSpace(b);
-							r = _read(/^(true|false)/, b, t.t);
+							r = _read(rt, /^(true|false)/, b, t.t);
 							v = r[0] === 'true';
 							break;
 						default:

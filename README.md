@@ -101,8 +101,10 @@ If you want to run C++ programs effciently, compile your C++ code to [LLVM-bitco
 
 See current progress in [_includes_](https://github.com/felixhao28/JSCPP/blob/master/includes) folder.
 
-* iostream (only cin and cout)
-* cmath (partial)
+* iostream (only cin and cout and endl)
+* cmath
+* cctype
+* cstring
 
 ### Does this support debugging?
 
