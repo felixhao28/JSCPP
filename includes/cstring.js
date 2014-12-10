@@ -3,8 +3,8 @@ module.exports = {
 		var pchar = rt.makeNormalPointerValue(rt.charTypeLiteral);
 		var sizet = rt.primitiveType('unsigned int');
 
-		rt.defVar('NULL', rt.makeNormalPointerValue(rt.voidTypeLiteral),
-			rt.val(rt.makeNormalPointerValue(rt.voidTypeLiteral), rt.nullPointerValue));
+		rt.defVar('NULL', rt.normalPointerType(rt.voidTypeLiteral),
+			rt.val(rt.normalPointerType(rt.voidTypeLiteral), rt.nullPointerValue));
 
 		rt.regFunc(function(rt, _this, dest, src) {
 			if (rt.isArrayType(dest.t) && rt.isArrayType(src.t)) {

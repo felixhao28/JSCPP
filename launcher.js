@@ -16,6 +16,9 @@ var stdio = {
 	}
 };
 require('./includes/iostream').load(rt, stdio);
+require('./includes/cctype').load(rt);
+require('./includes/cstring').load(rt);
+require('./includes/cmath').load(rt);
 
 module.exports = {
 	run: function(code, input) {

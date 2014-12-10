@@ -1210,8 +1210,9 @@ CRuntime.prototype.isTypeEqualTo = function(type1, type2) {
 						case 'function':
 							if (this.isTypeEqualTo(type1.retType, type2.retType) &&
 								type1.sigiture.length === type2.sigiture.length) {
+								var _this = this;
 								return type1.sigiture.every(function(type, index, arr) {
-									return rt.isTypeEqualTo(type, type2.sigiture[index]);
+									return _this.isTypeEqualTo(type, type2.sigiture[index]);
 								});
 							}
 							break;
@@ -1407,9 +1408,13 @@ CRuntime.prototype.defaultValue = function(type) {
 
 CRuntime.prototype.raiseException = function(message) {
 	var interp = this.interp;
-	var ln = interp.currentNode.line;
-	var col = interp.currentNode.column;
-	throw ln + ':' + col + ' ' + message;
+	if (interp) {
+		var ln = interp.currentNode.line;
+		var col = interp.currentNode.column;
+		throw ln + ':' + col + ' ' + message;
+	} else{
+		throw message;
+	}
 }
 
 module.exports = CRuntime;
