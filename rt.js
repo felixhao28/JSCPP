@@ -712,6 +712,8 @@ function CRuntime() {
 	this.boolTypeLiteral = this.primitiveType('bool');
 	this.voidTypeLiteral = this.primitiveType('void');
 
+	this.nullPointerValue = this.makeNormalPointerValue(null);
+
 	this.scope = [{
 		'$name': 'global'
 	}];
