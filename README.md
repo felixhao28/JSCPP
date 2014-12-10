@@ -2,6 +2,8 @@
 
 This is a simple C++ interpreter written in JavaScript.
 
+Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
+
 ## Purpose of the Project
 
 As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
