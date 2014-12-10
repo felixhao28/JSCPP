@@ -6,6 +6,6 @@ fs.readFile('./target.cpp', function(err, code) {
 	fs.readFile('./input.txt', function(err, input) {
 		if (err) throw err;
 		var exitcode = launcher.run(code, input);
-		console.info('program exited with code ' + exitcode);
+		console.info('\nprogram exited with code ' + exitcode);
 	});
 });
