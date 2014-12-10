@@ -96,7 +96,7 @@ function CRuntime() {
 		'*': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support * on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support * on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v * r.v;
 				rett = rt.promoteNumeric(l.t, r.t);
@@ -106,7 +106,7 @@ function CRuntime() {
 		'/': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support / on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support / on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v / r.v;
 				if (rt.isIntegerType(l.t) && rt.isIntegerType(r.t)) {
@@ -119,7 +119,7 @@ function CRuntime() {
 		'%': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support % on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support % on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v % r.v;
 				rett = rt.promoteNumeric(l.t, r.t);
@@ -133,7 +133,7 @@ function CRuntime() {
 					return l;
 				} else {
 					if (!rt.isNumericType(r.t)) {
-						rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support + on ' + rt.makeTypeString(r.t));
+						rt.raiseException(rt.makeTypeString(l.t) + ' does not support + on ' + rt.makeTypeString(r.t));
 					}
 					ret = l.v + r.v;
 					rett = rt.promoteNumeric(l.t, r.t);
@@ -149,7 +149,7 @@ function CRuntime() {
 				} else {
 					// binary
 					if (!rt.isNumericType(r.t)) {
-						rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support - on ' + rt.makeTypeString(r.t));
+						rt.raiseException(rt.makeTypeString(l.t) + ' does not support - on ' + rt.makeTypeString(r.t));
 					}
 					ret = l.v - r.v;
 					rett = rt.promoteNumeric(l.t, r.t);
@@ -161,7 +161,7 @@ function CRuntime() {
 		'<<': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support << on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support << on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v << r.v;
 				rett = l.t;
@@ -171,7 +171,7 @@ function CRuntime() {
 		'>>': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support >> on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support >> on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v >> r.v;
 				rett = l.t;
@@ -181,7 +181,7 @@ function CRuntime() {
 		'<': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support < on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support < on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v < r.v;
 				rett = rt.boolTypeLiteral;
@@ -191,7 +191,7 @@ function CRuntime() {
 		'<=': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support <= on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support <= on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v <= r.v;
 				rett = rt.boolTypeLiteral;
@@ -201,7 +201,7 @@ function CRuntime() {
 		'>': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support > on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support > on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v > r.v;
 				rett = rt.boolTypeLiteral;
@@ -211,7 +211,7 @@ function CRuntime() {
 		'>=': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support >= on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support >= on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v >= r.v;
 				rett = rt.boolTypeLiteral;
@@ -221,7 +221,7 @@ function CRuntime() {
 		'==': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support == on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support == on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v == r.v;
 				rett = rt.boolTypeLiteral;
@@ -231,7 +231,7 @@ function CRuntime() {
 		'!=': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support != on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support != on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v != r.v;
 				rett = rt.boolTypeLiteral;
@@ -252,7 +252,7 @@ function CRuntime() {
 					}
 				} else {
 					if (!rt.isIntegerType(l.t) || !rt.isNumericType(r.t) || !rt.isIntegerType(r.t)) {
-						rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support & on ' + rt.makeTypeString(r.t));
+						rt.raiseException(rt.makeTypeString(l.t) + ' does not support & on ' + rt.makeTypeString(r.t));
 					}
 					ret = l.v & r.v;
 					rett = rt.promoteNumeric(l.t, r.t);
@@ -263,7 +263,7 @@ function CRuntime() {
 		'^': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support ^ on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support ^ on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v ^ r.v;
 				rett = rt.promoteNumeric(l.t, r.t);
@@ -273,7 +273,7 @@ function CRuntime() {
 		'|': {
 			'#default': function(rt, l, r) {
 				if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support | on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support | on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v | r.v;
 				rett = rt.promoteNumeric(l.t, r.t);
@@ -291,7 +291,7 @@ function CRuntime() {
 					l.v = rt.cast(l.t, r).v;
 					return l;
 				} else {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 			}
 		},
@@ -358,10 +358,10 @@ function CRuntime() {
 		'++': {
 			'#default': function(rt, l, dummy) {
 				if (!rt.isNumericType(l.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support increment');
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support increment');
 				}
 				if (!l.left) {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 				if (dummy) {
 					var b = l.v;
@@ -371,17 +371,17 @@ function CRuntime() {
 					l.v = l.v + 1;
 					if (rt.inrange(l.t, l.v))
 						return l;
-					rt.raiseException(null, 'overflow during increment');
+					rt.raiseException('overflow during increment');
 				}
 			}
 		},
 		'--': {
 			'#default': function(rt, l, dummy) {
 				if (!rt.isNumericType(l.t)) {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support decrement');
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support decrement');
 				}
 				if (!l.left) {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 				if (dummy) {
 					var b = l.v;
@@ -392,7 +392,7 @@ function CRuntime() {
 					var b = l.v;
 					if (rt.inrange(l.t, l.v))
 						return l;
-					rt.raiseException(null, 'overflow during decrement');
+					rt.raiseException('overflow during decrement');
 				}
 			}
 		},
@@ -402,7 +402,7 @@ function CRuntime() {
 		'==': {
 			'#default': function(rt, l, r) {
 				if (!r.t === 'bool') {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support == on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support == on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v == r.v;
 				rett = rt.boolTypeLiteral;
@@ -412,7 +412,7 @@ function CRuntime() {
 		'!=': {
 			'#default': function(rt, l, r) {
 				if (!r.t === 'bool') {
-					rt.raiseException(null, rt.makeTypeString(l.t) + ' does not support != on ' + rt.makeTypeString(r.t));
+					rt.raiseException(rt.makeTypeString(l.t) + ' does not support != on ' + rt.makeTypeString(r.t));
 				}
 				ret = l.v != r.v;
 				rett = rt.boolTypeLiteral;
@@ -430,7 +430,7 @@ function CRuntime() {
 					l.v = rt.cast(l.t, r).v;
 					return l;
 				} else {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 			}
 		},
@@ -496,7 +496,7 @@ function CRuntime() {
 		'=': {
 			'#default': function(rt, l, r) {
 				if (!l.left) {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 				var t = rt.cast(l.t, r);
 				l.t = t.t;
@@ -517,7 +517,7 @@ function CRuntime() {
 						return rt.val(t, rt.makeNormalPointerValue(l));
 					}
 				} else {
-					rt.raiseException(null, 'you cannot cast bitwise and on pointer');
+					rt.raiseException('you cannot cast bitwise and on pointer');
 				}
 			}
 		},
@@ -526,7 +526,7 @@ function CRuntime() {
 		'()': {
 			'#default': function(rt, l, args) {
 				if (l.t.type !== 'pointer' || l.t.ptrType !== 'function') {
-					rt.raiseException(null, rt.makeTypeString(l.v.type) + ' is not function');
+					rt.raiseException(rt.makeTypeString(l.v.type) + ' is not function');
 				}
 				return rt.getCompatibleFunc(l.v.defineType, l.v.name, args)(args);
 			}
@@ -538,7 +538,7 @@ function CRuntime() {
 				if (r === undefined) {
 					return l.v.target;
 				} else {
-					rt.raiseException(null, 'you cannot multiply a pointer');
+					rt.raiseException('you cannot multiply a pointer');
 				}
 			}
 		}
@@ -549,16 +549,16 @@ function CRuntime() {
 				if (r === undefined) {
 					var arr = l.v.target;
 					if (l.v.position >= arr.length) {
-						rt.raiseException(null, 'index out of bound ' + l.v.position + ' >= ' + arr.length);
+						rt.raiseException('index out of bound ' + l.v.position + ' >= ' + arr.length);
 					} else if (l.v.position < 0) {
-						rt.raiseException(null, 'negative index ' + l.v.position);
+						rt.raiseException('negative index ' + l.v.position);
 					}
 					var ret = arr[l.v.position];
 					ret.array = arr;
 					ret.arrayIndex = l.v.position;
 					return ret;
 				} else {
-					rt.raiseException(null, 'you cannot multiply a pointer');
+					rt.raiseException('you cannot multiply a pointer');
 				}
 			}
 		},
@@ -574,10 +574,10 @@ function CRuntime() {
 					if (l.v.target === r.v.target) {
 						return l.v.position - r.v.position;
 					} else {
-						rt.raiseException(null, 'you cannot perform minus on pointers pointing to different arrays');
+						rt.raiseException('you cannot perform minus on pointers pointing to different arrays');
 					}
 				} else {
-					rt.raiseException(null, rt.makeTypeString(r.t) + ' is not an array pointer type');
+					rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
 				}
 			},
 		},
@@ -587,10 +587,10 @@ function CRuntime() {
 					if (l.v.target === r.v.target) {
 						return l.v.position < r.v.position;
 					} else {
-						rt.raiseException(null, 'you cannot perform compare on pointers pointing to different arrays');
+						rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
 					}
 				} else {
-					rt.raiseException(null, rt.makeTypeString(r.t) + ' is not an array pointer type');
+					rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
 				}
 			},
 		},
@@ -600,10 +600,10 @@ function CRuntime() {
 					if (l.v.target === r.v.target) {
 						return l.v.position > r.v.position;
 					} else {
-						rt.raiseException(null, 'you cannot perform compare on pointers pointing to different arrays');
+						rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
 					}
 				} else {
-					rt.raiseException(null, rt.makeTypeString(r.t) + ' is not an array pointer type');
+					rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
 				}
 			},
 		},
@@ -613,10 +613,10 @@ function CRuntime() {
 					if (l.v.target === r.v.target) {
 						return l.v.position <= r.v.position;
 					} else {
-						rt.raiseException(null, 'you cannot perform compare on pointers pointing to different arrays');
+						rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
 					}
 				} else {
-					rt.raiseException(null, rt.makeTypeString(r.t) + ' is not an array pointer type');
+					rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
 				}
 			},
 		},
@@ -626,10 +626,10 @@ function CRuntime() {
 					if (l.v.target === r.v.target) {
 						return l.v.position >= r.v.position;
 					} else {
-						rt.raiseException(null, 'you cannot perform compare on pointers pointing to different arrays');
+						rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
 					}
 				} else {
-					rt.raiseException(null, rt.makeTypeString(r.t) + ' is not an array pointer type');
+					rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
 				}
 			},
 		},
@@ -642,7 +642,7 @@ function CRuntime() {
 						rt.makeArrayPointerValue(l.v.target, l.v.position + i)
 					);
 				} else {
-					rt.raiseException(null, 'cannot add non-numeric to a pointer');
+					rt.raiseException('cannot add non-numeric to a pointer');
 				}
 			},
 		},
@@ -655,7 +655,7 @@ function CRuntime() {
 						rt.makeArrayPointerValue(l.v.target, l.v.position - i)
 					);
 				} else {
-					rt.raiseException(null, 'cannot add non-numeric to a pointer');
+					rt.raiseException('cannot add non-numeric to a pointer');
 				}
 			},
 		},
@@ -674,7 +674,7 @@ function CRuntime() {
 		'++': {
 			'#default': function(rt, l, dummy) {
 				if (!l.left) {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 				if (dummy) {
 					return rt.val(
@@ -690,7 +690,7 @@ function CRuntime() {
 		'--': {
 			'#default': function(rt, l, dummy) {
 				if (!l.left) {
-					rt.raiseException(null, rt.makeValString(l) + ' is not a left value');
+					rt.raiseException(rt.makeValString(l) + ' is not a left value');
 				}
 				if (dummy) {
 					return rt.val(
@@ -731,12 +731,12 @@ CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stm
 			if (ret instanceof Array && ret[0] === 'return') {
 				ret = rt.cast(retType, ret[1]);
 			} else {
-				this.raiseException(null, 'you must return a value');
+				this.raiseException('you must return a value');
 			}
 		} else {
 			if (typeof ret === 'Array') {
 				if (ret[0] === 'return' && ret[1])
-					this.raiseException(null, 'you cannot return a value in a void function');
+					this.raiseException('you cannot return a value in a void function');
 			}
 			ret = undefined;
 		}
@@ -790,17 +790,17 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
 				if (compatibles.length == 0) {
 					if ('#default' in t[name])
 						return t[name]['#default'];
-					this.raiseException(null, 'no method ' + name + ' in ' + lt + ' accepts (' + sig + ')');
+					this.raiseException('no method ' + name + ' in ' + lt + ' accepts (' + sig + ')');
 				} else if (compatibles.length > 1)
-					this.raiseException(null, 'ambiguous method invoking, ' + compatibles.length + 'compatible methods');
+					this.raiseException('ambiguous method invoking, ' + compatibles.length + 'compatible methods');
 				else
 					return compatibles[0];
 			}
 		} else {
-			this.raiseException(null, 'method ' + name + ' is not defined in ' + this.makeTypeString(lt));
+			this.raiseException('method ' + name + ' is not defined in ' + this.makeTypeString(lt));
 		}
 	} else {
-		this.raiseException(null, 'type ' + this.makeTypeString(lt) + ' is unknown');
+		this.raiseException('type ' + this.makeTypeString(lt) + ' is unknown');
 	}
 }
 
@@ -827,7 +827,7 @@ CRuntime.prototype.getFunc = function(lt, name, args) {
 			} else if ('#default' in t[name]) {
 				return t[name]['#default'];
 			} else {
-				this.raiseException(null, 'no method ' + name + ' in ' + this.makeTypeString(lt) + ' accepts (' + sig + ')');
+				this.raiseException('no method ' + name + ' in ' + this.makeTypeString(lt) + ' accepts (' + sig + ')');
 			}
 		}
 	}
@@ -841,16 +841,16 @@ CRuntime.prototype.getFunc = function(lt, name, args) {
 			} else if ('#default' in t[name]) {
 				return t[name]['#default'];
 			} else {
-				this.raiseException(null, 'no method ' + name + ' in ' + this.makeTypeString(lt) + ' accepts (' + sig + ')');
+				this.raiseException('no method ' + name + ' in ' + this.makeTypeString(lt) + ' accepts (' + sig + ')');
 			}
 		} else {
-			this.raiseException(null, 'method ' + name + ' is not defined in ' + this.makeTypeString(lt));
+			this.raiseException('method ' + name + ' is not defined in ' + this.makeTypeString(lt));
 		}
 	} else {
 		if (this.isPointerType(lt))
-			this.raiseException(null, 'this pointer has no proper method overload');
+			this.raiseException('this pointer has no proper method overload');
 		else
-			this.raiseException(null, 'type ' + this.makeTypeString(lt) + ' is not defined');
+			this.raiseException('type ' + this.makeTypeString(lt) + ' is not defined');
 	}
 };
 
@@ -866,20 +866,20 @@ CRuntime.prototype.regFunc = function(f, lt, name, args, retType) {
 		}
 		sig = this.makeParametersSigniture(args);
 		if (sig in t[name]) {
-			this.raiseException(null, 'method ' + name + ' with parameters (' + sig + ') is already defined');
+			this.raiseException('method ' + name + ' with parameters (' + sig + ') is already defined');
 		}
 		var type = this.functionPointerType(retType, args);
 		this.defVar(name, type, this.val(type, this.makeFunctionPointerValue(f, name, lt, args, retType)));
 		t[name][sig] = f;
 		t[name]['reg'].push(args);
 	} else {
-		this.raiseException(null, 'type ' + this.makeTypeString(lt) + ' is unknown');
+		this.raiseException('type ' + this.makeTypeString(lt) + ' is unknown');
 	}
 };
 
 CRuntime.prototype.promoteNumeric = function(l, r) {
 	if (!this.isNumericType(l) || !this.isNumericType(r)) {
-		this.raiseException(null, 'you cannot promote (to) a non numeric type');
+		this.raiseException('you cannot promote (to) a non numeric type');
 	}
 	if (this.isTypeEqualTo(l, r)) {
 		return rett = l;
@@ -917,14 +917,14 @@ CRuntime.prototype.readVar = function(varname) {
 		if (vc[varname])
 			return vc[varname];
 	}
-	this.raiseException(null, 'variable ' + varname + ' does not exist');
+	this.raiseException('variable ' + varname + ' does not exist');
 };
 
 CRuntime.prototype.defVar = function(varname, type, initval) {
 	// logger.log('defining variable: %j, %j', varname, type);
 	vc = this.scope[this.scope.length - 1];
 	if (varname in vc) {
-		this.raiseException(null, 'variable ' + varname + ' already defined');
+		this.raiseException('variable ' + varname + ' already defined');
 	}
 	initval = this.cast(type, initval);
 
@@ -1040,7 +1040,7 @@ CRuntime.prototype.castable = function(type1, type2) {
 			return this.isPointerType(type2);
 		return !this.isFunctionType(type2);
 	} else {
-		this.raiseException(null, 'not implemented');
+		this.raiseException('not implemented');
 	}
 };
 
@@ -1056,12 +1056,12 @@ CRuntime.prototype.cast = function(type, value) {
 			case 'float':
 			case 'double':
 				if (!this.isNumericType(value.t)) {
-					this.raiseException(null, 'cannot cast ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
+					this.raiseException('cannot cast ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
 				}
 				if (this.inrange(type, value.v))
 					return this.val(type, value.v);
 				else
-					this.raiseException(null, 'overflow when casting ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
+					this.raiseException('overflow when casting ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
 				break;
 			case 'unsigned char':
 			case 'unsigned short':
@@ -1073,9 +1073,9 @@ CRuntime.prototype.cast = function(type, value) {
 			case 'unsigned long long':
 			case 'unsigned long long int':
 				if (!this.isNumericType(value.t)) {
-					this.raiseException(null, 'cannot cast ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
+					this.raiseException('cannot cast ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
 				} else if (value.v < 0) {
-					this.raiseException(null, 'cannot cast negative value to ' + this.makeTypeString(type));
+					this.raiseException('cannot cast negative value to ' + this.makeTypeString(type));
 				}
 			case 'char':
 			case 'signed char':
@@ -1096,70 +1096,70 @@ CRuntime.prototype.cast = function(type, value) {
 			case 'signed long long':
 			case 'signed long long int':
 				if (!this.isNumericType(value.t)) {
-					this.raiseException(null, 'cannot cast ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
+					this.raiseException('cannot cast ' + this.makeTypeString(value.t) + ' to ' + this.makeTypeString(type));
 				}
 				if (value.t.name === 'float' || value.t.name === 'double') {
 					v = value.v > 0 ? Math.floor(value.v) : Math.ceil(value.v);
 					if (this.inrange(type, v))
 						return this.val(type, v);
 					else
-						this.raiseException(null, 'overflow when casting ' + value.v + '(' + this.makeTypeString(value.t) + ') to ' + this.makeTypeString(type));
+						this.raiseException('overflow when casting ' + value.v + '(' + this.makeTypeString(value.t) + ') to ' + this.makeTypeString(type));
 				} else {
 					if (this.inrange(type, value.v))
 						return this.val(type, value.v);
 					else
-						this.raiseException(null, 'overflow when casting ' + value.v + '(' + this.makeTypeString(value.t) + ') to ' + this.makeTypeString(type));
+						this.raiseException('overflow when casting ' + value.v + '(' + this.makeTypeString(value.t) + ') to ' + this.makeTypeString(type));
 				}
 				break;
 			default:
-				this.raiseException(null, 'cast from ' + value.v + '(' + this.makeTypeString(value.t) + ') to ' + this.makeTypeString(type) + ' is not supported');
+				this.raiseException('cast from ' + value.v + '(' + this.makeTypeString(value.t) + ') to ' + this.makeTypeString(type) + ' is not supported');
 		}
 	} else if (this.isPointerType(type)) {
 		if (this.isFunctionType(type)) {
 			if (this.isFunctionType(value.t)) {
 				return this.val(value.t, value.v);
 			} else {
-				this.raiseException(null, 'cannot cast a regular pointer to a function');
+				this.raiseException('cannot cast a regular pointer to a function');
 			}
 		} else if (this.isArrayType(value.t)) {
 			if (this.isNormalPointerType(type)) {
 				if (this.isTypeEqualTo(type.targetType, value.t.eleType))
 					return value;
 				else
-					this.raiseException(null, this.makeTypeString(type.targetType) + ' is not equal to array element type ' + this.makeTypeString(value.t.eleType));
+					this.raiseException(this.makeTypeString(type.targetType) + ' is not equal to array element type ' + this.makeTypeString(value.t.eleType));
 			} else if (this.isArrayType(type)) {
 				if (this.isTypeEqualTo(type.eleType, value.t.eleType))
 					return value;
 				else
-					this.raiseException(null, 'array element type ' + this.makeTypeString(type.eleType) + ' is not equal to array element type ' + this.makeTypeString(value.t.eleType));
+					this.raiseException('array element type ' + this.makeTypeString(type.eleType) + ' is not equal to array element type ' + this.makeTypeString(value.t.eleType));
 			} else {
-				this.raiseException(null, 'cannot cast a function to a regular pointer');
+				this.raiseException('cannot cast a function to a regular pointer');
 			}
 		} else {
 			if (this.isNormalPointerType(type)) {
 				if (this.isTypeEqualTo(type.targetType, value.t.targetType))
 					return value;
 				else
-					this.raiseException(null, this.makeTypeString(type.targetType) + ' is not equal to ' + this.makeTypeString(value.t.eleType));
+					this.raiseException(this.makeTypeString(type.targetType) + ' is not equal to ' + this.makeTypeString(value.t.eleType));
 			} else if (this.isArrayType(type)) {
 				if (this.isTypeEqualTo(type.eleType, value.t.targetType))
 					return value;
 				else
-					this.raiseException(null, 'array element type ' + this.makeTypeString(type.eleType) + ' is not equal to ' + this.makeTypeString(value.t.eleType));
+					this.raiseException('array element type ' + this.makeTypeString(type.eleType) + ' is not equal to ' + this.makeTypeString(value.t.eleType));
 			} else {
-				this.raiseException(null, 'cannot cast a function to a regular pointer');
+				this.raiseException('cannot cast a function to a regular pointer');
 			}
 		}
 	} else if (this.isClassType(type)) {
-		this.raiseException(null, 'not implemented');
+		this.raiseException('not implemented');
 	} else if (this.isClassType(value.t)) {
 		if (this.isTypeEqualTo(this.boolTypeLiteral, type)) {
 			return this.val(this.boolTypeLiteral, true);
 		} else {
-			this.raiseException(null, 'not implemented');
+			this.raiseException('not implemented');
 		}
 	} else {
-		this.raiseException(null, 'cast failed from type ' + this.makeTypeString(type) + ' to ' + this.makeTypeString(value.t));
+		this.raiseException('cast failed from type ' + this.makeTypeString(type) + ' to ' + this.makeTypeString(value.t));
 	}
 };
 
@@ -1182,7 +1182,7 @@ CRuntime.prototype.exitScope = function(scopename) {
 
 CRuntime.prototype.val = function(type, v, left) {
 	if (this.isNumericType(type) && !this.inrange(type, v)) {
-		this.raiseException(null, 'overflow in ' + this.makeValString(v));
+		this.raiseException('overflow in ' + this.makeValString(v));
 	}
 	if (left === undefined)
 		left = false;
@@ -1313,7 +1313,7 @@ CRuntime.prototype.simpleType = function(type) {
 		if (this.getTypeSigniture(clsType) in this.types) {
 			return clsType;
 		} else {
-			this.raiseException(null, 'type ' + this.makeTypeString(type) + ' is not defined');
+			this.raiseException('type ' + this.makeTypeString(type) + ' is not defined');
 		}
 	}
 };
@@ -1325,7 +1325,7 @@ CRuntime.prototype.newClass = function(classname) {
 	};
 	var sig = this.getTypeSigniture(clsType);
 	if (sig in this.types)
-		this.raiseException(null, this.makeTypeString(clsType) + ' is already defined');
+		this.raiseException(this.makeTypeString(clsType) + ' is already defined');
 	this.types[sig] = {};
 	return clsType;
 };
@@ -1391,7 +1391,7 @@ CRuntime.prototype.defaultValue = function(type) {
 		else if (type.name === 'bool')
 			return this.val(type, false);
 	} else if (type.type === 'class') {
-		this.raiseException(null, 'no default value for object');
+		this.raiseException('no default value for object');
 	} else if (type.type === 'pointer') {
 		if (type.ptrType === 'normal') {
 			return this.val(type, this.makeNormalPointerValue(null));
@@ -1403,9 +1403,8 @@ CRuntime.prototype.defaultValue = function(type) {
 	}
 };
 
-CRuntime.prototype.raiseException = function(interp, message) {
-	if (!interp)
-		interp = this.interp;
+CRuntime.prototype.raiseException = function(message) {
+	var interp = this.interp;
 	var ln = interp.currentNode.line;
 	var col = interp.currentNode.column;
 	throw ln + ':' + col + ' ' + message;
