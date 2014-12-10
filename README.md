@@ -20,6 +20,8 @@ Installation
 git clone https://github.com/felixhao28/JSCPP.git
 ```
 
+### With NodeJS
+
 Use __launcher__
 
 ```js
@@ -67,6 +69,38 @@ var stdio = {
 };
 require('./includes/iostream').load(rt, stdio);
 ```
+
+### With a mordern browser
+
+There should be a _jscpp_page.js_ ready for you. If not, run `python makeclientjs.py` to generate one.
+
+```html
+<script src="jscpp_page.js"></script>
+<script type="text/javascript">
+	function run(code, input){
+		var rt = new _CRuntime();
+		var interpreter = new _Interpreter(rt);
+		var stdio = {
+			drain: function() {
+				var x = input;
+				input = null;
+				return x;
+			},
+			write: function(s) {
+				output.value += s;
+			}
+		};
+		iostream.load(rt, stdio);
+		code = code.toString();
+		var ret = ast.parse(code);
+		interpreter.run(ret);
+		ret = rt.getFunc('global', 'main', [])(rt, null, []).v;
+		alert('program exited with code ' + ret);
+	}("int main(){return 0;}", "");
+</script>
+```
+
+There is no convenient "launcher" class for you because IO should be customized for your webpage. See _page.html_ for an example.
 
 ## Q&A
 
