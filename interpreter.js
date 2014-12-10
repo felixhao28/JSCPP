@@ -49,9 +49,7 @@ function Interpreter(rt) {
 							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression)).v;
 						} else if (j > 0) {
 							interp.rt.raiseException('multidimensional array must have bounds for all dimensions except the first');
-						} else {
-							dim = init.Initializers.length;
-						}
+						} else {}
 						dimensions.push(dim);
 					}
 					_type = interp.arrayType(dimensions, 0, _type);
@@ -81,7 +79,28 @@ function Interpreter(rt) {
 						} else if (j > 0) {
 							interp.rt.raiseException('multidimensional array must have bounds for all dimensions except the first');
 						} else {
-							dim = init.Initializers.length;
+							if (init.type === 'Initializer_expr') {
+								var initializer = interp.visit(interp, init, param);
+								if (interp.rt.isTypeEqualTo(type, interp.rt.charTypeLiteral) &&
+									interp.rt.isArrayType(initializer.t) &&
+									interp.rt.isTypeEqualTo(initializer.t.eleType, interp.rt.charTypeLiteral)) {
+									// string init
+									dim = initializer.v.target.length;
+									init = {
+										type: 'Initializer_array',
+										Initializers: initializer.v.target.map(function(e) {
+											return {
+												type: 'Initializer_expr',
+												shorthand: e
+											}
+										})
+									};
+								} else {
+									interp.rt.raiseException('cannot initialize an array to ' + interp.rt.makeValString(initializer));
+								}
+							} else {
+								dim = init.Initializers.length;
+							}
 						}
 						dimensions.push(dim);
 					}
@@ -95,6 +114,9 @@ function Interpreter(rt) {
 					interp.rt.defVar(name, type, init);
 				}
 			}
+		},
+		Initializer_expr: function(interp, s, param) {
+			return interp.visit(interp, s.Expression, param);
 		},
 		Label_case: function(interp, s, param) {
 			var ce = interp.visit(interp, s.ConstantExpression);
@@ -398,8 +420,8 @@ function Interpreter(rt) {
 			var str = s.value;
 			return interp.rt.val(interp.rt.arrayPointerType(interp.rt.charTypeLiteral, str.length + 1), {
 				target: str.split('').map(function(c) {
-					return interp.rt.val(interp.rt.charTypeLiteral, c)
-				}),
+					return interp.rt.val(interp.rt.charTypeLiteral, c.charCodeAt(0))
+				}).concat([interp.rt.val(interp.rt.charTypeLiteral, 0)]),
 				position: 0
 			});
 		},
@@ -456,7 +478,7 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 	if (dimensions.length > level) {
 		var curDim = dimensions[level];
 		if (init) {
-			if (init.type === 'Initializer_array' && curDim > init.Initializers.length &&
+			if (init.type === 'Initializer_array' && curDim >= init.Initializers.length &&
 				(init.Initializers.length == 0 || init.Initializers[0].type === 'Initializer_expr')) {
 				// last level, short hand init
 				if (init.Initializers.length == 0) {
@@ -490,14 +512,47 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 				} else {
 					var arr = new Array(curDim);
 					for (var i = 0; i < init.Initializers.length; i++) {
-						arr[i] = this.visit(this, init.Initializers[i].Expression);
+						var _init = init.Initializers[i];
+						var initval;
+						if ('shorthand' in _init) {
+							initval = _init;
+						} else {
+							initval = {
+								type: 'Initializer_expr',
+								shorthand: this.visit(this, _init.Expression, param)
+							};
+						}
+						arr[i] = initval;
 					}
 					for (var i = init.Initializers.length; i < curDim; i++) {
 						arr[i] = {
+							type: 'Initializer_expr',
 							shorthand: this.rt.defaultValue(type)
 						};
 					}
 					init.Initializers = arr;
+				}
+			} else if (init.type === 'Initializer_expr') {
+				var initializer;
+				if ('shorthand' in init)
+					initializer = init.shorthand;
+				else
+					initializer = this.visit(this, init, param);
+				if (this.rt.isTypeEqualTo(type, this.rt.charTypeLiteral) &&
+					this.rt.isArrayType(initializer.t) &&
+					this.rt.isTypeEqualTo(initializer.t.eleType, this.rt.charTypeLiteral)) {
+					// string init
+					init = {
+						type: 'Initializer_array',
+						Initializers: initializer.v.target.map(function(e) {
+							return {
+								type: 'Initializer_expr',
+								shorthand: e
+							}
+						})
+					};
+				} else {
+					this.rt.raiseException('cannot initialize an array to ' + this.rt.makeValString(initializer));
 				}
 			} else {
 				this.rt.raiseExeception('dimensions do not agree, ' + curDim + ' != ' + init.Initializers.length);
@@ -510,7 +565,7 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 			true
 		);
 		for (var i = 0; i < curDim; i++) {
-			if (init)
+			if (init && i < init.Initializers.length)
 				arr[i] = this.arrayInit(dimensions, init.Initializers[i], level + 1, type, param);
 			else
 				arr[i] = this.arrayInit(dimensions, null, level + 1, type, param);

@@ -119,9 +119,12 @@ module.exports = {
 			'<<': {
 				'#default': function(rt, _cout, t) {
 					var r;
-					if (rt.isPrimitiveType(t.t))
-						r = t.v.toString();
-					else
+					if (rt.isPrimitiveType(t.t)) {
+						if (t.t.name.indexOf('char') >= 0)
+							r = String.fromCharCode(t.v);
+						else
+							r = t.v.toString();
+					} else
 						throw '<< operator in ostream cannot accept ' + rt.makeTypeString(t.t);
 					_cout.v.ostream.write(r);
 					return _cout;
@@ -144,7 +147,7 @@ module.exports = {
 
 		var endl = rt.val(
 			rt.charTypeLiteral,
-			'\n'
+			'\n'.charCodeAt(0)
 		);
 		rt.scope[0]['endl'] = endl;
 	}
