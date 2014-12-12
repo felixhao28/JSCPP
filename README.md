@@ -12,7 +12,8 @@ Currently, it is mainly for educational uses for a MOOC course I am running.
 
 ## Prerequisites
 
-* NodeJS
+* NodeJS or
+* A modern browser
 
 ## How to Use
 
@@ -72,7 +73,7 @@ var stdio = {
 require('./includes/iostream').load(rt, stdio);
 ```
 
-### With a mordern browser
+### With a modern browser
 
 There should be a _jscpp_page.js_ ready for you. If not, run `python makeclientjs.py` to generate one.
 
