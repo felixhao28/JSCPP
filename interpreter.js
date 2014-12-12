@@ -451,22 +451,29 @@ function Interpreter(rt) {
 			return interp.rt.val(interp.rt.intTypeLiteral, parseInt(s.value, 8));
 		},
 		unknown: function(interp, s, param) {
-			interp.rt.raiseException('unhandled syntax');
+			interp.rt.raiseException('unhandled syntax ' + s.type);
 		},
 	};
 };
 
 Interpreter.prototype.visit = function(interp, s, param) {
-	if (param === undefined) {
-		param = {
-			scope: 'global'
-		};
+	if ('type' in s) {
+		if (param === undefined) {
+			param = {
+				scope: 'global'
+			};
+		}
+		// logger.warn('visiting %j', s.type);
+		var _node = this.currentNode;
+		this.currentNode = s;
+		if (s.type in this.visitors)
+			return this.visitors[s.type](interp, s, param);
+		else
+			return this.visitors['unknown'](interp, s, param);
+		this.currentNode = _node;
+	} else {
+		this.rt.raiseException('untyped syntax structure');
 	}
-	// logger.warn('visiting %j', s.type);
-	var _node = this.currentNode;
-	this.currentNode = s;
-	return this.visitors[s.type](interp, s, param);
-	this.currentNode = _node;
 };
 
 Interpreter.prototype.run = function(tree) {
@@ -555,7 +562,7 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 					this.rt.raiseException('cannot initialize an array to ' + this.rt.makeValString(initializer));
 				}
 			} else {
-				this.rt.raiseExeception('dimensions do not agree, ' + curDim + ' != ' + init.Initializers.length);
+				this.rt.raiseException('dimensions do not agree, ' + curDim + ' != ' + init.Initializers.length);
 			}
 		}
 		var arr = [];
@@ -573,7 +580,7 @@ Interpreter.prototype.arrayInit = function(dimensions, init, level, type, param)
 		return ret;
 	} else {
 		if (init && init.type !== 'Initializer_expr')
-			this.rt.raiseExeception('dimensions do not agree, too few initializers');
+			this.rt.raiseException('dimensions do not agree, too few initializers');
 		var initval;
 		if (init) {
 			if ('shorthand' in init) {
