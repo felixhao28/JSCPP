@@ -135,9 +135,17 @@ function CRuntime() {
 					if (!rt.isNumericType(r.t)) {
 						rt.raiseException(rt.makeTypeString(l.t) + ' does not support + on ' + rt.makeTypeString(r.t));
 					}
-					ret = l.v + r.v;
-					rett = rt.promoteNumeric(l.t, r.t);
-					return rt.val(rett, ret);
+					if (rt.isArrayType(r.t)) {
+						var i = rt.cast(rt.intTypeLiteral, l).v;
+						return rt.val(
+							r.t,
+							rt.makeArrayPointerValue(r.v.target, r.v.position + i)
+						);
+					} else {
+						ret = l.v + r.v;
+						rett = rt.promoteNumeric(l.t, r.t);
+						return rt.val(rett, ret);
+					}
 				}
 			}
 		},
@@ -655,7 +663,7 @@ function CRuntime() {
 						rt.makeArrayPointerValue(l.v.target, l.v.position - i)
 					);
 				} else {
-					rt.raiseException('cannot add non-numeric to a pointer');
+					rt.raiseException('cannot substract non-numeric to a pointer');
 				}
 			},
 		},
