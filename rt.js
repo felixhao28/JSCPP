@@ -1204,7 +1204,10 @@ CRuntime.prototype.exitScope = function(scopename) {
 
 CRuntime.prototype.val = function(type, v, left) {
 	if (this.isNumericType(type) && !this.inrange(type, v)) {
-		this.raiseException('overflow in ' + this.makeValString(v));
+		this.raiseException('overflow in ' + this.makeValString({
+			t: type,
+			v: v
+		}));
 	}
 	if (left === undefined)
 		left = false;
