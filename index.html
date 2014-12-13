@@ -1,0 +1,89 @@
+<html>
+<head>
+	<title>JSCPP online</title>
+	<style type="text/css" media="screen">
+		#editor { 
+			width: 750px;
+			height: 400px;
+		}
+	</style>
+</head>
+<body>
+	<script src="jscpp_page.js"></script>
+	<script type="text/javascript">
+		function run(code, input){
+			var rt = new _CRuntime();
+			var interpreter = new _Interpreter(rt);
+			var stdio = {
+				drain: function() {
+					var x = input;
+					input = null;
+					return x;
+				},
+				write: function(s) {
+					output.value += s;
+				}
+			};
+			iostream.load(rt, stdio);
+			cmath.load(rt);
+			cstring.load(rt);
+			cctype.load(rt);
+			code = code.toString();
+			var ret = ast.parse(code);
+			interpreter.run(ret);
+			ret = rt.getFunc('global', 'main', [])(rt, null, []).v;
+			return ret;
+		}
+
+		function exe(){
+			var code = ace.edit("editor").getSession().getValue();
+			var input = document.getElementById('input').value;
+			var output = document.getElementById('output');
+			output.value = '';
+			try{
+				var before = new Date().getTime();
+				var retcode = run(code, input);
+				var ellaps = new Date().getTime() - before;
+				output.value += '\nprogram exited with code ' + retcode + ' in '+ellaps+'ms\n';
+			}catch(e){
+				output.value += e + '\n';
+			}
+		}
+	</script>
+	<div>JSCPP, a simple C++ interpreter written in JavaScript<br>Project home page: <a href="https://github.com/felixhao28/JSCPP">https://github.com/felixhao28/JSCPP</a></div>
+	<div style="padding: 5px;">
+		Code editor<br/>
+		<div id="editor">int main() {
+	int a;
+	cin &gt;&gt; a;
+	cout &lt;&lt; a*10 &lt;&lt; endl;
+	return 0;
+}</div><br/><br/>
+	</div>
+	<script src="./ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src-noconflict/ext-language_tools.js"></script>
+		<script>
+			ace.require("ace/ext/language_tools");
+			var editor = ace.edit("editor");
+			editor.setOptions({
+				showLineNumbers: true,
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+				enableLiveAutocompletion: true
+			});
+			editor.setTheme("ace/theme/monokai");
+			editor.getSession().setMode("ace/mode/c_cpp");
+		</script>
+		<button onclick="exe()">Run</button><br/>
+	<div>
+		<div style="float: left;padding: 5px;">
+			Standard input<br/>
+			<textarea id="input" rows="10" cols="50">5</textarea>
+		</div>
+		<div style="float: left;padding: 8px;">
+			Standard output<br/>
+			<textarea id="output" rows="10" cols="50"></textarea>
+		</div>
+	</div>
+</body>
+</html>
