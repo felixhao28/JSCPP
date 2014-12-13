@@ -1,4 +1,13 @@
-function CRuntime() {
+function CRuntime(config) {
+	function mergeConfig(a, b) {
+		for (o in b) {
+			if (o in a && typeof b[o] === 'object') {
+				mergeConfig(a[o], b[o]);
+			} else {
+				a[o] = b[o];
+			}
+		}
+	};
 	this.config = {
 		limits: {
 			'char': {
@@ -84,6 +93,8 @@ function CRuntime() {
 	this.config.limits['signed long long'] = this.config.limits['long long'];
 	this.config.limits['signed long long int'] = this.config.limits['long long'];
 	this.config.limits['unsigned long long int'] = this.config.limits['unsigned long long'];
+
+	mergeConfig(this.config, config);
 	this.m = null;
 	this.numericTypeOrder = ['char', 'signed char', 'short', 'short int',
 		'signed short', 'signed short int', 'int', 'signed int',
@@ -91,6 +102,7 @@ function CRuntime() {
 		'long long', 'long long int', 'long long int', 'signed long long',
 		'signed long long int', 'float', 'double'
 	];
+
 
 	defaultOpHandler = {
 		'*': {
@@ -536,7 +548,7 @@ function CRuntime() {
 				if (l.t.type !== 'pointer' || l.t.ptrType !== 'function') {
 					rt.raiseException(rt.makeTypeString(l.v.type) + ' is not function');
 				}
-				return rt.getCompatibleFunc(l.v.defineType, l.v.name, args)(args);
+				return rt.getCompatibleFunc(l.v.defineType, l.v.name, args)(rt, l, args);
 			}
 		},
 	};

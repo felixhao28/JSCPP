@@ -548,8 +548,7 @@ Spacing
       / LineComment
       )*{
         return a.join('');
-      }
-    ;
+      };
 
 WhiteSpace  = a:[ \n\r\t\u000B\u000C] {return a;}; // 7.4.1.10
 

@@ -2,31 +2,37 @@
 var CRuntime = require('./rt')
 var Interpreter = require('./interpreter');
 var ast = require('./ast');
+var prepast = require('./prepast');
+var preprocessor = require('./preprocessor');
 var inputbuffer = '';
 
 module.exports = {
 	run: function(code, input) {
-		var rt = new CRuntime();
-		var interpreter = new Interpreter(rt);
-		var stdio = {
-			drain: function() {
-				var x = inputbuffer;
-				inputbuffer = null;
-				return x;
+		var rt = new CRuntime({
+			stdio: {
+				drain: function() {
+					var x = inputbuffer;
+					inputbuffer = null;
+					return x;
+				},
+				write: function(s) {
+					process.stdout.write(s);
+				}
 			},
-			write: function(s) {
-				process.stdout.write(s);
+			includes: {
+				iostream: require('./includes/iostream'),
+				cctype: require('./includes/cctype'),
+				cstring: require('./includes/cstring'),
+				cmath: require('./includes/cmath'),
 			}
-		};
-		require('./includes/iostream').load(rt, stdio);
-		require('./includes/cctype').load(rt);
-		require('./includes/cstring').load(rt);
-		require('./includes/cmath').load(rt);
+		});
 		inputbuffer = input.toString();
 		code = code.toString();
-		var ret = ast.parse(code);
-		interpreter.run(ret);
-		ret = rt.getFunc('global', 'main', [])(rt, null, []).v;
-		return ret;
+		code = preprocessor(rt, prepast, code);
+		var tree = ast.parse(code);
+		var interpreter = new Interpreter(rt);
+		interpreter.run(tree);
+		var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
+		return exitCode;
 	}
 };

@@ -3,26 +3,30 @@
 	<script src="jscpp_page.js"></script>
 	<script type="text/javascript">
 		function run(code, input){
-			var rt = new _CRuntime();
-			var interpreter = new _Interpreter(rt);
-			var stdio = {
-				drain: function() {
-					var x = input;
-					input = null;
-					return x;
+			var crt = new rt({
+				stdio: {
+					drain: function() {
+						var x = input;
+						input = null;
+						return x;
+					},
+					write: function(s) {
+						output.value += s;
+					}
 				},
-				write: function(s) {
-					output.value += s;
+				includes: {
+					iostream: _iostream,
+					cctype: _cctype,
+					cstring: _cstring,
+					cmath: _cmath,
 				}
-			};
-			iostream.load(rt, stdio);
-			cmath.load(rt);
-			cstring.load(rt);
-			cctype.load(rt);
+			});
+			var interp = new interpreter(crt);
 			code = code.toString();
+			code = preprocessor(crt, prepast, code);
 			var ret = ast.parse(code);
-			interpreter.run(ret);
-			ret = rt.getFunc('global', 'main', [])(rt, null, []).v;
+			interp.run(ret);
+			ret = crt.getFunc('global', 'main', [])(crt, null, []).v;
 			return ret;
 		}
 
@@ -44,13 +48,14 @@
 	<div style="padding: 5px;">
 		Code editor<br/>
 		<textarea id="code" rows="30" cols="105">
+#include &lt;iostream&gt;
 int main() {
     int a;
     cin &gt;&gt; a;
     cout &lt;&lt; a*10 &lt;&lt; endl;
     return 0;
 }
-		</textarea><br/><br/>
+</textarea><br/><br/>
 		<button onclick="exe()">Run</button><br/>
 	</div>
 	<div>

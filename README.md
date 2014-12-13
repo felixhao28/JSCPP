@@ -37,7 +37,46 @@ console.info('program exited with code ' + exitcode);
 
 See _test.js_ for example.
 
-Or
+Or do it step by step:
+
+Configuring standard IO and libraries
+```js
+var CRuntime = require('./rt')
+var inputbuffer = "1 2 3";
+var rt = new CRuntime({
+	stdio: {
+		drain: function() {
+			// this method will be called when program requires additional input
+			// so you can return "1", "2" and "3" seperately during three calls
+			// returning null value means EOF
+			var x = inputbuffer;
+			inputbuffer = null;
+			return x;
+		},
+		write: function(s) {
+			process.stdout.write(s);
+		}
+	},
+	includes: {
+		iostream: require('./includes/iostream'),
+		cmath: require('./includes/cmath'),
+	}
+});
+```
+
+Using preprocessor (experimental)
+```js
+var prepast = require('./prepast');
+var preprocessor = require('./preprocessor');
+code = preprocessor(rt, prepast, code);
+console.log('preprocessing finished');
+```
+
+(Optional) If you choose not to use preprocessor, you need to load libraries manually
+```js
+rt.config.includes.iostream.load(rt);
+rt.config.includes.cmath.load(rt);
+```
 
 Building AST
 ```js
@@ -48,8 +87,6 @@ console.log('passed syntax check');
 
 Interpreting AST (from global main function)
 ```js
-var CRuntime = require('./rt')
-var rt = new CRuntime();
 var Interpreter = require('./interpreter');
 var interpreter = new Interpreter(rt);
 interpreter.run(tree);
@@ -57,21 +94,7 @@ var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
 console.info('program exited with code ' + exitCode);
 ```
 
-Using standard IO
-```js
-var inputbuffer = "1 2 3";
-var stdio = {
-	drain: function() {
-		// this method will be called when program requires additional input
-		// so you can return "1", "2" and "3" seperately during three calls
-		return inputbuffer;
-	},
-	write: function(s) {
-		process.stdout.write(s);
-	}
-};
-require('./includes/iostream').load(rt, stdio);
-```
+A full example is available in _launcher.js_.
 
 ### With a modern browser
 
@@ -81,29 +104,36 @@ There should be a _jscpp_page.js_ ready for you. If not, run `python makeclientj
 <script src="jscpp_page.js"></script>
 <script type="text/javascript">
 	function run(code, input){
-		var rt = new _CRuntime();
-		var interpreter = new _Interpreter(rt);
-		var stdio = {
-			drain: function() {
-				var x = input;
-				input = null;
-				return x;
+		var crt = new rt({
+			stdio: {
+				drain: function() {
+					var x = input;
+					input = null;
+					return x;
+				},
+				write: function(s) {
+					output.value += s;
+				}
 			},
-			write: function(s) {
-				output.value += s;
+			includes: {
+				iostream: _iostream,
+				cctype: _cctype,
+				cstring: _cstring,
+				cmath: _cmath,
 			}
-		};
-		iostream.load(rt, stdio);
+		});
+		var interp = new interpreter(crt);
 		code = code.toString();
+		code = preprocessor(crt, prepast, code);
 		var ret = ast.parse(code);
-		interpreter.run(ret);
-		ret = rt.getFunc('global', 'main', [])(rt, null, []).v;
-		alert('program exited with code ' + ret);
+		interp.run(ret);
+		ret = crt.getFunc('global', 'main', [])(crt, null, []).v;
+		return ret;
 	}("int main(){return 0;}", "");
 </script>
 ```
 
-There is no convenient "launcher" class for you because IO should be customized for your webpage. See _page.html_ for an example.
+There is no convenient "launcher" class for browser because IO should be customized for your webpage. See _page.html_ for an example.
 
 ## Q&A
 
@@ -123,12 +153,15 @@ There is no convenient "launcher" class for you because IO should be customized 
 * Do...while loop
 * Functions
 * Variable scopes
+* Preprocessor directives
+	- Macro
+	- Include
 
 ### Which notable features are not implemented yet?
 
 * Goto statements
-* Preprocessor directives
 * Object-oriented features
+* Namespaces
 
 ### How is the performance?
 

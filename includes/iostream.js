@@ -20,7 +20,8 @@ module.exports = {
 	 *
 	 * ostream is an object with write method that accepts a string
 	 */
-	load: function(rt, stdio) {
+	load: function(rt) {
+		var stdio = rt.config.stdio;
 		var type = rt.newClass('istream');
 		var cin = {
 			t: type,
