@@ -3,6 +3,12 @@ function Preprocessor(rt) {
 	this.ret = '';
 	this.macros = {};
 	this.macroStack = [];
+	this.doinclude = [true];
+	var self = this;
+
+	function pushInc(b) {
+		self.doinclude.push(self.doinclude[self.doinclude.length - 1] && b);
+	};
 	this.visitors = {
 		TranslationUnit: function(interp, s, code) {
 			for (var i = 0; i < s.lines.length; i++) {
@@ -13,9 +19,11 @@ function Preprocessor(rt) {
 			return interp.ret;
 		},
 		Code: function(interp, s, code) {
-			for (var i = 0; i < s.val.length; i++) {
-				var x = interp.work(s.val[i]);;
-				interp.ret += x;
+			if (interp.doinclude[interp.doinclude.length - 1]) {
+				for (var i = 0; i < s.val.length; i++) {
+					var x = interp.work(s.val[i]);;
+					interp.ret += x;
+				}
 			}
 		},
 		PrepSimpleMacro: function(interp, s, code) {
@@ -37,6 +45,32 @@ function Preprocessor(rt) {
 				includes[s.name].load(interp.rt);
 			else
 				interp.rt.raiseException('cannot find file: ' + s.name);
+		},
+		PrepUndef: function(interp, s, code) {
+			if (interp.isMacroDefined(s.Identifier)) {
+				delete interp.macros[s.Identifier.val];
+			}
+		},
+		PrepIfdef: function(interp, s, code) {
+			pushInc(interp.isMacroDefined(s.Identifier));
+		},
+		PrepIfndef: function(interp, s, code) {
+			pushInc(!interp.isMacroDefined(s.Identifier));
+		},
+		PrepElse: function(interp, s, code) {
+			if (interp.doinclude.length > 1) {
+				var x = interp.doinclude.pop();
+				pushInc(!x);
+			} else {
+				interp.rt.raiseException('#else must be used after a #if');
+			}
+		},
+		PrepEndif: function(interp, s, code) {
+			if (interp.doinclude.length > 1) {
+				interp.doinclude.pop();
+			} else {
+				interp.rt.raiseException('#endif must be used after a #if');
+			}
 		},
 		unknown: function(interp, s, code) {
 			interp.rt.raiseException('unhandled syntax ' + s.type);

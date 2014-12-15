@@ -26,7 +26,9 @@ TranslationUnit
 
 Preprocessor = a:(PrepDefine / PrepInclude / ConditionalInclusion) b:Spacing {a.space = b;return a;};
 
-PrepDefine = PrepFunctionMacro / PrepSimpleMacro;
+PrepDefine = PrepFunctionMacro / PrepSimpleMacro / PrepUndef;
+
+PrepUndef = SHARP UNDEF a:Identifier {return addPositionInfo({type:'PrepUndef', Identifier:a});};
 
 PrepSimpleMacro = SHARP DEFINE a:Identifier b:PrepMacroText? {
     return addPositionInfo({type:'PrepSimpleMacro', Identifier:a, Replacement:b});
@@ -108,21 +110,24 @@ PrepIncludeLocal = SHARP INCLUDE QUO a:Filename QUO {
 
 Filename = a:(IdChar / [/\\.])+ {return a.join('');};
 
-ConditionalInclusion =  PrepIfdef / PrepIfndef;
+ConditionalInclusion = PrepIfdef / PrepIfndef / PrepEndif / PrepElse;
 
-PrepIfdef = SHARP IFDEF Identifier;
+PrepIfdef = SHARP IFDEF a:Identifier {return addPositionInfo({type:'PrepIfdef', Identifier:a});};
 
-PrepIfndef = SHARP IFNDEF Identifier;
+PrepIfndef = SHARP IFNDEF a:Identifier {return addPositionInfo({type:'PrepIfndef', Identifier:a});};
+
+PrepEndif = SHARP ENDIF {return addPositionInfo({type:'PrepEndif'});};
+
+PrepElse = SHARP ELSE {return addPositionInfo({type:'PrepElse'});};
 
 SHARP = "#" InlineSpacing;
 DEFINE = "define" InlineSpacing;
+UNDEF = "undef" InlineSpacing;
 INCLUDE = "include" InlineSpacing;
 IFDEF = "ifdef" InlineSpacing;
 IFNDEF = "ifndef" InlineSpacing;
-IF = "if" InlineSpacing;
 ENDIF = "endif" InlineSpacing;
 ELSE = "else" InlineSpacing;
-ELIF = "elif" InlineSpacing;
 
 
 //-------------------------------------------------------------------------

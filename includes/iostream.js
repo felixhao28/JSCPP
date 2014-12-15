@@ -99,7 +99,7 @@ module.exports = {
 							throw '>> operator in istream cannot accept ' + rt.makeTypeString(t.t);
 					}
 					var len = r[0].length;
-					t.v = v;
+					t.v = rt.val(t.t, v).v;
 					_cin.v.buf = b.substring(len);
 					return _cin;
 				}
