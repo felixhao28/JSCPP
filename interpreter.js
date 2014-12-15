@@ -75,7 +75,7 @@ function Interpreter(rt) {
 						if (dim.type !== 'DirectDeclarator_modifier_array')
 							interp.rt.raiseException('is interp really an array initialization?');
 						if (dim.Expression !== null) {
-							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression)).v;
+							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression, param)).v;
 						} else if (j > 0) {
 							interp.rt.raiseException('multidimensional array must have bounds for all dimensions except the first');
 						} else {
@@ -175,13 +175,13 @@ function Interpreter(rt) {
 			}
 		},
 		ExpressionStatement: function(interp, s, param) {
-			var r = interp.visit(interp, s.Expression);
+			interp.visit(interp, s.Expression, param);
 		},
 		SelectionStatement_if: function(interp, s, param) {
 			var scope_bak = param.scope;
 			param.scope = 'SelectionStatement_if';
 			interp.rt.enterScope(param.scope);
-			var e = interp.visit(interp, s.Expression);
+			var e = interp.visit(interp, s.Expression, param);
 			var ret;
 			if (interp.rt.cast(interp.rt.boolTypeLiteral, e).v) {
 				ret = interp.visit(interp, s.Statement, param);
@@ -196,7 +196,7 @@ function Interpreter(rt) {
 			var scope_bak = param.scope;
 			param.scope = 'SelectionStatement_switch';
 			interp.rt.enterScope(param.scope);
-			var e = interp.visit(interp, s.Expression);
+			var e = interp.visit(interp, s.Expression, param);
 			var switch_bak = param['switch'];
 			param['switch'] = e;
 			var r = interp.visit(interp, s.Statement, param);
@@ -214,8 +214,8 @@ function Interpreter(rt) {
 			var scope_bak = param.scope;
 			param.scope = 'IterationStatement_while';
 			interp.rt.enterScope(param.scope);
-			while (interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression)).v) {
-				var r = interp.visit(interp, s.Statement);
+			while (interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v) {
+				var r = interp.visit(interp, s.Statement, param);
 				if (r instanceof Array) {
 					switch (r[0]) {
 						case 'continue':
@@ -250,7 +250,7 @@ function Interpreter(rt) {
 							break;
 					}
 				}
-			} while (interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression)).v);
+			} while (interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v);
 			interp.rt.exitScope(param.scope);
 			param.scope = scope_bak;
 		},
@@ -260,12 +260,12 @@ function Interpreter(rt) {
 			interp.rt.enterScope(param.scope);
 			if (s.Initializer) {
 				if (s.Initializer.type === 'Declaration')
-					interp.visit(interp, s.Initializer);
+					interp.visit(interp, s.Initializer, param);
 				else
-					interp.visit(interp, s.Initializer);
+					interp.visit(interp, s.Initializer, param);
 			}
-			while (s.Expression === undefined || interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression)).v) {
-				var r = interp.visit(interp, s.Statement);
+			while (s.Expression === undefined || interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v) {
+				var r = interp.visit(interp, s.Statement, param);
 				if (r instanceof Array) {
 					switch (r[0]) {
 						case 'continue':
@@ -279,7 +279,7 @@ function Interpreter(rt) {
 					}
 				}
 				if (s.Loop)
-					interp.visit(interp, s.Loop);
+					interp.visit(interp, s.Loop, param);
 			}
 			interp.rt.exitScope(param.scope);
 			param.scope = scope_bak;
@@ -295,7 +295,7 @@ function Interpreter(rt) {
 		},
 		JumpStatement_return: function(interp, s, param) {
 			if (s.Expression) {
-				var ret = interp.visit(interp, s.Expression);
+				var ret = interp.visit(interp, s.Expression, param);
 				return ['return', ret];
 			}
 			return ['return'];
@@ -304,58 +304,58 @@ function Interpreter(rt) {
 			return interp.rt.readVar(s.Identifier);
 		},
 		ParenthesesExpression: function(interp, s, param) {
-			return interp.visit(interp, s.Expression);
+			return interp.visit(interp, s.Expression, param);
 		},
 		PostfixExpression_ArrayAccess: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
-			var index = interp.visit(interp, s.index);
+			var ret = interp.visit(interp, s.Expression, param);
+			var index = interp.visit(interp, s.index, param);
 			return interp.rt.getFunc(ret.t, '[]', [index.t])(interp.rt, ret, index);
 		},
 		PostfixExpression_MethodInvocation: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			s.args = s.args.map(function(e) {
-				return interp.visit(interp, e);
+				return interp.visit(interp, e, param);
 			});
 			return interp.rt.getFunc(ret.t, '()', s.args.map(function(e) {
 				return e.t;
 			}))(interp.rt, ret, s.args);
 		},
 		PostfixExpression_MemberAccess: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			interp.rt.raiseException('not implemented');
 		},
 		PostfixExpression_MemberPointerAccess: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			interp.rt.raiseException('not implemented');
 		},
 		PostfixExpression_PostIncrement: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			return interp.rt.getFunc(ret.t, '++', ['dummy'])(interp.rt, ret, {
 				t: 'dummy',
 				v: null
 			});
 		},
 		PostfixExpression_PostDecrement: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			return interp.rt.getFunc(ret.t, '--', ['dummy'])(interp.rt, ret, {
 				t: 'dummy',
 				v: null
 			});
 		},
 		UnaryExpression_PreIncrement: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			return interp.rt.getFunc(ret.t, '++', [])(interp.rt, ret);
 		},
 		UnaryExpression_PreDecrement: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			return interp.rt.getFunc(ret.t, '--', [])(interp.rt, ret);
 		},
 		UnaryExpression: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			return interp.rt.getFunc(ret.t, s.op, [])(interp.rt, ret);
 		},
 		UnaryExpression_Sizeof_Expr: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			interp.rt.raiseException('not implemented');
 			return 1;
 		},
@@ -365,7 +365,7 @@ function Interpreter(rt) {
 			return 1;
 		},
 		CastExpression: function(interp, s, param) {
-			var ret = interp.visit(interp, s.Expression);
+			var ret = interp.visit(interp, s.Expression, param);
 			var type = interp.rt.simpleType(s.TypeName);
 			return interp.rt.cast(type, ret);
 		},
@@ -378,43 +378,43 @@ function Interpreter(rt) {
 				s.type = 'LogicalORExpression';
 				return interp.visit(interp, s, param);
 			} else {
-				var left = interp.visit(interp, s.left);
-				var right = interp.visit(interp, s.right);
+				var left = interp.visit(interp, s.left, param);
+				var right = interp.visit(interp, s.right, param);
 				return interp.rt.getFunc(left.t, op, [right.t])(interp.rt, left, right);
 			}
 		},
 		LogicalANDExpression: function(interp, s, param) {
-			var left = interp.visit(interp, s.left);
+			var left = interp.visit(interp, s.left, param);
 			var lt = interp.rt.types[interp.rt.getTypeSigniture(left.t)];
 			if ('&&' in lt) {
-				var right = interp.visit(interp, s.right);
+				var right = interp.visit(interp, s.right, param);
 				return interp.rt.getFunc(left.t, '&&', [right.t])(interp.rt, left, right);
 			} else {
 				if (interp.rt.cast(interp.rt.boolTypeLiteral, left).v)
-					return interp.visit(interp, s.right);
+					return interp.visit(interp, s.right, param);
 				else
 					return left;
 			}
 		},
 		LogicalORExpression: function(interp, s, param) {
-			var left = interp.visit(interp, s.left);
+			var left = interp.visit(interp, s.left, param);
 			var lt = interp.rt.types[interp.rt.getTypeSigniture(left.t)];
 			if ('||' in lt) {
-				var right = interp.visit(interp, s.right);
+				var right = interp.visit(interp, s.right, param);
 				return interp.rt.getFunc(left.t, '||', [right.t])(interp.rt, left, right);
 			} else {
 				if (interp.rt.cast(interp.rt.boolTypeLiteral, left).v)
 					return left;
 				else
-					return interp.visit(interp, s.right);
+					return interp.visit(interp, s.right, param);
 			}
 		},
 		ConditionalExpression: function(interp, s, param) {
-			var cond = interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.cond)).v;
-			return cond ? interp.visit(interp, s.t) : interp.visit(interp, s.f);
+			var cond = interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.cond, param)).v;
+			return cond ? interp.visit(interp, s.t, param) : interp.visit(interp, s.f, param);
 		},
 		ConstantExpression: function(interp, s, param) {
-			return interp.visit(interp, s.Expression);
+			return interp.visit(interp, s.Expression, param);
 		},
 		StringLiteralExpression: function(interp, s, param) {
 			var str = s.value;
@@ -432,7 +432,7 @@ function Interpreter(rt) {
 			return interp.rt.val(interp.rt.charTypeLiteral, a[0].charCodeAt(0));
 		},
 		FloatConstant: function(interp, s, param) {
-			var val = interp.visit(interp, s.Expression);
+			var val = interp.visit(interp, s.Expression, param);
 			return interp.rt.val(interp.rt.floatTypeLiteral, val.v);
 		},
 		DecimalConstant: function(interp, s, param) {
@@ -463,7 +463,6 @@ Interpreter.prototype.visit = function(interp, s, param) {
 				scope: 'global'
 			};
 		}
-		// logger.warn('visiting %j', s.type);
 		var _node = this.currentNode;
 		this.currentNode = s;
 		if (s.type in this.visitors)
