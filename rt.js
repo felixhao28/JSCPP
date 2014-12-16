@@ -798,6 +798,7 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
 				return t[name][sig];
 			} else {
 				var compatibles = [];
+				var rt = this;
 				t[name]['reg'].forEach(function(dts) {
 					if (dts.length == ts.length) {
 						var ok = true;
@@ -812,7 +813,11 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
 				if (compatibles.length == 0) {
 					if ('#default' in t[name])
 						return t[name]['#default'];
-					this.raiseException('no method ' + name + ' in ' + lt + ' accepts (' + sig + ')');
+					var rt = this;
+					var argsStr = ts.map(function(v){
+						return rt.makeTypeString(v);
+					}).join(',');
+					this.raiseException('no method ' + name + ' in ' + lt + ' accepts ' + argsStr);
 				} else if (compatibles.length > 1)
 					this.raiseException('ambiguous method invoking, ' + compatibles.length + 'compatible methods');
 				else
@@ -948,7 +953,7 @@ CRuntime.prototype.defVar = function(varname, type, initval) {
 	if (varname in vc) {
 		this.raiseException('variable ' + varname + ' already defined');
 	}
-	initval = this.cast(type, initval);
+	initval = this.clone(this.cast(type, initval));
 
 	if (initval === undefined) {
 		vc[varname] = this.defaultValue(type);
@@ -1061,9 +1066,10 @@ CRuntime.prototype.castable = function(type1, type2) {
 		if (this.isFunctionType(type1))
 			return this.isPointerType(type2);
 		return !this.isFunctionType(type2);
-	} else {
+	} else if (this.isClassType(type1) || this.isClassType(type2)){
 		this.raiseException('not implemented');
 	}
+	return false;
 };
 
 CRuntime.prototype.cast = function(type, value) {

@@ -46,7 +46,7 @@ function Interpreter(rt) {
 						if (dim.type !== 'DirectDeclarator_modifier_array')
 							interp.rt.raiseException('unacceptable array initialization');
 						if (dim.Expression !== null) {
-							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression)).v;
+							dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression, param)).v;
 						} else if (j > 0) {
 							interp.rt.raiseException('multidimensional array must have bounds for all dimensions except the first');
 						} else {}
