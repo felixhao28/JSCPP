@@ -1,8 +1,8 @@
-var launcher = require('./lib/launcher');
+var JSCPP = require('./lib/main');
 var fs = require('fs');
 
 function go(code, input) {
-    var exitcode = launcher.run(code, input);
+    var exitcode = JSCPP.launcher.run(code, input);
     console.info('\nprogram exited with code ' + exitcode);
 }
 

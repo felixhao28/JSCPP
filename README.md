@@ -23,12 +23,21 @@ Installation
 npm install JSCPP
 ```
 
+or (to use lastest cutting-edge version or to contribute)
+
+```
+git clone https://github.com/felixhao28/JSCPP.git
+cd JSCPP
+npm install .
+```
+
 ### With NodeJS
 
-Use __launcher__
+Use __launcher.run__
 
 ```js
-var launcher = require('./launcher');
+var JSCPP = require('JSCPP');
+var launcher = JSCPP.launcher;
 var code = 'int main(){int a;cin>>a;cout<<a;return 0;}';
 var input = '4321';
 var exitcode = launcher.run(code, input);
@@ -41,14 +50,15 @@ Or do it step by step:
 
 Configuring standard IO and libraries
 ```js
-var CRuntime = require('./rt')
+var JSCPP = require('JSCPP');
+var CRuntime = JSCPP.runtime;
 var inputbuffer = "1 2 3";
 var rt = new CRuntime({
 	stdio: {
 		drain: function() {
-			// this method will be called when program requires additional input
-			// so you can return "1", "2" and "3" seperately during three calls
-			// returning null value means EOF
+			// This method will be called when program requires additional input
+			// so you can return "1", "2" and "3" seperately during three calls.
+			// Returning null value means EOF.
 			var x = inputbuffer;
 			inputbuffer = null;
 			return x;
@@ -59,15 +69,20 @@ var rt = new CRuntime({
 	},
 	includes: {
 		iostream: require('./includes/iostream'),
-		cmath: require('./includes/cmath'),
+		cmath: require('./includes/cmath')
+		// Of course you can add more libraries here.
+		// These libraries are only made available for "include" to happen
+		// and NOT ready to be used in your cpp code.
+		// You should use proper include directive to include them
+		// or call load method on them directly (shown below).
 	}
 });
 ```
 
 Using preprocessor (experimental)
 ```js
-var prepast = require('./prepast');
-var preprocessor = require('./preprocessor');
+var preprocessor = JSCPP.preprocessor;
+console.log('preprocessing starting');
 code = preprocessor(rt, prepast, code);
 console.log('preprocessing finished');
 ```
@@ -80,21 +95,21 @@ rt.config.includes.cmath.load(rt);
 
 Building AST
 ```js
-var ast = require('./ast');
+var ast = JSCPP.ast;
 var tree = ast.parse(code);
 console.log('passed syntax check');
 ```
 
 Interpreting AST (from global main function)
 ```js
-var Interpreter = require('./interpreter');
+var Interpreter = JSCPP.interpreter;
 var interpreter = new Interpreter(rt);
 interpreter.run(tree);
 var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
 console.info('program exited with code ' + exitCode);
 ```
 
-A full example is available in _launcher.js_.
+A full example is available in *verbose_example.coffee*.
 
 ### With a modern browser
 
@@ -179,6 +194,11 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 
 ## Changelog
 
-### v1.0.0 (2015.3.31)
-
-Formal release of this project.
+* v1.0.0 (2015.3.31)
+	- Formal release of this project.
+* v1.0.1 (2015.3.31)
+	- This release is a mistake.
+* v1.0.2 (2015.3.31)
+	- New examples.
+	- Update README.
+	- Renamed runtime and interpreter to start with upper case.
