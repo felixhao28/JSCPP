@@ -21,15 +21,22 @@
     "Felix Hao <felixhao28@gmail.com>"
   ],
   "main": "main.js",
-  "dependencies": [
-    "printf"
-  ],
-  "devDependencies": [
-    "mocha",
-    "chai",
-    "coffee-script",
-    "pegjs"
-  ],
+  "dependencies": {
+    "printf": "^0.2.1"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.6.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-uglify": "^0.8.1",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-peg": "^1.5.0",
+    "mocha": "^2.2.1",
+    "pegjs": "^0.8.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/felixhao28/JSCPP.git"

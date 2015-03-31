@@ -4,9 +4,11 @@ This is a simple C++ interpreter written in JavaScript.
 
 Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
 
-## Purpose of the Project
+## Purpose of the project
 
 As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
+
+I also want to make a strict interpreter. The reason being C++ has too many undefined and platform-dependent behaviors and popular C++ compilers tend to be an "over-caring mother" who tries to ignore or even justify the undocumented usages. The abuse of them should be avoided as much as possible IMO. For example, I do not want my students to take it as guaranteed that `sizeof int` produces `4`, because on Arduino Uno, an `int` is a 2-byte value.
 
 Currently, it is mainly for educational uses for a MOOC course I am running (and fun).
 
@@ -15,7 +17,7 @@ Currently, it is mainly for educational uses for a MOOC course I am running (and
 * NodeJS or
 * A modern browser
 
-## How to Use
+## How to use
 
 Installation
 
@@ -51,9 +53,9 @@ Or do it step by step:
 Configuring standard IO and libraries
 ```js
 var JSCPP = require('JSCPP');
-var CRuntime = JSCPP.runtime;
+var Runtime = JSCPP.Runtime;
 var inputbuffer = "1 2 3";
-var rt = new CRuntime({
+var rt = new Runtime({
 	stdio: {
 		drain: function() {
 			// This method will be called when program requires additional input
@@ -102,7 +104,7 @@ console.log('passed syntax check');
 
 Interpreting AST (from global main function)
 ```js
-var Interpreter = JSCPP.interpreter;
+var Interpreter = JSCPP.Interpreter;
 var interpreter = new Interpreter(rt);
 interpreter.run(tree);
 var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
@@ -138,7 +140,7 @@ You can also customize the procedures with **custome includes**, **`JSCPP.runtim
 ### Run tests
 
 ```
-mocha
+grunt test
 ```
 
 ## Q&A
@@ -168,6 +170,7 @@ mocha
 * Goto statements
 * Object-oriented features
 * Namespaces
+* Multiple files support
 
 ### How is the performance?
 
@@ -202,3 +205,4 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- New examples.
 	- Update README.
 	- Renamed runtime and interpreter to start with upper case.
+	- (dev-side) Grunt.
