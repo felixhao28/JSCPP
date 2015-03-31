@@ -9,10 +9,10 @@
 	</style>
 </head>
 <body>
-	<script src="jscpp_page.js"></script>
+	<script src="JSCPP.js"></script>
 	<script type="text/javascript">
 		function run(code, input){
-			var crt = new rt({
+			var config = {
 				stdio: {
 					drain: function() {
 						var x = input;
@@ -22,21 +22,9 @@
 					write: function(s) {
 						output.value += s;
 					}
-				},
-				includes: {
-					iostream: _iostream,
-					cctype: _cctype,
-					cstring: _cstring,
-					cmath: _cmath,
 				}
-			});
-			var interp = new interpreter(crt);
-			code = code.toString();
-			code = preprocessor(crt, prepast, code);
-			var ret = ast.parse(code);
-			interp.run(ret);
-			ret = crt.getFunc('global', 'main', [])(crt, null, []).v;
-			return ret;
+			}
+			return JSCPP.launcher.run(code, input, config);
 		}
 
 		function exe(){
