@@ -1,25 +1,43 @@
 {
-	"name": "JSCPP",
-	"version": "1.0.1",
-	"description": "A simple C++ interpreter written in JavaScript",
-	"keywords": ["c++", "cpp", "interpreter", "c"],
-	"homepage": "https://github.com/felixhao28/JSCPP",
-	"bugs": {
-		"url" : "https://github.com/felixhao28/JSCPP/issues",
-		"email" : "felixhao28@gmail.com"
-	},
-	"author": "Felix Hao <felixhao28@gmail.com>",
-	"maintainers": ["Felix Hao <felixhao28@gmail.com>"],
-	"contributors": ["Felix Hao <felixhao28@gmail.com>"],
-	"main": "main.js",
-	"dependencies": ["printf"],
-	"devDependencies": ["mocha", "chai", "coffee-script", "pegjs"],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/felixhao28/JSCPP.git"
-	},
-	"licenses": [{
-		"type": "GNU GPLv2",
-		"url": "https://www.gnu.org/licenses/gpl-2.0.html"
-	}]
+  "name": "JSCPP",
+  "version": "1.0.2",
+  "description": "A simple C++ interpreter written in JavaScript",
+  "keywords": [
+    "c++",
+    "cpp",
+    "interpreter",
+    "c"
+  ],
+  "homepage": "https://github.com/felixhao28/JSCPP",
+  "bugs": {
+    "url": "https://github.com/felixhao28/JSCPP/issues",
+    "email": "felixhao28@gmail.com"
+  },
+  "author": "Felix Hao <felixhao28@gmail.com>",
+  "maintainers": [
+    "Felix Hao <felixhao28@gmail.com>"
+  ],
+  "contributors": [
+    "Felix Hao <felixhao28@gmail.com>"
+  ],
+  "main": "main.js",
+  "dependencies": [
+    "printf"
+  ],
+  "devDependencies": [
+    "mocha",
+    "chai",
+    "coffee-script",
+    "pegjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felixhao28/JSCPP.git"
+  },
+  "licenses": [
+    {
+      "type": "GNU GPLv2",
+      "url": "https://www.gnu.org/licenses/gpl-2.0.html"
+    }
+  ]
 }
