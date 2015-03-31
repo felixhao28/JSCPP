@@ -1,4 +1,4 @@
-# JSC++
+# JSCPP
 
 This is a simple C++ interpreter written in JavaScript.
 
@@ -8,7 +8,7 @@ Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
 
 As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
 
-Currently, it is mainly for educational uses for a MOOC course I am running.
+Currently, it is mainly for educational uses for a MOOC course I am running (and fun).
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ Currently, it is mainly for educational uses for a MOOC course I am running.
 Installation
 
 ```
-git clone https://github.com/felixhao28/JSCPP.git
+npm install JSCPP
 ```
 
 ### With NodeJS
@@ -35,7 +35,7 @@ var exitcode = launcher.run(code, input);
 console.info('program exited with code ' + exitcode);
 ```
 
-See _test.js_ for example.
+See _example.js_ for example.
 
 Or do it step by step:
 
@@ -72,7 +72,7 @@ code = preprocessor(rt, prepast, code);
 console.log('preprocessing finished');
 ```
 
-(Optional) If you choose not to use preprocessor, you need to load libraries manually
+(Optional) If you choose not to use preprocessor, directives like `#include <...>` will not work, you need to load libraries manually
 ```js
 rt.config.includes.iostream.load(rt);
 rt.config.includes.cmath.load(rt);
@@ -98,42 +98,33 @@ A full example is available in _launcher.js_.
 
 ### With a modern browser
 
-There should be a _jscpp_page.js_ ready for you. If not, run `python makeclientjs.py` to generate one.
+There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, use `browserify ./lib/main.js -o ./dist/JSCPP.js` to generate one.
+
+Then you can add it to your html. The exported global name for this package is "JSCPP".
 
 ```html
-<script src="jscpp_page.js"></script>
+<script src="JSCPP.js"></script>
 <script type="text/javascript">
 	function run(code, input){
-		var crt = new rt({
+		var config = {
 			stdio: {
-				drain: function() {
-					var x = input;
-					input = null;
-					return x;
-				},
 				write: function(s) {
 					output.value += s;
 				}
-			},
-			includes: {
-				iostream: _iostream,
-				cctype: _cctype,
-				cstring: _cstring,
-				cmath: _cmath,
 			}
-		});
-		var interp = new interpreter(crt);
-		code = code.toString();
-		code = preprocessor(crt, prepast, code);
-		var ret = ast.parse(code);
-		interp.run(ret);
-		ret = crt.getFunc('global', 'main', [])(crt, null, []).v;
-		return ret;
-	}("int main(){return 0;}", "");
+		}
+		return JSCPP.launcher.run(code, input, config);
+	}
 </script>
 ```
 
-There is no convenient "launcher" class for browser because IO should be customized for your webpage. See _page.html_ for an example.
+You can also customize the procedures with **custome includes**, **`JSCPP.runtime`**, **`JSCPP.preprocessor`**, **`JSCPP.ast`**, **`JSCPP.interpreter`**. If you do not provide a customized `write` method for `stdio` configuration, console output will not be correctly shown. See _index.html_ in **gh_pages** branch for an example.
+
+### Run tests
+
+```
+mocha
+```
 
 ## Q&A
 
@@ -175,6 +166,8 @@ See current progress in [_includes_](https://github.com/felixhao28/JSCPP/blob/ma
 * cmath
 * cctype
 * cstring
+* cstdio (partial)
+* cstdlib (partial)
 
 ### Does this support debugging?
 
@@ -183,3 +176,9 @@ Not yet, but that is of high priority on my todo list.
 ### Bug report? Feedback?
 
 Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
+
+## Changelog
+
+### v1.0.0 (2015.3.31)
+
+Formal release of this project.
