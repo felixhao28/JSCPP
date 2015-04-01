@@ -1,4 +1,7 @@
 #include<iostream>
+
+using namespace std;
+
 int main(){
 	int n, a[1000];
 	int i = 0, j = 0;

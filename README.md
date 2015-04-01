@@ -207,7 +207,10 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- Renamed runtime and interpreter to start with upper case.
 	- (dev-side) Grunt.
 * v1.0.3 (4.1)
-	- (dev-side) Fix dev-dependency on coffe-script.
+	- (dev-side) Fix dev-dependency on coffee-script.
 	- (dev-side) Grunt watches.
+	- (dev-side) Port to coffeescript
+	- (dev-side) Refactoring
+	- (dev-side) Reworked testing, now all tests are defined in `test.json`
 	- Fixed a bug related to a.push(b).concat(c) in syntax parser (#1).
 	- Added new tests

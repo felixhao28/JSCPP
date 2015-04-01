@@ -17,10 +17,11 @@ If you want to leave your footprints in this project, you can
 1. Fork it
 1. `git clone` then `npm install`
 1. Leave `dist` and `lib` alone, because they are automatically maintained
+1. (optional) `grunt` # default task of grunt is to build and watch
 1. Make your contribution
 1. `grunt build`
 1. `grunt test`
-1. Commit, push then send a push request here.
+1. Commit, push then send a pull request here.
 
 Use `grunt build` to update files in `dist` and `lib` folders.
 

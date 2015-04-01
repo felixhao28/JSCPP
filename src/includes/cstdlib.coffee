@@ -8,9 +8,9 @@ module.exports =
                 val = Number.parseFloat str
                 rt.val rt.floatTypeLiteral, val
             else
-                rt.raiseException 'argument is not a string'
+                rt.raiseException "argument is not a string"
 
-        rt.regFunc(_atof, 'global', 'atof', [pchar], rt.floatTypeLiteral)
+        rt.regFunc(_atof, "global", "atof", [pchar], rt.floatTypeLiteral)
 
         _atoi = (rt, _this, str) ->
             if rt.isStringType str.t
@@ -18,9 +18,9 @@ module.exports =
                 val = Number.parseInt str
                 rt.val rt.intTypeLiteral, val
             else
-                rt.raiseException 'argument is not a string'
+                rt.raiseException "argument is not a string"
 
-        rt.regFunc(_atoi, 'global', 'atoi', [pchar], rt.intTypeLiteral)
+        rt.regFunc(_atoi, "global", "atoi", [pchar], rt.intTypeLiteral)
 
         _atol = (rt, _this, str) ->
             if rt.isStringType str.t
@@ -28,18 +28,18 @@ module.exports =
                 val = Number.parseInt str
                 rt.val rt.longTypeLiteral, val
             else
-                rt.raiseException 'argument is not a string'
+                rt.raiseException "argument is not a string"
 
-        rt.regFunc(_atol, 'global', 'atol', [pchar], rt.longTypeLiteral)
+        rt.regFunc(_atol, "global", "atol", [pchar], rt.longTypeLiteral)
 
-        if not rt.scope[0]['RAND_MAX']?
-            rt.scope[0]['RAND_MAX'] = 0x7fffffff
+        if not rt.scope[0]["RAND_MAX"]?
+            rt.scope[0]["RAND_MAX"] = 0x7fffffff
 
         _rand = (rt, _this) ->
-            val = Math.floor(Math.random() * (rt.scope[0]['RAND_MAX'] + 1))
+            val = Math.floor(Math.random() * (rt.scope[0]["RAND_MAX"] + 1))
             rt.val(rt.intTypeLiteral, val)
 
-        rt.regFunc(_rand, 'global', 'rand', [], rt.intTypeLiteral)
+        rt.regFunc(_rand, "global", "rand", [], rt.intTypeLiteral)
 
         _system = (rt, _this, command) ->
             if command is rt.nullPointer
@@ -54,11 +54,11 @@ module.exports =
                 catch e
                     rt.val(rt.intTypeLiteral, 0)
             else
-                rt.raiseException 'command is not a string'
+                rt.raiseException "command is not a string"
 
-        rt.regFunc(_system, 'global', 'system', [pchar], rt.intTypeLiteral)
+        rt.regFunc(_system, "global", "system", [pchar], rt.intTypeLiteral)
 
-        rt.scope[0]['NULL'] = rt.nullPointer
+        rt.scope[0]["NULL"] = rt.nullPointer
 
         binary_search = (val, L, cmp) ->
             return false if L.length == 0
@@ -86,10 +86,10 @@ module.exports =
                 else
                     rt.val(base.t, rt.makeArrayPointerValue(L, bsRet))
             else
-                rt.raiseException 'base must be an array'
+                rt.raiseException "base must be an array"
 
         cmpType = this.functionPointerType(rt.intTypeLiteral, [rt.voidPointerType, rt.voidPointerType])
-        rt.regFunc(_bsearch, 'global', 'bsearch', [rt.voidPointerType, rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType], rt.voidPointerType)
+        rt.regFunc(_bsearch, "global", "bsearch", [rt.voidPointerType, rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType], rt.voidPointerType)
 
         _qsort = (rt, _this, base, num, size, cmp) ->
             if rt.isArrayType base
@@ -108,44 +108,44 @@ module.exports =
                 L.sort(wrapper)
                 return
             else
-                rt.raiseException 'base must be an array'
+                rt.raiseException "base must be an array"
 
-        rt.regFunc(_qsort, 'global', 'qsort', [rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType])
+        rt.regFunc(_qsort, "global", "qsort", [rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType])
 
         _abs = (rt, _this, n) -> rt.val(rt.intTypeLiteral, Math.abs(n.v))
 
-        rt.regFunc(_abs, 'global', 'abs', [rt.intTypeLiteral], rt.intTypeLiteral)
+        rt.regFunc(_abs, "global", "abs", [rt.intTypeLiteral], rt.intTypeLiteral)
 
         _div = (rt, _this, numer, denom) ->
             rt.val(rt.intTypeLiteral, Math.floor(numer / denom))
 
-        div_t_t = rt.newClass('div_t', [
+        div_t_t = rt.newClass("div_t", [
                 {
                     type: rt.intTypeLiteral,
-                    name: 'quot'
+                    name: "quot"
                 },{
                     type: rt.intTypeLiteral,
-                    name: 'rem'
+                    name: "rem"
                 }
             ]);
 
-        rt.regFunc(_div, 'global', 'div', [rt.intTypeLiteral, rt.intTypeLiteral], div_t_t)
+        rt.regFunc(_div, "global", "div", [rt.intTypeLiteral, rt.intTypeLiteral], div_t_t)
 
         _labs = (rt, _this, n) -> rt.val(rt.longTypeLiteral, Math.abs(n.v))
 
-        rt.regFunc(_labs, 'global', 'labs', [rt.longTypeLiteral], rt.longTypeLiteral)
+        rt.regFunc(_labs, "global", "labs", [rt.longTypeLiteral], rt.longTypeLiteral)
 
         _ldiv = (rt, _this, numer, denom) ->
             rt.val(rt.longTypeLiteral, Math.floor(numer / denom))
 
-        ldiv_t_t = rt.newClass('ldiv_t', [
+        ldiv_t_t = rt.newClass("ldiv_t", [
                 {
                     type: rt.longTypeLiteral,
-                    name: 'quot'
+                    name: "quot"
                 },{
                     type: rt.longTypeLiteral,
-                    name: 'rem'
+                    name: "rem"
                 }
             ]);
 
-        rt.regFunc(_ldiv, 'global', 'ldiv', [rt.longTypeLiteral, rt.longTypeLiteral], ldiv_t_t)
+        rt.regFunc(_ldiv, "global", "ldiv", [rt.longTypeLiteral, rt.longTypeLiteral], ldiv_t_t)

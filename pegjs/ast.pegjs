@@ -24,7 +24,35 @@ TranslationUnit
     ;
 
 ExternalDeclaration
-    = FunctionDefinition / Declaration
+    = Namespace / FunctionDefinition / Declaration
+    ;
+
+Namespace
+    =  NamespaceDefinition / UsingDirective / UsingDeclaration / NamespaceAliasDefinition
+    ;
+
+NamespaceDefinition
+    = NAMESPACE a:Identifier LWING b:ExternalDeclaration+ RWING {
+      return addPositionInfo({type: 'NamespaceDefinition', Identifier:a, ExternalDeclarations:b});
+    }
+    ;
+
+UsingDirective
+    = USING NAMESPACE a:ScopedIdentifier SEMI {
+      return addPositionInfo({type: 'UsingDirective', Identifier:a});
+    }
+    ;
+
+UsingDeclaration
+    = USING a:ScopedIdentifier SCOPEOP b:Identifier SEMI {
+      return addPositionInfo({type: 'UsingDeclaration', scope: a, Identifier: b});
+    }
+    ;
+
+NamespaceAliasDefinition
+    = NAMESPACE a:Identifier EQU b:ScopedIdentifier SEMI {
+      return addPositionInfo({type: 'NamespaceAliasDefinition', target: b, Identifier: a})
+    }
     ;
 
 FunctionDefinition
@@ -600,6 +628,8 @@ COMPLEX   = a:"_Complex"   !IdChar Spacing {return a;};
 STDCALL   = a:"_stdcall"   !IdChar Spacing {return a;};
 DECLSPEC  = a:"__declspec" !IdChar Spacing {return a;};
 ATTRIBUTE = a:"__attribute__" !IdChar Spacing {return a;};
+NAMESPACE = a:"namespace" !IdChar Spacing {return a;};
+USING     = a:"using" !IdChar Spacing {return a;};
 
 Keyword
     = ( "auto"
@@ -642,6 +672,8 @@ Keyword
       / "_stdcall"
       / "__declspec"
       / "__attribute__"
+      / "namespace"
+      / "using"
       )
     !IdChar ;
 
@@ -651,6 +683,18 @@ Keyword
 //  The standard does not explicitly state that identifiers must be
 //  distinct from keywords, but it seems so.
 //-------------------------------------------------------------------------
+
+ScopedIdentifier
+    = a:SCOPEOP? b:(a:Identifier SCOPEOP {return a;})* c:Identifier {
+      var scope = a ? "global" : null;
+
+      for (var i = 0;i<b.length;i++) {
+        scope = addPositionInfo({type: "ScopedIdentifier", scope: scope, Identifier: b[i]})
+      }
+
+      return addPositionInfo({type: "ScopedIdentifier", scope:scope, Identifier: c});
+    }
+    ;
 
 Identifier = !Keyword a:IdNondigit b:IdChar* Spacing {return a+b.join('')} ;
 
@@ -841,6 +885,7 @@ ANDEQU     =  a:"&="        Spacing {return a;};
 HATEQU     =  a:"^="        Spacing {return a;};
 OREQU      =  a:"|="        Spacing {return a;};
 COMMA      =  a:","         Spacing {return a;};
+SCOPEOP    =  a:"::"        Spacing {return a;};
 
 EOT        =  !_    ;
 

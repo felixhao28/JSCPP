@@ -58,10 +58,10 @@ module.exports = (grunt) ->
 
         watch:
             coffee:
-                files: "**/*.coffee"
+                files: ["src/**/*.coffee", "test/test.coffee"]
                 tasks: ["coffee"]
             peg:
-                files: "pegjs/**/*.coffee"
+                files: "pegjs/**/*.pegjs"
                 tasks: ["peg"]
             copy:
                 files: ["src/**", "!src/**/*.coffee"]

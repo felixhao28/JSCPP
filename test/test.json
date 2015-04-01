@@ -1,0 +1,62 @@
+{
+    "tests": {
+        "cincout": {
+            "cpp": ["cincout.cpp"],
+            "cases": [{
+                "in": "123",
+                "out": "123"
+            }]
+        },
+        "A+B": {
+            "after": ["cincout"],
+            "cpp": ["A+B.cpp"],
+            "cases": [{
+                "in": "10 506",
+                "out": "516"
+            }]
+        },
+        "array": {
+            "after": ["loop"],
+            "cpp": ["array.cpp"],
+            "cases": [{
+                "in": "5 8 6 5 4 1",
+                "out": "1 4 5 6 8"
+            }]
+        },
+        "bubblesort": {
+            "after": ["array", "ifelse"],
+            "cpp": ["bubblesort.cpp"],
+            "cases": [{
+                "in": "10 1 3 5 7 9 8 6 4 2 0",
+                "out": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+            }]
+        },
+        "ifelse": {
+            "after": ["cincout"],
+            "cpp": ["ifelse.cpp"],
+            "cases": [{
+                "in": "2",
+                "out": "YES"
+            }, {
+                "in": "3",
+                "out": "NO"
+            }]
+        },
+        "loop": {
+            "after": ["A+B"],
+            "cpp": ["loop.cpp"],
+            "cases": [{
+                "in": "7 15",
+                "out": "55"
+            }]
+        },
+        "maze": {
+            "after": ["loop"],
+            "cpp": ["maze.cpp"],
+            "cases": [{
+                "in": "5\n....#\n.#.@.\n.#@..\n#....\n.....\n4",
+                "out": "16"
+            }]
+        }
+    }
+}
