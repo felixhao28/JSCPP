@@ -56,6 +56,17 @@ module.exports = (grunt) ->
                 ext: ".js"
                 expand: true
 
+        watch:
+            coffee:
+                files: "**/*.coffee"
+                tasks: ["coffee"]
+            peg:
+                files: "pegjs/**/*.coffee"
+                tasks: ["peg"]
+            copy:
+                files: ["src/**", "!src/**/*.coffee"]
+                tasks: ["copy"]
+
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -63,6 +74,8 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-mocha-test'
     grunt.loadNpmTasks 'grunt-peg'
+    grunt.loadNpmTasks "grunt-contrib-watch"
 
     grunt.registerTask "build", "to build", ["clean", "copy", "peg", "coffee", "browserify", "uglify"]
     grunt.registerTask "test", "to test", ["mochaTest"]
+    grunt.registerTask "default", "to watch & compile", ["build", "watch"]

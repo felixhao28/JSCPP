@@ -199,10 +199,15 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 
 * v1.0.0 (2015.3.31)
 	- Formal release of this project.
-* v1.0.1 (2015.3.31)
+* v1.0.1 (3.31)
 	- This release is a mistake.
-* v1.0.2 (2015.3.31)
+* v1.0.2 (3.31)
 	- New examples.
 	- Update README.
 	- Renamed runtime and interpreter to start with upper case.
 	- (dev-side) Grunt.
+* v1.0.3 (4.1)
+	- (dev-side) Fix dev-dependency on coffe-script.
+	- (dev-side) Grunt watches.
+	- Fixed a bug related to a.push(b).concat(c) in syntax parser (#1).
+	- Added new tests
