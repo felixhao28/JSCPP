@@ -76,7 +76,7 @@ module.exports = (function() {
               return addPositionInfo({type: 'Declaration', DeclarationSpecifiers:a, InitDeclaratorList:b});
             },
         peg$c20 = function(a, b, c) {
-                return a.push(b).concat(c);
+                return a.concat([b]).concat(c);
                },
         peg$c21 = function(a) {
                   return a;

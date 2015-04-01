@@ -122,7 +122,7 @@ DeclarationSpecifiers
        / TypeQualifier
        / FunctionSpecifier
        )* {
-        return a.push(b).concat(c);
+        return a.concat([b]).concat(c);
        }
       ) {
           return a;
