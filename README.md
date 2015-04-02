@@ -111,7 +111,40 @@ var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
 console.info('program exited with code ' + exitCode);
 ```
 
-A full example is available in *verbose_example.coffee*.
+A full example is available in *demo/verbose_example.coffee*.
+
+Use __debugger__
+
+Unlike most other IDE, the debugging here is actually a replay of the execution.
+
+```js
+var mydebugger = new JSCPP.Debugger();
+var exitCode = JSCPP.launcher.run(code, input, {debug: true, debugger: mydebugger});
+// continue to the next statement
+var hasNext = mydebugger.next();
+if (!hasNext) {
+	console.log("program exited with code " + exitCode);
+}
+// go back to the previous statement
+var hasPrev = mydebugger.prev();
+// examine the content of the output window
+var outputContent = mydebugger.output();
+// the content of the statement to be executed next
+var nextLine = mydebugger.nextLine();
+// the statement AST to be executed next
+var s = mydebugger.nextStmt();
+console.log("from " + s.line + ":" + s.column + "(" + s.pos + ")");
+console.log("to " + s.reportedLine + ":" + s.reportedColumn + "(" + s.reportedPos + ")");
+console.log("==> " + nextLine);
+// examine the internal registry for a type
+mydebugger.type("int");
+// examine the value of variable "a"
+mydebugger.variable("a");
+// or list all local variables
+mydebugger.variable();
+```
+
+A full interactive example is available in *demo/example.coffee*. Use `node demo/example A+B -debug` to debug "A+B" test.
 
 ### With a modern browser
 
@@ -214,3 +247,9 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- (dev-side) Reworked testing, now all tests are defined in `test.json`
 	- Fixed a bug related to a.push(b).concat(c) in syntax parser (#1).
 	- Added new tests
+* v1.0.4 (4.2)
+	- Fixed array initialization with 0 issue
+	- Added support for reading string with cin
+	- Member function should not be registered globally
+	- Added new tests
+	- Basic debugging support

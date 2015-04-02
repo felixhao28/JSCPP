@@ -371,7 +371,7 @@ module.exports = ->
     @types['pointer_function'] = '()': '#default': (rt, l, args) ->
         if l.t.type != 'pointer' or l.t.ptrType != 'function'
             rt.raiseException rt.makeTypeString(l.v.type) + ' is not function'
-        rt.getCompatibleFunc(l.v.defineType, l.v.name, args) rt, l, args
+        rt.getCompatibleFunc(l.v.defineType, l.v.name, args) rt, l, args...
     @types['pointer_normal'] =
         '*': '#default': (rt, l, r) ->
             if r == undefined

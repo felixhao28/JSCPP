@@ -1,5 +1,16 @@
+diffpatch = require('jsondiffpatch').create(null)
+
+jsoncopy = (rt) ->
+    JSON.parse JSON.stringify
+        types: rt.types
+        scope: rt.scope
+        debugOutput: rt.debugOutput
+
 Interpreter = (rt) ->
     @rt = rt
+    @snapshots = []
+    if rt.config.debug
+        rt.config.debugger.snapshots = @snapshots
     @visitors =
         TranslationUnit: (interp, s, param) ->
             i = 0
@@ -20,10 +31,10 @@ Interpreter = (rt) ->
                 interp.rt.raiseException "you cannot have " + s.Declarator.right.length + " parameter lists (1 expected)"
             ptl = undefined
             varargs = undefined
-            if s.Declarator.right[0].type == "DirectDeclarator_modifier_ParameterTypeList"
+            if s.Declarator.right[0].type is "DirectDeclarator_modifier_ParameterTypeList"
                 ptl = s.Declarator.right[0].ParameterTypeList
                 varargs = ptl.varargs
-            else if s.Declarator.right[0].type == "DirectDeclarator_modifier_IdentifierList" and s.Declarator.right[0].IdentifierList == null
+            else if s.Declarator.right[0].type is "DirectDeclarator_modifier_IdentifierList" and s.Declarator.right[0].IdentifierList is null
                 ptl = ParameterList: []
                 varargs = false
             else
@@ -77,7 +88,7 @@ Interpreter = (rt) ->
                         else if j > 0
                             interp.rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
                         else
-                            if init.type == "Initializer_expr"
+                            if init.type is "Initializer_expr"
                                 initializer = interp.visit(interp, init, param)
                                 if interp.rt.isTypeEqualTo(type, interp.rt.charTypeLiteral) and interp.rt.isArrayType(initializer.t) and interp.rt.isTypeEqualTo(initializer.t.eleType, interp.rt.charTypeLiteral)
                                     # string init
@@ -99,7 +110,7 @@ Interpreter = (rt) ->
                     init = interp.arrayInit(dimensions, init, 0, type, param)
                     interp.rt.defVar name, init.t, init
                 else
-                    if init == null
+                    if init is null
                         init = interp.rt.defaultValue(type)
                     else
                         init = interp.visit(interp, init.Expression)
@@ -110,20 +121,20 @@ Interpreter = (rt) ->
             interp.visit interp, s.Expression, param
         Label_case: (interp, s, param) ->
             ce = interp.visit(interp, s.ConstantExpression)
-            if param["switch"] == undefined
+            if param["switch"] is undefined
                 interp.rt.raiseException "you cannot use case outside switch block"
-            if param.scope == "SelectionStatement_switch_cs"
+            if param.scope is "SelectionStatement_switch_cs"
                 return [
                     "switch"
-                    interp.rt.cast(ce.t, param["switch"]).v == ce.v
+                    interp.rt.cast(ce.t, param["switch"]).v is ce.v
                 ]
             else
                 interp.rt.raiseException "you can only use case directly in a switch block"
             return
         Label_default: (interp, s, param) ->
-            if param["switch"] == undefined
+            if param["switch"] is undefined
                 interp.rt.raiseException "you cannot use default outside switch block"
-            if param.scope == "SelectionStatement_switch_cs"
+            if param.scope is "SelectionStatement_switch_cs"
                 return [
                     "switch"
                     true
@@ -136,14 +147,14 @@ Interpreter = (rt) ->
             r = undefined
             i = undefined
             _scope = param.scope
-            if param.scope == "SelectionStatement_switch"
+            if param.scope is "SelectionStatement_switch"
                 param.scope = "SelectionStatement_switch_cs"
                 interp.rt.enterScope param.scope
                 switchon = false
                 i = 0
                 while i < stmts.length
                     stmt = stmts[i]
-                    if stmt.type == "Label_case" or stmt.type == "Label_default"
+                    if stmt.type is "Label_case" or stmt.type is "Label_default"
                         r = interp.visit(interp, stmt, param)
                         if r[1]
                             switchon = true
@@ -157,17 +168,17 @@ Interpreter = (rt) ->
             else
                 param.scope = "CompoundStatement"
                 interp.rt.enterScope param.scope
-                i = 0
-                while i < stmts.length
-                    r = interp.visit(interp, stmts[i], param)
+                for stmt in stmts
+                    r = interp.visit(interp, stmt, param)
+                    interp.recordSnapshot stmt
                     if r instanceof Array
                         return r
-                    i++
                 interp.rt.exitScope param.scope
                 param.scope = _scope
             return
         ExpressionStatement: (interp, s, param) ->
-            interp.visit interp, s.Expression, param
+            if s.Expression?
+                interp.visit interp, s.Expression, param
             return
         SelectionStatement_if: (interp, s, param) ->
             scope_bak = param.scope
@@ -239,11 +250,11 @@ Interpreter = (rt) ->
             param.scope = "IterationStatement_for"
             interp.rt.enterScope param.scope
             if s.Initializer
-                if s.Initializer.type == "Declaration"
+                if s.Initializer.type is "Declaration"
                     interp.visit interp, s.Initializer, param
                 else
                     interp.visit interp, s.Initializer, param
-            while s.Expression == undefined or interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v
+            while s.Expression is undefined or interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v
                 r = interp.visit(interp, s.Statement, param)
                 if r instanceof Array
                     switch r[0]
@@ -335,10 +346,10 @@ Interpreter = (rt) ->
             interp.rt.cast type, ret
         BinOpExpression: (interp, s, param) ->
             op = s.op
-            if op == "&&"
+            if op is "&&"
                 s.type = "LogicalANDExpression"
                 interp.visit interp, s, param
-            else if op == "||"
+            else if op is "||"
                 s.type = "LogicalORExpression"
                 interp.visit interp, s, param
             else
@@ -415,7 +426,7 @@ Interpreter = (rt) ->
 
 Interpreter::visit = (interp, s, param) ->
     if "type" of s
-        if param == undefined
+        if param is undefined
             param = scope: "global"
         _node = @currentNode
         @currentNode = s
@@ -441,22 +452,26 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
     if dimensions.length > level
         curDim = dimensions[level]
         if init
-            if init.type == "Initializer_array" and curDim >= init.Initializers.length and (init.Initializers.length == 0 or init.Initializers[0].type == "Initializer_expr")
+            if init.type is "Initializer_array" and curDim >= init.Initializers.length and (init.Initializers.length is 0 or init.Initializers[0].type is "Initializer_expr")
                 # last level, short hand init
-                if init.Initializers.length == 0
+                if init.Initializers.length is 0
                     arr = new Array(curDim)
                     i = 0
                     while i < curDim
-                        arr[i] = shorthand: @rt.defaultValue(type)
+                        arr[i] =
+                            type: "Initializer_expr"
+                            shorthand: @rt.defaultValue(type)
                         i++
                     init.Initializers = arr
-                else if init.Initializers.length == 1 and @rt.isIntegerType(type)
+                else if init.Initializers.length is 1 and @rt.isIntegerType(type)
                     val = @rt.cast(type, @visit(this, init.Initializers[0].Expression, param))
-                    if val.v == -1 or val.v == 0
+                    if val.v is -1 or val.v is 0
                         arr = new Array(curDim)
                         i = 0
                         while i < curDim
-                            arr[i] = shorthand: @rt.val(type, -1)
+                            arr[i] =
+                                type: "Initializer_expr"
+                                shorthand: @rt.val(type, val.v)
                             i++
                         init.Initializers = arr
                     else
@@ -464,7 +479,9 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
                         arr[0] = @rt.val(type, -1)
                         i = 1
                         while i < curDim
-                            arr[i] = shorthand: @rt.defaultValue(type)
+                            arr[i] =
+                                type: "Initializer_expr"
+                                shorthand: @rt.defaultValue(type)
                             i++
                         init.Initializers = arr
                 else
@@ -487,7 +504,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
                             shorthand: @rt.defaultValue(type)
                         i++
                     init.Initializers = arr
-            else if init.type == "Initializer_expr"
+            else if init.type is "Initializer_expr"
                 initializer = undefined
                 if "shorthand" of init
                     initializer = init.shorthand
@@ -544,5 +561,13 @@ Interpreter::buildRecursivePointerType = (pointer, basetype, level) ->
         @buildRecursivePointerType pointer, type, level + 1
     else
         basetype
+
+Interpreter::recordSnapshot = (stmt) ->
+    if @rt.config.debug is true
+        lastSnapshot = @snapshots[@snapshots.length-1] or {}
+        currentSnapshot = jsoncopy(@rt)
+        @snapshots.push
+            stmt: stmt
+            diff: diffpatch.diff(lastSnapshot, currentSnapshot)
 
 module.exports = Interpreter

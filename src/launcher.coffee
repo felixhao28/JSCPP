@@ -37,6 +37,10 @@ module.exports =
         rt = new CRuntime(_config)
         code = code.toString()
         code = preprocessor.parse(rt, code)
+
+        if config.debug
+            config.debugger.src = code
+
         tree = ast.parse(code)
         interpreter = new Interpreter(rt)
         interpreter.run tree

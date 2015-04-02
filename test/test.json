@@ -65,6 +65,22 @@
                 "in": "",
                 "out": "110\n90\n1000\n10\n0\n10\n0\n110\n110\n102400\n0\n1\n0\n0\n0\n1\n1\n1\n0"
             }]
+        },
+        "biginteger": {
+            "after": ["array"],
+            "cpp": ["biginteger.cpp"],
+            "cases": [{
+                "in": "22222222222222222222\n33333333333333333333",
+                "out": "55555555555555555555"
+            }]
+        },
+        "function": {
+            "after": ["A+B"],
+            "cpp": ["function.cpp"],
+            "cases": [{
+                "in": "",
+                "out": "10\n50\n75"
+            }]
         }
     }
 }

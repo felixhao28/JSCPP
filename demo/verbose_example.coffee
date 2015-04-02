@@ -1,4 +1,4 @@
-JSCPP = require "./lib/main"
+JSCPP = require "../lib/main"
 fs = require "fs"
 
 code = fs.readFileSync "./test/maze.pass.cpp"

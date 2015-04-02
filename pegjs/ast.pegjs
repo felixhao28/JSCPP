@@ -11,6 +11,11 @@ function addPositionInfo(r){
     var posDetails = peg$computePosDetails(peg$currPos);
     r.line = posDetails.line;
     r.column = posDetails.column;
+    r.pos = peg$currPos;
+    posDetails = peg$computePosDetails(peg$reportedPos);
+    r.reportedLine = posDetails.line;
+    r.reportedColumn = posDetails.column;
+    r.reportedPos = peg$reportedPos;
     return r;
 }
 }

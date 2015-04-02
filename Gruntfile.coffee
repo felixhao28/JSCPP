@@ -29,6 +29,12 @@ module.exports = (grunt) ->
                         src: ["**/*.coffee"]
                         dest: "test"
                         ext: ".js"
+                    ,
+                        expand: true
+                        cwd: "demo"
+                        src: ["**/*.coffee"]
+                        dest: "demo"
+                        ext: ".js"
                 ]
 
         browserify:
@@ -58,7 +64,7 @@ module.exports = (grunt) ->
 
         watch:
             coffee:
-                files: ["src/**/*.coffee", "test/test.coffee"]
+                files: ["src/**/*.coffee", "test/test.coffee", "demo/*.coffee"]
                 tasks: ["coffee"]
             peg:
                 files: "pegjs/**/*.pegjs"

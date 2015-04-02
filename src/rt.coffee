@@ -71,7 +71,7 @@ CRuntime::getMember = (l, r) ->
 
 CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
 
-    f = (rt, _this, args) ->
+    f = (rt, _this, args...) ->
         # logger.warn("calling function: %j", name);
         rt.enterScope "function " + name
         argNames.forEach (v, i) ->
@@ -224,7 +224,8 @@ CRuntime::regFunc = (f, lt, name, args, retType) ->
         if sig of t[name]
             @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
         type = @functionPointerType(retType, args)
-        @defVar name, type, @val(type, @makeFunctionPointerValue(f, name, lt, args, retType))
+        if lt is "global"
+            @defVar name, type, @val(type, @makeFunctionPointerValue(f, name, lt, args, retType))
         t[name][sig] = f
         t[name]["reg"].push args
     else

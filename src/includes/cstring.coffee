@@ -11,9 +11,9 @@ module.exports = load: (rt) ->
                 destarr[j] = rt.clone(srcarr[i])
                 i++
                 j++
-            if i == srcarr.length
+            if i is srcarr.length
                 rt.raiseException "source string does not have a pending \"\\0\""
-            else if j == destarr.length - 1
+            else if j is destarr.length - 1
                 rt.raiseException "destination array is not big enough"
             else
                 destarr[j] = rt.val(rt.charTypeLiteral, 0)
@@ -35,13 +35,13 @@ module.exports = load: (rt) ->
                 num--
                 i++
                 j++
-            if srcarr[i].v == 0
+            if srcarr[i].v is 0
                 # padding zeroes
                 while num > 0 and j < destarr.length
                     destarr[j++] = rt.val(rt.charTypeLiteral, 0)
-            if i == srcarr.length
+            if i is srcarr.length
                 rt.raiseException "source string does not have a pending \"\\0\""
-            else if j == destarr.length - 1
+            else if j is destarr.length - 1
                 rt.raiseException "destination array is not big enough"
         else
             rt.raiseException "destination or source is not an array"
@@ -52,12 +52,10 @@ module.exports = load: (rt) ->
         sizet
     ], pchar
     rt.regFunc ((rt, _this, dest, src) ->
-        `var lendest`
-        `var lensrc`
         if rt.isArrayType(dest.t) and rt.isArrayType(src.t)
             srcarr = src.v.target
             destarr = dest.v.target
-            if srcarr == destarr
+            if srcarr is destarr
                 i = src.v.position
                 j = dest.v.position
                 if i < j
@@ -86,12 +84,10 @@ module.exports = load: (rt) ->
         pchar
     ], pchar
     rt.regFunc ((rt, _this, dest, src, num) ->
-        `var lendest`
-        `var lensrc`
         if rt.isArrayType(dest.t) and rt.isArrayType(src.t)
             srcarr = src.v.target
             destarr = dest.v.target
-            if srcarr == destarr
+            if srcarr is destarr
                 i = src.v.position
                 j = dest.v.position
                 if i < j
@@ -132,13 +128,12 @@ module.exports = load: (rt) ->
             i = str.v.position
             while i < arr.length and arr[i].v != 0
                 i++
-            if i == arr.length
+            if i is arr.length
                 rt.raiseException "target string does not have a pending \"\\0\""
             else
-                return i - str.v.position
+                return rt.val(rt.intTypeLiteral, i - str.v.position)
         else
             rt.raiseException "target is not an array"
-        return
     ), "global", "strlen", [ pchar ], sizet
     rt.regFunc ((rt, _this, dest, src) ->
         if rt.isArrayType(dest.t) and rt.isArrayType(src.t)
@@ -146,13 +141,12 @@ module.exports = load: (rt) ->
             i = src.v.position
             destarr = dest.v.target
             j = dest.v.position
-            while i < srcarr.length and j < destarr.length and srcarr[i].v == destarr[i].v
+            while i < srcarr.length and j < destarr.length and srcarr[i].v is destarr[i].v
                 i++
                 j++
             return rt.val(rt.intTypeLiteral, destarr[i].v - srcarr[i].v)
         else
             rt.raiseException "str1 or str2 is not an array"
-        return
     ), "global", "strcmp", [
         pchar
         pchar
@@ -163,14 +157,13 @@ module.exports = load: (rt) ->
             i = src.v.position
             destarr = dest.v.target
             j = dest.v.position
-            while num > 0 and i < srcarr.length and j < destarr.length and srcarr[i].v == destarr[i].v
+            while num > 0 and i < srcarr.length and j < destarr.length and srcarr[i].v is destarr[i].v
                 i++
                 j++
                 num--
             return rt.val(rt.intTypeLiteral, destarr[i].v - srcarr[i].v)
         else
             rt.raiseException "str1 or str2 is not an array"
-        return
     ), "global", "strncmp", [
         pchar
         pchar
@@ -182,15 +175,14 @@ module.exports = load: (rt) ->
             i = str.v.position
             while i < arr.length and arr[i].v != 0 and arr[i].v != ch.v
                 i++
-            if arr[i].v == 0
+            if arr[i].v is 0
                 return rt.val(pchar, rt.nullPointerValue)
-            else if arr[i].v == ch.v
+            else if arr[i].v is ch.v
                 return rt.val(pchar, rt.makeArrayPointerValue(arr, i))
             else
                 rt.raiseException "target string does not have a pending \"\\0\""
         else
             rt.raiseException "str1 or str2 is not an array"
-        return
     ), "global", "strchr", [
         pchar
         rt.charTypeLiteral
@@ -201,10 +193,10 @@ module.exports = load: (rt) ->
             i = str.v.position
             lastpos = -1
             while i < arr.length and arr[i].v != 0
-                if arr[i].v == ch.v
+                if arr[i].v is ch.v
                     lastpos = i
                 i++
-            if arr[i].v == 0
+            if arr[i].v is 0
                 if lastpos >= 0
                     return rt.val(pchar, rt.makeArrayPointerValue(arr, lastpos))
                 else
@@ -213,7 +205,6 @@ module.exports = load: (rt) ->
                 rt.raiseException "target string does not have a pending \"\\0\""
         else
             rt.raiseException "str1 or str2 is not an array"
-        return
     ), "global", "strrchr", [
         pchar
         rt.charTypeLiteral
@@ -227,23 +218,21 @@ module.exports = load: (rt) ->
             while i < arr.length and arr[i].v != 0
                 j = str2.v.position
                 _i = i
-                while j < tar.length and str1[_i].v == str2[j]
+                while j < tar.length and str1[_i].v is str2[j]
                     _i++
                     j++
-                if j == tar.length
+                if j is tar.length
                     break
                 i++
-            if arr[i].v == 0
+            if arr[i].v is 0
                 return rt.val(pchar, rt.nullPointerValue)
-            else if i == arr.length
+            else if i is arr.length
                 rt.raiseException "target string does not have a pending \"\\0\""
             else
                 return rt.val(pchar, rt.makeArrayPointerValue(arr, i))
         else
             rt.raiseException "str1 or str2 is not an array"
-        return
     ), "global", "strstr", [
         pchar
         rt.charTypeLiteral
     ], pchar
-    return
