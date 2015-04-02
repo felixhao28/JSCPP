@@ -247,7 +247,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- (dev-side) Reworked testing, now all tests are defined in `test.json`
 	- Fixed a bug related to a.push(b).concat(c) in syntax parser (#1).
 	- Added new tests
-* v1.0.4 (4.2)
+* v1.1.0 (4.2)
 	- Fixed array initialization with 0 issue
 	- Added support for reading string with cin
 	- Member function should not be registered globally
