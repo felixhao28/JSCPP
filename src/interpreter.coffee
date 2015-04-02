@@ -375,6 +375,8 @@ Interpreter = (rt) ->
         StringLiteralExpression: (interp, s, param) ->
             str = s.value
             interp.rt.makeCharArrayFromString str
+        BooleanConstant: (interp, s, param) ->
+            interp.rt.val interp.rt.boolTypeLiteral, s.value is "true"
         CharacterConstant: (interp, s, param) ->
             a = s.Char
             if a.length != 1

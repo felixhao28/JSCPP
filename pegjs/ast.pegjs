@@ -589,47 +589,49 @@ LineComment = "//" a:(!"\n" _)*  {return a.join('');};     // 6.4.9
 //  A.1.2  Keywords
 //-------------------------------------------------------------------------
 
-AUTO      = a:"auto"       !IdChar Spacing {return a;};
-BREAK     = a:"break"      !IdChar Spacing {return a;};
-CASE      = a:"case"       !IdChar Spacing {return a;};
-CHAR      = a:"char"       !IdChar Spacing {return a;};
-CONST     = a:"const"      !IdChar Spacing {return a;};
-CONTINUE  = a:"continue"   !IdChar Spacing {return a;};
-DEFAULT   = a:"default"    !IdChar Spacing {return a;};
-DOUBLE    = a:"double"     !IdChar Spacing {return a;};
-DO        = a:"do"         !IdChar Spacing {return a;};
-ELSE      = a:"else"       !IdChar Spacing {return a;};
-ENUM      = a:"enum"       !IdChar Spacing {return a;};
-EXTERN    = a:"extern"     !IdChar Spacing {return a;};
-FLOAT     = a:"float"      !IdChar Spacing {return a;};
-FOR       = a:"for"        !IdChar Spacing {return a;};
-GOTO      = a:"goto"       !IdChar Spacing {return a;};
-IF        = a:"if"         !IdChar Spacing {return a;};
-INT       = a:"int"        !IdChar Spacing {return a;};
-INLINE    = a:"inline"     !IdChar Spacing {return a;};
-LONG      = a:"long"       !IdChar Spacing {return a;};
-REGISTER  = a:"register"   !IdChar Spacing {return a;};
-RESTRICT  = a:"restrict"   !IdChar Spacing {return a;};
-RETURN    = a:"return"     !IdChar Spacing {return a;};
-SHORT     = a:"short"      !IdChar Spacing {return a;};
-SIGNED    = a:"signed"     !IdChar Spacing {return a;};
-SIZEOF    = a:"sizeof"     !IdChar Spacing {return a;};
-STATIC    = a:"static"     !IdChar Spacing {return a;};
-STRUCT    = a:"struct"     !IdChar Spacing {return a;};
-SWITCH    = a:"switch"     !IdChar Spacing {return a;};
-TYPEDEF   = a:"typedef"    !IdChar Spacing {return a;};
-UNION     = a:"union"      !IdChar Spacing {return a;};
-UNSIGNED  = a:"unsigned"   !IdChar Spacing {return a;};
-VOID      = a:"void"       !IdChar Spacing {return a;};
-VOLATILE  = a:"volatile"   !IdChar Spacing {return a;};
-WHILE     = a:"while"      !IdChar Spacing {return a;};
-BOOL      = a:"_Bool"      !IdChar Spacing {return a;};
-COMPLEX   = a:"_Complex"   !IdChar Spacing {return a;};
-STDCALL   = a:"_stdcall"   !IdChar Spacing {return a;};
-DECLSPEC  = a:"__declspec" !IdChar Spacing {return a;};
+AUTO      = a:"auto"          !IdChar Spacing {return a;};
+BREAK     = a:"break"         !IdChar Spacing {return a;};
+CASE      = a:"case"          !IdChar Spacing {return a;};
+CHAR      = a:"char"          !IdChar Spacing {return a;};
+CONST     = a:"const"         !IdChar Spacing {return a;};
+CONTINUE  = a:"continue"      !IdChar Spacing {return a;};
+DEFAULT   = a:"default"       !IdChar Spacing {return a;};
+DOUBLE    = a:"double"        !IdChar Spacing {return a;};
+DO        = a:"do"            !IdChar Spacing {return a;};
+ELSE      = a:"else"          !IdChar Spacing {return a;};
+ENUM      = a:"enum"          !IdChar Spacing {return a;};
+EXTERN    = a:"extern"        !IdChar Spacing {return a;};
+FLOAT     = a:"float"         !IdChar Spacing {return a;};
+FOR       = a:"for"           !IdChar Spacing {return a;};
+GOTO      = a:"goto"          !IdChar Spacing {return a;};
+IF        = a:"if"            !IdChar Spacing {return a;};
+INT       = a:"int"           !IdChar Spacing {return a;};
+INLINE    = a:"inline"        !IdChar Spacing {return a;};
+LONG      = a:"long"          !IdChar Spacing {return a;};
+REGISTER  = a:"register"      !IdChar Spacing {return a;};
+RESTRICT  = a:"restrict"      !IdChar Spacing {return a;};
+RETURN    = a:"return"        !IdChar Spacing {return a;};
+SHORT     = a:"short"         !IdChar Spacing {return a;};
+SIGNED    = a:"signed"        !IdChar Spacing {return a;};
+SIZEOF    = a:"sizeof"        !IdChar Spacing {return a;};
+STATIC    = a:"static"        !IdChar Spacing {return a;};
+STRUCT    = a:"struct"        !IdChar Spacing {return a;};
+SWITCH    = a:"switch"        !IdChar Spacing {return a;};
+TYPEDEF   = a:"typedef"       !IdChar Spacing {return a;};
+UNION     = a:"union"         !IdChar Spacing {return a;};
+UNSIGNED  = a:"unsigned"      !IdChar Spacing {return a;};
+VOID      = a:"void"          !IdChar Spacing {return a;};
+VOLATILE  = a:"volatile"      !IdChar Spacing {return a;};
+WHILE     = a:"while"         !IdChar Spacing {return a;};
+BOOL      = a:"_Bool"         !IdChar Spacing {return a;};
+COMPLEX   = a:"_Complex"      !IdChar Spacing {return a;};
+STDCALL   = a:"_stdcall"      !IdChar Spacing {return a;};
+DECLSPEC  = a:"__declspec"    !IdChar Spacing {return a;};
 ATTRIBUTE = a:"__attribute__" !IdChar Spacing {return a;};
-NAMESPACE = a:"namespace" !IdChar Spacing {return a;};
-USING     = a:"using" !IdChar Spacing {return a;};
+NAMESPACE = a:"namespace"     !IdChar Spacing {return a;};
+USING     = a:"using"         !IdChar Spacing {return a;};
+TRUE      = a:"true"          !IdChar Spacing {return a;};
+FALSE      = a:"false"          !IdChar Spacing {return a;};
 
 Keyword
     = ( "auto"
@@ -674,6 +676,8 @@ Keyword
       / "__attribute__"
       / "namespace"
       / "using"
+      / "true"
+      / "false"
       )
     !IdChar ;
 
@@ -729,8 +733,14 @@ Constant
     = a:(FloatConstant 
     / IntegerConstant 
     / EnumerationConstant 
-    / CharacterConstant) {return a;}
+    / CharacterConstant
+    / BooleanConstant) {return a;}
     ;
+
+BooleanConstant
+    = a:(TRUE / FALSE) {
+      return addPositionInfo({type:'BooleanConstant', value:a});
+    }
 
 IntegerConstant
     = a:( DecimalConstant

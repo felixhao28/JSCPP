@@ -54,7 +54,7 @@ module.exports = load: (rt) ->
                 when "bool"
                     b = _skipSpace(b)
                     r = _read(rt, /^(true|false)/, b, t.t)
-                    v = r[0] == "true"
+                    v = r[0] is "true"
                 else
                     throw ">> operator in istream cannot accept " + rt.makeTypeString(t.t)
             len = r[0].length
@@ -75,6 +75,8 @@ module.exports = load: (rt) ->
             if rt.isPrimitiveType(t.t)
                 if t.t.name.indexOf("char") >= 0
                     r = String.fromCharCode(t.v)
+                else if t.t.name is "bool"
+                    r = if t.v then 1 else 0
                 else
                     r = t.v.toString()
             else
