@@ -6,12 +6,21 @@
 			width: 750px;
 			height: 400px;
 		}
+		.debug-highlight {
+			position: absolute;
+			z-index: 20;
+			background-color: red;
+		}
 	</style>
 </head>
 <body>
-	<script src="JSCPP.min.js"></script>
+	<script src="JSCPP.js"></script>
 	<script type="text/javascript">
-		function run(code, input){
+		myDebugger = null;
+		function run(code, input, debug){
+			if (debug) {
+				myDebugger = new JSCPP.Debugger();
+			}
 			var config = {
 				stdio: {
 					drain: function() {
@@ -22,27 +31,108 @@
 					write: function(s) {
 						output.value += s;
 					}
-				}
+				},
+				debug: debug,
+				debugger: myDebugger
 			}
 			return JSCPP.launcher.run(code, input, config);
 		}
 
-		function exe(){
-			var code = ace.edit("editor").getSession().getValue();
+		function exe(debug){
+			var code = editor.getSession().getValue();
 			var input = document.getElementById('input').value;
 			var output = document.getElementById('output');
 			output.value = '';
 			try{
 				var before = new Date().getTime();
-				var retcode = run(code, input);
+				var retcode = run(code, input, debug);
 				var ellaps = new Date().getTime() - before;
-				output.value += '\nprogram exited with code ' + retcode + ' in '+ellaps+'ms\n';
+				exitInfo = '\nprogram exited with code ' + retcode + ' in '+ellaps+'ms\n'
+				if (debug){
+					beginDebug(code);
+				}else{
+					output.value += exitInfo;
+				}
 			}catch(e){
 				output.value += e + '\n';
 			}
 		}
+
+		function next() {
+			if (debugMarkerId === false)
+				return;
+			var hasNext = myDebugger.next();
+			if (!hasNext){
+				stop();
+			}
+			else
+				refreshDebug();
+		}
+
+		function prev() {
+			if (debugMarkerId === false)
+				return;
+			myDebugger.prev();
+			refreshDebug();
+		}
+
+		debugMarkerId = false;
+
+		function refreshDebug() {
+			var s = myDebugger.nextStmt();
+			if (debugMarkerId !== false)
+				editor.getSession().removeMarker(debugMarkerId);
+
+			debugMarkerId = editor.getSession().addMarker(new Range(s.reportedLine-1,s.reportedColumn-1,s.reportedLine-1,s.reportedColumn), "debug-highlight", "fullLine");
+
+			var taVar = document.getElementById("variables");
+			var vs = myDebugger.variable();
+			taVar.value = "";
+			for (var i = 0 ; i < vs.length ;i ++){
+				taVar.value += JSON.stringify(vs[i]) + "\n";
+			}
+
+			var output = document.getElementById('output');
+			output.value = myDebugger.output();
+		}
+
+		function beginDebug(code){
+			document.getElementById("btn_stop").style.display = 'inline';
+			document.getElementById("btn_next").style.display = 'inline';
+			document.getElementById("btn_prev").style.display = 'inline';
+			document.getElementById("variables").style.display = 'block';
+			editor.setReadOnly(true);
+			codeBackup = code;
+			editor.getSession().setValue(myDebugger.src);
+			refreshDebug();
+		}
+
+		function stop(){
+			if (debugMarkerId !== false) {
+    			editor.getSession().setValue(codeBackup);
+    			editor.setReadOnly(false);
+				if (debugMarkerId !== false)
+					editor.getSession().removeMarker(debugMarkerId);
+				debugMarkerId = false;
+				var taVar = document.getElementById("variables");
+				taVar.value = "debug ended"
+				var output = document.getElementById('output');
+				output.value += exitInfo;
+				document.getElementById("btn_stop").style.display = 'none';
+				document.getElementById("btn_next").style.display = 'none';
+				document.getElementById("btn_prev").style.display = 'none';
+				document.getElementById("variables").style.display = 'none';
+			}
+		}
 	</script>
-	<div>JSCPP, a simple C++ interpreter written in JavaScript<br>Project home page: <a href="https://github.com/felixhao28/JSCPP">https://github.com/felixhao28/JSCPP</a></div>
+	<div><h1>JSCPP, a simple C++ interpreter written in JavaScript</h1>
+	<br>Project home page: <a href="https://github.com/felixhao28/JSCPP">https://github.com/felixhao28/JSCPP</a></div>
+		<button onclick="exe(false)">Run</button>
+		<button onclick="exe(true)">Debug</button>
+		<button style="display: none;" id="btn_stop" onclick="stop()">stop</button>
+		<button style="display: none;" id="btn_next" onclick="next()">next</button>
+		<button style="display: none;" id="btn_prev" onclick="prev()">prev</button>
+		<br/>
 	<div style="padding: 5px;">
 		Code editor<br/>
 		<div id="editor">#include &lt;iostream&gt;
@@ -57,7 +147,7 @@ int main() {
 	<script src="./ace/src-noconflict/ext-language_tools.js"></script>
 		<script>
 			ace.require("ace/ext/language_tools");
-			var editor = ace.edit("editor");
+			editor = ace.edit("editor");
 			editor.setOptions({
 				showLineNumbers: true,
 				enableBasicAutocompletion: true,
@@ -66,8 +156,9 @@ int main() {
 			});
 			editor.setTheme("ace/theme/monokai");
 			editor.getSession().setMode("ace/mode/c_cpp");
+			Range = ace.require("ace/range").Range;
 		</script>
-		<button onclick="exe()">Run</button><br/>
+		<textarea style="display: none;" id="variables" rows="10" cols="50"></textarea>
 	<div>
 		<div style="float: left;padding: 5px;">
 			Standard input<br/>
