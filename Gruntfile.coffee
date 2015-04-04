@@ -1,6 +1,6 @@
 module.exports = (grunt) ->
 	grunt.initConfig
-        pkg: grunt.file.readJSON 'package.json'
+        pkg: grunt.file.readJSON "package.json"
 
         copy:
             build:
@@ -50,7 +50,7 @@ module.exports = (grunt) ->
         mochaTest:
             test:
                 options:
-                    reporter: 'spec',
+                    reporter: "spec",
                     captureFile: "test.log"
                 src: ["test/**/*.js"]
 
@@ -65,23 +65,25 @@ module.exports = (grunt) ->
         watch:
             coffee:
                 files: ["src/**/*.coffee", "test/test.coffee", "demo/*.coffee"]
-                tasks: ["coffee"]
+                tasks: ["newer:coffee"]
             peg:
                 files: "pegjs/**/*.pegjs"
-                tasks: ["peg"]
+                tasks: ["newer:peg"]
             copy:
                 files: ["src/**", "!src/**/*.coffee"]
-                tasks: ["copy"]
+                tasks: ["newer:copy"]
 
-    grunt.loadNpmTasks 'grunt-contrib-copy'
-    grunt.loadNpmTasks 'grunt-contrib-clean'
-    grunt.loadNpmTasks 'grunt-contrib-coffee'
-    grunt.loadNpmTasks 'grunt-browserify'
-    grunt.loadNpmTasks 'grunt-contrib-uglify'
-    grunt.loadNpmTasks 'grunt-mocha-test'
-    grunt.loadNpmTasks 'grunt-peg'
+    grunt.loadNpmTasks "grunt-contrib-copy"
+    grunt.loadNpmTasks "grunt-contrib-clean"
+    grunt.loadNpmTasks "grunt-contrib-coffee"
+    grunt.loadNpmTasks "grunt-browserify"
+    grunt.loadNpmTasks "grunt-contrib-uglify"
+    grunt.loadNpmTasks "grunt-mocha-test"
+    grunt.loadNpmTasks "grunt-peg"
     grunt.loadNpmTasks "grunt-contrib-watch"
+    grunt.loadNpmTasks "grunt-newer"
 
-    grunt.registerTask "build", "to build", ["clean", "copy", "peg", "coffee", "browserify", "uglify"]
+    grunt.registerTask "build", "to build", ["clean", "copy", "peg", "coffee", "dist"]
+    grunt.registerTask "dist", "to make distribution version", ["browserify", "uglify"]
     grunt.registerTask "test", "to test", ["mochaTest"]
     grunt.registerTask "default", "to watch & compile", ["build", "watch"]

@@ -13,14 +13,13 @@ Debugger::next = ->
     if @i >= @snapshots.length
         return false
     @rt = diffpatch.patch(@rt, @snapshots[@i++].diff)
-    @fakeRT.types = @rt.types
     @fakeRT.scope = @rt.scope
     @i < @snapshots.length
 
 Debugger::prev = ->
     if @i <= 1
         return false
-    @rt = diffpatch.reverse(@rt, @snapshots[--@i].diff)
+    @rt = diffpatch.unpatch(@rt, @snapshots[--@i].diff)
     @fakeRT.types = @rt.types
     @fakeRT.scope = @rt.scope
     @i > 0
@@ -37,9 +36,6 @@ Debugger::nextLine = ->
 
 Debugger::nextStmt = ->
     @snapshots[@i].stmt
-
-Debugger::type = (name) ->
-    @rt.types[name]
 
 Debugger::variable = (name) ->
     if name

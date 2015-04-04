@@ -1,69 +1,62 @@
+#JSCPP = require "JSCPP"
 JSCPP = require "../lib/main"
-fs = require "fs"
 
-config = {}
+code = """
+#include <iostream>
+using namespace std;
+int main() {
 
-mydebugger = new JSCPP.Debugger()
+    int n = 0, m = 0;
+    char a[100][100];
+    cin >> n;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> a[i][j];
 
-if process.argv.length > 2
-    testName = process.argv[2];
-    configs = process.argv.slice(3)
-    if "-debug" in configs
-        config.debug = true
-        config.debugger = mydebugger
-else
-    testName = "maze"
+    cin >> m;
+    m--;
+    while (m--) {
+        for (int i2 = 0; i2 < n; i2++)
+            for (int j2 = 0; j2 < n; j2++) {
+                if (a[i2][j2] == '@') {
+                    if (i2 > 0 && a[i2 - 1][j2] == '.')
+                        a[i2 - 1][j2] = 1;
+                    if (i2 < n - 1 && a[i2 + 1][j2] == '.')
+                        a[i2 + 1][j2] = 1;
+                    if (j2 > 0 && a[i2][j2 - 1] == '.')
+                        a[i2][j2 - 1] = 1;
+                    if (j2 < n - 1 && a[i2][j2 + 1] == '.')
+                        a[i2][j2 + 1] = 1;
+                }
+            }
+        for (int i3 = 0; i3 < n; i3++)
+            for (int j3 = 0; j3 < n; j3++) {
+                if (a[i3][j3] == 1)
+                    a[i3][j3] = '@';
+            }
+    }
 
-tests = JSON.parse(fs.readFileSync("test/test.json"))
+    int c = 0;
+    for (int i4 = 0; i4 < n; i4++)
+        for (int j4 = 0; j4 < n; j4++)
+            if (a[i4][j4] == '@')
+                c++;
 
-cppFile = tests.tests[testName].cpp[0]
-input = tests.tests[testName].cases[0].in
+    cout << c << endl;
 
-code = fs.readFileSync("./test/" + cppFile)
-exitcode = JSCPP.launcher.run(code, input, config)
+    return 0;
+
+}
+"""
+input = """
+5
+....#
+.#.@.
+.#@..
+#....
+.....
+4
+"""
+
+exitcode = JSCPP.launcher.run(code, input)
 console.info("\nprogram exited with code #{exitcode}")
-
-if config.debug
-    readline = require "readline"
-    rl = readline.createInterface(process.stdin, process.stdout)
-    rl.setPrompt("\ndebug> ")
-    
-    console.log "==>" + mydebugger.nextLine()
-    rl.prompt()
-
-    String::startsWith = (s) ->
-        this.slice(s.length) is s
-    
-    lastOutputPos = 0
-
-    rl.on "line", (line) ->
-        try
-            hasNext = true
-            cmds = line.trim().split(" ")
-            switch cmds[0]
-                when "n"
-                    hasNext = mydebugger.next()
-                    newoutput = mydebugger.output()
-                    if newoutput.length > lastOutputPos
-                        console.log "=======output======="
-                        console.log newoutput.slice(lastOutputPos)
-                        console.log "=======output======="
-                        lastOutputPos = newoutput.length
-                when "p"
-                    hasPrev = mydebugger.prev()
-                when "t"
-                    console.log mydebugger.type(cmds[1])
-                when "v"
-                    console.log mydebugger.variable(cmds[1])
-                when "c"
-                    s = mydebugger.nextStmt()
-                    console.log "#{s.line}:#{s.column}(#{s.pos}) - #{s.reportedLine}:#{s.reportedColumn}(#{s.reportedPos})"
-        catch e
-            console.log "command failed: " + e.stack
-
-        if hasNext
-            console.log "==>" + mydebugger.nextLine()
-            rl.prompt()
-        else
-            rl.close()
-        

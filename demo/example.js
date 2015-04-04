@@ -1,85 +1,11 @@
-var JSCPP, code, config, configs, cppFile, exitcode, fs, input, lastOutputPos, mydebugger, readline, rl, testName, tests,
-  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+var JSCPP, code, exitcode, input;
 
 JSCPP = require("../lib/main");
 
-fs = require("fs");
+code = "#include <iostream>\nusing namespace std;\nint main() {\n\n    int n = 0, m = 0;\n    char a[100][100];\n    cin >> n;\n    for (int i = 0; i < n; i++)\n        for (int j = 0; j < n; j++)\n            cin >> a[i][j];\n\n    cin >> m;\n    m--;\n    while (m--) {\n        for (int i2 = 0; i2 < n; i2++)\n            for (int j2 = 0; j2 < n; j2++) {\n                if (a[i2][j2] == '@') {\n                    if (i2 > 0 && a[i2 - 1][j2] == '.')\n                        a[i2 - 1][j2] = 1;\n                    if (i2 < n - 1 && a[i2 + 1][j2] == '.')\n                        a[i2 + 1][j2] = 1;\n                    if (j2 > 0 && a[i2][j2 - 1] == '.')\n                        a[i2][j2 - 1] = 1;\n                    if (j2 < n - 1 && a[i2][j2 + 1] == '.')\n                        a[i2][j2 + 1] = 1;\n                }\n            }\n        for (int i3 = 0; i3 < n; i3++)\n            for (int j3 = 0; j3 < n; j3++) {\n                if (a[i3][j3] == 1)\n                    a[i3][j3] = '@';\n            }\n    }\n\n    int c = 0;\n    for (int i4 = 0; i4 < n; i4++)\n        for (int j4 = 0; j4 < n; j4++)\n            if (a[i4][j4] == '@')\n                c++;\n\n    cout << c << endl;\n\n    return 0;\n\n}";
 
-config = {};
+input = "5\n....#\n.#.@.\n.#@..\n#....\n.....\n4";
 
-mydebugger = new JSCPP.Debugger();
-
-if (process.argv.length > 2) {
-  testName = process.argv[2];
-  configs = process.argv.slice(3);
-  if (indexOf.call(configs, "-debug") >= 0) {
-    config.debug = true;
-    config["debugger"] = mydebugger;
-  }
-} else {
-  testName = "maze";
-}
-
-tests = JSON.parse(fs.readFileSync("test/test.json"));
-
-cppFile = tests.tests[testName].cpp[0];
-
-input = tests.tests[testName].cases[0]["in"];
-
-code = fs.readFileSync("./test/" + cppFile);
-
-exitcode = JSCPP.launcher.run(code, input, config);
+exitcode = JSCPP.launcher.run(code, input);
 
 console.info("\nprogram exited with code " + exitcode);
-
-if (config.debug) {
-  readline = require("readline");
-  rl = readline.createInterface(process.stdin, process.stdout);
-  rl.setPrompt("\ndebug> ");
-  console.log("==>" + mydebugger.nextLine());
-  rl.prompt();
-  String.prototype.startsWith = function(s) {
-    return this.slice(s.length) === s;
-  };
-  lastOutputPos = 0;
-  rl.on("line", function(line) {
-    var cmds, e, hasNext, hasPrev, newoutput, s;
-    try {
-      hasNext = true;
-      cmds = line.trim().split(" ");
-      switch (cmds[0]) {
-        case "n":
-          hasNext = mydebugger.next();
-          newoutput = mydebugger.output();
-          if (newoutput.length > lastOutputPos) {
-            console.log("=======output=======");
-            console.log(newoutput.slice(lastOutputPos));
-            console.log("=======output=======");
-            lastOutputPos = newoutput.length;
-          }
-          break;
-        case "p":
-          hasPrev = mydebugger.prev();
-          break;
-        case "t":
-          console.log(mydebugger.type(cmds[1]));
-          break;
-        case "v":
-          console.log(mydebugger.variable(cmds[1]));
-          break;
-        case "c":
-          s = mydebugger.nextStmt();
-          console.log(s.line + ":" + s.column + "(" + s.pos + ") - " + s.reportedLine + ":" + s.reportedColumn + "(" + s.reportedPos + ")");
-      }
-    } catch (_error) {
-      e = _error;
-      console.log("command failed: " + e.stack);
-    }
-    if (hasNext) {
-      console.log("==>" + mydebugger.nextLine());
-      return rl.prompt();
-    } else {
-      return rl.close();
-    }
-  });
-}

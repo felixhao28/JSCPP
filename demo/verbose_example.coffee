@@ -1,3 +1,4 @@
+#JSCPP = require "JSCPP"
 JSCPP = require "../lib/main"
 fs = require "fs"
 

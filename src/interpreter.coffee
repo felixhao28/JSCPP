@@ -1,10 +1,18 @@
 diffpatch = require('jsondiffpatch').create(null)
 
 jsoncopy = (rt) ->
-    JSON.parse JSON.stringify
-        types: rt.types
+    target =
         scope: rt.scope
         debugOutput: rt.debugOutput
+    replacer = (key, value) ->
+        if typeof value is "object" and "t" of value and "v" of value
+                t: value.t
+                v: value.v
+        else
+            value
+
+    JSON.parse JSON.stringify target, replacer
+
 
 Interpreter = (rt) ->
     @rt = rt

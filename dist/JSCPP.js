@@ -10769,7 +10769,7 @@ Debugger.prototype.prev = function() {
   if (this.i <= 1) {
     return false;
   }
-  this.rt = diffpatch.reverse(this.rt, this.snapshots[--this.i].diff);
+  this.rt = diffpatch.unpatch(this.rt, this.snapshots[--this.i].diff);
   this.fakeRT.types = this.rt.types;
   this.fakeRT.scope = this.rt.scope;
   return this.i > 0;
@@ -13249,7 +13249,7 @@ var launcher, main;
 launcher = require("./launcher");
 
 main = {
-  version: "1.0.4",
+  version: "1.1.0",
   launcher: launcher,
   includes: launcher.includes,
   runtime: require("./rt"),

@@ -253,3 +253,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- Member function should not be registered globally
 	- Added new tests
 	- Basic debugging support
+* v1.1.1 (4.3)
+	- Split debugger from example
+	- (dev-side) Grunt only watches newer
+	- Fix debug prev command
