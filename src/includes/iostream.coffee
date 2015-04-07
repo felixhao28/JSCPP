@@ -104,7 +104,7 @@ module.exports = load: (rt) ->
                     if t.t.name.indexOf("char") >= 0
                         r = String.fromCharCode(t.v)
                     else if t.t.name is "bool"
-                        r = if t.v then 1 else 0
+                        r = if t.v then "1" else "0"
                     else
                         r = t.v.toString()
                 else
