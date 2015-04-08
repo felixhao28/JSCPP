@@ -38,8 +38,8 @@ module.exports =
         code = code.toString()
         code = preprocessor.parse(rt, code)
 
-        if config.debug
-            config.debugger.src = code
+        if _config.debug
+            _config.debugger.src = code
 
         tree = ast.parse(code)
         interpreter = new Interpreter(rt)

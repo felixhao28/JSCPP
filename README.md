@@ -40,13 +40,21 @@ Use __launcher.run__
 ```js
 var JSCPP = require('JSCPP');
 var launcher = JSCPP.launcher;
-var code = 'int main(){int a;cin>>a;cout<<a;return 0;}';
+var code =    "#include <iostream>"    + "\n"
+            + "using namespace std;"   + "\n"
+            + "int main() {"           + "\n"
+            + "    int a;"             + "\n"
+            + "    cin >> a;"          + "\n"
+            + "    cout << a << endl;" + "\n"
+            + "    return 0;"          + "\n"
+            + "}"                      + "\n"
+;
 var input = '4321';
 var exitcode = launcher.run(code, input);
 console.info('program exited with code ' + exitcode);
 ```
 
-See _example.js_ for example.
+See _demo/example.coffee_ for example.
 
 Or do it step by step:
 
