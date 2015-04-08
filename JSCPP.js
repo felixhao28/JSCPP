@@ -10760,7 +10760,6 @@ Debugger.prototype.next = function() {
     return false;
   }
   this.rt = diffpatch.patch(this.rt, this.snapshots[this.i++].diff);
-  this.fakeRT.types = this.rt.types;
   this.fakeRT.scope = this.rt.scope;
   return this.i < this.snapshots.length;
 };
@@ -10769,7 +10768,7 @@ Debugger.prototype.prev = function() {
   if (this.i <= 1) {
     return false;
   }
-  this.rt = diffpatch.reverse(this.rt, this.snapshots[--this.i].diff);
+  this.rt = diffpatch.unpatch(this.rt, this.snapshots[--this.i].diff);
   this.fakeRT.types = this.rt.types;
   this.fakeRT.scope = this.rt.scope;
   return this.i > 0;
@@ -10791,10 +10790,6 @@ Debugger.prototype.nextLine = function() {
 
 Debugger.prototype.nextStmt = function() {
   return this.snapshots[this.i].stmt;
-};
-
-Debugger.prototype.type = function(name) {
-  return this.rt.types[name];
 };
 
 Debugger.prototype.variable = function(name) {
@@ -12395,7 +12390,7 @@ module.exports = {
             if (t.t.name.indexOf("char") >= 0) {
               r = String.fromCharCode(t.v);
             } else if (t.t.name === "bool") {
-              r = t.v ? 1 : 0;
+              r = t.v ? "1" : "0";
             } else {
               r = t.v.toString();
             }
@@ -12445,11 +12440,22 @@ var Interpreter, diffpatch, jsoncopy;
 diffpatch = require('jsondiffpatch').create(null);
 
 jsoncopy = function(rt) {
-  return JSON.parse(JSON.stringify({
-    types: rt.types,
+  var replacer, target;
+  target = {
     scope: rt.scope,
     debugOutput: rt.debugOutput
-  }));
+  };
+  replacer = function(key, value) {
+    if (typeof value === "object" && "t" in value && "v" in value) {
+      return {
+        t: value.t,
+        v: value.v
+      };
+    } else {
+      return value;
+    }
+  };
+  return JSON.parse(JSON.stringify(target, replacer));
 };
 
 Interpreter = function(rt) {
@@ -13249,7 +13255,7 @@ var launcher, main;
 launcher = require("./launcher");
 
 main = {
-  version: "1.1.0",
+  version: "1.0.4",
   launcher: launcher,
   includes: launcher.includes,
   runtime: require("./rt"),

@@ -133,6 +133,7 @@
 		<button style="display: none;" id="btn_next" onclick="next()">next</button>
 		<button style="display: none;" id="btn_prev" onclick="prev()">prev</button>
 		<br/>
+		<textarea style="display: none;" id="variables" rows="10" cols="50"></textarea>
 	<div style="padding: 5px;">
 		Code editor<br/>
 		<div id="editor">#include &lt;iostream&gt;
@@ -158,7 +159,6 @@ int main() {
 			editor.getSession().setMode("ace/mode/c_cpp");
 			Range = ace.require("ace/range").Range;
 		</script>
-		<textarea style="display: none;" id="variables" rows="10" cols="50"></textarea>
 	<div>
 		<div style="float: left;padding: 5px;">
 			Standard input<br/>
