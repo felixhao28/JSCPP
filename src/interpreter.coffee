@@ -572,10 +572,11 @@ Interpreter::buildRecursivePointerType = (pointer, basetype, level) ->
 
 Interpreter::recordSnapshot = (stmt) ->
     if @rt.config.debug is true
-        lastSnapshot = @snapshots[@snapshots.length-1] or {}
+        lastSnapshot = @lastSnapshot or {}
         currentSnapshot = jsoncopy(@rt)
         @snapshots.push
             stmt: stmt
             diff: diffpatch.diff(lastSnapshot, currentSnapshot)
+        @lastSnapshot = currentSnapshot
 
 module.exports = Interpreter

@@ -12,14 +12,20 @@ Debugger = ->
 Debugger::next = ->
     if @i >= @snapshots.length
         return false
-    @rt = diffpatch.patch(@rt, @snapshots[@i++].diff)
+    diff = @snapshots[@i].diff
+    console.log "patching #{@i}"
+    diffpatch.patch(@rt, diff)
     @fakeRT.scope = @rt.scope
+    @i++
     @i < @snapshots.length
 
 Debugger::prev = ->
     if @i <= 1
         return false
-    @rt = diffpatch.unpatch(@rt, @snapshots[--@i].diff)
+    @i--
+    diff = @snapshots[@i].diff
+    console.log "unpatching #{@i}"
+    diffpatch.unpatch(@rt, diff)
     @fakeRT.types = @rt.types
     @fakeRT.scope = @rt.scope
     @i > 0

@@ -10756,19 +10756,27 @@ Debugger = function() {
 };
 
 Debugger.prototype.next = function() {
+  var diff;
   if (this.i >= this.snapshots.length) {
     return false;
   }
-  this.rt = diffpatch.patch(this.rt, this.snapshots[this.i++].diff);
+  diff = this.snapshots[this.i].diff;
+  console.log("patching " + this.i);
+  diffpatch.patch(this.rt, diff);
   this.fakeRT.scope = this.rt.scope;
+  this.i++;
   return this.i < this.snapshots.length;
 };
 
 Debugger.prototype.prev = function() {
+  var diff;
   if (this.i <= 1) {
     return false;
   }
-  this.rt = diffpatch.unpatch(this.rt, this.snapshots[--this.i].diff);
+  this.i--;
+  diff = this.snapshots[this.i].diff;
+  console.log("unpatching " + this.i);
+  diffpatch.unpatch(this.rt, diff);
   this.fakeRT.types = this.rt.types;
   this.fakeRT.scope = this.rt.scope;
   return this.i > 0;
@@ -13172,12 +13180,13 @@ Interpreter.prototype.buildRecursivePointerType = function(pointer, basetype, le
 Interpreter.prototype.recordSnapshot = function(stmt) {
   var currentSnapshot, lastSnapshot;
   if (this.rt.config.debug === true) {
-    lastSnapshot = this.snapshots[this.snapshots.length - 1] || {};
+    lastSnapshot = this.lastSnapshot || {};
     currentSnapshot = jsoncopy(this.rt);
-    return this.snapshots.push({
+    this.snapshots.push({
       stmt: stmt,
       diff: diffpatch.diff(lastSnapshot, currentSnapshot)
     });
+    return this.lastSnapshot = currentSnapshot;
   }
 };
 
@@ -13237,8 +13246,8 @@ module.exports = {
     rt = new CRuntime(_config);
     code = code.toString();
     code = preprocessor.parse(rt, code);
-    if (config.debug) {
-      config["debugger"].src = code;
+    if (_config.debug) {
+      _config["debugger"].src = code;
     }
     tree = ast.parse(code);
     interpreter = new Interpreter(rt);
@@ -13255,7 +13264,7 @@ var launcher, main;
 launcher = require("./launcher");
 
 main = {
-  version: "1.0.4",
+  version: "1.1.1",
   launcher: launcher,
   includes: launcher.includes,
   runtime: require("./rt"),
