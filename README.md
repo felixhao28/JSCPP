@@ -38,7 +38,7 @@ npm install .
 Use __launcher.run__
 
 ```js
-var JSCPP = require('JSCPP');
+var JSCPP = require("JSCPP");
 var launcher = JSCPP.launcher;
 var code =    "#include <iostream>"    + "\n"
             + "using namespace std;"   + "\n"
@@ -49,9 +49,9 @@ var code =    "#include <iostream>"    + "\n"
             + "    return 0;"          + "\n"
             + "}"                      + "\n"
 ;
-var input = '4321';
+var input = "4321";
 var exitcode = launcher.run(code, input);
-console.info('program exited with code ' + exitcode);
+console.info("program exited with code " + exitcode);
 ```
 
 See _demo/example.coffee_ for example.
@@ -60,7 +60,7 @@ Or do it step by step:
 
 Configuring standard IO and libraries
 ```js
-var JSCPP = require('JSCPP');
+var JSCPP = require("JSCPP");
 var Runtime = JSCPP.Runtime;
 var inputbuffer = "1 2 3";
 var rt = new Runtime({
@@ -78,8 +78,8 @@ var rt = new Runtime({
 		}
 	},
 	includes: {
-		iostream: require('./includes/iostream'),
-		cmath: require('./includes/cmath')
+		iostream: require("./includes/iostream"),
+		cmath: require("./includes/cmath")
 		// Of course you can add more libraries here.
 		// These libraries are only made available for "include" to happen
 		// and NOT ready to be used in your cpp code.
@@ -92,9 +92,9 @@ var rt = new Runtime({
 Using preprocessor (experimental)
 ```js
 var preprocessor = JSCPP.preprocessor;
-console.log('preprocessing starting');
+console.log("preprocessing starting");
 code = preprocessor(rt, prepast, code);
-console.log('preprocessing finished');
+console.log("preprocessing finished");
 ```
 
 (Optional) If you choose not to use preprocessor, directives like `#include <...>` will not work, you need to load libraries manually
@@ -107,7 +107,7 @@ Building AST
 ```js
 var ast = JSCPP.ast;
 var tree = ast.parse(code);
-console.log('passed syntax check');
+console.log("passed syntax check");
 ```
 
 Interpreting AST (from global main function)
@@ -115,8 +115,8 @@ Interpreting AST (from global main function)
 var Interpreter = JSCPP.Interpreter;
 var interpreter = new Interpreter(rt);
 interpreter.run(tree);
-var exitCode = rt.getFunc('global', 'main', [])(rt, null, []).v;
-console.info('program exited with code ' + exitCode);
+var exitCode = rt.getFunc("global", "main", [])(rt, null, []).v;
+console.info("program exited with code " + exitCode);
 ```
 
 A full example is available in *demo/verbose_example.coffee*.
