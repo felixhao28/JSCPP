@@ -7,35 +7,37 @@ fs = require("fs");
 
 config = {};
 
-mydebugger = new JSCPP.Debugger();
-
 if (process.argv.length > 2) {
   testName = process.argv[2];
   configs = process.argv.slice(3);
   if (indexOf.call(configs, "-debug") >= 0) {
     config.debug = true;
-    config["debugger"] = mydebugger;
   }
   tests = JSON.parse(fs.readFileSync("test/test.json"));
   cppFile = tests.tests[testName].cpp[0];
   input = tests.tests[testName].cases[0]["in"];
   code = fs.readFileSync("./test/" + cppFile);
-  exitcode = JSCPP.launcher.run(code, input, config);
-  console.info("\nprogram exited with code " + exitcode);
-  if (config.debug) {
-    console.log("Available commands:\nn, next                   : step into\np, prev, b, back          : step back into\nt, type <name>            : internal details of a type <name>\nv, var, variable          : all local variables\nv, var, variable <name>   : a variable called <name>\nc, current, pos, position : current position in source");
+  if (!config.debug) {
+    exitcode = JSCPP.run(code, input, config);
+    console.info("\nprogram exited with code " + exitcode);
+  } else {
+    mydebugger = JSCPP.run(code, input, config);
+    console.log("Available commands:\nn, next                   : step into\nt, type <name>            : internal details of a type <name>\nv, var, variable          : all local variables\nv, var, variable <name>   : a variable called <name>\nc, current, pos, position : current position in source\n");
     readline = require("readline");
     rl = readline.createInterface(process.stdin, process.stdout);
     rl.setPrompt("\ndebug> ");
     srcLines = mydebugger.src.split("\n");
     for (i = j = 0, len = srcLines.length; j < len; i = ++j) {
       l = srcLines[i];
-      console.log((i + 1) + "\t" + l);
+      console.log((i + 1) + ":\t" + l);
     }
     onPrompt = function() {
-      var line;
+      var line, stmt;
+      while ((stmt = mydebugger.nextNode()) == null) {
+        mydebugger.next();
+      }
       console.log("\n\n");
-      line = mydebugger.nextStmt().reportedLine;
+      line = stmt.sLine;
       if (line > 1) {
         console.log(("    " + (line - 1) + ":\t") + srcLines[line - 2]);
       }
@@ -51,26 +53,14 @@ if (process.argv.length > 2) {
     };
     lastOutputPos = 0;
     rl.on("line", function(line) {
-      var cmds, e, hasNext, hasPrev, newoutput, s;
+      var cmds, done, e, s;
       try {
-        hasNext = true;
+        done = false;
         cmds = line.trim().split(" ");
         switch (cmds[0]) {
           case "n":
           case "next":
-            hasNext = mydebugger.next();
-            newoutput = mydebugger.output();
-            if (newoutput.length > lastOutputPos) {
-              console.log(newoutput.slice(lastOutputPos));
-              lastOutputPos = newoutput.length;
-            }
-            break;
-          case "p":
-          case "prev":
-          case "b":
-          case "back":
-            hasPrev = mydebugger.prev();
-            lastOutputPos = mydebugger.output();
+            done = mydebugger["continue"]();
             break;
           case "t":
           case "type":
@@ -84,17 +74,18 @@ if (process.argv.length > 2) {
           case "c":
           case "current":
           case "pos":
-            s = mydebugger.nextStmt();
-            console.log(s.reportedLine + ":" + s.reportedColumn + "(" + s.reportedPos + ") - " + s.line + ":" + s.column + "(" + s.pos + ")");
+            s = mydebugger.nextNode();
+            console.log(s.sLine + ":" + s.sColumn + "(" + s.sOffset + ") - " + s.eLine + ":" + s.eColumn + "(" + s.eOffset + ")");
         }
       } catch (_error) {
         e = _error;
         console.log("command failed: " + e.stack);
       }
-      if (hasNext) {
+      if (done === false) {
         onPrompt();
         return rl.prompt();
       } else {
+        console.log("debugger exited with code " + done.v);
         return rl.close();
       }
     });

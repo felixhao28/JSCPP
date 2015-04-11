@@ -1,6 +1,13 @@
 module.exports = (grunt) ->
-	grunt.initConfig
-        pkg: grunt.file.readJSON "package.json"
+    require("load-grunt-tasks")(grunt)
+    grunt.registerTask "build", "to build", ["clean", "copy", "peg", "coffee", "dist"]
+    grunt.registerTask "build6to5", "to build es6 with traceur", ["traceur", "rename:build_es6", "concat:build_es6"]
+    grunt.registerTask "dist", "to make distribution version", ["browserify:dist"]
+    grunt.registerTask "default", "to watch & compile", ["build", "watch"]
+    grunt.registerTask "test", "to test", ["mochaTest"]
+    pkg = grunt.file.readJSON "package.json"
+    grunt.initConfig
+        pkg: pkg
 
         copy:
             build:
@@ -11,7 +18,7 @@ module.exports = (grunt) ->
 
         clean:
             build:
-                src: ["lib", "dist"]
+                src: ["lib", "dist", "lib-es5"]
 
         coffee:
             build:
@@ -35,23 +42,63 @@ module.exports = (grunt) ->
                         src: ["**/*.coffee"]
                         dest: "demo"
                         ext: ".js"
+                    ,
+                        expand: true
+                        cwd: ""
+                        src: ["*.coffee"]
+                        desc: ""
+                        ext: ".js"
                 ]
 
         browserify:
-            build:
+            dist:
                 files:
                     "dist/JSCPP.js": ["lib/**/*.js"]
+            dist_es6:
+                files:
+                    "dist/JSCPP_es5.js": ["lib-es5/**/*.js", "!lib-es5/traceur_runtime.js", "!lib-es5/main.js"]
 
         uglify:
-            build:
+            dist_es6:
                 files:
-                    "dist/JSCPP.min.js": ["dist/JSCPP.js"]
+                    "dist/JSCPP_es5.min.js": ["dist/JSCPP_es5.js"]
+
+        rename:
+            build_es6:
+                src: "lib-es5/main.js"
+                dest: "lib-es5/main-es6.js"
+
+        concat:
+            build_es6:
+                src:["lib-es5/traceur_runtime.js", "lib-es5/main-es6.js"]
+                dest: "lib-es5/main.js"
+            dist_es6:
+                src:["lib-es5/traceur_runtime.js", "dist/JSCPP_es5.js"]
+                dest: "dist/JSCPP_es5.js"
+
+        traceur:
+            options:
+                sourceMap: false
+                generators: true
+                copyRuntime: "lib-es5"
+            es6:
+                files:[
+                        expand: true
+                        cwd: "lib"
+                        src: ["**/*.js"]
+                        dest: "lib-es5"
+                ]
+            dist_es6:
+                files:
+                    "dist/JSCPP_es5.js": "dist/JSCPP.js"
 
         mochaTest:
             test:
                 options:
                     reporter: "spec",
                     captureFile: "test.log"
+                    require: "mocha-traceur"
+
                 src: ["test/**/*.js"]
 
         peg:
@@ -64,7 +111,7 @@ module.exports = (grunt) ->
 
         watch:
             coffee:
-                files: ["src/**/*.coffee", "test/test.coffee", "demo/*.coffee"]
+                files: ["src/**/*.coffee", "test/test.coffee", "demo/**/*.coffee", "*.coffee", "!Gruntfile.coffee"]
                 tasks: ["newer:coffee"]
             peg:
                 files: "pegjs/**/*.pegjs"
@@ -72,18 +119,3 @@ module.exports = (grunt) ->
             copy:
                 files: ["src/**", "!src/**/*.coffee"]
                 tasks: ["newer:copy"]
-
-    grunt.loadNpmTasks "grunt-contrib-copy"
-    grunt.loadNpmTasks "grunt-contrib-clean"
-    grunt.loadNpmTasks "grunt-contrib-coffee"
-    grunt.loadNpmTasks "grunt-browserify"
-    grunt.loadNpmTasks "grunt-contrib-uglify"
-    grunt.loadNpmTasks "grunt-mocha-test"
-    grunt.loadNpmTasks "grunt-peg"
-    grunt.loadNpmTasks "grunt-contrib-watch"
-    grunt.loadNpmTasks "grunt-newer"
-
-    grunt.registerTask "build", "to build", ["clean", "copy", "peg", "coffee", "dist"]
-    grunt.registerTask "dist", "to make distribution version", ["browserify", "uglify"]
-    grunt.registerTask "test", "to test", ["mochaTest"]
-    grunt.registerTask "default", "to watch & compile", ["build", "watch"]

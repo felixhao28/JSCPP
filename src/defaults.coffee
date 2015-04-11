@@ -403,7 +403,10 @@ module.exports = ->
             l = rt.types['pointer_array']['*']['#default'](rt, l)
             rt.getMember l, r
         '-': '#default': (rt, l, r) ->
-            if rt.isArrayType(r.t)
+            if rt.isNumericType(r.t)
+                i = rt.cast(rt.intTypeLiteral, r).v
+                return rt.val(l.t, rt.makeArrayPointerValue(l.v.target, l.v.position - i))
+            else if rt.isArrayType(r.t)
                 if l.v.target == r.v.target
                     return l.v.position - r.v.position
                 else
@@ -453,13 +456,6 @@ module.exports = ->
                 return rt.val(l.t, rt.makeArrayPointerValue(l.v.target, l.v.position + i))
             else
                 rt.raiseException 'cannot add non-numeric to a pointer'
-            return
-        '-': '#default': (rt, l, r) ->
-            if rt.isNumericType(r.t)
-                i = rt.cast(rt.intTypeLiteral, r).v
-                return rt.val(l.t, rt.makeArrayPointerValue(l.v.target, l.v.position - i))
-            else
-                rt.raiseException 'cannot substract non-numeric to a pointer'
             return
         '+=': '#default': (rt, l, r) ->
             r = rt.types['pointer_array']['+']['#default'](rt, l, r)

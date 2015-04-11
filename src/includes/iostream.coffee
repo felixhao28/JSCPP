@@ -109,21 +109,13 @@ module.exports = load: (rt) ->
                         r = t.v.toString()
                 else
                     rt.raiseException "<< operator in ostream cannot accept " + rt.makeTypeString(t.t)
-                if rt.config.debug
-                    rt.debugOutput ?= ""
-                    rt.debugOutput += r
-                else
-                    _cout.v.ostream.write r
+                _cout.v.ostream.write r
                 _cout
     
     coutString = (rt, _cout, t) ->
         if rt.isStringType t.t
             str = rt.getStringFromCharArray t
-            if rt.config.debug
-                rt.debugOutput ?= ""
-                rt.debugOutput += str
-            else
-                _cout.v.ostream.write str
+            _cout.v.ostream.write str
             _cout
         else
             rt.raiseException "<< operator in ostream cannot accept char*"

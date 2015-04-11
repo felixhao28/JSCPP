@@ -14,8 +14,8 @@ Currently, it is mainly for educational uses for a MOOC course I am running (and
 
 ## Prerequisites
 
-* NodeJS or
-* A modern browser
+* NodeJS with -harmony flag or
+* A modern browser that [supports generators](https://kangax.github.io/compat-table/es6/#generators) (Firefox, Chrome)
 
 ## How to use
 
@@ -35,11 +35,8 @@ npm install .
 
 ### With NodeJS
 
-Use __launcher.run__
-
 ```js
 var JSCPP = require("JSCPP");
-var launcher = JSCPP.launcher;
 var code =    "#include <iostream>"    + "\n"
             + "using namespace std;"   + "\n"
             + "int main() {"           + "\n"
@@ -50,99 +47,84 @@ var code =    "#include <iostream>"    + "\n"
             + "}"                      + "\n"
 ;
 var input = "4321";
-var exitcode = launcher.run(code, input);
+var exitcode = JSCPP.run(code, input);
 console.info("program exited with code " + exitcode);
 ```
 
 See _demo/example.coffee_ for example.
 
-Or do it step by step:
-
-Configuring standard IO and libraries
-```js
-var JSCPP = require("JSCPP");
-var Runtime = JSCPP.Runtime;
-var inputbuffer = "1 2 3";
-var rt = new Runtime({
-	stdio: {
-		drain: function() {
-			// This method will be called when program requires additional input
-			// so you can return "1", "2" and "3" seperately during three calls.
-			// Returning null value means EOF.
-			var x = inputbuffer;
-			inputbuffer = null;
-			return x;
-		},
-		write: function(s) {
-			process.stdout.write(s);
-		}
-	},
-	includes: {
-		iostream: require("./includes/iostream"),
-		cmath: require("./includes/cmath")
-		// Of course you can add more libraries here.
-		// These libraries are only made available for "include" to happen
-		// and NOT ready to be used in your cpp code.
-		// You should use proper include directive to include them
-		// or call load method on them directly (shown below).
-	}
-});
-```
-
-Using preprocessor (experimental)
-```js
-var preprocessor = JSCPP.preprocessor;
-console.log("preprocessing starting");
-code = preprocessor(rt, prepast, code);
-console.log("preprocessing finished");
-```
-
-(Optional) If you choose not to use preprocessor, directives like `#include <...>` will not work, you need to load libraries manually
-```js
-rt.config.includes.iostream.load(rt);
-rt.config.includes.cmath.load(rt);
-```
-
-Building AST
-```js
-var ast = JSCPP.ast;
-var tree = ast.parse(code);
-console.log("passed syntax check");
-```
-
-Interpreting AST (from global main function)
-```js
-var Interpreter = JSCPP.Interpreter;
-var interpreter = new Interpreter(rt);
-interpreter.run(tree);
-var exitCode = rt.getFunc("global", "main", [])(rt, null, []).v;
-console.info("program exited with code " + exitCode);
-```
-
-A full example is available in *demo/verbose_example.coffee*.
-
 Use __debugger__
 
-Unlike most other IDE, the debugging here is actually a replay of the execution.
+As of 2.0.0, there is a simple but functional real debugger available.
+
+A list of debugger API:
+
+- methods
+	+ debugger.next(): one step further
+	+ debugger.continue(): continue until breakpoint
+	+ debugger.nextNode(): the AST node to be executed
+		* sLine
+		* sColumn
+		* sOffset
+		* eLine
+		* eColumn
+		* eOffset
+	+ debugger.nextLine()
+	+ debugger.type(typeName)
+	+ debugger.variable()
+	+ debugger.variable(variableName)
+- properties
+	+ src: preprocessed source
+	+ prevNode: previous AST node
+	+ done
+	+ conditions
+	+ stopConditions
+	+ rt: the internal runtime instance
+	+ gen: the internal generator
 
 ```js
-var mydebugger = new JSCPP.Debugger();
-var exitCode = JSCPP.launcher.run(code, input, {debug: true, debugger: mydebugger});
-// continue to the next statement
-var hasNext = mydebugger.next();
-if (!hasNext) {
-	console.log("program exited with code " + exitCode);
+var JSCPP = require("JSCPP")
+var mydebugger = JSCPP.run(code, input);
+// continue to the next interpreting operation
+var done = mydebugger.next();
+// if you have an active breakpoint condition, you can just continue
+var done = mydebugger.continue();
+// by default, debugger pauses at every new line, but you can change it
+mydebugger.stopConditions = {
+    isStatement: true
+    positionChanged: true
+    lineChanged: false
+};
+// so that debugger only stops at a statement of a new position
+// or you can add your own condition, i.e. stops at line 10
+mydebugger.conditions["line10"] = function (prevNode, nextNode) {
+	if (nextNode.reportedLine === 10)
+		// disable itself so that it only triggers once on line 10
+		mydebugger.stopConditions["line10"] = false
+		return true;
+	else
+		return false;
+};
+// then enable it
+mydebugger.stopConditions["line10"] = true
+// we need to explictly use "false" because exit code can be 0
+if (done !== false) {
+	console.log("program exited with code " + done);
 }
-// go back to the previous statement
-var hasPrev = mydebugger.prev();
-// examine the content of the output window
-var outputContent = mydebugger.output();
+// the AST node to be executed next
+var s = mydebugger.nextNode();
+// sometimes a breakpoint can be set without a statement to be executed next,
+// i.e. entering a function call.
+while ((s = mydebugger.nextNode()) == null) {
+	mydebugger.next();
+}
 // the content of the statement to be executed next
 var nextLine = mydebugger.nextLine();
-// the statement AST to be executed next
-var s = mydebugger.nextStmt();
-console.log("from " + s.line + ":" + s.column + "(" + s.pos + ")");
-console.log("to " + s.reportedLine + ":" + s.reportedColumn + "(" + s.reportedPos + ")");
+// it is essentially same as
+nextLine = mydebugger.src.slice(s.reportedPos, s.pos).trim()
+
+console.log("from " + s.reportedLine + ":" + s.reportedColumn + "(" + s.reportedPos + ")");
+console.log("to " + s.line + ":" + s.column + "(" + s.pos + ")");
 console.log("==> " + nextLine);
 // examine the internal registry for a type
 mydebugger.type("int");
@@ -152,11 +134,11 @@ mydebugger.variable("a");
 mydebugger.variable();
 ```
 
-A full interactive example is available in *demo/example.coffee*. Use `node demo/example A+B -debug` to debug "A+B" test.
+A full interactive example is available in *demo/debug.coffee*. Use `node demo/debug A+B -debug` to debug "A+B" test.
 
 ### With a modern browser
 
-There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, use `browserify ./lib/main.js -o ./dist/JSCPP.js` to generate one.
+There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, use `grunt build` to generate one.
 
 Then you can add it to your html. The exported global name for this package is "JSCPP".
 
@@ -171,12 +153,12 @@ Then you can add it to your html. The exported global name for this package is "
 				}
 			}
 		}
-		return JSCPP.launcher.run(code, input, config);
+		return JSCPP.run(code, input, config);
 	}
 </script>
 ```
 
-You can also customize the procedures with **custome includes**, **`JSCPP.runtime`**, **`JSCPP.preprocessor`**, **`JSCPP.ast`**, **`JSCPP.interpreter`**. If you do not provide a customized `write` method for `stdio` configuration, console output will not be correctly shown. See _index.html_ in **gh_pages** branch for an example.
+If you do not provide a customized `write` method for `stdio` configuration, console output will not be correctly shown. See _index.html_ in **gh_pages** branch for an example.
 
 ### Run tests
 
@@ -228,10 +210,6 @@ See current progress in [_includes_](https://github.com/felixhao28/JSCPP/blob/ma
 * cstdio (partial)
 * cstdlib (partial)
 
-### Does this support debugging?
-
-Not yet, but that is of high priority on my todo list.
-
 ### Bug report? Feedback?
 
 Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
@@ -265,3 +243,13 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- Split debugger from example
 	- (dev-side) Grunt only watches newer
 	- Fix debug prev command
+* v2.0.0 (4.11)
+	- New
+		+ **Real debugger!**
+	- Change
+		+ API: Now `JSCPP.run` is all you need
+		+ Runtime: The project uses es6, please use V8 with harmony flag
+		+ Deprecated: Removed old legacy profiling-replay debugging
+		+ Misc: Many other small changes
+	- Dev
+		+ Major refactoring on interpreter using es6

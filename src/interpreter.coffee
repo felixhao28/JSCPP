@@ -1,30 +1,11 @@
-diffpatch = require('jsondiffpatch').create(null)
-
-jsoncopy = (rt) ->
-    target =
-        scope: rt.scope
-        debugOutput: rt.debugOutput
-    replacer = (key, value) ->
-        if typeof value is "object" and "t" of value and "v" of value
-                t: value.t
-                v: value.v
-        else
-            value
-
-    JSON.parse JSON.stringify target, replacer
-
-
 Interpreter = (rt) ->
     @rt = rt
-    @snapshots = []
-    if rt.config.debug
-        rt.config.debugger.snapshots = @snapshots
     @visitors =
         TranslationUnit: (interp, s, param) ->
             i = 0
             while i < s.ExternalDeclarations.length
                 dec = s.ExternalDeclarations[i]
-                interp.visit interp, dec
+                yield from interp.visit interp, dec
                 i++
             return
         FunctionDefinition: (interp, s, param) ->
@@ -62,7 +43,7 @@ Interpreter = (rt) ->
                         if dim.type != "DirectDeclarator_modifier_array"
                             interp.rt.raiseException "unacceptable array initialization"
                         if dim.Expression != null
-                            dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression, param)).v
+                            dim = interp.rt.cast(interp.rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
                         else if j > 0
                             interp.rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
                         else
@@ -92,12 +73,12 @@ Interpreter = (rt) ->
                         if dim.type != "DirectDeclarator_modifier_array"
                             interp.rt.raiseException "is interp really an array initialization?"
                         if dim.Expression != null
-                            dim = interp.rt.cast(interp.rt.intTypeLiteral, interp.visit(interp, dim.Expression, param)).v
+                            dim = interp.rt.cast(interp.rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
                         else if j > 0
                             interp.rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
                         else
                             if init.type is "Initializer_expr"
-                                initializer = interp.visit(interp, init, param)
+                                initializer = yield from interp.visit(interp, init, param)
                                 if interp.rt.isTypeEqualTo(type, interp.rt.charTypeLiteral) and interp.rt.isArrayType(initializer.t) and interp.rt.isTypeEqualTo(initializer.t.eleType, interp.rt.charTypeLiteral)
                                     # string init
                                     dim = initializer.v.target.length
@@ -115,20 +96,20 @@ Interpreter = (rt) ->
                                 dim = init.Initializers.length
                         dimensions.push dim
                         j++
-                    init = interp.arrayInit(dimensions, init, 0, type, param)
+                    init = yield from interp.arrayInit(dimensions, init, 0, type, param)
                     interp.rt.defVar name, init.t, init
                 else
                     if init is null
                         init = interp.rt.defaultValue(type)
                     else
-                        init = interp.visit(interp, init.Expression)
+                        init = yield from interp.visit(interp, init.Expression)
                     interp.rt.defVar name, type, init
                 i++
             return
         Initializer_expr: (interp, s, param) ->
-            interp.visit interp, s.Expression, param
+            yield from interp.visit interp, s.Expression, param
         Label_case: (interp, s, param) ->
-            ce = interp.visit(interp, s.ConstantExpression)
+            ce = yield from interp.visit(interp, s.ConstantExpression)
             if param["switch"] is undefined
                 interp.rt.raiseException "you cannot use case outside switch block"
             if param.scope is "SelectionStatement_switch_cs"
@@ -163,11 +144,11 @@ Interpreter = (rt) ->
                 while i < stmts.length
                     stmt = stmts[i]
                     if stmt.type is "Label_case" or stmt.type is "Label_default"
-                        r = interp.visit(interp, stmt, param)
+                        r = yield from interp.visit(interp, stmt, param)
                         if r[1]
                             switchon = true
                     else if switchon
-                        r = interp.visit(interp, stmt, param)
+                        r = yield from interp.visit(interp, stmt, param)
                         if r instanceof Array
                             return r
                     i++
@@ -177,27 +158,27 @@ Interpreter = (rt) ->
                 param.scope = "CompoundStatement"
                 interp.rt.enterScope param.scope
                 for stmt in stmts
-                    r = interp.visit(interp, stmt, param)
-                    interp.recordSnapshot stmt
+                    r = yield from interp.visit(interp, stmt, param)
                     if r instanceof Array
-                        return r
+                        break
                 interp.rt.exitScope param.scope
                 param.scope = _scope
+                return r
             return
         ExpressionStatement: (interp, s, param) ->
             if s.Expression?
-                interp.visit interp, s.Expression, param
+                yield from interp.visit interp, s.Expression, param
             return
         SelectionStatement_if: (interp, s, param) ->
             scope_bak = param.scope
             param.scope = "SelectionStatement_if"
             interp.rt.enterScope param.scope
-            e = interp.visit(interp, s.Expression, param)
+            e = yield from interp.visit(interp, s.Expression, param)
             ret = undefined
             if interp.rt.cast(interp.rt.boolTypeLiteral, e).v
-                ret = interp.visit(interp, s.Statement, param)
+                ret = yield from interp.visit(interp, s.Statement, param)
             else if s.ElseStatement
-                ret = interp.visit(interp, s.ElseStatement, param)
+                ret = yield from interp.visit(interp, s.ElseStatement, param)
             interp.rt.exitScope param.scope
             param.scope = scope_bak
             ret
@@ -205,10 +186,10 @@ Interpreter = (rt) ->
             scope_bak = param.scope
             param.scope = "SelectionStatement_switch"
             interp.rt.enterScope param.scope
-            e = interp.visit(interp, s.Expression, param)
+            e = yield from interp.visit(interp, s.Expression, param)
             switch_bak = param["switch"]
             param["switch"] = e
-            r = interp.visit(interp, s.Statement, param)
+            r = yield from interp.visit(interp, s.Statement, param)
             param["switch"] = switch_bak
             ret = undefined
             if r instanceof Array
@@ -221,8 +202,8 @@ Interpreter = (rt) ->
             scope_bak = param.scope
             param.scope = "IterationStatement_while"
             interp.rt.enterScope param.scope
-            while interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v
-                r = interp.visit(interp, s.Statement, param)
+            while interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.Expression, param)).v
+                r = yield from interp.visit(interp, s.Statement, param)
                 if r instanceof Array
                     switch r[0]
                         when "continue"
@@ -248,7 +229,7 @@ Interpreter = (rt) ->
                             return
                         when "return"
                             return r
-                unless interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v
+                unless interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.Expression, param)).v
                     break
             interp.rt.exitScope param.scope
             param.scope = scope_bak
@@ -259,11 +240,11 @@ Interpreter = (rt) ->
             interp.rt.enterScope param.scope
             if s.Initializer
                 if s.Initializer.type is "Declaration"
-                    interp.visit interp, s.Initializer, param
+                    yield from interp.visit interp, s.Initializer, param
                 else
-                    interp.visit interp, s.Initializer, param
-            while s.Expression is undefined or interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.Expression, param)).v
-                r = interp.visit(interp, s.Statement, param)
+                    yield from interp.visit interp, s.Initializer, param
+            while s.Expression is undefined or interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.Expression, param)).v
+                r = yield from interp.visit(interp, s.Statement, param)
                 if r instanceof Array
                     switch r[0]
                         when "continue"
@@ -273,7 +254,7 @@ Interpreter = (rt) ->
                         when "return"
                             return r
                 if s.Loop
-                    interp.visit interp, s.Loop, param
+                    yield from interp.visit interp, s.Loop, param
             interp.rt.exitScope param.scope
             param.scope = scope_bak
             return
@@ -286,7 +267,7 @@ Interpreter = (rt) ->
             [ "break" ]
         JumpStatement_return: (interp, s, param) ->
             if s.Expression
-                ret = interp.visit(interp, s.Expression, param)
+                ret = yield from interp.visit(interp, s.Expression, param)
                 return [
                     "return"
                     ret
@@ -295,102 +276,169 @@ Interpreter = (rt) ->
         IdentifierExpression: (interp, s, param) ->
             interp.rt.readVar s.Identifier
         ParenthesesExpression: (interp, s, param) ->
-            interp.visit interp, s.Expression, param
+            yield from interp.visit interp, s.Expression, param
         PostfixExpression_ArrayAccess: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            index = interp.visit(interp, s.index, param)
-            interp.rt.getFunc(ret.t, "[]", [ index.t ]) interp.rt, ret, index
+            ret = yield from interp.visit(interp, s.Expression, param)
+            index = yield from interp.visit(interp, s.index, param)
+            r = interp.rt.getFunc(ret.t, "[]", [ index.t ]) interp.rt, ret, index
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         PostfixExpression_MethodInvocation: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            s.args = s.args.map((e) ->
-                interp.visit interp, e, param
-            )
-            interp.rt.getFunc(ret.t, "()", s.args.map((e) ->
+            ret = yield from interp.visit(interp, s.Expression, param)
+            # console.log "==================="
+            # console.log "s: " + JSON.stringify(s)
+            # console.log "==================="
+            args = for e in s.args
+                thisArg = yield from interp.visit interp, e, param
+                # console.log "-------------------"
+                # console.log "e: " + JSON.stringify(e)
+                # console.log "-------------------"
+                thisArg
+
+            # console.log "==================="
+            # console.log "ret: " + JSON.stringify(ret)
+            # console.log "args: " + JSON.stringify(args)
+            # console.log "==================="
+            r = interp.rt.getFunc(ret.t, "()", args.map((e) ->
                 e.t
-            )) interp.rt, ret, s.args
+            )) interp.rt, ret, args
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         PostfixExpression_MemberAccess: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
+            ret = yield from interp.visit(interp, s.Expression, param)
             interp.getMember ret, s.member
         PostfixExpression_MemberPointerAccess: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
+            ret = yield from interp.visit(interp, s.Expression, param)
             member = undefined
             if interp.rt.isPointerType(ret.t) and !interp.rt.isFunctionType(ret.t)
                 member = s.member
-                interp.rt.getFunc(ret.t, "->", []) interp.rt, ret, member
+                r = interp.rt.getFunc(ret.t, "->", []) interp.rt, ret, member
+                if r.constructor.name is "GeneratorFunctionPrototype"
+                    yield from r
+                else
+                    yield return r
             else
-                member = interp.visit(interp, {
+                member = yield from interp.visit(interp, {
                     type: "IdentifierExpression"
                     Identifier: s.member
                 }, param)
-                interp.rt.getFunc(ret.t, "->", [ member.t ]) interp.rt, ret, member
+                r = interp.rt.getFunc(ret.t, "->", [ member.t ]) interp.rt, ret, member
+                if r.constructor.name is "GeneratorFunctionPrototype"
+                    yield from r
+                else
+                    yield return r
         PostfixExpression_PostIncrement: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            interp.rt.getFunc(ret.t, "++", [ "dummy" ]) interp.rt, ret,
+            ret = yield from interp.visit(interp, s.Expression, param)
+            r = interp.rt.getFunc(ret.t, "++", [ "dummy" ]) interp.rt, ret,
                 t: "dummy"
                 v: null
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         PostfixExpression_PostDecrement: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            interp.rt.getFunc(ret.t, "--", [ "dummy" ]) interp.rt, ret,
+            ret = yield from interp.visit(interp, s.Expression, param)
+            r = interp.rt.getFunc(ret.t, "--", [ "dummy" ]) interp.rt, ret,
                 t: "dummy"
                 v: null
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         UnaryExpression_PreIncrement: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            interp.rt.getFunc(ret.t, "++", []) interp.rt, ret
+            ret = yield from interp.visit(interp, s.Expression, param)
+            r = interp.rt.getFunc(ret.t, "++", []) interp.rt, ret
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         UnaryExpression_PreDecrement: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            interp.rt.getFunc(ret.t, "--", []) interp.rt, ret
+            ret = yield from interp.visit(interp, s.Expression, param)
+            r = interp.rt.getFunc(ret.t, "--", []) interp.rt, ret
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         UnaryExpression: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
-            interp.rt.getFunc(ret.t, s.op, []) interp.rt, ret
+            ret = yield from interp.visit(interp, s.Expression, param)
+            r = interp.rt.getFunc(ret.t, s.op, []) interp.rt, ret
+            if r.constructor.name is "GeneratorFunctionPrototype"
+                yield from r
+            else
+                yield return r
         UnaryExpression_Sizeof_Expr: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
+            ret = yield from interp.visit(interp, s.Expression, param)
             interp.rt.val interp.rt.intTypeLiteral, interp.rt.getSize(ret)
         UnaryExpression_Sizeof_Type: (interp, s, param) ->
             type = interp.rt.simpleType(s.TypeName)
             interp.rt.val interp.rt.intTypeLiteral, interp.rt.getSizeByType(type)
         CastExpression: (interp, s, param) ->
-            ret = interp.visit(interp, s.Expression, param)
+            ret = yield from interp.visit(interp, s.Expression, param)
             type = interp.rt.simpleType(s.TypeName)
             interp.rt.cast type, ret
         BinOpExpression: (interp, s, param) ->
             op = s.op
             if op is "&&"
                 s.type = "LogicalANDExpression"
-                interp.visit interp, s, param
+                yield from interp.visit interp, s, param
             else if op is "||"
                 s.type = "LogicalORExpression"
-                interp.visit interp, s, param
+                yield from interp.visit interp, s, param
             else
-                left = interp.visit(interp, s.left, param)
-                right = interp.visit(interp, s.right, param)
-                interp.rt.getFunc(left.t, op, [ right.t ]) interp.rt, left, right
+                # console.log "==================="
+                # console.log "s.left: " + JSON.stringify(s.left)
+                # console.log "s.right: " + JSON.stringify(s.right)
+                # console.log "==================="
+                left = yield from interp.visit(interp, s.left, param)
+                right = yield from interp.visit(interp, s.right, param)
+                # console.log "==================="
+                # console.log "left: " + JSON.stringify(left)
+                # console.log "right: " + JSON.stringify(right)
+                # console.log "==================="
+                r = interp.rt.getFunc(left.t, op, [ right.t ]) interp.rt, left, right
+                if r.constructor.name is "GeneratorFunctionPrototype"
+                    yield from r
+                else
+                    yield return r
         LogicalANDExpression: (interp, s, param) ->
-            left = interp.visit(interp, s.left, param)
+            left = yield from interp.visit(interp, s.left, param)
             lt = interp.rt.types[interp.rt.getTypeSigniture(left.t)]
             if "&&" of lt
-                right = interp.visit(interp, s.right, param)
-                interp.rt.getFunc(left.t, "&&", [ right.t ]) interp.rt, left, right
+                right = yield from interp.visit(interp, s.right, param)
+                r = interp.rt.getFunc(left.t, "&&", [ right.t ]) interp.rt, left, right
+                if r.constructor.name is "GeneratorFunctionPrototype"
+                    yield from r
+                else
+                    yield return r
             else
                 if interp.rt.cast(interp.rt.boolTypeLiteral, left).v
-                    interp.visit interp, s.right, param
+                    yield from interp.visit interp, s.right, param
                 else
                     left
         LogicalORExpression: (interp, s, param) ->
-            left = interp.visit(interp, s.left, param)
+            left = yield from interp.visit(interp, s.left, param)
             lt = interp.rt.types[interp.rt.getTypeSigniture(left.t)]
             if "||" of lt
-                right = interp.visit(interp, s.right, param)
-                interp.rt.getFunc(left.t, "||", [ right.t ]) interp.rt, left, right
+                right = yield from interp.visit(interp, s.right, param)
+                r = interp.rt.getFunc(left.t, "||", [ right.t ]) interp.rt, left, right
+                if r.constructor.name is "GeneratorFunctionPrototype"
+                    yield from r
+                else
+                    yield return r
             else
                 if interp.rt.cast(interp.rt.boolTypeLiteral, left).v
                     left
                 else
-                    interp.visit interp, s.right, param
+                    yield from interp.visit interp, s.right, param
         ConditionalExpression: (interp, s, param) ->
-            cond = interp.rt.cast(interp.rt.boolTypeLiteral, interp.visit(interp, s.cond, param)).v
-            if cond then interp.visit(interp, s.t, param) else interp.visit(interp, s.f, param)
+            cond = interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.cond, param)).v
+            if cond then yield from interp.visit(interp, s.t, param) else yield from interp.visit(interp, s.f, param)
         ConstantExpression: (interp, s, param) ->
-            interp.visit interp, s.Expression, param
+            yield from interp.visit interp, s.Expression, param
         StringLiteralExpression: (interp, s, param) ->
             str = s.value
             interp.rt.makeCharArrayFromString str
@@ -402,7 +450,7 @@ Interpreter = (rt) ->
                 interp.rt.raiseException "a character constant must have and only have one character."
             interp.rt.val interp.rt.charTypeLiteral, a[0].charCodeAt(0)
         FloatConstant: (interp, s, param) ->
-            val = interp.visit(interp, s.Expression, param)
+            val = yield from interp.visit(interp, s.Expression, param)
             interp.rt.val interp.rt.floatTypeLiteral, val.v
         DecimalConstant: (interp, s, param) ->
             interp.rt.val interp.rt.intTypeLiteral, parseInt(s.value, 10)
@@ -433,24 +481,29 @@ Interpreter = (rt) ->
     return
 
 Interpreter::visit = (interp, s, param) ->
+    # console.log "#{s.sLine}: visiting #{s.type}"
     if "type" of s
         if param is undefined
             param = scope: "global"
         _node = @currentNode
         @currentNode = s
         if s.type of @visitors
-            return @visitors[s.type](interp, s, param)
+            f = @visitors[s.type]
+            if f.constructor.name is "GeneratorFunction"
+                ret = yield from f(interp, s, param)
+            else
+                yield ret = f(interp, s, param)
         else
-            return @visitors["unknown"](interp, s, param)
+            ret = @visitors["unknown"](interp, s, param)
         @currentNode = _node
     else
         @currentNode = s
         @rt.raiseException "untyped syntax structure"
-    return
+    return ret
 
 Interpreter::run = (tree) ->
     @rt.interp = this
-    @visit this, tree
+    yield from @visit this, tree
 
 Interpreter::arrayInit = (dimensions, init, level, type, param) ->
     arr = undefined
@@ -472,7 +525,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
                         i++
                     init.Initializers = arr
                 else if init.Initializers.length is 1 and @rt.isIntegerType(type)
-                    val = @rt.cast(type, @visit(this, init.Initializers[0].Expression, param))
+                    val = @rt.cast(type, yield from @visit(this, init.Initializers[0].Expression, param))
                     if val.v is -1 or val.v is 0
                         arr = new Array(curDim)
                         i = 0
@@ -502,7 +555,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
                         else
                             initval =
                                 type: "Initializer_expr"
-                                shorthand: @visit(this, _init.Expression, param)
+                                shorthand: yield from @visit(this, _init.Expression, param)
                         arr[i] = initval
                         i++
                     i = init.Initializers.length
@@ -517,7 +570,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
                 if "shorthand" of init
                     initializer = init.shorthand
                 else
-                    initializer = @visit(this, init, param)
+                    initializer = yield from @visit(this, init, param)
                 if @rt.isTypeEqualTo(type, @rt.charTypeLiteral) and @rt.isArrayType(initializer.t) and @rt.isTypeEqualTo(initializer.t.eleType, @rt.charTypeLiteral)
                     # string init
                     init =
@@ -537,9 +590,9 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
         i = 0
         while i < curDim
             if init and i < init.Initializers.length
-                arr[i] = @arrayInit(dimensions, init.Initializers[i], level + 1, type, param)
+                arr[i] = yield from @arrayInit(dimensions, init.Initializers[i], level + 1, type, param)
             else
-                arr[i] = @arrayInit(dimensions, null, level + 1, type, param)
+                arr[i] = yield from @arrayInit(dimensions, null, level + 1, type, param)
             i++
         ret
     else
@@ -550,7 +603,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
             if "shorthand" of init
                 initval = init.shorthand
             else
-                initval = @visit(this, init.Expression, param)
+                initval = yield from @visit(this, init.Expression, param)
         else
             initval = @rt.defaultValue(type)
         ret = @rt.cast(type, initval)
@@ -569,14 +622,5 @@ Interpreter::buildRecursivePointerType = (pointer, basetype, level) ->
         @buildRecursivePointerType pointer, type, level + 1
     else
         basetype
-
-Interpreter::recordSnapshot = (stmt) ->
-    if @rt.config.debug is true
-        lastSnapshot = @lastSnapshot or {}
-        currentSnapshot = jsoncopy(@rt)
-        @snapshots.push
-            stmt: stmt
-            diff: diffpatch.diff(lastSnapshot, currentSnapshot)
-        @lastSnapshot = currentSnapshot
 
 module.exports = Interpreter

@@ -77,7 +77,7 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
         argNames.forEach (v, i) ->
             rt.defVar v, argTypes[i], args[i]
             return
-        ret = interp.run(stmts, scope: "function")
+        ret = yield from interp.run(stmts, scope: "function")
         if !rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
             if ret instanceof Array and ret[0] == "return"
                 ret = rt.cast(retType, ret[1])
@@ -665,8 +665,8 @@ CRuntime::defaultValue = (type) ->
 CRuntime::raiseException = (message) ->
     interp = @interp
     if interp
-        ln = interp.currentNode.line
-        col = interp.currentNode.column
+        ln = interp.currentNode?.line or "unknown"
+        col = interp.currentNode?.column or "unknown"
         throw ln + ":" + col + " " + message
     else
         throw message

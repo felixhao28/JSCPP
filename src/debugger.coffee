@@ -1,60 +1,73 @@
-diffpatch = require('jsondiffpatch').create(null)
 Runtime = require "./rt"
 
 Debugger = ->
-    @fakeRT = new Runtime()
-    @rt = {}
-    @snapshots = null
-    @i = 0
     @src = ""
+    @prevNode = null
+    @done = false
+    @conditions =
+        isStatement: (prevNode, newStmt) ->
+            newStmt?.type.indexOf "Statement" >= 0
+        positionChanged: (prevNode, newStmt) ->
+            prevNode?.eOffset isnt newStmt.eOffset or prevNode?.sOffset isnt newStmt.sOffset
+        lineChanged: (prevNode, newStmt) ->
+            prevNode?.sLine isnt newStmt.sLine
+
+    @stopConditions =
+        isStatement: false
+        positionChanged: false
+        lineChanged: true
+    
     return this
 
+Debugger::start = (rt, gen) ->
+    @rt = rt
+    @gen = gen
+
+Debugger::continue = ->
+    loop
+        done = @next()
+        return done if done isnt false
+        curStmt = @nextNode()
+        for name, active of @stopConditions when active
+            if @conditions[name](@prevNode, curStmt)
+                return false
+
 Debugger::next = ->
-    if @i >= @snapshots.length
-        return false
-    diff = @snapshots[@i].diff
-    console.log "patching #{@i}"
-    diffpatch.patch(@rt, diff)
-    @fakeRT.scope = @rt.scope
-    @i++
-    @i < @snapshots.length
-
-Debugger::prev = ->
-    if @i <= 1
-        return false
-    @i--
-    diff = @snapshots[@i].diff
-    console.log "unpatching #{@i}"
-    diffpatch.unpatch(@rt, diff)
-    @fakeRT.types = @rt.types
-    @fakeRT.scope = @rt.scope
-    @i > 0
-
-Debugger::output = ->
-    @rt.debugOutput or ""
+    @prevNode = @nextNode()
+    ngen = @gen.next()
+    if ngen.done
+        @done = true
+        ngen.value
+    else
+        false
 
 Debugger::nextLine = ->
-    if @i >= @snapshots.length
-        "<eof>"
-    else
-        s = @snapshots[@i].stmt
-        @src.slice(s.reportedPos, s.pos).trim()
+    s = @nextNode()
+    @src.slice(s.sOffset, s.eOffset).trim()
 
-Debugger::nextStmt = ->
-    @snapshots[@i].stmt
+Debugger::nextNode = ->
+    if @done
+        sOffset: -1
+        sLine: -1
+        sColumn: -1
+        eOffset: -1
+        eLine: -1
+        eColumn: -1
+    else
+        @rt.interp.currentNode
 
 Debugger::variable = (name) ->
     if name
-        v = @fakeRT.readVar(name)
+        v = @rt.readVar(name)
         {
-            type: @fakeRT.makeTypeString(v.t)
+            type: @rt.makeTypeString(v.t)
             value: v.v
         }
     else
-        for k, v of @fakeRT.scope[@fakeRT.scope.length-1] when typeof v is "object" and "t" of v and "v" of v
+        for k, v of @rt.scope[@rt.scope.length-1] when typeof v is "object" and "t" of v and "v" of v
                 {
                     name: k
-                    type: @fakeRT.makeTypeString(v.t)
+                    type: @rt.makeTypeString(v.t)
                     value: v.v
                 }
 

@@ -6,6 +6,6 @@ code = "#include <iostream>\nusing namespace std;\nint main() {\n    int a;\n   
 
 input = "4321";
 
-exitcode = JSCPP.launcher.run(code, input);
+exitcode = JSCPP.run(code, input);
 
 console.info("\nprogram exited with code " + exitcode);

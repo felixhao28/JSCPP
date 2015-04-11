@@ -75,7 +75,7 @@ doSource = function(code, cases, cb) {
 };
 
 doSample = function(code, input, expected, cb) {
-  var config, output, outputBuffer;
+  var config, e, output, outputBuffer;
   outputBuffer = "";
   config = {
     stdio: {
@@ -85,12 +85,20 @@ doSample = function(code, input, expected, cb) {
       }
     }
   };
-  JSCPP.launcher.run(code, input, config);
-  output = prepareOutput(outputBuffer);
-  return _it("should match expected output", function() {
-    expect(output).to.equal(expected);
-    return cb(output === expected);
-  });
+  try {
+    JSCPP.run(code, input, config);
+    output = prepareOutput(outputBuffer);
+    return _it("should match expected output", function() {
+      expect(output).to.equal(expected);
+      return cb(output === expected);
+    });
+  } catch (_error) {
+    e = _error;
+    return _it("an error occurred", function() {
+      assert.notOk(e);
+      return cb(false);
+    });
+  }
 };
 
 tests = JSON.parse(fs.readFileSync(testFolder + "test.json"));

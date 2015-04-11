@@ -13,5 +13,5 @@ int main() {
 """
 input = "4321"
 
-exitcode = JSCPP.launcher.run(code, input)
+exitcode = JSCPP.run(code, input)
 console.info("\nprogram exited with code #{exitcode}")

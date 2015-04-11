@@ -56,12 +56,16 @@ doSample = (code, input, expected, cb) ->
             write: (str) ->
                 outputBuffer += str
                 str.length
-
-    JSCPP.launcher.run(code, input, config)
-    output = prepareOutput outputBuffer
-    _it "should match expected output", ->
-        expect(output).to.equal(expected)
-        cb output is expected
+    try
+        JSCPP.run(code, input, config)
+        output = prepareOutput outputBuffer
+        _it "should match expected output", ->
+            expect(output).to.equal(expected)
+            cb output is expected
+    catch e
+        _it "an error occurred", ->
+            assert.notOk(e)
+            cb false
 
 tests = JSON.parse fs.readFileSync testFolder + "test.json"
 

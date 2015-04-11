@@ -3,6 +3,7 @@ CRuntime = require("./rt")
 Interpreter = require("./interpreter")
 ast = require("./ast")
 preprocessor = require("./preprocessor")
+Debugger = require("./debugger")
 
 mergeConfig = (a, b) ->
     for o of b
@@ -38,11 +39,22 @@ module.exports =
         code = code.toString()
         code = preprocessor.parse(rt, code)
 
+        mydebugger = new Debugger()
         if _config.debug
-            _config.debugger.src = code
+            mydebugger.src = code
 
         tree = ast.parse(code)
         interpreter = new Interpreter(rt)
-        interpreter.run tree
-        exitCode = rt.getFunc("global", "main", [])(rt, null, []).v
-        exitCode
+        defGen = interpreter.run tree
+        loop
+            step = defGen.next()
+            break if step.done
+        mainGen = rt.getFunc("global", "main", [])(rt, null, [])
+        if _config.debug
+            mydebugger.start(rt, mainGen)
+            mydebugger
+        else
+            loop
+                step = mainGen.next()
+                break if step.done
+            step.value.v
