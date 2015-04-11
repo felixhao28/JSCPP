@@ -14,13 +14,10 @@
 	</style>
 </head>
 <body>
-	<script src="JSCPP.js"></script>
+	<script src="./dist/JSCPP.js"></script>
 	<script type="text/javascript">
 		myDebugger = null;
 		function run(code, input, debug){
-			if (debug) {
-				myDebugger = new JSCPP.Debugger();
-			}
 			var config = {
 				stdio: {
 					drain: function() {
@@ -32,10 +29,13 @@
 						output.value += s;
 					}
 				},
-				debug: debug,
-				debugger: myDebugger
-			}
-			return JSCPP.launcher.run(code, input, config);
+				debug: debug
+			};
+			if (debug) {
+				myDebugger = JSCPP.run(code, input, config);
+				myDebugger.continue();
+			} else
+				return JSCPP.run(code, input, config);
 		}
 
 		function exe(debug){
@@ -44,13 +44,14 @@
 			var output = document.getElementById('output');
 			output.value = '';
 			try{
-				var before = new Date().getTime();
-				var retcode = run(code, input, debug);
-				var ellaps = new Date().getTime() - before;
-				exitInfo = '\nprogram exited with code ' + retcode + ' in '+ellaps+'ms\n'
 				if (debug){
+					run(code, input, debug)
 					beginDebug(code);
 				}else{
+					var before = new Date().getTime();
+					var retcode = run(code, input, debug);
+					var ellaps = new Date().getTime() - before;
+					var exitInfo = '\nprogram exited with code ' + retcode + ' in '+ellaps+'ms\n'
 					output.value += exitInfo;
 				}
 			}catch(e){
@@ -59,31 +60,24 @@
 		}
 
 		function next() {
-			if (debugMarkerId === false)
+			if (!myDebugger)
 				return;
-			var hasNext = myDebugger.next();
-			if (!hasNext){
-				stop();
+			var done = myDebugger.continue();
+			if (done !== false){
+				stop(done.v);
 			}
 			else
 				refreshDebug();
 		}
 
-		function prev() {
-			if (debugMarkerId === false)
-				return;
-			myDebugger.prev();
-			refreshDebug();
-		}
-
 		debugMarkerId = false;
 
 		function refreshDebug() {
-			var s = myDebugger.nextStmt();
+			var s = myDebugger.nextNode();
 			if (debugMarkerId !== false)
 				editor.getSession().removeMarker(debugMarkerId);
 
-			debugMarkerId = editor.getSession().addMarker(new Range(s.reportedLine-1,s.reportedColumn-1,s.reportedLine-1,s.reportedColumn), "debug-highlight", "fullLine");
+			debugMarkerId = editor.getSession().addMarker(new Range(s.sLine-1,s.sColumn-1,s.sLine-1,s.sColumn), "debug-highlight", "fullLine");
 
 			var taVar = document.getElementById("variables");
 			var vs = myDebugger.variable();
@@ -91,15 +85,11 @@
 			for (var i = 0 ; i < vs.length ;i ++){
 				taVar.value += JSON.stringify(vs[i]) + "\n";
 			}
-
-			var output = document.getElementById('output');
-			output.value = myDebugger.output();
 		}
 
 		function beginDebug(code){
 			document.getElementById("btn_stop").style.display = 'inline';
 			document.getElementById("btn_next").style.display = 'inline';
-			document.getElementById("btn_prev").style.display = 'inline';
 			document.getElementById("variables").style.display = 'block';
 			editor.setReadOnly(true);
 			codeBackup = code;
@@ -107,7 +97,7 @@
 			refreshDebug();
 		}
 
-		function stop(){
+		function stop(exitCode){
 			if (debugMarkerId !== false) {
     			editor.getSession().setValue(codeBackup);
     			editor.setReadOnly(false);
@@ -117,10 +107,9 @@
 				var taVar = document.getElementById("variables");
 				taVar.value = "debug ended"
 				var output = document.getElementById('output');
-				output.value += exitInfo;
+				output.value += "program exited with code " + exitCode;
 				document.getElementById("btn_stop").style.display = 'none';
 				document.getElementById("btn_next").style.display = 'none';
-				document.getElementById("btn_prev").style.display = 'none';
 				document.getElementById("variables").style.display = 'none';
 			}
 		}
@@ -131,7 +120,6 @@
 		<button onclick="exe(true)">Debug</button>
 		<button style="display: none;" id="btn_stop" onclick="stop()">stop</button>
 		<button style="display: none;" id="btn_next" onclick="next()">next</button>
-		<button style="display: none;" id="btn_prev" onclick="prev()">prev</button>
 		<br/>
 		<textarea style="display: none;" id="variables" rows="10" cols="50"></textarea>
 	<div style="padding: 5px;">
