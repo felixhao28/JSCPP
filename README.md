@@ -134,7 +134,7 @@ mydebugger.variable("a");
 mydebugger.variable();
 ```
 
-A full interactive example is available in *demo/debug.coffee*. Use `node demo/debug A+B -debug` to debug "A+B" test.
+A full interactive example is available in *demo/debug.coffee*. Use `node -harmony demo/debug A+B -debug` to debug "A+B" test.
 
 ### With a modern browser
 
