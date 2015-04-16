@@ -4,6 +4,8 @@ This is a simple C++ interpreter written in JavaScript.
 
 Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
 
+[![Travis Build Status][build-badge]][build]
+
 ## Purpose of the project
 
 As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
@@ -253,3 +255,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Misc: Many other small changes
 	- Dev
 		+ Major refactoring on interpreter using es6
+
+[build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
+[build]: https://travis-ci.org/felixhao28/JSCPP
+

@@ -91,5 +91,5 @@ if (process.argv.length > 2) {
     });
   }
 } else {
-  console.log("Usage: node demo/debug <testName> <options>\nParameters:\n<testName>: Name of the test. Defined in test/test.json\n<options>:\n    -debug: use debug mode");
+  console.log("Usage: node -harmony demo/debug <testName> <options>\nParameters:\n<testName>: Name of the test. Defined in test/test.json\n<options>:\n    -debug: use debug mode");
 }

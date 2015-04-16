@@ -85,7 +85,7 @@ if process.argv.length > 2
             
 else
     console.log """
-    Usage: node demo/debug <testName> <options>
+    Usage: node -harmony demo/debug <testName> <options>
     Parameters:
     <testName>: Name of the test. Defined in test/test.json
     <options>:
