@@ -12447,7 +12447,21 @@ module.exports = {
 },{}],10:[function(require,module,exports){
 JSCPP = require('./main');
 },{"./main":13}],11:[function(require,module,exports){
-var Interpreter;
+var Interpreter, isGenerator, isGeneratorFunction, sampleGenerator, sampleGeneratorFunction;
+
+sampleGeneratorFunction = function*() {
+  return (yield null);
+};
+
+sampleGenerator = sampleGeneratorFunction();
+
+isGenerator = function(g) {
+  return (g != null ? g.constructor : void 0) === sampleGenerator.constructor;
+};
+
+isGeneratorFunction = function(f) {
+  return (f != null ? f.constructor : void 0) === sampleGeneratorFunction.constructor;
+};
 
 Interpreter = function(rt) {
   this.rt = rt;
@@ -12792,7 +12806,7 @@ Interpreter = function(rt) {
       ret = (yield* interp.visit(interp, s.Expression, param));
       index = (yield* interp.visit(interp, s.index, param));
       r = interp.rt.getFunc(ret.t, "[]", [index.t])(interp.rt, ret, index);
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12815,7 +12829,7 @@ Interpreter = function(rt) {
       r = interp.rt.getFunc(ret.t, "()", args.map(function(e) {
         return e.t;
       }))(interp.rt, ret, args);
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12833,7 +12847,7 @@ Interpreter = function(rt) {
       if (interp.rt.isPointerType(ret.t) && !interp.rt.isFunctionType(ret.t)) {
         member = s.member;
         r = interp.rt.getFunc(ret.t, "->", [])(interp.rt, ret, member);
-        if (r.constructor.name === "GeneratorFunctionPrototype") {
+        if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
@@ -12844,7 +12858,7 @@ Interpreter = function(rt) {
           Identifier: s.member
         }, param));
         r = interp.rt.getFunc(ret.t, "->", [member.t])(interp.rt, ret, member);
-        if (r.constructor.name === "GeneratorFunctionPrototype") {
+        if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
@@ -12858,7 +12872,7 @@ Interpreter = function(rt) {
         t: "dummy",
         v: null
       });
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12871,7 +12885,7 @@ Interpreter = function(rt) {
         t: "dummy",
         v: null
       });
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12881,7 +12895,7 @@ Interpreter = function(rt) {
       var r, ret;
       ret = (yield* interp.visit(interp, s.Expression, param));
       r = interp.rt.getFunc(ret.t, "++", [])(interp.rt, ret);
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12891,7 +12905,7 @@ Interpreter = function(rt) {
       var r, ret;
       ret = (yield* interp.visit(interp, s.Expression, param));
       r = interp.rt.getFunc(ret.t, "--", [])(interp.rt, ret);
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12901,7 +12915,7 @@ Interpreter = function(rt) {
       var r, ret;
       ret = (yield* interp.visit(interp, s.Expression, param));
       r = interp.rt.getFunc(ret.t, s.op, [])(interp.rt, ret);
-      if (r.constructor.name === "GeneratorFunctionPrototype") {
+      if (isGenerator(r)) {
         return (yield* r);
       } else {
         return r;
@@ -12936,7 +12950,7 @@ Interpreter = function(rt) {
         left = (yield* interp.visit(interp, s.left, param));
         right = (yield* interp.visit(interp, s.right, param));
         r = interp.rt.getFunc(left.t, op, [right.t])(interp.rt, left, right);
-        if (r.constructor.name === "GeneratorFunctionPrototype") {
+        if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
@@ -12950,7 +12964,7 @@ Interpreter = function(rt) {
       if ("&&" in lt) {
         right = (yield* interp.visit(interp, s.right, param));
         r = interp.rt.getFunc(left.t, "&&", [right.t])(interp.rt, left, right);
-        if (r.constructor.name === "GeneratorFunctionPrototype") {
+        if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
@@ -12970,7 +12984,7 @@ Interpreter = function(rt) {
       if ("||" in lt) {
         right = (yield* interp.visit(interp, s.right, param));
         r = interp.rt.getFunc(left.t, "||", [right.t])(interp.rt, left, right);
-        if (r.constructor.name === "GeneratorFunctionPrototype") {
+        if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
@@ -13062,7 +13076,7 @@ Interpreter.prototype.visit = function*(interp, s, param) {
     this.currentNode = s;
     if (s.type in this.visitors) {
       f = this.visitors[s.type];
-      if (f.constructor.name === "GeneratorFunction") {
+      if (isGeneratorFunction(f)) {
         ret = (yield* f(interp, s, param));
       } else {
         (yield (ret = f(interp, s, param)));

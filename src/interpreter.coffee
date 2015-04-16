@@ -1,3 +1,14 @@
+sampleGeneratorFunction = ->
+    yield null
+
+sampleGenerator = sampleGeneratorFunction()
+
+isGenerator = (g) ->
+    g?.constructor is sampleGenerator.constructor
+
+isGeneratorFunction = (f) ->
+    f?.constructor is sampleGeneratorFunction.constructor
+
 Interpreter = (rt) ->
     @rt = rt
     @visitors =
@@ -281,7 +292,7 @@ Interpreter = (rt) ->
             ret = yield from interp.visit(interp, s.Expression, param)
             index = yield from interp.visit(interp, s.index, param)
             r = interp.rt.getFunc(ret.t, "[]", [ index.t ]) interp.rt, ret, index
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
@@ -304,7 +315,7 @@ Interpreter = (rt) ->
             r = interp.rt.getFunc(ret.t, "()", args.map((e) ->
                 e.t
             )) interp.rt, ret, args
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
@@ -317,7 +328,7 @@ Interpreter = (rt) ->
             if interp.rt.isPointerType(ret.t) and !interp.rt.isFunctionType(ret.t)
                 member = s.member
                 r = interp.rt.getFunc(ret.t, "->", []) interp.rt, ret, member
-                if r.constructor.name is "GeneratorFunctionPrototype"
+                if isGenerator(r)
                     yield from r
                 else
                     yield return r
@@ -327,7 +338,7 @@ Interpreter = (rt) ->
                     Identifier: s.member
                 }, param)
                 r = interp.rt.getFunc(ret.t, "->", [ member.t ]) interp.rt, ret, member
-                if r.constructor.name is "GeneratorFunctionPrototype"
+                if isGenerator(r)
                     yield from r
                 else
                     yield return r
@@ -336,7 +347,7 @@ Interpreter = (rt) ->
             r = interp.rt.getFunc(ret.t, "++", [ "dummy" ]) interp.rt, ret,
                 t: "dummy"
                 v: null
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
@@ -345,28 +356,28 @@ Interpreter = (rt) ->
             r = interp.rt.getFunc(ret.t, "--", [ "dummy" ]) interp.rt, ret,
                 t: "dummy"
                 v: null
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
         UnaryExpression_PreIncrement: (interp, s, param) ->
             ret = yield from interp.visit(interp, s.Expression, param)
             r = interp.rt.getFunc(ret.t, "++", []) interp.rt, ret
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
         UnaryExpression_PreDecrement: (interp, s, param) ->
             ret = yield from interp.visit(interp, s.Expression, param)
             r = interp.rt.getFunc(ret.t, "--", []) interp.rt, ret
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
         UnaryExpression: (interp, s, param) ->
             ret = yield from interp.visit(interp, s.Expression, param)
             r = interp.rt.getFunc(ret.t, s.op, []) interp.rt, ret
-            if r.constructor.name is "GeneratorFunctionPrototype"
+            if isGenerator(r)
                 yield from r
             else
                 yield return r
@@ -400,7 +411,7 @@ Interpreter = (rt) ->
                 # console.log "right: " + JSON.stringify(right)
                 # console.log "==================="
                 r = interp.rt.getFunc(left.t, op, [ right.t ]) interp.rt, left, right
-                if r.constructor.name is "GeneratorFunctionPrototype"
+                if isGenerator(r)
                     yield from r
                 else
                     yield return r
@@ -410,7 +421,7 @@ Interpreter = (rt) ->
             if "&&" of lt
                 right = yield from interp.visit(interp, s.right, param)
                 r = interp.rt.getFunc(left.t, "&&", [ right.t ]) interp.rt, left, right
-                if r.constructor.name is "GeneratorFunctionPrototype"
+                if isGenerator(r)
                     yield from r
                 else
                     yield return r
@@ -425,7 +436,7 @@ Interpreter = (rt) ->
             if "||" of lt
                 right = yield from interp.visit(interp, s.right, param)
                 r = interp.rt.getFunc(left.t, "||", [ right.t ]) interp.rt, left, right
-                if r.constructor.name is "GeneratorFunctionPrototype"
+                if isGenerator(r)
                     yield from r
                 else
                     yield return r
@@ -489,7 +500,7 @@ Interpreter::visit = (interp, s, param) ->
         @currentNode = s
         if s.type of @visitors
             f = @visitors[s.type]
-            if f.constructor.name is "GeneratorFunction"
+            if isGeneratorFunction(f)
                 ret = yield from f(interp, s, param)
             else
                 yield ret = f(interp, s, param)
