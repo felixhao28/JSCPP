@@ -20,6 +20,10 @@
   "contributors": [
     "Felix Hao <felixhao28@gmail.com>"
   ],
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "grunt build"
+  },
   "main": "main.js",
   "dependencies": {
     "printf": "^0.2.1"
@@ -48,10 +52,5 @@
     "type": "git",
     "url": "https://github.com/felixhao28/JSCPP.git"
   },
-  "licenses": [
-    {
-      "type": "GNU GPLv2",
-      "url": "https://www.gnu.org/licenses/gpl-2.0.html"
-    }
-  ]
+  "licenses": "MIT"
 }
