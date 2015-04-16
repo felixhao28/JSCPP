@@ -74,6 +74,10 @@ Main = React.createClass
         @setState
             code: getCookie("code")
 
+    handleError: (e) ->
+        @setState
+            output: @output + "\n" + e
+
     run: (debug, e) ->
         e.preventDefault()
         code = @state.code
@@ -93,12 +97,21 @@ Main = React.createClass
             debug: debug
         if debug
             @preDebug()
-            @debugger = JSCPP.run(code, input, config)
-            @startDebug()
+            try
+                @debugger = JSCPP.run(code, input, config)
+                @startDebug()
+            catch e
+                @handleError(e)
+                @debug_stop()
         else
             @preRun()
-            exitCode = JSCPP.run(code, input, config)
-            @postRun(exitCode)
+            try
+                exitCode = JSCPP.run(code, input, config)
+                @postRun(exitCode)
+            catch e
+                @handleError(e)
+                @setState
+                    status: "editing"
 
     preDebug: ->
         @codeBackup = @state.code

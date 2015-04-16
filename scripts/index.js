@@ -78,6 +78,11 @@ Main = React.createClass({
       code: getCookie("code")
     });
   },
+  handleError: function(e) {
+    return this.setState({
+      output: this.output + "\n" + e
+    });
+  },
   run: function(debug, e) {
     var code, config, exitCode, input;
     e.preventDefault();
@@ -105,12 +110,26 @@ Main = React.createClass({
     };
     if (debug) {
       this.preDebug();
-      this["debugger"] = JSCPP.run(code, input, config);
-      return this.startDebug();
+      try {
+        this["debugger"] = JSCPP.run(code, input, config);
+        return this.startDebug();
+      } catch (_error) {
+        e = _error;
+        this.handleError(e);
+        return this.debug_stop();
+      }
     } else {
       this.preRun();
-      exitCode = JSCPP.run(code, input, config);
-      return this.postRun(exitCode);
+      try {
+        exitCode = JSCPP.run(code, input, config);
+        return this.postRun(exitCode);
+      } catch (_error) {
+        e = _error;
+        this.handleError(e);
+        return this.setState({
+          status: "editing"
+        });
+      }
     }
   },
   preDebug: function() {
