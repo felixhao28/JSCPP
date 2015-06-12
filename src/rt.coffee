@@ -498,45 +498,35 @@ CRuntime::isClassType = (type) ->
     type.type == "class"
 
 CRuntime::arrayPointerType = (eleType, size) ->
-    {
-        type: "pointer"
-        ptrType: "array"
-        eleType: eleType
-        size: size
-    }
+    type: "pointer"
+    ptrType: "array"
+    eleType: eleType
+    size: size
 
 CRuntime::makeArrayPointerValue = (arr, position) ->
-    {
-        target: arr
-        position: position
-    }
+    target: arr
+    position: position
 
 CRuntime::functionPointerType = (retType, sigiture) ->
-    {
-        type: "pointer"
-        ptrType: "function"
-        retType: retType
-        sigiture: sigiture
-    }
+    type: "pointer"
+    ptrType: "function"
+    retType: retType
+    sigiture: sigiture
 
 CRuntime::makeFunctionPointerValue = (f, name, lt, args, retType) ->
-    {
-        target: f
-        name: name
-        defineType: lt
-        args: args
-        retType: retType
-    }
+    target: f
+    name: name
+    defineType: lt
+    args: args
+    retType: retType
 
 CRuntime::normalPointerType = (targetType) ->
-    {
-        type: "pointer"
-        ptrType: "normal"
-        targetType: targetType
-    }
+    type: "pointer"
+    ptrType: "normal"
+    targetType: targetType
 
 CRuntime::makeNormalPointerValue = (target) ->
-    { target: target }
+    target: target
 
 CRuntime::simpleType = (type) ->
     if @isPrimitiveType(type)
@@ -569,10 +559,8 @@ CRuntime::newClass = (classname, members) ->
     clsType
 
 CRuntime::primitiveType = (type) ->
-    {
-        type: "primitive"
-        name: type
-    }
+    type: "primitive"
+    name: type
 
 CRuntime::isStringType = (type) ->
     @isArrayType(type) and @isTypeEqualTo(type.eleType, @charTypeLiteral)
@@ -638,7 +626,7 @@ CRuntime::makeTypeString = (type) ->
         if type.ptrType == "normal"
             ret += @makeTypeString(type.targetType) + "*"
         else if type.ptrType == "array"
-            ret += @makeTypeString(type.eleType) + "*"
+            ret += @makeTypeString(type.eleType) + "[#{type.size}]"
         else if type.ptrType == "function"
             ret += @makeTypeString(type.retType) + "(" + type.sigiture.map((e) ->
                 @makeTypeString e

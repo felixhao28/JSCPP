@@ -59,17 +59,19 @@ Debugger::nextNode = ->
 Debugger::variable = (name) ->
     if name
         v = @rt.readVar(name)
-        {
-            type: @rt.makeTypeString(v.t)
-            value: v.v
-        }
+        type: @rt.makeTypeString(v.t)
+        value: v.v
     else
-        for k, v of @rt.scope[@rt.scope.length-1] when typeof v is "object" and "t" of v and "v" of v
-                {
-                    name: k
-                    type: @rt.makeTypeString(v.t)
-                    value: v.v
-                }
-
+        usedName = new Set()
+        ret = []
+        for scopeIndex in [@rt.scope.length - 1...0] by -1
+            for name, val of @rt.scope[@rt.scope.length-1] when typeof val is "object" and "t" of val and "v" of val
+                if not usedName.has(name)
+                    usedName.add(name)
+                    ret.push
+                        name: name
+                        type: @rt.makeTypeString(val.t)
+                        value: val.v
+        ret
 
 module.exports = Debugger
