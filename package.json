@@ -1,0 +1,27 @@
+{
+  "name": "JSCPP-ghpage",
+  "version": "0.0.0",
+  "description": "ghpage for JSCPP",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-coffee-react": "^2.4.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-newer": "^1.1.1",
+    "load-grunt-tasks": "^3.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felixhao28/JSCPP.git"
+  },
+  "author": "Felix Hao",
+  "license": "IDC",
+  "bugs": {
+    "url": "https://github.com/felixhao28/JSCPP/issues"
+  },
+  "homepage": "https://github.com/felixhao28/JSCPP"
+}

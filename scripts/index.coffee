@@ -9,7 +9,6 @@ getCookie = (cname) ->
             c = c.substring(1)
         if c.indexOf(name) is 0
             return decodeURIComponent(c.substring(name.length, c.length))
-    ""
 
 VariablePanel = React.createClass
     displayName: "VariablePanel"
@@ -139,12 +138,17 @@ Main = React.createClass
         @debug_stepinto()
 
     debug_stepinto: ->
-        done = @debugger.continue()
-        if done isnt false
+        try
+            done = @debugger.continue()
+            if done isnt false
+                @debug_stop()
+                @postDebug(done.v)
+            else
+                @updateMarkers()
+        catch e
+            @handleError(e)
             @debug_stop()
-            @postDebug(done.v)
-        else
-            @updateMarkers()
+        
 
     debug_stepover: ->
         @debug_stepinto()
