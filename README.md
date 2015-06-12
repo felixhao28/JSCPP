@@ -100,7 +100,7 @@ mydebugger.stopConditions = {
 // so that debugger only stops at a statement of a new position
 // or you can add your own condition, i.e. stops at line 10
 mydebugger.conditions["line10"] = function (prevNode, nextNode) {
-	if (nextNode.reportedLine === 10)
+	if (nextNode.sLine=== 10)
 		// disable itself so that it only triggers once on line 10
 		mydebugger.stopConditions["line10"] = false
 		return true;
