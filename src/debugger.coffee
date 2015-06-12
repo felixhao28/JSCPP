@@ -65,7 +65,7 @@ Debugger::variable = (name) ->
         usedName = new Set()
         ret = []
         for scopeIndex in [@rt.scope.length - 1...0] by -1
-            for name, val of @rt.scope[@rt.scope.length-1] when typeof val is "object" and "t" of val and "v" of val
+            for name, val of @rt.scope[scopeIndex] when typeof val is "object" and "t" of val and "v" of val
                 if not usedName.has(name)
                     usedName.add(name)
                     ret.push
