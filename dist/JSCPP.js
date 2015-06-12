@@ -19019,8 +19019,8 @@ CRuntime.prototype.raiseException = function(message) {
   var col, interp, ln, ref, ref1;
   interp = this.interp;
   if (interp) {
-    ln = ((ref = interp.currentNode) != null ? ref.line : void 0) || "unknown";
-    col = ((ref1 = interp.currentNode) != null ? ref1.column : void 0) || "unknown";
+    ln = ((ref = interp.currentNode) != null ? ref.sLine : void 0) || "unknown";
+    col = ((ref1 = interp.currentNode) != null ? ref1.sColumn : void 0) || "unknown";
     throw ln + ":" + col + " " + message;
   } else {
     throw message;
