@@ -653,8 +653,8 @@ CRuntime::defaultValue = (type) ->
 CRuntime::raiseException = (message) ->
     interp = @interp
     if interp
-        ln = interp.currentNode?.line or "unknown"
-        col = interp.currentNode?.column or "unknown"
+        ln = interp.currentNode?.sLine or "unknown"
+        col = interp.currentNode?.sColumn or "unknown"
         throw ln + ":" + col + " " + message
     else
         throw message
