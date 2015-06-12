@@ -54,7 +54,7 @@ Main = React.createClass({
       markers: []
     };
   },
-  defaultCode: "#include <iostream>\nint main() {\n    int a;\n    cin >> a;\n    cout << a*10 << endl;\n    return 0;\n}",
+  defaultCode: "#include <iostream>\nusing namespace std;\nint main() {\n    int a;\n    cin >> a;\n    cout << a*10 << endl;\n    return 0;\n}",
   componentDidMount: function() {
     jQuery.hotkeys.options.filterInputAcceptingElements = false;
     jQuery.hotkeys.options.filterContentEditable = false;
@@ -236,12 +236,12 @@ Main = React.createClass({
       "title": "File"
     }, React.createElement(MenuItem, null, "Quick Open (Ctrl + O)"), React.createElement(MenuItem, null, "Quick Save (Ctrl + S)")), React.createElement(NavItem, {
       "href": "#",
-      "onClick": this.run.bind(this, false),
-      "disable": editing
+      "onClick": (editing ? this.run.bind(this, false) : void 0),
+      "disabled": !editing
     }, "Run"), React.createElement(NavItem, {
       "href": "#",
-      "onClick": this.run.bind(this, true),
-      "disable": editing
+      "onClick": (editing ? this.run.bind(this, true) : void 0),
+      "disabled": !editing
     }, "Debug"))), React.createElement(Grid, null, (debugging ? React.createElement(Row, {
       "className": "debug-toolbar"
     }, React.createElement(Col, {

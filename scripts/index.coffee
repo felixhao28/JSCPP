@@ -46,6 +46,7 @@ Main = React.createClass
 
     defaultCode: """
         #include <iostream>
+        using namespace std;
         int main() {
             int a;
             cin >> a;
@@ -191,6 +192,7 @@ Main = React.createClass
         debugging = status is "debugging"
         editing = status is "editing"
         running = status is "running"
+
         brand =
             <a href="https://github.com/felixhao28/JSCPP" className="logo">
                 JSCPP
@@ -202,8 +204,8 @@ Main = React.createClass
                         <MenuItem>Quick Open (Ctrl + O)</MenuItem>
                         <MenuItem>Quick Save (Ctrl + S)</MenuItem>
                     </DropdownButton>
-                    <NavItem href="#" onClick={@run.bind @, false} disable={editing}>Run</NavItem>
-                    <NavItem href="#" onClick={@run.bind @, true} disable={editing}>Debug</NavItem>
+                    <NavItem href="#" onClick={if editing then @run.bind(@, false)} disabled={not editing}>Run</NavItem>
+                    <NavItem href="#" onClick={if editing then @run.bind(@, true)} disabled={not editing}>Debug</NavItem>
                 </Nav>
             </Navbar>
             <Grid>
