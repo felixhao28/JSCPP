@@ -10837,7 +10837,7 @@ Debugger.prototype.variable = function(name) {
     usedName = new Set();
     ret = [];
     for (scopeIndex = i = ref = this.rt.scope.length - 1; i > 0; scopeIndex = i += -1) {
-      ref1 = this.rt.scope[this.rt.scope.length - 1];
+      ref1 = this.rt.scope[scopeIndex];
       for (name in ref1) {
         val = ref1[name];
         if (typeof val === "object" && "t" in val && "v" in val) {
