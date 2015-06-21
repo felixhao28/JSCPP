@@ -149,11 +149,11 @@ module.exports = (function() {
         peg$c54 = function(c) {return [4];},
         peg$c55 = function(c) {return [5];},
         peg$c56 = function(a, b) {
-                if (b.length>0){
-                  var ret = {
+                if (b.length > 0) {
+                  var ret = addPositionInfo({
                     Expression: a,
-                  };
-                  for (var i=0;i<b.length;i++){
+                  });
+                  for (var i = 0; i < b.length; i++){
                     var o = b[i][1];
                     switch(b[i][0]){
                     case 0:
@@ -179,7 +179,7 @@ module.exports = (function() {
                       ret.type = 'PostfixExpression_PostDecrement';
                       break;
                     }
-                    ret = {Expression: ret};
+                    ret = addPositionInfo({Expression: ret});
                   }
                   return ret.Expression;
                 } else
@@ -10865,72 +10865,72 @@ module.exports = function() {
   var boolHandler, defaultOpHandler;
   this.config = {
     limits: {
-      'char': {
+      "char": {
         max: 0x7f,
         min: 0x00,
         bytes: 1
       },
-      'signed char': {
+      "signed char": {
         max: 0x7f,
         min: -0x80,
         bytes: 1
       },
-      'unsigned char': {
+      "unsigned char": {
         max: 0xff,
         min: 0x00,
         bytes: 1
       },
-      'short': {
+      "short": {
         max: 0x7fff,
         min: -0x8000,
         bytes: 2
       },
-      'unsigned short': {
+      "unsigned short": {
         max: 0xffff,
         min: 0x0000,
         bytes: 2
       },
-      'int': {
+      "int": {
         max: 0x7fffffff,
         min: -0x80000000,
         bytes: 4
       },
-      'unsigned': {
+      "unsigned": {
         max: 0xffffffff,
         min: 0x00000000,
         bytes: 4
       },
-      'long': {
+      "long": {
         max: 0x7fffffff,
         min: -0x80000000,
         bytes: 4
       },
-      'unsigned long': {
+      "unsigned long": {
         max: 0xffffffff,
         min: 0x00000000,
         bytes: 4
       },
-      'long long': {
+      "long long": {
         max: 0x7fffffffffffffff,
         min: -0x8000000000000000,
         bytes: 8
       },
-      'unsigned long long': {
+      "unsigned long long": {
         max: 0xffffffffffffffff,
         min: 0x0000000000000000,
         bytes: 8
       },
-      'float': {
+      "float": {
         max: 3.40282346638529e+038,
         min: -3.40282346638529e+038,
         bytes: 4
       },
-      'double': {
+      "double": {
         max: 1.79769313486232e+308,
         min: -1.79769313486232e+308,
         bytes: 8
       },
-      'pointer': {
+      "pointer": {
         max: void 0,
         min: void 0,
         bytes: 4
@@ -10938,40 +10938,40 @@ module.exports = function() {
     },
     loadedLibraries: []
   };
-  this.config.limits['short int'] = this.config.limits['short'];
-  this.config.limits['signed short'] = this.config.limits['short'];
-  this.config.limits['signed short int'] = this.config.limits['short'];
-  this.config.limits['unsigned short int'] = this.config.limits['unsigned short'];
-  this.config.limits['signed int'] = this.config.limits['int'];
-  this.config.limits['unsigned int'] = this.config.limits['unsigned'];
-  this.config.limits['long int'] = this.config.limits['long'];
-  this.config.limits['long int'] = this.config.limits['long'];
-  this.config.limits['signed long'] = this.config.limits['long'];
-  this.config.limits['signed long int'] = this.config.limits['long'];
-  this.config.limits['unsigned long int'] = this.config.limits['unsigned long'];
-  this.config.limits['long long int'] = this.config.limits['long long'];
-  this.config.limits['long long int'] = this.config.limits['long long'];
-  this.config.limits['signed long long'] = this.config.limits['long long'];
-  this.config.limits['signed long long int'] = this.config.limits['long long'];
-  this.config.limits['unsigned long long int'] = this.config.limits['unsigned long long'];
-  this.numericTypeOrder = ['char', 'signed char', 'short', 'short int', 'signed short', 'signed short int', 'int', 'signed int', 'long', 'long int', 'long int', 'signed long', 'signed long int', 'long long', 'long long int', 'long long int', 'signed long long', 'signed long long int', 'float', 'double'];
+  this.config.limits["short int"] = this.config.limits["short"];
+  this.config.limits["signed short"] = this.config.limits["short"];
+  this.config.limits["signed short int"] = this.config.limits["short"];
+  this.config.limits["unsigned short int"] = this.config.limits["unsigned short"];
+  this.config.limits["signed int"] = this.config.limits["int"];
+  this.config.limits["unsigned int"] = this.config.limits["unsigned"];
+  this.config.limits["long int"] = this.config.limits["long"];
+  this.config.limits["long int"] = this.config.limits["long"];
+  this.config.limits["signed long"] = this.config.limits["long"];
+  this.config.limits["signed long int"] = this.config.limits["long"];
+  this.config.limits["unsigned long int"] = this.config.limits["unsigned long"];
+  this.config.limits["long long int"] = this.config.limits["long long"];
+  this.config.limits["long long int"] = this.config.limits["long long"];
+  this.config.limits["signed long long"] = this.config.limits["long long"];
+  this.config.limits["signed long long int"] = this.config.limits["long long"];
+  this.config.limits["unsigned long long int"] = this.config.limits["unsigned long long"];
+  this.numericTypeOrder = ["char", "signed char", "short", "short int", "signed short", "signed short int", "int", "signed int", "long", "long int", "long int", "signed long", "signed long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "float", "double"];
   defaultOpHandler = {
-    '*': {
-      '#default': function(rt, l, r) {
+    "*": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support * on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support * on " + rt.makeTypeString(r.t));
         }
         ret = l.v * r.v;
         rett = rt.promoteNumeric(l.t, r.t);
         return rt.val(rett, ret);
       }
     },
-    '/': {
-      '#default': function(rt, l, r) {
+    "/": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support / on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support / on " + rt.makeTypeString(r.t));
         }
         ret = l.v / r.v;
         if (rt.isIntegerType(l.t) && rt.isIntegerType(r.t)) {
@@ -10981,25 +10981,25 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    '%': {
-      '#default': function(rt, l, r) {
+    "%": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support % on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support % on " + rt.makeTypeString(r.t));
         }
         ret = l.v % r.v;
         rett = rt.promoteNumeric(l.t, r.t);
         return rt.val(rett, ret);
       }
     },
-    '+': {
-      '#default': function(rt, l, r) {
+    "+": {
+      "#default": function(rt, l, r) {
         var i, ret, rett;
         if (r === void 0) {
           return l;
         } else {
           if (!rt.isNumericType(r.t)) {
-            rt.raiseException(rt.makeTypeString(l.t) + ' does not support + on ' + rt.makeTypeString(r.t));
+            rt.raiseException(rt.makeTypeString(l.t) + " does not support + on " + rt.makeTypeString(r.t));
           }
           if (rt.isArrayType(r.t)) {
             i = rt.cast(rt.intTypeLiteral, l).v;
@@ -11012,14 +11012,14 @@ module.exports = function() {
         }
       }
     },
-    '-': {
-      '#default': function(rt, l, r) {
+    "-": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (r === void 0) {
           return rt.val(l.t, -l.v);
         } else {
           if (!rt.isNumericType(r.t)) {
-            rt.raiseException(rt.makeTypeString(l.t) + ' does not support - on ' + rt.makeTypeString(r.t));
+            rt.raiseException(rt.makeTypeString(l.t) + " does not support - on " + rt.makeTypeString(r.t));
           }
           ret = l.v - r.v;
           rett = rt.promoteNumeric(l.t, r.t);
@@ -11027,96 +11027,96 @@ module.exports = function() {
         }
       }
     },
-    '<<': {
-      '#default': function(rt, l, r) {
+    "<<": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support << on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support << on " + rt.makeTypeString(r.t));
         }
         ret = l.v << r.v;
         rett = l.t;
         return rt.val(rett, ret);
       }
     },
-    '>>': {
-      '#default': function(rt, l, r) {
+    ">>": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support >> on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support >> on " + rt.makeTypeString(r.t));
         }
         ret = l.v >> r.v;
         rett = l.t;
         return rt.val(rett, ret);
       }
     },
-    '<': {
-      '#default': function(rt, l, r) {
+    "<": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support < on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support < on " + rt.makeTypeString(r.t));
         }
         ret = l.v < r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '<=': {
-      '#default': function(rt, l, r) {
+    "<=": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support <= on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support <= on " + rt.makeTypeString(r.t));
         }
         ret = l.v <= r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '>': {
-      '#default': function(rt, l, r) {
+    ">": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support > on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support > on " + rt.makeTypeString(r.t));
         }
         ret = l.v > r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '>=': {
-      '#default': function(rt, l, r) {
+    ">=": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support >= on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support >= on " + rt.makeTypeString(r.t));
         }
         ret = l.v >= r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '==': {
-      '#default': function(rt, l, r) {
+    "==": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support == on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support == on " + rt.makeTypeString(r.t));
         }
         ret = l.v === r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '!=': {
-      '#default': function(rt, l, r) {
+    "!=": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support != on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support != on " + rt.makeTypeString(r.t));
         }
         ret = l.v !== r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '&': {
-      '#default': function(rt, l, r) {
+    "&": {
+      "#default": function(rt, l, r) {
         var ret, rett, t;
         if (r === void 0) {
           if (l.array) {
@@ -11127,7 +11127,7 @@ module.exports = function() {
           }
         } else {
           if (!rt.isIntegerType(l.t) || !rt.isNumericType(r.t) || !rt.isIntegerType(r.t)) {
-            rt.raiseException(rt.makeTypeString(l.t) + ' does not support & on ' + rt.makeTypeString(r.t));
+            rt.raiseException(rt.makeTypeString(l.t) + " does not support & on " + rt.makeTypeString(r.t));
           }
           ret = l.v & r.v;
           rett = rt.promoteNumeric(l.t, r.t);
@@ -11135,226 +11135,232 @@ module.exports = function() {
         }
       }
     },
-    '^': {
-      '#default': function(rt, l, r) {
+    "^": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support ^ on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support ^ on " + rt.makeTypeString(r.t));
         }
         ret = l.v ^ r.v;
         rett = rt.promoteNumeric(l.t, r.t);
         return rt.val(rett, ret);
       }
     },
-    '|': {
-      '#default': function(rt, l, r) {
+    "|": {
+      "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support | on ' + rt.makeTypeString(r.t));
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support | on " + rt.makeTypeString(r.t));
         }
         ret = l.v | r.v;
         rett = rt.promoteNumeric(l.t, r.t);
         return rt.val(rett, ret);
       }
     },
-    ',': {
-      '#default': function(rt, l, r) {
+    ",": {
+      "#default": function(rt, l, r) {
         return r;
       }
     },
-    '=': {
-      '#default': function(rt, l, r) {
+    "=": {
+      "#default": function(rt, l, r) {
         if (l.left) {
           l.v = rt.cast(l.t, r).v;
           return l;
         } else {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
       }
     },
-    '+=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['+']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "+=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["+"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '-=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['-']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "-=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["-"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '*=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['*']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "*=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["*"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '/=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['/']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "/=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["/"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '%=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['%']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "%=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["%"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '<<=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['<<']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "<<=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["<<"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '>>=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['>>']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    ">>=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler[">>"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '&=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['&']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "&=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["&"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '^=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['^']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "^=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["^"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '|=': {
-      '#default': function(rt, l, r) {
-        r = defaultOpHandler['|']['#default'](rt, l, r);
-        return defaultOpHandler['=']['#default'](rt, l, r);
+    "|=": {
+      "#default": function(rt, l, r) {
+        r = defaultOpHandler["|"]["#default"](rt, l, r);
+        return defaultOpHandler["="]["#default"](rt, l, r);
       }
     },
-    '++': {
-      '#default': function(rt, l, dummy) {
+    "++": {
+      "#default": function(rt, l, dummy) {
         var b;
         if (!rt.isNumericType(l.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support increment');
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support increment");
         }
         if (!l.left) {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
         if (dummy) {
           b = l.v;
           l.v = l.v + 1;
-          return rt.val(l.t, b);
+          if (rt.inrange(l.t, l.v)) {
+            return rt.val(l.t, b);
+          }
+          rt.raiseException("overflow during post-increment " + (rt.makeValString(l)));
         } else {
           l.v = l.v + 1;
           if (rt.inrange(l.t, l.v)) {
             return l;
           }
-          rt.raiseException('overflow during increment');
+          rt.raiseException("overflow during pre-increment " + (rt.makeValString(l)));
         }
       }
     },
-    '--': {
-      '#default': function(rt, l, dummy) {
+    "--": {
+      "#default": function(rt, l, dummy) {
         var b;
         if (!rt.isNumericType(l.t)) {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support decrement');
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support decrement");
         }
         if (!l.left) {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
         if (dummy) {
           b = l.v;
           l.v = l.v - 1;
-          return rt.val(l.t, b);
+          if (rt.inrange(l.t, l.v)) {
+            return rt.val(l.t, b);
+          }
+          rt.raiseException("overflow during post-decrement");
         } else {
           l.v = l.v - 1;
           b = l.v;
           if (rt.inrange(l.t, l.v)) {
             return l;
           }
-          rt.raiseException('overflow during decrement');
+          rt.raiseException("overflow during pre-decrement");
         }
       }
     }
   };
   boolHandler = {
-    '==': {
-      '#default': function(rt, l, r) {
+    "==": {
+      "#default": function(rt, l, r) {
         var ret, rett;
-        if (!r.t === 'bool') {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support == on ' + rt.makeTypeString(r.t));
+        if (!r.t === "bool") {
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support == on " + rt.makeTypeString(r.t));
         }
         ret = l.v === r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    '!=': {
-      '#default': function(rt, l, r) {
+    "!=": {
+      "#default": function(rt, l, r) {
         var ret, rett;
-        if (!r.t === 'bool') {
-          rt.raiseException(rt.makeTypeString(l.t) + ' does not support != on ' + rt.makeTypeString(r.t));
+        if (!r.t === "bool") {
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support != on " + rt.makeTypeString(r.t));
         }
         ret = l.v !== r.v;
         rett = rt.boolTypeLiteral;
         return rt.val(rett, ret);
       }
     },
-    ',': {
-      '#default': function(rt, l, r) {
+    ",": {
+      "#default": function(rt, l, r) {
         return r;
       }
     },
-    '=': {
-      '#default': function(rt, l, r) {
+    "=": {
+      "#default": function(rt, l, r) {
         if (l.left) {
           l.v = rt.cast(l.t, r).v;
           return l;
         } else {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
       }
     }
   };
   this.types = {
-    'global': {}
+    "global": {}
   };
-  this.types['(char)'] = defaultOpHandler;
-  this.types['(signed char)'] = defaultOpHandler;
-  this.types['(unsigned char)'] = defaultOpHandler;
-  this.types['(short)'] = defaultOpHandler;
-  this.types['(short int)'] = defaultOpHandler;
-  this.types['(signed short)'] = defaultOpHandler;
-  this.types['(signed short int)'] = defaultOpHandler;
-  this.types['(unsigned short)'] = defaultOpHandler;
-  this.types['(unsigned short int)'] = defaultOpHandler;
-  this.types['(int)'] = defaultOpHandler;
-  this.types['(signed int)'] = defaultOpHandler;
-  this.types['(unsigned)'] = defaultOpHandler;
-  this.types['(unsigned int)'] = defaultOpHandler;
-  this.types['(long)'] = defaultOpHandler;
-  this.types['(long int)'] = defaultOpHandler;
-  this.types['(long int)'] = defaultOpHandler;
-  this.types['(signed long)'] = defaultOpHandler;
-  this.types['(signed long int)'] = defaultOpHandler;
-  this.types['(unsigned long)'] = defaultOpHandler;
-  this.types['(unsigned long int)'] = defaultOpHandler;
-  this.types['(long long)'] = defaultOpHandler;
-  this.types['(long long int)'] = defaultOpHandler;
-  this.types['(long long int)'] = defaultOpHandler;
-  this.types['(signed long long)'] = defaultOpHandler;
-  this.types['(signed long long int)'] = defaultOpHandler;
-  this.types['(unsigned long long)'] = defaultOpHandler;
-  this.types['(unsigned long long int)'] = defaultOpHandler;
-  this.types['(float)'] = defaultOpHandler;
-  this.types['(double)'] = defaultOpHandler;
-  this.types['(bool)'] = boolHandler;
-  this.types['pointer'] = {
-    '==': {
-      '#default': function(rt, l, r) {
+  this.types["(char)"] = defaultOpHandler;
+  this.types["(signed char)"] = defaultOpHandler;
+  this.types["(unsigned char)"] = defaultOpHandler;
+  this.types["(short)"] = defaultOpHandler;
+  this.types["(short int)"] = defaultOpHandler;
+  this.types["(signed short)"] = defaultOpHandler;
+  this.types["(signed short int)"] = defaultOpHandler;
+  this.types["(unsigned short)"] = defaultOpHandler;
+  this.types["(unsigned short int)"] = defaultOpHandler;
+  this.types["(int)"] = defaultOpHandler;
+  this.types["(signed int)"] = defaultOpHandler;
+  this.types["(unsigned)"] = defaultOpHandler;
+  this.types["(unsigned int)"] = defaultOpHandler;
+  this.types["(long)"] = defaultOpHandler;
+  this.types["(long int)"] = defaultOpHandler;
+  this.types["(long int)"] = defaultOpHandler;
+  this.types["(signed long)"] = defaultOpHandler;
+  this.types["(signed long int)"] = defaultOpHandler;
+  this.types["(unsigned long)"] = defaultOpHandler;
+  this.types["(unsigned long int)"] = defaultOpHandler;
+  this.types["(long long)"] = defaultOpHandler;
+  this.types["(long long int)"] = defaultOpHandler;
+  this.types["(long long int)"] = defaultOpHandler;
+  this.types["(signed long long)"] = defaultOpHandler;
+  this.types["(signed long long int)"] = defaultOpHandler;
+  this.types["(unsigned long long)"] = defaultOpHandler;
+  this.types["(unsigned long long int)"] = defaultOpHandler;
+  this.types["(float)"] = defaultOpHandler;
+  this.types["(double)"] = defaultOpHandler;
+  this.types["(bool)"] = boolHandler;
+  this.types["pointer"] = {
+    "==": {
+      "#default": function(rt, l, r) {
         if (rt.isTypeEqualTo(l.t, r.t)) {
-          if (l.t.ptrType === 'array') {
+          if (l.t.ptrType === "array") {
             return l.v.target === r.v.target && (l.v.target === null || l.v.position === r.v.position);
           } else {
             return l.v.target === r.v.target;
@@ -11363,21 +11369,21 @@ module.exports = function() {
         return false;
       }
     },
-    '!=': {
-      '#default': function(rt, l, r) {
-        return !rt.types['pointer']['==']['#default'](rt, l, r);
+    "!=": {
+      "#default": function(rt, l, r) {
+        return !rt.types["pointer"]["=="]["#default"](rt, l, r);
       }
     },
-    ',': {
-      '#default': function(rt, l, r) {
+    ",": {
+      "#default": function(rt, l, r) {
         return r;
       }
     },
-    '=': {
-      '#default': function(rt, l, r) {
+    "=": {
+      "#default": function(rt, l, r) {
         var t;
         if (!l.left) {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
         t = rt.cast(l.t, r);
         l.t = t.t;
@@ -11385,8 +11391,8 @@ module.exports = function() {
         return l;
       }
     },
-    '&': {
-      '#default': function(rt, l, r) {
+    "&": {
+      "#default": function(rt, l, r) {
         var t;
         if (r === void 0) {
           if (l.array) {
@@ -11396,71 +11402,71 @@ module.exports = function() {
             return rt.val(t, rt.makeNormalPointerValue(l));
           }
         } else {
-          rt.raiseException('you cannot cast bitwise and on pointer');
+          rt.raiseException("you cannot cast bitwise and on pointer");
         }
       }
     }
   };
-  this.types['pointer_function'] = {
-    '()': {
-      '#default': function(rt, l, args) {
-        if (l.t.type !== 'pointer' || l.t.ptrType !== 'function') {
-          rt.raiseException(rt.makeTypeString(l.v.type) + ' is not function');
+  this.types["pointer_function"] = {
+    "()": {
+      "#default": function(rt, l, args) {
+        if (l.t.type !== "pointer" || l.t.ptrType !== "function") {
+          rt.raiseException(rt.makeTypeString(l.v.type) + " is not function");
         }
         return rt.getCompatibleFunc(l.v.defineType, l.v.name, args).apply(null, [rt, l].concat(slice.call(args)));
       }
     }
   };
-  this.types['pointer_normal'] = {
-    '*': {
-      '#default': function(rt, l, r) {
+  this.types["pointer_normal"] = {
+    "*": {
+      "#default": function(rt, l, r) {
         if (r === void 0) {
           return l.v.target;
         } else {
-          rt.raiseException('you cannot multiply a pointer');
+          rt.raiseException("you cannot multiply a pointer");
         }
       }
     },
-    '->': {
-      '#default': function(rt, l, r) {
+    "->": {
+      "#default": function(rt, l, r) {
         return rt.getMember(l.v.target, r);
       }
     }
   };
-  this.types['pointer_array'] = {
-    '*': {
-      '#default': function(rt, l, r) {
+  this.types["pointer_array"] = {
+    "*": {
+      "#default": function(rt, l, r) {
         var arr, ret;
         if (r === void 0) {
           arr = l.v.target;
           if (l.v.position >= arr.length) {
-            rt.raiseException('index out of bound ' + l.v.position + ' >= ' + arr.length);
+            rt.raiseException("index out of bound " + l.v.position + " >= " + arr.length);
           } else if (l.v.position < 0) {
-            rt.raiseException('negative index ' + l.v.position);
+            rt.raiseException("negative index " + l.v.position);
           }
           ret = arr[l.v.position];
           ret.array = arr;
           ret.arrayIndex = l.v.position;
           return ret;
         } else {
-          rt.raiseException('you cannot multiply a pointer');
+          rt.raiseException("you cannot multiply a pointer");
         }
       }
     },
-    '[]': {
-      '#default': function(rt, l, r) {
-        r = rt.types['pointer_array']['+']['#default'](rt, l, r);
-        return rt.types['pointer_array']['*']['#default'](rt, r);
+    "[]": {
+      "#default": function(rt, l, r) {
+        r = rt.types["pointer_array"]["+"]["#default"](rt, l, r);
+        return rt.types["pointer_array"]["*"]["#default"](rt, r);
       }
     },
-    '->': {
-      '#default': function(rt, l, r) {
-        l = rt.types['pointer_array']['*']['#default'](rt, l);
+    "->": {
+      "#default": function(rt, l, r) {
+        l = rt.types["pointer_array"]["*"]["#default"](rt, l);
         return rt.getMember(l, r);
       }
     },
-    '-': {
-      '#default': function(rt, l, r) {
+    "-": {
+      "#default": function(rt, l, r) {
         var i;
         if (rt.isNumericType(r.t)) {
           i = rt.cast(rt.intTypeLiteral, r).v;
@@ -11469,92 +11475,92 @@ module.exports = function() {
           if (l.v.target === r.v.target) {
             return l.v.position - r.v.position;
           } else {
-            rt.raiseException('you cannot perform minus on pointers pointing to different arrays');
+            rt.raiseException("you cannot perform minus on pointers pointing to different arrays");
           }
         } else {
-          rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
+          rt.raiseException(rt.makeTypeString(r.t) + " is not an array pointer type");
         }
       }
     },
-    '<': {
-      '#default': function(rt, l, r) {
+    "<": {
+      "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
             return l.v.position < r.v.position;
           } else {
-            rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
+            rt.raiseException("you cannot perform compare on pointers pointing to different arrays");
           }
         } else {
-          rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
+          rt.raiseException(rt.makeTypeString(r.t) + " is not an array pointer type");
         }
       }
     },
-    '>': {
-      '#default': function(rt, l, r) {
+    ">": {
+      "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
             return l.v.position > r.v.position;
           } else {
-            rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
+            rt.raiseException("you cannot perform compare on pointers pointing to different arrays");
           }
         } else {
-          rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
+          rt.raiseException(rt.makeTypeString(r.t) + " is not an array pointer type");
         }
       }
     },
-    '<=': {
-      '#default': function(rt, l, r) {
+    "<=": {
+      "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
             return l.v.position <= r.v.position;
           } else {
-            rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
+            rt.raiseException("you cannot perform compare on pointers pointing to different arrays");
           }
         } else {
-          rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
+          rt.raiseException(rt.makeTypeString(r.t) + " is not an array pointer type");
         }
       }
     },
-    '>=': {
-      '#default': function(rt, l, r) {
+    ">=": {
+      "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
             return l.v.position >= r.v.position;
           } else {
-            rt.raiseException('you cannot perform compare on pointers pointing to different arrays');
+            rt.raiseException("you cannot perform compare on pointers pointing to different arrays");
           }
         } else {
-          rt.raiseException(rt.makeTypeString(r.t) + ' is not an array pointer type');
+          rt.raiseException(rt.makeTypeString(r.t) + " is not an array pointer type");
         }
       }
     },
-    '+': {
-      '#default': function(rt, l, r) {
+    "+": {
+      "#default": function(rt, l, r) {
         var i;
         if (rt.isNumericType(r.t)) {
           i = rt.cast(rt.intTypeLiteral, r).v;
           return rt.val(l.t, rt.makeArrayPointerValue(l.v.target, l.v.position + i));
         } else {
-          rt.raiseException('cannot add non-numeric to a pointer');
+          rt.raiseException("cannot add non-numeric to a pointer");
         }
       }
     },
-    '+=': {
-      '#default': function(rt, l, r) {
-        r = rt.types['pointer_array']['+']['#default'](rt, l, r);
-        return rt.types['pointer']['=']['#default'](rt, l, r);
+    "+=": {
+      "#default": function(rt, l, r) {
+        r = rt.types["pointer_array"]["+"]["#default"](rt, l, r);
+        return rt.types["pointer"]["="]["#default"](rt, l, r);
       }
     },
-    '-=': {
-      '#default': function(rt, l, r) {
-        r = rt.types['pointer_array']['-']['#default'](rt, l, r);
-        return rt.types['pointer']['=']['#default'](rt, l, r);
+    "-=": {
+      "#default": function(rt, l, r) {
+        r = rt.types["pointer_array"]["-"]["#default"](rt, l, r);
+        return rt.types["pointer"]["="]["#default"](rt, l, r);
       }
     },
-    '++': {
-      '#default': function(rt, l, dummy) {
+    "++": {
+      "#default": function(rt, l, dummy) {
         if (!l.left) {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
         if (dummy) {
           return rt.val(l.t, rt.makeArrayPointerValue(l.v.target, l.v.position++));
@@ -11564,10 +11570,10 @@ module.exports = function() {
         }
       }
     },
-    '--': {
-      '#default': function(rt, l, dummy) {
+    "--": {
+      "#default": function(rt, l, dummy) {
         if (!l.left) {
-          rt.raiseException(rt.makeValString(l) + ' is not a left value');
+          rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
         if (dummy) {
           return rt.val(l.t, rt.makeArrayPointerValue(l.v.target, l.v.position--));
@@ -18274,7 +18280,7 @@ CRuntime.prototype.makeValString = function(l) {
   var display;
   display = l.v;
   if (this.isTypeEqualTo(l.t, this.charTypeLiteral)) {
-    display = String.fromCharCode(l.v);
+    display = "'" + String.fromCharCode(l.v) + "'";
   }
   return display + "(" + this.makeTypeString(l.t) + ")";
 };
@@ -18454,19 +18460,23 @@ CRuntime.prototype.promoteNumeric = function(l, r) {
   } else if (this.isIntegerType(l) && this.isIntegerType(r)) {
     slt = this.getSignedType(l);
     srt = this.getSignedType(r);
-    slti = this.numericTypeOrder.indexOf(slt.name);
-    srti = this.numericTypeOrder.indexOf(srt.name);
-    if (slti <= srti) {
-      if (this.isUnsignedType(l) && this.isUnsignedType(r)) {
-        rett = r;
-      } else {
-        rett = srt;
-      }
+    if (this.isTypeEqualTo(slt, srt)) {
+      rett = slt;
     } else {
-      if (this.isUnsignedType(l) && this.isUnsignedType(r)) {
-        rett = l;
+      slti = this.numericTypeOrder.indexOf(slt.name);
+      srti = this.numericTypeOrder.indexOf(srt.name);
+      if (slti <= srti) {
+        if (this.isUnsignedType(l) && this.isUnsignedType(r)) {
+          rett = r;
+        } else {
+          rett = srt;
+        }
       } else {
-        rett = slt;
+        if (this.isUnsignedType(l) && this.isUnsignedType(r)) {
+          rett = l;
+        } else {
+          rett = slt;
+        }
       }
     }
     return rett;
@@ -18597,7 +18607,7 @@ CRuntime.prototype.isFloatType = function(type) {
 
 CRuntime.prototype.getSignedType = function(type) {
   if (type !== "unsigned") {
-    return this.primitiveType(type.name.substring("unsigned".length).trim());
+    return this.primitiveType(type.name.replace("unsigned", "").trim());
   } else {
     return this.primitiveType("int");
   }
