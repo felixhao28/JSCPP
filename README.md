@@ -109,7 +109,7 @@ mydebugger.conditions["line10"] = function (prevNode, nextNode) {
 };
 // then enable it
 mydebugger.stopConditions["line10"] = true
-// we need to explictly use "false" because exit code can be 0
+// we need to explicitly use "false" because exit code can be 0
 if (done !== false) {
 	console.log("program exited with code " + done);
 }
@@ -123,10 +123,10 @@ while ((s = mydebugger.nextNode()) == null) {
 // the content of the statement to be executed next
 var nextLine = mydebugger.nextLine();
 // it is essentially same as
-nextLine = mydebugger.src.slice(s.reportedPos, s.pos).trim()
+nextLine = mydebugger.src.slice(s.sOffset, s.eOffset).trim()
 
-console.log("from " + s.reportedLine + ":" + s.reportedColumn + "(" + s.reportedPos + ")");
-console.log("to " + s.line + ":" + s.column + "(" + s.pos + ")");
+console.log("from " + s.sLine + ":" + s.sColumn + "(" + s.sOffset + ")");
+console.log("to " + s.eLine + ":" + s.eColumn + "(" + s.eOffset + ")");
 console.log("==> " + nextLine);
 // examine the internal registry for a type
 mydebugger.type("int");
