@@ -33,6 +33,12 @@ I am gradually converting this project to coffeescript. And you are encouraged t
 
 Any PR is welcomed.
 
+## Using node-inspector
+
+We need to enable harmony flag to run node-debug. For example, use the following command to debug JSCPP with `test/8.bit.cpp` as input.
+
+`node-debug --nodejs --harmony demo/debug 8bit`
+
 ## Remarks
 
 This part contains detailed remarks on this project.

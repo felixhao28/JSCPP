@@ -392,11 +392,11 @@ PostfixExpression
       / c:INC {return [4];}
       / c:DEC {return [5];}
       )* {
-        if (b.length>0){
-          var ret = {
+        if (b.length > 0) {
+          var ret = addPositionInfo({
             Expression: a,
-          };
-          for (var i=0;i<b.length;i++){
+          });
+          for (var i = 0; i < b.length; i++){
             var o = b[i][1];
             switch(b[i][0]){
             case 0:
@@ -422,7 +422,7 @@ PostfixExpression
               ret.type = 'PostfixExpression_PostDecrement';
               break;
             }
-            ret = {Expression: ret};
+            ret = addPositionInfo({Expression: ret});
           }
           return ret.Expression;
         } else

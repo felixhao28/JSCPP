@@ -4,7 +4,7 @@ CRuntime = (config) ->
 
     mergeConfig = (a, b) ->
         for o of b
-            if o of a and typeof b[o] == "object"
+            if o of a and typeof b[o] is "object"
                 mergeConfig a[o], b[o]
             else
                 a[o] = b[o]
@@ -44,7 +44,7 @@ CRuntime::include = (name) ->
 
 CRuntime::getSize = (element) ->
     ret = 0
-    if @isArrayType(element.t) and element.v.position == 0
+    if @isArrayType(element.t) and element.v.position is 0
         i = 0
         while i < element.v.target.length
             ret += @getSize(element.v.target[i])
@@ -79,13 +79,13 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
             return
         ret = yield from interp.run(stmts, scope: "function")
         if !rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
-            if ret instanceof Array and ret[0] == "return"
+            if ret instanceof Array and ret[0] is "return"
                 ret = rt.cast(retType, ret[1])
             else
                 @raiseException "you must return a value"
         else
-            if typeof ret == "Array"
-                if ret[0] == "return" and ret[1]
+            if typeof ret is "Array"
+                if ret[0] is "return" and ret[1]
                     @raiseException "you cannot return a value of a void function"
             ret = undefined
         rt.exitScope "function " + name
@@ -125,12 +125,12 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
                 compatibles = []
                 rt = this
                 t[name]["reg"].forEach (dts) ->
-                    if dts[dts.length - 1] == "?" and dts.length < ts.length
+                    if dts[dts.length - 1] is "?" and dts.length < ts.length
                         newTs = ts.slice(0, dts.length - 1)
                         dts = dts.slice(0, -1)
                     else
                         newTs = ts
-                    if dts.length == newTs.length
+                    if dts.length is newTs.length
                         ok = true
                         i = 0
                         while ok and i < newTs.length
@@ -139,7 +139,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
                         if ok
                             compatibles.push t[name][rt.makeParametersSigniture(dts)]
                     return
-                if compatibles.length == 0
+                if compatibles.length is 0
                     if "#default" of t[name]
                         return t[name]["#default"]
                     rt = this
@@ -159,7 +159,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
 
 CRuntime::matchVarArg = (methods, sig) ->
     for _sig of methods
-        if _sig[_sig.length - 1] == "?"
+        if _sig[_sig.length - 1] is "?"
             _sig = _sig.slice(0, -1)
             if sig.startsWith(_sig)
                 return methods[_sig]
@@ -184,7 +184,7 @@ CRuntime::getFunc = (lt, name, args) ->
             sig = @makeParametersSigniture(args)
             if sig of t[name]
                 return t[name][sig]
-            else if (method = @matchVarArg(t[name], sig)) != null
+            else if (method = @matchVarArg(t[name], sig)) isnt null
                 return method
             else if "#default" of t[name]
                 return t[name]["#default"]
@@ -197,7 +197,7 @@ CRuntime::getFunc = (lt, name, args) ->
             sig = @makeParametersSigniture(args)
             if sig of t[name]
                 return t[name][sig]
-            else if (method = @matchVarArg(t[name], sig)) != null
+            else if (method = @matchVarArg(t[name], sig)) isnt null
                 return method
             else if "#default" of t[name]
                 return t[name]["#default"]
@@ -240,18 +240,21 @@ CRuntime::promoteNumeric = (l, r) ->
     else if @isIntegerType(l) and @isIntegerType(r)
         slt = @getSignedType(l)
         srt = @getSignedType(r)
-        slti = @numericTypeOrder.indexOf(slt.name)
-        srti = @numericTypeOrder.indexOf(srt.name)
-        if slti <= srti
-            if @isUnsignedType(l) and @isUnsignedType(r)
-                rett = r
-            else
-                rett = srt
+        if @isTypeEqualTo(slt, srt)
+            rett = slt
         else
-            if @isUnsignedType(l) and @isUnsignedType(r)
-                rett = l
+            slti = @numericTypeOrder.indexOf(slt.name)
+            srti = @numericTypeOrder.indexOf(srt.name)
+            if slti <= srti
+                if @isUnsignedType(l) and @isUnsignedType(r)
+                    rett = r
+                else
+                    rett = srt
             else
-                rett = slt
+                if @isUnsignedType(l) and @isUnsignedType(r)
+                    rett = l
+                else
+                    rett = slt
         return rett
     else if !@isIntegerType(l) and @isIntegerType(r)
         return l
@@ -277,7 +280,7 @@ CRuntime::defVar = (varname, type, initval) ->
     if varname of vc
         @raiseException "variable " + varname + " already defined"
     initval = @clone(@cast(type, initval))
-    if initval == undefined
+    if initval is undefined
         vc[varname] = @defaultValue(type)
         vc[varname].left = true
     else
@@ -295,41 +298,41 @@ CRuntime::isNumericType = (type) ->
     @isFloatType(type) or @isIntegerType(type)
 
 CRuntime::isUnsignedType = (type) ->
-    if typeof type == "string"
+    if typeof type is "string"
         switch type
             when "unsigned char", "unsigned short", "unsigned short int", "unsigned", "unsigned int", "unsigned long", "unsigned long int", "unsigned long long", "unsigned long long int"
                 return true
             else
                 return false
     else
-        return type.type == "primitive" and @isUnsignedType(type.name)
+        return type.type is "primitive" and @isUnsignedType(type.name)
     return
 
 CRuntime::isIntegerType = (type) ->
-    if typeof type == "string"
+    if typeof type is "string"
         switch type
             when "char", "signed char", "unsigned char", "short", "short int", "signed short", "signed short int", "unsigned short", "unsigned short int", "int", "signed int", "unsigned", "unsigned int", "long", "long int", "long int", "signed long", "signed long int", "unsigned long", "unsigned long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "unsigned long long", "unsigned long long int"
                 return true
             else
                 return false
     else
-        return type.type == "primitive" and @isIntegerType(type.name)
+        return type.type is "primitive" and @isIntegerType(type.name)
     return
 
 CRuntime::isFloatType = (type) ->
-    if typeof type == "string"
+    if typeof type is "string"
         switch type
             when "float", "double"
                 return true
             else
                 return false
     else
-        return type.type == "primitive" and @isFloatType(type.name)
+        return type.type is "primitive" and @isFloatType(type.name)
     return
 
 CRuntime::getSignedType = (type) ->
-    if type != "unsigned"
-        @primitiveType type.name.substring("unsigned".length).trim()
+    if type isnt "unsigned"
+        @primitiveType type.name.replace("unsigned", "").trim()
     else
         @primitiveType "int"
 
@@ -351,7 +354,7 @@ CRuntime::cast = (type, value) ->
     if @isTypeEqualTo(value.t, type)
         return value
     if @isPrimitiveType(type) and @isPrimitiveType(value.t)
-        if type.name == "bool"
+        if type.name is "bool"
             return @val(type, if value.v then true else false)
         else if type.name of [
                 "float"
@@ -371,7 +374,7 @@ CRuntime::cast = (type, value) ->
                     @raiseException "cannot cast negative value to " + @makeTypeString(type)
             if !@isNumericType(value.t)
                 @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
-            if value.t.name == "float" or value.t.name == "double"
+            if value.t.name is "float" or value.t.name is "double"
                 v = if value.v > 0 then Math.floor(value.v) else Math.ceil(value.v)
                 if @inrange(type, v)
                     return @val(type, v)
@@ -436,7 +439,7 @@ CRuntime::exitScope = (scopename) ->
     # logger.info("%j", this.scope);
     loop
         s = @scope.pop()
-        unless scopename and @scope.length > 1 and s["$name"] != scopename
+        unless scopename and @scope.length > 1 and s["$name"] isnt scopename
             break
     return
 
@@ -445,7 +448,7 @@ CRuntime::val = (type, v, left) ->
         @raiseException "overflow of " + @makeValString(
             t: type
             v: v)
-    if left == undefined
+    if left is undefined
         left = false
     {
         "t": type
@@ -454,17 +457,17 @@ CRuntime::val = (type, v, left) ->
     }
 
 CRuntime::isTypeEqualTo = (type1, type2) ->
-    if type1.type == type2.type
+    if type1.type is type2.type
         switch type1.type
             when "primitive", "class"
-                return type1.name == type2.name
+                return type1.name is type2.name
             when "pointer"
-                if type1.ptrType == type2.ptrType or type1.ptrType != "function" and type2.ptrType != "function"
+                if type1.ptrType is type2.ptrType or type1.ptrType isnt "function" and type2.ptrType isnt "function"
                     switch type1.ptrType
                         when "array"
                             return @isTypeEqualTo(type1.eleType, type2.eleType or type2.targetType)
                         when "function"
-                            if @isTypeEqualTo(type1.retType, type2.retType) and type1.sigiture.length == type2.sigiture.length
+                            if @isTypeEqualTo(type1.retType, type2.retType) and type1.sigiture.length is type2.sigiture.length
                                 _this = this
                                 return type1.sigiture.every((type, index, arr) ->
                                     _this.isTypeEqualTo type, type2.sigiture[index]
@@ -474,28 +477,28 @@ CRuntime::isTypeEqualTo = (type1, type2) ->
     false
 
 CRuntime::isBoolType = (type) ->
-    if typeof type == "string"
-        type == "bool"
+    if typeof type is "string"
+        type is "bool"
     else
-        type.type == "primitive" and @isBoolType(type.name)
+        type.type is "primitive" and @isBoolType(type.name)
 
 CRuntime::isPrimitiveType = (type) ->
     @isNumericType(type) or @isBoolType(type)
 
 CRuntime::isArrayType = (type) ->
-    @isPointerType(type) and type.ptrType == "array"
+    @isPointerType(type) and type.ptrType is "array"
 
 CRuntime::isFunctionType = (type) ->
-    @isPointerType(type) and type.ptrType == "function"
+    @isPointerType(type) and type.ptrType is "function"
 
 CRuntime::isNormalPointerType = (type) ->
-    @isPointerType(type) and type.ptrType == "normal"
+    @isPointerType(type) and type.ptrType is "normal"
 
 CRuntime::isPointerType = (type) ->
-    type.type == "pointer"
+    type.type is "pointer"
 
 CRuntime::isClassType = (type) ->
-    type.type == "class"
+    type.type is "class"
 
 CRuntime::arrayPointerType = (eleType, size) ->
     type: "pointer"
@@ -595,18 +598,18 @@ CRuntime::getTypeSigniture = (type) ->
     # (primitive), [class], {pointer}
     ret = type
     self = this
-    if type.type == "primitive"
+    if type.type is "primitive"
         ret = "(" + type.name + ")"
-    else if type.type == "class"
+    else if type.type is "class"
         ret = "[" + type.name + "]"
-    else if type.type == "pointer"
+    else if type.type is "pointer"
         # !targetType, @size!eleType, #retType!param1,param2,...
         ret = "{"
-        if type.ptrType == "normal"
+        if type.ptrType is "normal"
             ret += "!" + @getTypeSigniture(type.targetType)
-        else if type.ptrType == "array"
+        else if type.ptrType is "array"
             ret += "!" + @getTypeSigniture(type.eleType)
-        else if type.ptrType == "function"
+        else if type.ptrType is "function"
             ret += "#" + @getTypeSigniture(type.retType) + "!" + type.sigiture.map((e) ->
                 @getTypeSigniture e
             ).join(",")
@@ -616,37 +619,37 @@ CRuntime::getTypeSigniture = (type) ->
 CRuntime::makeTypeString = (type) ->
     # (primitive), [class], {pointer}
     ret = "$" + type
-    if type.type == "primitive"
+    if type.type is "primitive"
         ret = type.name
-    else if type.type == "class"
+    else if type.type is "class"
         ret = type.name
-    else if type.type == "pointer"
+    else if type.type is "pointer"
         # !targetType, @size!eleType, #retType!param1,param2,...
         ret = ""
-        if type.ptrType == "normal"
+        if type.ptrType is "normal"
             ret += @makeTypeString(type.targetType) + "*"
-        else if type.ptrType == "array"
+        else if type.ptrType is "array"
             ret += @makeTypeString(type.eleType) + "[#{type.size}]"
-        else if type.ptrType == "function"
+        else if type.ptrType is "function"
             ret += @makeTypeString(type.retType) + "(" + type.sigiture.map((e) ->
                 @makeTypeString e
             ).join(",") + ")"
     ret
 
 CRuntime::defaultValue = (type) ->
-    if type.type == "primitive"
+    if type.type is "primitive"
         if @isNumericType(type)
             return @val(type, 0)
-        else if type.name == "bool"
+        else if type.name is "bool"
             return @val(type, false)
-    else if type.type == "class"
+    else if type.type is "class"
         @raiseException "no default value for object"
-    else if type.type == "pointer"
-        if type.ptrType == "normal"
+    else if type.type is "pointer"
+        if type.ptrType is "normal"
             return @val(type, @nullPointerValue)
-        else if type.ptrType == "array"
+        else if type.ptrType is "array"
             return @val(type, @makeArrayPointerValue(null, 0))
-        else if type.ptrType == "function"
+        else if type.ptrType is "function"
             return @val(type, @makeFunctionPointerValue(null, null, null, null, null))
     return
 
