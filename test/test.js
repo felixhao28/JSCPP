@@ -14,7 +14,11 @@ expect = chai.expect;
 testFolder = './test/';
 
 prepareOutput = function(str) {
-  return str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim();
+  if (str) {
+    return str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim();
+  } else {
+    return null;
+  }
 };
 
 if (process.argv[2] === "direct") {
@@ -59,14 +63,15 @@ doTest = function(test, cb) {
 };
 
 doSource = function(code, cases, cb) {
-  var expected, i, input, j, len, sample, success;
+  var except, expected, i, input, j, len, sample, success;
   success = true;
   for (i = j = 0, len = cases.length; j < len; i = ++j) {
     sample = cases[i];
     input = sample["in"];
     expected = prepareOutput(sample.out);
+    except = prepareOutput(sample.exception);
     _describe("sample " + i, function() {
-      return doSample(code, input, expected, function(result) {
+      return doSample(code, input, expected, except, function(result) {
         return success = success && result;
       });
     });
@@ -74,7 +79,7 @@ doSource = function(code, cases, cb) {
   return cb(success);
 };
 
-doSample = function(code, input, expected, cb) {
+doSample = function(code, input, expected, except, cb) {
   var config, e, output, outputBuffer;
   outputBuffer = "";
   config = {
@@ -86,17 +91,28 @@ doSample = function(code, input, expected, cb) {
     }
   };
   try {
-    JSCPP.run(code, input, config);
-    output = prepareOutput(outputBuffer);
-    return _it("should match expected output", function() {
-      expect(output).to.equal(expected);
-      return cb(output === expected);
-    });
+    return JSCPP.run(code, input, config);
   } catch (_error) {
     e = _error;
-    return _it("an error occurred", function() {
-      assert.notOk(e);
-      return cb(false);
+    if (except) {
+      return _it("expected exception", function() {
+        var eStr, ok;
+        eStr = prepareOutput(e.toString());
+        ok = eStr.match(except);
+        assert.ok(ok);
+        return cb(ok);
+      });
+    } else {
+      return _it("an error occurred", function() {
+        assert.notOk(e);
+        return cb(false);
+      });
+    }
+  } finally {
+    output = prepareOutput(outputBuffer);
+    _it("should match expected output", function() {
+      expect(output).to.equal(expected);
+      return cb(output === expected);
     });
   }
 };

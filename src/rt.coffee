@@ -98,7 +98,7 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
 CRuntime::makeValString = (l) ->
     display = l.v
     if @isTypeEqualTo(l.t, @charTypeLiteral)
-        display = String.fromCharCode(l.v)
+        display = "'" + String.fromCharCode(l.v) + "'"
     display + "(" + @makeTypeString(l.t) + ")"
 
 CRuntime::makeParametersSigniture = (args) ->

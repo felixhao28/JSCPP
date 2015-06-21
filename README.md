@@ -255,6 +255,11 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Misc: Many other small changes
 	- Dev
 		+ Major refactoring on interpreter using es6
+* dev
+	- Fix
+		+ Debugger variable scope issue
+		+ Readme example
+		+ An issue on Chrome Canary
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

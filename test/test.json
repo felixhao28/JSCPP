@@ -81,6 +81,15 @@
                 "in": "",
                 "out": "10\n50\n75"
             }]
+        },
+        "8bit": {
+            "after": ["A+B"],
+            "cpp": ["8bit.cpp"],
+            "cases": [{
+                "in": "",
+                "out": "",
+                "exception": "8:7 overflow of '.'\\(char\\)"
+            }]
         }
     }
 }

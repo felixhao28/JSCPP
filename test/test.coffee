@@ -8,7 +8,10 @@ expect = chai.expect
 testFolder = './test/'
 
 prepareOutput = (str) ->
-    str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim()
+    if str
+        str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim()
+    else
+        null
 
 if process.argv[2] is "direct"
     _describe = (testName, cb) ->
@@ -43,12 +46,13 @@ doSource = (code, cases, cb) ->
     for sample, i in cases
         input = sample.in
         expected = prepareOutput(sample.out)
+        except = prepareOutput(sample.exception)
         _describe "sample #{i}", ->
-            doSample code, input, expected, (result) ->
+            doSample code, input, expected, except, (result) ->
                 success = success and result
     cb success
 
-doSample = (code, input, expected, cb) ->
+doSample = (code, input, expected, except, cb) ->
     outputBuffer = ""
 
     config =
@@ -58,14 +62,22 @@ doSample = (code, input, expected, cb) ->
                 str.length
     try
         JSCPP.run(code, input, config)
+    catch e
+        if except
+            _it "expected exception", ->
+                eStr = prepareOutput e.toString()
+                ok = eStr.match except
+                assert.ok ok
+                cb ok
+        else
+            _it "an error occurred", ->
+                assert.notOk(e)
+                cb false
+    finally
         output = prepareOutput outputBuffer
         _it "should match expected output", ->
             expect(output).to.equal(expected)
             cb output is expected
-    catch e
-        _it "an error occurred", ->
-            assert.notOk(e)
-            cb false
 
 tests = JSON.parse fs.readFileSync testFolder + "test.json"
 
