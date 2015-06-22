@@ -11282,6 +11282,16 @@ module.exports = function() {
           rt.raiseException("overflow during pre-decrement");
         }
       }
+    },
+    "~": {
+      "#default": function(rt, l, dummy) {
+        var ret;
+        if (!rt.isIntegerType(l.t)) {
+          rt.raiseException(rt.makeTypeString(l.t) + " does not support ~ on itself");
+        }
+        ret = ~l.v;
+        return rt.val(l.t, ret);
+      }
     }
   };
   boolHandler = {
@@ -11320,6 +11330,11 @@ module.exports = function() {
         } else {
           rt.raiseException(rt.makeValString(l) + " is not a left value");
         }
+      }
+    },
+    "!": {
+      "#default": function(rt, l, dummy) {
+        return rt.val(l.t, !l.v);
       }
     }
   };

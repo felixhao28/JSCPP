@@ -290,6 +290,11 @@ module.exports = ->
                     return l
                 rt.raiseException "overflow during pre-decrement"
             return
+        "~": "#default": (rt, l, dummy) ->
+            if !rt.isIntegerType(l.t)
+                rt.raiseException rt.makeTypeString(l.t) + " does not support ~ on itself"
+            ret = ~l.v
+            rt.val l.t, ret
     boolHandler = 
         "==": "#default": (rt, l, r) ->
             if !r.t == "bool"
@@ -312,6 +317,8 @@ module.exports = ->
             else
                 rt.raiseException rt.makeValString(l) + " is not a left value"
             return
+        "!": "#default": (rt, l, dummy) ->
+            rt.val l.t, not l.v
     @types = "global": {}
     @types["(char)"] = defaultOpHandler
     @types["(signed char)"] = defaultOpHandler

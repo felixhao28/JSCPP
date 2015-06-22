@@ -90,6 +90,14 @@
                 "out": "",
                 "exception": "6:3 overflow during post-increment 256\\(unsigned char\\)"
             }]
+        },
+        "unary": {
+            "after": ["A+B"],
+            "cpp": ["unary.cpp"],
+            "cases": [{
+                "in": "",
+                "out": "5\n-5\n-5\n5\n-6\n4\n1\n0"
+            }]
         }
     }
 }
