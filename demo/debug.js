@@ -15,7 +15,7 @@ if (process.argv.length > 2) {
   }
   tests = JSON.parse(fs.readFileSync("test/test.json"));
   cppFile = tests.tests[testName].cpp[0];
-  input = tests.tests[testName].cases[0]["in"];
+  input = tests.tests[testName].cases[0]["in"] || "";
   code = fs.readFileSync("./test/" + cppFile);
   if (!config.debug) {
     exitcode = JSCPP.run(code, input, config);

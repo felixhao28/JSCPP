@@ -135,7 +135,8 @@ module.exports = ->
         "-": "#default": (rt, l, r) ->
             if r == undefined
                 # unary
-                rt.val l.t, -l.v
+                rett = if l.v > 0 then rt.getSignedType(l.t) else l.t
+                rt.val rett, -l.v
             else
                 # binary
                 if !rt.isNumericType(r.t)
@@ -294,7 +295,8 @@ module.exports = ->
             if !rt.isIntegerType(l.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support ~ on itself"
             ret = ~l.v
-            rt.val l.t, ret
+            rett = if ret < 0 then rt.getSignedType(l.t) else l.t
+            rt.val rett, ret
     boolHandler = 
         "==": "#default": (rt, l, r) ->
             if !r.t == "bool"

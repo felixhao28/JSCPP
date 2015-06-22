@@ -470,15 +470,15 @@ Interpreter = (rt) ->
             val = yield from interp.visit(interp, s.Expression, param)
             interp.rt.val interp.rt.floatTypeLiteral, val.v
         DecimalConstant: (interp, s, param) ->
-            interp.rt.val interp.rt.intTypeLiteral, parseInt(s.value, 10)
+            interp.rt.val interp.rt.unsignedintTypeLiteral, parseInt(s.value, 10)
         HexConstant: (interp, s, param) ->
-            interp.rt.val interp.rt.intTypeLiteral, parseInt(s.value, 16)
+            interp.rt.val interp.rt.unsignedintTypeLiteral, parseInt(s.value, 16)
         DecimalFloatConstant: (interp, s, param) ->
             interp.rt.val interp.rt.doubleTypeLiteral, parseFloat(s.value)
         HexFloatConstant: (interp, s, param) ->
             interp.rt.val interp.rt.doubleTypeLiteral, parseFloat(s.value, 16)
         OctalConstant: (interp, s, param) ->
-            interp.rt.val interp.rt.intTypeLiteral, parseInt(s.value, 8)
+            interp.rt.val interp.rt.unsignedintTypeLiteral, parseInt(s.value, 8)
         NamespaceDefinition: (interp, s, param) ->
             interp.rt.raiseException "not implemented"
             return

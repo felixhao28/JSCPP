@@ -14,7 +14,7 @@ expect = chai.expect;
 testFolder = './test/';
 
 prepareOutput = function(str) {
-  if (str) {
+  if (str != null) {
     return str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim();
   } else {
     return null;
@@ -67,8 +67,8 @@ doSource = function(code, cases, cb) {
   success = true;
   for (i = j = 0, len = cases.length; j < len; i = ++j) {
     sample = cases[i];
-    input = sample["in"];
-    expected = prepareOutput(sample.out);
+    input = sample["in"] || "";
+    expected = prepareOutput(sample.out) || "";
     except = prepareOutput(sample.exception);
     _describe("sample " + i, function() {
       return doSample(code, input, expected, except, function(result) {
@@ -104,7 +104,7 @@ doSample = function(code, input, expected, except, cb) {
       });
     } else {
       return _it("an error occurred", function() {
-        assert.notOk(e);
+        assert.ok(false);
         return cb(false);
       });
     }

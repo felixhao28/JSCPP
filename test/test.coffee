@@ -8,7 +8,7 @@ expect = chai.expect
 testFolder = './test/'
 
 prepareOutput = (str) ->
-    if str
+    if str?
         str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim()
     else
         null
@@ -44,8 +44,8 @@ doTest = (test, cb) ->
 doSource = (code, cases, cb) ->
     success = true
     for sample, i in cases
-        input = sample.in
-        expected = prepareOutput(sample.out)
+        input = sample.in or ""
+        expected = prepareOutput(sample.out) or ""
         except = prepareOutput(sample.exception)
         _describe "sample #{i}", ->
             doSample code, input, expected, except, (result) ->
@@ -71,7 +71,7 @@ doSample = (code, input, expected, except, cb) ->
                 cb ok
         else
             _it "an error occurred", ->
-                assert.notOk(e)
+                assert.ok false
                 cb false
     finally
         output = prepareOutput outputBuffer

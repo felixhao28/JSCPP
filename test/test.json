@@ -62,7 +62,6 @@
             "after": ["A+B"],
             "cpp": ["binop.cpp"],
             "cases": [{
-                "in": "",
                 "out": "110\n90\n1000\n10\n0\n10\n0\n110\n110\n102400\n0\n1\n0\n0\n0\n1\n1\n1\n0"
             }]
         },
@@ -78,7 +77,6 @@
             "after": ["A+B"],
             "cpp": ["function.cpp"],
             "cases": [{
-                "in": "",
                 "out": "10\n50\n75"
             }]
         },
@@ -86,8 +84,6 @@
             "after": ["A+B"],
             "cpp": ["8bit.cpp"],
             "cases": [{
-                "in": "",
-                "out": "",
                 "exception": "6:3 overflow during post-increment 256\\(unsigned char\\)"
             }]
         },
@@ -95,16 +91,21 @@
             "after": ["A+B"],
             "cpp": ["unary.cpp"],
             "cases": [{
-                "in": "",
                 "out": "5\n-5\n-5\n5\n-6\n4\n1\n0"
             }]
         },
         "type_conversion": {
-            "after": ["A+B"],
+            "after": ["cincout"],
             "cpp": ["type_conversion.cpp"],
             "cases": [{
-                "in": "",
                 "out": "1000\n3\n3333"
+            }]
+        },
+        "literal": {
+            "after": ["cincout"],
+            "cpp": ["literal.cpp"],
+            "cases": [{
+                "out": "2147483647\n-2147483648"
             }]
         }
     }

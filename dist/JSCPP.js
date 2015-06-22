@@ -11020,7 +11020,8 @@ module.exports = function() {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (r === void 0) {
-          return rt.val(l.t, -l.v);
+          rett = l.v > 0 ? rt.getSignedType(l.t) : l.t;
+          return rt.val(rett, -l.v);
         } else {
           if (!rt.isNumericType(r.t)) {
             rt.raiseException(rt.makeTypeString(l.t) + " does not support - on " + rt.makeTypeString(r.t));
@@ -11289,12 +11290,13 @@ module.exports = function() {
     },
     "~": {
       "#default": function(rt, l, dummy) {
-        var ret;
+        var ret, rett;
         if (!rt.isIntegerType(l.t)) {
           rt.raiseException(rt.makeTypeString(l.t) + " does not support ~ on itself");
         }
         ret = ~l.v;
-        return rt.val(l.t, ret);
+        rett = ret < 0 ? rt.getSignedType(l.t) : l.t;
+        return rt.val(rett, ret);
       }
     }
   };
@@ -13074,10 +13076,10 @@ Interpreter = function(rt) {
       return interp.rt.val(interp.rt.floatTypeLiteral, val.v);
     },
     DecimalConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.intTypeLiteral, parseInt(s.value, 10));
+      return interp.rt.val(interp.rt.unsignedintTypeLiteral, parseInt(s.value, 10));
     },
     HexConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.intTypeLiteral, parseInt(s.value, 16));
+      return interp.rt.val(interp.rt.unsignedintTypeLiteral, parseInt(s.value, 16));
     },
     DecimalFloatConstant: function(interp, s, param) {
       return interp.rt.val(interp.rt.doubleTypeLiteral, parseFloat(s.value));
@@ -13086,7 +13088,7 @@ Interpreter = function(rt) {
       return interp.rt.val(interp.rt.doubleTypeLiteral, parseFloat(s.value, 16));
     },
     OctalConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.intTypeLiteral, parseInt(s.value, 8));
+      return interp.rt.val(interp.rt.unsignedintTypeLiteral, parseInt(s.value, 8));
     },
     NamespaceDefinition: function(interp, s, param) {
       interp.rt.raiseException("not implemented");
