@@ -385,12 +385,18 @@ Interpreter = (rt) ->
             ret = yield from interp.visit(interp, s.Expression, param)
             interp.rt.val interp.rt.intTypeLiteral, interp.rt.getSize(ret)
         UnaryExpression_Sizeof_Type: (interp, s, param) ->
-            type = interp.rt.simpleType(s.TypeName)
+            type = yield from interp.visit(interp, s.TypeName, param)
             interp.rt.val interp.rt.intTypeLiteral, interp.rt.getSizeByType(type)
         CastExpression: (interp, s, param) ->
             ret = yield from interp.visit(interp, s.Expression, param)
-            type = interp.rt.simpleType(s.TypeName)
+            type = yield from interp.visit(interp, s.TypeName, param)
             interp.rt.cast type, ret
+        TypeName: (interp, s, param) ->
+            typename = []
+            for baseType in s.base
+                if baseType isnt "const"
+                    typename.push baseType
+            interp.rt.simpleType typename.join(" ")
         BinOpExpression: (interp, s, param) ->
             op = s.op
             if op is "&&"

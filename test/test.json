@@ -98,6 +98,14 @@
                 "in": "",
                 "out": "5\n-5\n-5\n5\n-6\n4\n1\n0"
             }]
+        },
+        "type_conversion": {
+            "after": ["A+B"],
+            "cpp": ["type_conversion.cpp"],
+            "cases": [{
+                "in": "",
+                "out": "1000\n3\n3333"
+            }]
         }
     }
 }

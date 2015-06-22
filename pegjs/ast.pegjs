@@ -339,7 +339,9 @@ IdentifierList
     ;
 
 TypeName
-    = SpecifierQualifierList AbstractDeclarator?
+    = a:SpecifierQualifierList b:AbstractDeclarator? {
+      return addPositionInfo({type: 'TypeName', base: a, extra: b})
+    }
     ;
 
 AbstractDeclarator
