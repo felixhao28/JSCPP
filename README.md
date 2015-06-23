@@ -261,6 +261,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Readme example
 		+ An issue on Chrome Canary
 		+ Integer type promotion issue
+		+ Many small fixes
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

@@ -21,6 +21,7 @@ module.exports =
         cmath: require("./includes/cmath")
         cstdio: require("./includes/cstdio")
         cstdlib: require("./includes/cstdlib")
+        iomanip: require("./includes/iomanip")
     run: (code, input, config) ->
         inputbuffer = input.toString()
         self = this

@@ -57,6 +57,10 @@ module.exports = ->
                 max: undefined
                 min: undefined
                 bytes: 4
+            "bool":
+                max: 1
+                min: 0
+                bytes: 1
         loadedLibraries: []
     @config.limits["short int"] = @config.limits["short"]
     @config.limits["signed short"] = @config.limits["short"]
@@ -297,6 +301,12 @@ module.exports = ->
             ret = ~l.v
             rett = if ret < 0 then rt.getSignedType(l.t) else l.t
             rt.val rett, ret
+        "!": "#default": (rt, l, dummy) ->
+            if !rt.isIntegerType(l.t)
+                rt.raiseException rt.makeTypeString(l.t) + " does not support ! on itself"
+            ret = if l.v then 0 else 1
+            rett = l.t
+            rt.val rett, ret
     boolHandler = 
         "==": "#default": (rt, l, r) ->
             if !r.t == "bool"
@@ -351,7 +361,7 @@ module.exports = ->
     @types["(unsigned long long int)"] = defaultOpHandler
     @types["(float)"] = defaultOpHandler
     @types["(double)"] = defaultOpHandler
-    @types["(bool)"] = boolHandler
+    @types["(bool)"] = defaultOpHandler
     @types["pointer"] =
         "==": "#default": (rt, l, r) ->
             if rt.isTypeEqualTo(l.t, r.t)
@@ -381,10 +391,10 @@ module.exports = ->
             else
                 rt.raiseException "you cannot cast bitwise and on pointer"
             return
-    @types["pointer_function"] = "()": "#default": (rt, l, args) ->
+    @types["pointer_function"] = "()": "#default": (rt, l, bindThis, args) ->
         if l.t.type != "pointer" or l.t.ptrType != "function"
-            rt.raiseException rt.makeTypeString(l.v.type) + " is not function"
-        rt.getCompatibleFunc(l.v.defineType, l.v.name, args) rt, l, args...
+            rt.raiseException rt.makeTypeString(l.t.type) + " is not function"
+        rt.getCompatibleFunc(l.v.defineType, l.v.name, args) rt, bindThis, args...
     @types["pointer_normal"] =
         "*": "#default": (rt, l, r) ->
             if r == undefined

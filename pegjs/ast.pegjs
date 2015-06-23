@@ -815,7 +815,7 @@ HexFraction
     / a:HexDigit+ "." {return a.join('')+'.';}
     ;
 
-Exponent = a:[eE][+\-]? b:[0-9]+ {return a+b.join('');};
+Exponent = a:[eE] b:[+\-]? c:[0-9]+ {return a+(b||"")+c.join('');};
 
 BinaryExponent = a:[pP][+\-]? b:[0-9]+ {return a+b.join('');};
 
@@ -837,7 +837,17 @@ Escape
     ;
 
 SimpleEscape = a:"\\" b:['\"?\\abfnrtv] {return eval('"' + a + b +'"');};
-OctalEscape  = a:"\\" b:[0-7]c:[0-7]?d:[0-7]? {return eval('"' + a + b + c||'' + d||''+'"');};
+OctalEscape  = a:"\\" b:[0-7] c:[0-7]? d:[0-7]? {
+  var ret = "\"";
+  ret += a;
+  ret += b;
+  if (c)
+    ret += c;
+  if (d)
+    ret += d;
+  ret += "\"";
+  return eval(ret);
+};
 HexEscape    = a:"\\x" b:HexDigit+ {return eval('"'+a+b.join('')+'"');};
 
 

@@ -21,5 +21,7 @@ int main() {
 	cout << (true || false) << endl;
 	cout << (false || true) << endl;
 	cout << (false || false) << endl;
+	cout << (true + true) << endl;
+	cout << (false + true) << endl;
 	return 0;
 }

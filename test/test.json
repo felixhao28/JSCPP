@@ -3,8 +3,8 @@
         "cincout": {
             "cpp": ["cincout.cpp"],
             "cases": [{
-                "in": "123",
-                "out": "123"
+                "in": "123\nhello\nworld",
+                "out": "123\n10\nhello\nworld"
             }]
         },
         "A+B": {
@@ -62,7 +62,7 @@
             "after": ["A+B"],
             "cpp": ["binop.cpp"],
             "cases": [{
-                "out": "110\n90\n1000\n10\n0\n10\n0\n110\n110\n102400\n0\n1\n0\n0\n0\n1\n1\n1\n0"
+                "out": "110\n90\n1000\n10\n0\n10\n0\n110\n110\n102400\n0\n1\n0\n0\n0\n1\n1\n1\n0\n2\n1"
             }]
         },
         "biginteger": {
@@ -105,7 +105,37 @@
             "after": ["cincout"],
             "cpp": ["literal.cpp"],
             "cases": [{
-                "out": "2147483647\n-2147483648"
+                "out": "2147483647\n-2147483648\n0.00001\n100000\n0"
+            }]
+        },
+        "io": {
+            "after": ["cincout"],
+            "cpp": ["io.cpp"],
+            "cases": [{
+                "out": "3.1416\n3.14159\n3.14159\n3.141590000\n    3.141590000"
+            }]
+        },
+        "loop_control": {
+            "after": ["loop"],
+            "cpp": ["loop_control.cpp"],
+            "cases": [{
+                "out": "0\n2\n4\n========\n1\n3\n4\n6\n7\n9\n10\n========\n11\n10\n7\n4\n1"
+            }]
+        },
+        "char_compare": {
+            "after": ["binop"],
+            "cpp": ["char_compare.cpp"],
+            "cases": [{
+                "in": "Hello\nhello",
+                "out": "="
+            }]
+        },
+        "maxWord": {
+            "after": ["literal"],
+            "cpp": ["maxWord.cpp"],
+            "cases": [{
+                "in": "I am a student of Peking University.",
+                "out": "University"
             }]
         }
     }

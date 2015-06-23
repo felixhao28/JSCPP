@@ -22,6 +22,7 @@ CRuntime = (config) ->
     @floatTypeLiteral = @primitiveType("float")
     @doubleTypeLiteral = @primitiveType("double")
     @charTypeLiteral = @primitiveType("char")
+    @unsignedcharTypeLiteral = @primitiveType("unsigned char")
     @boolTypeLiteral = @primitiveType("bool")
     @voidTypeLiteral = @primitiveType("void")
     @nullPointerValue = @makeNormalPointerValue(null)
@@ -63,8 +64,25 @@ CRuntime::getSizeByType = (type) ->
     return
 
 CRuntime::getMember = (l, r) ->
-    if @isClassType(l.t)
-        return l.v.members[r]
+    lt = l.t
+    if @isClassType(lt)
+        ltsig = @getTypeSigniture(lt)
+        if ltsig of @types
+            t = @types[ltsig]
+            if r of t
+                return {
+                    t:
+                        type: "pointer"
+                        ptrType: "function"
+                    v:
+                        defineType: lt
+                        name: r
+                        bindThis: l
+                }
+            else if r of l.v.members
+                return l.v.members[r]
+        else
+            @raiseException "type " + @makeTypeString(lt) + " is unknown"
     else
         @raiseException "only a class can have members"
     return
@@ -236,6 +254,12 @@ CRuntime::promoteNumeric = (l, r) ->
     if !@isNumericType(l) or !@isNumericType(r)
         @raiseException "you cannot promote (to) a non numeric type"
     if @isTypeEqualTo(l, r)
+        if @isTypeEqualTo(l, @boolTypeLiteral)
+            return @intTypeLiteral
+        if @isTypeEqualTo(l, @charTypeLiteral)
+            return @intTypeLiteral
+        if @isTypeEqualTo(l, @unsignedcharTypeLiteral)
+            return @unsignedintTypeLiteral
         return l
     else if @isIntegerType(l) and @isIntegerType(r)
         slt = @getSignedType(l)
@@ -291,8 +315,9 @@ CRuntime::defVar = (varname, type, initval) ->
 CRuntime::inrange = (type, value) ->
     if @isPrimitiveType(type)
         limit = @config.limits[type.name]
-        return value <= limit.max and value >= limit.min
-    true
+        value <= limit.max and value >= limit.min
+    else
+        true
 
 CRuntime::isNumericType = (type) ->
     @isFloatType(type) or @isIntegerType(type)
@@ -301,34 +326,31 @@ CRuntime::isUnsignedType = (type) ->
     if typeof type is "string"
         switch type
             when "unsigned char", "unsigned short", "unsigned short int", "unsigned", "unsigned int", "unsigned long", "unsigned long int", "unsigned long long", "unsigned long long int"
-                return true
+                true
             else
-                return false
+                false
     else
-        return type.type is "primitive" and @isUnsignedType(type.name)
-    return
+        type.type is "primitive" and @isUnsignedType(type.name)
 
 CRuntime::isIntegerType = (type) ->
     if typeof type is "string"
         switch type
-            when "char", "signed char", "unsigned char", "short", "short int", "signed short", "signed short int", "unsigned short", "unsigned short int", "int", "signed int", "unsigned", "unsigned int", "long", "long int", "long int", "signed long", "signed long int", "unsigned long", "unsigned long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "unsigned long long", "unsigned long long int"
-                return true
+            when "char", "signed char", "unsigned char", "short", "short int", "signed short", "signed short int", "unsigned short", "unsigned short int", "int", "signed int", "unsigned", "unsigned int", "long", "long int", "long int", "signed long", "signed long int", "unsigned long", "unsigned long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "unsigned long long", "unsigned long long int", "bool"
+                true
             else
-                return false
+                false
     else
-        return type.type is "primitive" and @isIntegerType(type.name)
-    return
-
+        type.type is "primitive" and @isIntegerType(type.name)
+    
 CRuntime::isFloatType = (type) ->
     if typeof type is "string"
         switch type
             when "float", "double"
-                return true
+                true
             else
-                return false
+                false
     else
-        return type.type is "primitive" and @isFloatType(type.name)
-    return
+        type.type is "primitive" and @isFloatType(type.name)
 
 CRuntime::getSignedType = (type) ->
     if type isnt "unsigned"
@@ -340,14 +362,14 @@ CRuntime::castable = (type1, type2) ->
     if @isTypeEqualTo(type1, type2)
         return true
     if @isPrimitiveType(type1) and @isPrimitiveType(type2)
-        return @isNumericType(type2) or !@isNumericType(type1)
+        return @isNumericType(type2) and @isNumericType(type1)
     else if @isPointerType(type1) and @isPointerType(type2)
         if @isFunctionType(type1)
             return @isPointerType(type2)
         return !@isFunctionType(type2)
     else if @isClassType(type1) or @isClassType(type2)
         @raiseException "not implemented"
-    false
+    return false
 
 CRuntime::cast = (type, value) ->
     # TODO: looking for global overload
@@ -355,7 +377,7 @@ CRuntime::cast = (type, value) ->
         return value
     if @isPrimitiveType(type) and @isPrimitiveType(value.t)
         if type.name is "bool"
-            return @val(type, if value.v then true else false)
+            return @val(type, if value.v then 1 else 0)
         else if type.name of [
                 "float"
                 "double"
@@ -421,7 +443,7 @@ CRuntime::cast = (type, value) ->
         @raiseException "not implemented"
     else if @isClassType(value.t)
         if @isTypeEqualTo(@boolTypeLiteral, type)
-            return @val(@boolTypeLiteral, true)
+            return @val(@boolTypeLiteral, 1)
         else
             @raiseException "not implemented"
     else
@@ -474,7 +496,7 @@ CRuntime::isTypeEqualTo = (type1, type2) ->
                                 )
                         when "normal"
                             return @isTypeEqualTo(type1.targetType, type2.eleType or type2.targetType)
-    false
+    return false
 
 CRuntime::isBoolType = (type) ->
     if typeof type is "string"
@@ -640,8 +662,6 @@ CRuntime::defaultValue = (type) ->
     if type.type is "primitive"
         if @isNumericType(type)
             return @val(type, 0)
-        else if type.name is "bool"
-            return @val(type, false)
     else if type.type is "class"
         @raiseException "no default value for object"
     else if type.type is "pointer"

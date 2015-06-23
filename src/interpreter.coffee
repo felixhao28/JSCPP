@@ -213,38 +213,48 @@ Interpreter = (rt) ->
             scope_bak = param.scope
             param.scope = "IterationStatement_while"
             interp.rt.enterScope param.scope
-            while interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.Expression, param)).v
+            while true
+                if s.Expression?
+                    cond = yield from interp.visit(interp, s.Expression, param)
+                    cond = interp.rt.cast(interp.rt.boolTypeLiteral, cond).v
+                    break if not cond
                 r = yield from interp.visit(interp, s.Statement, param)
                 if r instanceof Array
                     switch r[0]
                         when "continue"
-                            return
+                            break
                         when "break"
-                            return
+                            end_loop = true
                         when "return"
-                            return r
+                            return_val = r
+                            end_loop = true
+                    if end_loop then break
             interp.rt.exitScope param.scope
             param.scope = scope_bak
-            return
+            return return_val
         IterationStatement_do: (interp, s, param) ->
             scope_bak = param.scope
             param.scope = "IterationStatement_do"
             interp.rt.enterScope param.scope
             loop
-                r = parse(s.Statement)
+                r = yield from interp.visit(interp, s.Statement, param)
                 if r instanceof Array
                     switch r[0]
                         when "continue"
-                            return
+                            break
                         when "break"
-                            return
+                            end_loop = true
                         when "return"
-                            return r
-                unless interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.Expression, param)).v
-                    break
+                            return_val = r
+                            end_loop = true
+                    if end_loop then break
+                if s.Expression?
+                    cond = yield from interp.visit(interp, s.Expression, param)
+                    cond = interp.rt.cast(interp.rt.boolTypeLiteral, cond).v
+                    break if not cond
             interp.rt.exitScope param.scope
             param.scope = scope_bak
-            return
+            return return_val
         IterationStatement_for: (interp, s, param) ->
             scope_bak = param.scope
             param.scope = "IterationStatement_for"
@@ -254,21 +264,27 @@ Interpreter = (rt) ->
                     yield from interp.visit interp, s.Initializer, param
                 else
                     yield from interp.visit interp, s.Initializer, param
-            while s.Expression is undefined or interp.rt.cast(interp.rt.boolTypeLiteral, yield from interp.visit(interp, s.Expression, param)).v
+            while true
+                if s.Expression?
+                    cond = yield from interp.visit(interp, s.Expression, param)
+                    cond = interp.rt.cast(interp.rt.boolTypeLiteral, cond).v
+                    break if not cond
                 r = yield from interp.visit(interp, s.Statement, param)
                 if r instanceof Array
                     switch r[0]
                         when "continue"
-                            return
+                            break
                         when "break"
-                            return
+                            end_loop = true
                         when "return"
-                            return r
+                            return_val = r
+                            end_loop = true
+                    if end_loop then break
                 if s.Loop
                     yield from interp.visit interp, s.Loop, param
             interp.rt.exitScope param.scope
             param.scope = scope_bak
-            return
+            return return_val
         JumpStatement_goto: (interp, s, param) ->
             interp.rt.raiseException "not implemented"
             return
@@ -312,16 +328,20 @@ Interpreter = (rt) ->
             # console.log "ret: " + JSON.stringify(ret)
             # console.log "args: " + JSON.stringify(args)
             # console.log "==================="
+            if ret.v.bindThis?
+                bindThis = ret.v.bindThis
+            else
+                bindThis = ret
             r = interp.rt.getFunc(ret.t, "()", args.map((e) ->
                 e.t
-            )) interp.rt, ret, args
+            )) interp.rt, ret, bindThis, args
             if isGenerator(r)
                 yield from r
             else
                 yield return r
         PostfixExpression_MemberAccess: (interp, s, param) ->
             ret = yield from interp.visit(interp, s.Expression, param)
-            interp.getMember ret, s.member
+            rt.getMember ret, s.member
         PostfixExpression_MemberPointerAccess: (interp, s, param) ->
             ret = yield from interp.visit(interp, s.Expression, param)
             member = undefined
@@ -460,7 +480,7 @@ Interpreter = (rt) ->
             str = s.value
             interp.rt.makeCharArrayFromString str
         BooleanConstant: (interp, s, param) ->
-            interp.rt.val interp.rt.boolTypeLiteral, s.value is "true"
+            interp.rt.val interp.rt.boolTypeLiteral, if s.value is "true" then 1 else 0
         CharacterConstant: (interp, s, param) ->
             a = s.Char
             if a.length != 1
