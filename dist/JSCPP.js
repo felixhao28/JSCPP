@@ -10851,7 +10851,7 @@ Debugger.prototype.variable = function(name) {
   } else {
     usedName = new Set();
     ret = [];
-    for (scopeIndex = i = ref = this.rt.scope.length - 1; i > 0; scopeIndex = i += -1) {
+    for (scopeIndex = i = ref = this.rt.scope.length - 1; i >= 0; scopeIndex = i += -1) {
       ref1 = this.rt.scope[scopeIndex];
       for (name in ref1) {
         val = ref1[name];
@@ -10861,7 +10861,7 @@ Debugger.prototype.variable = function(name) {
             ret.push({
               name: name,
               type: this.rt.makeTypeString(val.t),
-              value: val.v
+              value: this.rt.makeValueString(val)
             });
           }
         }
@@ -18546,15 +18546,6 @@ CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stm
   this.regFunc(f, lt, name, argTypes, retType);
 };
 
-CRuntime.prototype.makeValString = function(l) {
-  var display;
-  display = l.v;
-  if (this.isTypeEqualTo(l.t, this.charTypeLiteral)) {
-    display = "'" + String.fromCharCode(l.v) + "'";
-  }
-  return display + "(" + this.makeTypeString(l.t) + ")";
-};
-
 CRuntime.prototype.makeParametersSigniture = function(args) {
   var i, ret;
   ret = new Array(args.length);
@@ -18920,14 +18911,14 @@ CRuntime.prototype.castable = function(type1, type2) {
 };
 
 CRuntime.prototype.cast = function(type, value) {
-  var v;
+  var ref, v;
   if (this.isTypeEqualTo(value.t, type)) {
     return value;
   }
   if (this.isPrimitiveType(type) && this.isPrimitiveType(value.t)) {
     if (type.name === "bool") {
       return this.val(type, value.v ? 1 : 0);
-    } else if (type.name in ["float", "double"]) {
+    } else if ((ref = type.name) === "float" || ref === "double") {
       if (!this.isNumericType(value.t)) {
         this.raiseException("cannot cast " + this.makeTypeString(value.t) + " to " + this.makeTypeString(type));
       }
@@ -18952,13 +18943,13 @@ CRuntime.prototype.cast = function(type, value) {
         if (this.inrange(type, v)) {
           return this.val(type, v);
         } else {
-          this.raiseException("overflow when casting " + value.v + "(" + this.makeTypeString(value.t) + ") to " + this.makeTypeString(type));
+          this.raiseException("overflow when casting " + this.makeValString(value) + " to " + this.makeTypeString(type));
         }
       } else {
         if (this.inrange(type, value.v)) {
           return this.val(type, value.v);
         } else {
-          this.raiseException("overflow when casting " + value.v + "(" + this.makeTypeString(value.t) + ") to " + this.makeTypeString(type));
+          this.raiseException("overflow when casting " + this.makeValString(value) + " to " + this.makeTypeString(type));
         }
       }
     }
@@ -19034,10 +19025,7 @@ CRuntime.prototype.exitScope = function(scopename) {
 
 CRuntime.prototype.val = function(type, v, left) {
   if (this.isNumericType(type) && !this.inrange(type, v)) {
-    this.raiseException("overflow of " + this.makeValString({
-      t: type,
-      v: v
-    }));
+    this.raiseException("overflow of " + (this.makeValueString(v)) + "(" + (this.makeTypeString(type)) + ")");
   }
   if (left === void 0) {
     left = false;
@@ -19062,10 +19050,10 @@ CRuntime.prototype.isTypeEqualTo = function(type1, type2) {
             case "array":
               return this.isTypeEqualTo(type1.eleType, type2.eleType || type2.targetType);
             case "function":
-              if (this.isTypeEqualTo(type1.retType, type2.retType) && type1.sigiture.length === type2.sigiture.length) {
+              if (this.isTypeEqualTo(type1.retType, type2.retType) && type1.signature.length === type2.signature.length) {
                 _this = this;
-                return type1.sigiture.every(function(type, index, arr) {
-                  return _this.isTypeEqualTo(type, type2.sigiture[index]);
+                return type1.signature.every(function(type, index, arr) {
+                  return _this.isTypeEqualTo(type, type2.signature[index]);
                 });
               }
               break;
@@ -19134,12 +19122,12 @@ CRuntime.prototype.makeArrayPointerValue = function(arr, position) {
   };
 };
 
-CRuntime.prototype.functionPointerType = function(retType, sigiture) {
+CRuntime.prototype.functionPointerType = function(retType, signature) {
   return {
     type: "pointer",
     ptrType: "function",
     retType: retType,
-    sigiture: sigiture
+    signature: signature
   };
 };
 
@@ -19268,7 +19256,7 @@ CRuntime.prototype.getTypeSigniture = function(type) {
     } else if (type.ptrType === "array") {
       ret += "!" + this.getTypeSigniture(type.eleType);
     } else if (type.ptrType === "function") {
-      ret += "#" + this.getTypeSigniture(type.retType) + "!" + type.sigiture.map(function(e) {
+      ret += "#" + this.getTypeSigniture(type.retType) + "!" + type.signature.map(function(e) {
         return this.getTypeSigniture(e);
       }).join(",");
     }
@@ -19291,12 +19279,61 @@ CRuntime.prototype.makeTypeString = function(type) {
     } else if (type.ptrType === "array") {
       ret += this.makeTypeString(type.eleType) + ("[" + type.size + "]");
     } else if (type.ptrType === "function") {
-      ret += this.makeTypeString(type.retType) + "(" + type.sigiture.map(function(e) {
-        return this.makeTypeString(e);
-      }).join(",") + ")";
+      ret += this.makeTypeString(type.retType) + "(*f)" + "(" + type.signature.map((function(_this) {
+        return function(e) {
+          return _this.makeTypeString(e);
+        };
+      })(this)).join(",") + ")";
     }
   }
   return ret;
+};
+
+CRuntime.prototype.makeValueString = function(l, options) {
+  var display, i, j, ref, ref1;
+  options || (options = {});
+  if (this.isPrimitiveType(l.t)) {
+    if (this.isTypeEqualTo(l.t, this.charTypeLiteral)) {
+      display = "'" + String.fromCharCode(l.v) + "'";
+    } else if (this.isBoolType(l.t)) {
+      display = l.v !== 0 ? "true" : "false";
+    } else {
+      display = l.v;
+    }
+  } else if (this.isPointerType(l.t)) {
+    if (this.isFunctionType(l.t)) {
+      display = "<function>";
+    } else if (this.isArrayType(l.t)) {
+      if (this.isTypeEqualTo(l.t.eleType, this.charTypeLiteral)) {
+        display = "\"" + this.getStringFromCharArray(l) + "\"";
+      } else if (options.noArray) {
+        display = "[...]";
+      } else {
+        options.noArray = true;
+        display = [];
+        for (i = j = ref = l.v.position, ref1 = l.v.target.length; ref <= ref1 ? j < ref1 : j > ref1; i = ref <= ref1 ? ++j : --j) {
+          display.push(this.makeValueString(l.v.target[i], options));
+        }
+        display = "[" + display.join(",") + "]";
+      }
+    } else if (this.isNormalPointerType(l.t)) {
+      if (options.noPointer) {
+        display = "->?";
+      } else {
+        options.noPointer = true;
+        display = "->" + this.makeValueString(l.v.target);
+      }
+    } else {
+      this.raiseException("unknown pointer type");
+    }
+  } else if (this.isClassType(l.t)) {
+    display = "<object>";
+  }
+  return display;
+};
+
+CRuntime.prototype.makeValString = function(l) {
+  return this.makeValueString(l) + "(" + this.makeTypeString(l.t) + ")";
 };
 
 CRuntime.prototype.defaultValue = function(type) {

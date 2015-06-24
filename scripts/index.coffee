@@ -14,6 +14,10 @@ VariablePanel = React.createClass
     displayName: "VariablePanel"
     render: ->
         mydebugger = @props.debugger
+        {vars, lastVars} = @props
+        lastVarsMap = {}
+        for lastVar in lastVars
+            lastVarsMap[lastVar.name] = lastVar
         <Table striped bordered hover>
             <thead>
                 <tr>
@@ -24,12 +28,13 @@ VariablePanel = React.createClass
             </thead>
             <tbody>
                 {
-                    vars = mydebugger.variable()
                     for v, i in vars
-                        <tr key={i}>
+                        last = lastVarsMap[v.name]
+                        updated = not last? or last.value isnt v.value or last.type isnt v.type
+                        <tr key={v.name} className={if updated then "updated-variable-item"}>
                             <td>{v.name}</td>
-                            <td>{v.type}</td>
                             <td>{v.value}</td>
+                            <td>{v.type}</td>
                         </tr>
                 }
             </tbody>
@@ -43,6 +48,8 @@ Main = React.createClass
         input: "5"
         status: "editing"
         markers: []
+        vars: []
+        lastVars: []
 
     defaultCode: """
         #include <iostream>
@@ -122,6 +129,8 @@ Main = React.createClass
     startDebug: ->
         @setState
             code: @debugger.src
+            vars: []
+            lastVars: []
         @debug_stepinto()
 
     postDebug: (exitCode) ->
@@ -131,9 +140,13 @@ Main = React.createClass
 
     updateMarkers: ->
         s = @debugger.nextNode()
+        lastVars = @state.vars
+        vars = @debugger.variable()
         marker = new Range(s.sLine-1,s.sColumn-1,s.sLine-1,s.sColumn)
         @setState
             markers: [marker]
+            vars: vars
+            lastVars: lastVars
 
     debug_continue: ->
         @debug_stepinto()
@@ -188,7 +201,7 @@ Main = React.createClass
             output: @refs.output.getValue()
 
     render: ->
-        {code, input, output, status, markers} = @state
+        {code, input, output, status, markers, vars, lastVars} = @state
         debugging = status is "debugging"
         editing = status is "editing"
         running = status is "running"
@@ -239,7 +252,7 @@ Main = React.createClass
                     {
                         if debugging
                             <Col md={4}>
-                                <VariablePanel debugger=@debugger />
+                                <VariablePanel mydebugger={@debugger} vars={vars} lastVars={lastVars} />
                             </Col>
                     }
                 </Row>

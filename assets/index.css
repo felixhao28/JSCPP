@@ -5,7 +5,7 @@
 .debug-highlight {
 	position: absolute;
 	z-index: 20;
-	background-color: red;
+	background-color: Maroon;
 }
 
 .input-area {
@@ -26,4 +26,8 @@
 
 .container {
 	width: 100%;
+}
+
+.updated-variable-item {
+	background-color: LightGreen!important;
 }

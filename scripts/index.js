@@ -22,24 +22,32 @@ getCookie = function(cname) {
 VariablePanel = React.createClass({
   displayName: "VariablePanel",
   render: function() {
-    var i, mydebugger, v, vars;
+    var i, last, lastVar, lastVars, lastVarsMap, mydebugger, updated, v, vars, _i, _len, _ref;
     mydebugger = this.props["debugger"];
+    _ref = this.props, vars = _ref.vars, lastVars = _ref.lastVars;
+    lastVarsMap = {};
+    for (_i = 0, _len = lastVars.length; _i < _len; _i++) {
+      lastVar = lastVars[_i];
+      lastVarsMap[lastVar.name] = lastVar;
+    }
     return React.createElement(Table, {
       "striped": true,
       "bordered": true,
       "hover": true
-    }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Name"), React.createElement("th", null, "Value"), React.createElement("th", null, "Type"))), React.createElement("tbody", null, ((function() {
-      var _i, _len, _results;
-      vars = mydebugger.variable();
+    }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Name"), React.createElement("th", null, "Value"), React.createElement("th", null, "Type"))), React.createElement("tbody", null, (function() {
+      var _j, _len1, _results;
       _results = [];
-      for (i = _i = 0, _len = vars.length; _i < _len; i = ++_i) {
+      for (i = _j = 0, _len1 = vars.length; _j < _len1; i = ++_j) {
         v = vars[i];
+        last = lastVarsMap[v.name];
+        updated = (last == null) || last.value !== v.value || last.type !== v.type;
         _results.push(React.createElement("tr", {
-          "key": i
-        }, React.createElement("td", null, v.name), React.createElement("td", null, v.type), React.createElement("td", null, v.value)));
+          "key": v.name,
+          "className": (updated ? "updated-variable-item" : void 0)
+        }, React.createElement("td", null, v.name), React.createElement("td", null, v.value), React.createElement("td", null, v.type)));
       }
       return _results;
-    })())));
+    })()));
   }
 });
 
@@ -51,7 +59,9 @@ Main = React.createClass({
       output: "",
       input: "5",
       status: "editing",
-      markers: []
+      markers: [],
+      vars: [],
+      lastVars: []
     };
   },
   defaultCode: "#include <iostream>\nusing namespace std;\nint main() {\n    int a;\n    cin >> a;\n    cout << a*10 << endl;\n    return 0;\n}",
@@ -139,7 +149,9 @@ Main = React.createClass({
   },
   startDebug: function() {
     this.setState({
-      code: this["debugger"].src
+      code: this["debugger"].src,
+      vars: [],
+      lastVars: []
     });
     return this.debug_stepinto();
   },
@@ -151,11 +163,15 @@ Main = React.createClass({
     });
   },
   updateMarkers: function() {
-    var marker, s;
+    var lastVars, marker, s, vars;
     s = this["debugger"].nextNode();
+    lastVars = this.state.vars;
+    vars = this["debugger"].variable();
     marker = new Range(s.sLine - 1, s.sColumn - 1, s.sLine - 1, s.sColumn);
     return this.setState({
-      markers: [marker]
+      markers: [marker],
+      vars: vars,
+      lastVars: lastVars
     });
   },
   debug_continue: function() {
@@ -221,8 +237,8 @@ Main = React.createClass({
     });
   },
   render: function() {
-    var brand, code, debugging, editing, input, markers, output, running, status, _ref;
-    _ref = this.state, code = _ref.code, input = _ref.input, output = _ref.output, status = _ref.status, markers = _ref.markers;
+    var brand, code, debugging, editing, input, lastVars, markers, output, running, status, vars, _ref;
+    _ref = this.state, code = _ref.code, input = _ref.input, output = _ref.output, status = _ref.status, markers = _ref.markers, vars = _ref.vars, lastVars = _ref.lastVars;
     debugging = status === "debugging";
     editing = status === "editing";
     running = status === "running";
@@ -275,7 +291,9 @@ Main = React.createClass({
     })), (debugging ? React.createElement(Col, {
       "md": 4.
     }, React.createElement(VariablePanel, {
-      "debugger": this["debugger"]
+      "mydebugger": this["debugger"],
+      "vars": vars,
+      "lastVars": lastVars
     })) : void 0)), React.createElement(Row, {
       "className": "io-row"
     }, React.createElement(Col, {
