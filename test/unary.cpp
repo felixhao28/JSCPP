@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-int main(){
+int main() {
   cout << +(5) << endl;
   cout << +(-5) << endl;
   cout << -(5) << endl;

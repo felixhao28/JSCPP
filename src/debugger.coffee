@@ -64,14 +64,14 @@ Debugger::variable = (name) ->
     else
         usedName = new Set()
         ret = []
-        for scopeIndex in [@rt.scope.length - 1...0] by -1
+        for scopeIndex in [@rt.scope.length - 1..0] by -1
             for name, val of @rt.scope[scopeIndex] when typeof val is "object" and "t" of val and "v" of val
                 if not usedName.has(name)
                     usedName.add(name)
                     ret.push
                         name: name
                         type: @rt.makeTypeString(val.t)
-                        value: val.v
+                        value: @rt.makeValueString(val)
         ret
 
 module.exports = Debugger

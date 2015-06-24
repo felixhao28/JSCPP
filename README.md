@@ -255,7 +255,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Misc: Many other small changes
 	- Dev
 		+ Major refactoring on interpreter using es6
-* v2.0.1 (dev)
+* v2.0.1 (6.24)
 	- Fix
 		+ Debugger variable scope issue
 		+ Readme example

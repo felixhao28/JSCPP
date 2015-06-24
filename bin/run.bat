@@ -1,1 +1,1 @@
-node -harmony demo/debug %1 
+node -harmony demo/debug %1 %2

@@ -113,12 +113,6 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
     @regFunc f, lt, name, argTypes, retType
     return
 
-CRuntime::makeValString = (l) ->
-    display = l.v
-    if @isTypeEqualTo(l.t, @charTypeLiteral)
-        display = "'" + String.fromCharCode(l.v) + "'"
-    display + "(" + @makeTypeString(l.t) + ")"
-
 CRuntime::makeParametersSigniture = (args) ->
     ret = new Array(args.length)
     i = 0
@@ -384,10 +378,7 @@ CRuntime::cast = (type, value) ->
     if @isPrimitiveType(type) and @isPrimitiveType(value.t)
         if type.name is "bool"
             return @val(type, if value.v then 1 else 0)
-        else if type.name of [
-                "float"
-                "double"
-            ]
+        else if type.name in ["float", "double"]
             if !@isNumericType(value.t)
                 @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
             if @inrange(type, value.v)
@@ -407,12 +398,12 @@ CRuntime::cast = (type, value) ->
                 if @inrange(type, v)
                     return @val(type, v)
                 else
-                    @raiseException "overflow when casting " + value.v + "(" + @makeTypeString(value.t) + ") to " + @makeTypeString(type)
+                    @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
             else
                 if @inrange(type, value.v)
                     return @val(type, value.v)
                 else
-                    @raiseException "overflow when casting " + value.v + "(" + @makeTypeString(value.t) + ") to " + @makeTypeString(type)
+                    @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
     else if @isPointerType(type)
         if @isFunctionType(type)
             if @isFunctionType(value.t)
@@ -471,9 +462,7 @@ CRuntime::exitScope = (scopename) ->
 
 CRuntime::val = (type, v, left) ->
     if @isNumericType(type) and !@inrange(type, v)
-        @raiseException "overflow of " + @makeValString(
-            t: type
-            v: v)
+        @raiseException "overflow of #{@makeValueString(v)}(#{@makeTypeString(type)})"
     if left is undefined
         left = false
     {
@@ -493,10 +482,10 @@ CRuntime::isTypeEqualTo = (type1, type2) ->
                         when "array"
                             return @isTypeEqualTo(type1.eleType, type2.eleType or type2.targetType)
                         when "function"
-                            if @isTypeEqualTo(type1.retType, type2.retType) and type1.sigiture.length is type2.sigiture.length
+                            if @isTypeEqualTo(type1.retType, type2.retType) and type1.signature.length is type2.signature.length
                                 _this = this
-                                return type1.sigiture.every((type, index, arr) ->
-                                    _this.isTypeEqualTo type, type2.sigiture[index]
+                                return type1.signature.every((type, index, arr) ->
+                                    _this.isTypeEqualTo type, type2.signature[index]
                                 )
                         when "normal"
                             return @isTypeEqualTo(type1.targetType, type2.eleType or type2.targetType)
@@ -542,11 +531,11 @@ CRuntime::makeArrayPointerValue = (arr, position) ->
     target: arr
     position: position
 
-CRuntime::functionPointerType = (retType, sigiture) ->
+CRuntime::functionPointerType = (retType, signature) ->
     type: "pointer"
     ptrType: "function"
     retType: retType
-    sigiture: sigiture
+    signature: signature
 
 CRuntime::makeFunctionPointerValue = (f, name, lt, args, retType) ->
     target: f
@@ -642,7 +631,7 @@ CRuntime::getTypeSigniture = (type) ->
         else if type.ptrType is "array"
             ret += "!" + @getTypeSigniture(type.eleType)
         else if type.ptrType is "function"
-            ret += "#" + @getTypeSigniture(type.retType) + "!" + type.sigiture.map((e) ->
+            ret += "#" + @getTypeSigniture(type.retType) + "!" + type.signature.map((e) ->
                 @getTypeSigniture e
             ).join(",")
         ret += "}"
@@ -663,10 +652,49 @@ CRuntime::makeTypeString = (type) ->
         else if type.ptrType is "array"
             ret += @makeTypeString(type.eleType) + "[#{type.size}]"
         else if type.ptrType is "function"
-            ret += @makeTypeString(type.retType) + "(" + type.sigiture.map((e) ->
+            ret += @makeTypeString(type.retType) + "(*f)" + "(" + type.signature.map((e) =>
                 @makeTypeString e
             ).join(",") + ")"
     ret
+
+CRuntime::makeValueString = (l, options) ->
+    options or= {}
+    if @isPrimitiveType(l.t)
+        if @isTypeEqualTo(l.t, @charTypeLiteral)
+            display = "'" + String.fromCharCode(l.v) + "'"
+        else if @isBoolType(l.t)
+            display = if l.v isnt 0 then "true" else "false"
+        else
+            display = l.v
+    else if @isPointerType(l.t)
+        if @isFunctionType(l.t)
+            display = "<function>"
+        else if @isArrayType(l.t)
+            if @isTypeEqualTo(l.t.eleType, @charTypeLiteral)
+                # string
+                display = "\"" + @getStringFromCharArray(l) + "\""
+            else if options.noArray
+                display = "[...]"
+            else
+                options.noArray = true
+                display = []
+                for i in [l.v.position...l.v.target.length]
+                    display.push(@makeValueString(l.v.target[i], options))
+                display = "[" + display.join(",") + "]"
+        else if @isNormalPointerType(l.t)
+            if options.noPointer
+                display = "->?"
+            else
+                options.noPointer = true
+                display = "->" + @makeValueString(l.v.target)
+        else
+            @raiseException "unknown pointer type"
+    else if @isClassType(l.t)
+        display = "<object>"
+    return display
+
+CRuntime::makeValString = (l) ->
+    @makeValueString(l) + "(" + @makeTypeString(l.t) + ")"
 
 CRuntime::defaultValue = (type) ->
     if type.type is "primitive"

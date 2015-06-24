@@ -5,9 +5,9 @@ using namespace std;
 int go(char str[], int start, int len, int level, char out[]) {
     for (int i = start; i < len; i++) {
         if (str[i] == '(') {
-            int ret=go(str, i + 1, len, level + 1, out);
+            int ret = go(str, i + 1, len, level + 1, out);
             if (ret == -1) {
-                out[i]='$';
+                out[i] = '$';
                 return -1;
             } else {
                 i += ret;
@@ -16,7 +16,7 @@ int go(char str[], int start, int len, int level, char out[]) {
             if (level == 0) {
                 out[i] = '?';
             } else
-                return i - start +1;
+                return i - start + 1;
         } else {
 
         }
