@@ -9,7 +9,7 @@ testFolder = './test/'
 
 prepareOutput = (str) ->
     if str?
-        str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim()
+        lines = str.replace(/\r\n/g, "\n").replace(/\r/, "\n").replace(/[ \t]+\n/, "\n").replace(/\s$/, "")
     else
         null
 

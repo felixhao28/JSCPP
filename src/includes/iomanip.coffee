@@ -61,5 +61,5 @@ module.exports = load: (rt) ->
         _cout.manipulators.active[m.v.members.name] = m.v.members.f
         return _cout
 
-    rt.regFunc(_addManipulator, oType, "<<", [type], oType)
+    rt.regOperator(_addManipulator, oType, "<<", [type], oType)
     return

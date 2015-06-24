@@ -10877,7 +10877,7 @@ module.exports = Debugger;
 var slice = [].slice;
 
 module.exports = function() {
-  var boolHandler, defaultOpHandler;
+  var defaultOpHandler;
   this.config = {
     limits: {
       "char": {
@@ -10976,7 +10976,7 @@ module.exports = function() {
   this.config.limits["unsigned long long int"] = this.config.limits["unsigned long long"];
   this.numericTypeOrder = ["char", "signed char", "short", "short int", "signed short", "signed short int", "int", "signed int", "long", "long int", "long int", "signed long", "signed long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "float", "double"];
   defaultOpHandler = {
-    "*": {
+    "o(*)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -10987,7 +10987,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "/": {
+    "o(/)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11001,7 +11001,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "%": {
+    "o(%)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
@@ -11012,7 +11012,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "+": {
+    "o(+)": {
       "#default": function(rt, l, r) {
         var i, ret, rett;
         if (r === void 0) {
@@ -11032,7 +11032,7 @@ module.exports = function() {
         }
       }
     },
-    "-": {
+    "o(-)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (r === void 0) {
@@ -11048,7 +11048,7 @@ module.exports = function() {
         }
       }
     },
-    "<<": {
+    "o(<<)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
@@ -11059,7 +11059,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    ">>": {
+    "o(>>)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
@@ -11070,7 +11070,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "<": {
+    "o(<)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11081,7 +11081,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "<=": {
+    "o(<=)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11092,7 +11092,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    ">": {
+    "o(>)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11103,7 +11103,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    ">=": {
+    "o(>=)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11114,7 +11114,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "==": {
+    "o(==)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11125,7 +11125,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "!=": {
+    "o(!=)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t)) {
@@ -11136,7 +11136,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "&": {
+    "o(&)": {
       "#default": function(rt, l, r) {
         var ret, rett, t;
         if (r === void 0) {
@@ -11156,7 +11156,7 @@ module.exports = function() {
         }
       }
     },
-    "^": {
+    "o(^)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
@@ -11167,7 +11167,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "|": {
+    "o(|)": {
       "#default": function(rt, l, r) {
         var ret, rett;
         if (!rt.isNumericType(r.t) || !rt.isIntegerType(l.t) || !rt.isIntegerType(r.t)) {
@@ -11178,12 +11178,12 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    ",": {
+    "o(,)": {
       "#default": function(rt, l, r) {
         return r;
       }
     },
-    "=": {
+    "o(=)": {
       "#default": function(rt, l, r) {
         if (l.left) {
           l.v = rt.cast(l.t, r).v;
@@ -11193,67 +11193,67 @@ module.exports = function() {
         }
       }
     },
-    "+=": {
+    "o(+=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["+"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(+)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "-=": {
+    "o(-=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["-"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(-)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "*=": {
+    "o(*=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["*"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(*)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "/=": {
+    "o(/=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["/"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(/)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "%=": {
+    "o(%=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["%"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(%)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "<<=": {
+    "o(<<=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["<<"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(<<)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    ">>=": {
+    "o(>>=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler[">>"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(>>)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "&=": {
+    "o(&=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["&"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(&)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "^=": {
+    "o(^=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["^"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(^)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "|=": {
+    "o(|=)": {
       "#default": function(rt, l, r) {
-        r = defaultOpHandler["|"]["#default"](rt, l, r);
-        return defaultOpHandler["="]["#default"](rt, l, r);
+        r = defaultOpHandler["o(|)"]["#default"](rt, l, r);
+        return defaultOpHandler["o(=)"]["#default"](rt, l, r);
       }
     },
-    "++": {
+    "o(++)": {
       "#default": function(rt, l, dummy) {
         var b;
         if (!rt.isNumericType(l.t)) {
@@ -11278,7 +11278,7 @@ module.exports = function() {
         }
       }
     },
-    "--": {
+    "o(--)": {
       "#default": function(rt, l, dummy) {
         var b;
         if (!rt.isNumericType(l.t)) {
@@ -11304,7 +11304,7 @@ module.exports = function() {
         }
       }
     },
-    "~": {
+    "o(~)": {
       "#default": function(rt, l, dummy) {
         var ret, rett;
         if (!rt.isIntegerType(l.t)) {
@@ -11315,7 +11315,7 @@ module.exports = function() {
         return rt.val(rett, ret);
       }
     },
-    "!": {
+    "o(!)": {
       "#default": function(rt, l, dummy) {
         var ret, rett;
         if (!rt.isIntegerType(l.t)) {
@@ -11324,50 +11324,6 @@ module.exports = function() {
         ret = l.v ? 0 : 1;
         rett = l.t;
         return rt.val(rett, ret);
-      }
-    }
-  };
-  boolHandler = {
-    "==": {
-      "#default": function(rt, l, r) {
-        var ret, rett;
-        if (!r.t === "bool") {
-          rt.raiseException(rt.makeTypeString(l.t) + " does not support == on " + rt.makeTypeString(r.t));
-        }
-        ret = l.v === r.v;
-        rett = rt.boolTypeLiteral;
-        return rt.val(rett, ret);
-      }
-    },
-    "!=": {
-      "#default": function(rt, l, r) {
-        var ret, rett;
-        if (!r.t === "bool") {
-          rt.raiseException(rt.makeTypeString(l.t) + " does not support != on " + rt.makeTypeString(r.t));
-        }
-        ret = l.v !== r.v;
-        rett = rt.boolTypeLiteral;
-        return rt.val(rett, ret);
-      }
-    },
-    ",": {
-      "#default": function(rt, l, r) {
-        return r;
-      }
-    },
-    "=": {
-      "#default": function(rt, l, r) {
-        if (l.left) {
-          l.v = rt.cast(l.t, r).v;
-          return l;
-        } else {
-          rt.raiseException(rt.makeValString(l) + " is not a left value");
-        }
-      }
-    },
-    "!": {
-      "#default": function(rt, l, dummy) {
-        return rt.val(l.t, !l.v);
       }
     }
   };
@@ -11405,7 +11361,7 @@ module.exports = function() {
   this.types["(double)"] = defaultOpHandler;
   this.types["(bool)"] = defaultOpHandler;
   this.types["pointer"] = {
-    "==": {
+    "o(==)": {
       "#default": function(rt, l, r) {
         if (rt.isTypeEqualTo(l.t, r.t)) {
           if (l.t.ptrType === "array") {
@@ -11417,17 +11373,17 @@ module.exports = function() {
         return false;
       }
     },
-    "!=": {
+    "o(!=)": {
       "#default": function(rt, l, r) {
         return !rt.types["pointer"]["=="]["#default"](rt, l, r);
       }
     },
-    ",": {
+    "o(,)": {
       "#default": function(rt, l, r) {
         return r;
       }
     },
-    "=": {
+    "o(=)": {
       "#default": function(rt, l, r) {
         var t;
         if (!l.left) {
@@ -11439,7 +11395,7 @@ module.exports = function() {
         return l;
       }
     },
-    "&": {
+    "o(&)": {
       "#default": function(rt, l, r) {
         var t;
         if (r === void 0) {
@@ -11456,7 +11412,7 @@ module.exports = function() {
     }
   };
   this.types["pointer_function"] = {
-    "()": {
+    "o(())": {
       "#default": function(rt, l, bindThis, args) {
         if (l.t.type !== "pointer" || l.t.ptrType !== "function") {
           rt.raiseException(rt.makeTypeString(l.t.type) + " is not function");
@@ -11466,7 +11422,7 @@ module.exports = function() {
     }
   };
   this.types["pointer_normal"] = {
-    "*": {
+    "o(*)": {
       "#default": function(rt, l, r) {
         if (r === void 0) {
           return l.v.target;
@@ -11475,14 +11431,14 @@ module.exports = function() {
         }
       }
     },
-    "->": {
+    "o(->)": {
       "#default": function(rt, l, r) {
         return rt.getMember(l.v.target, r);
       }
     }
   };
   this.types["pointer_array"] = {
-    "*": {
+    "o(*)": {
       "#default": function(rt, l, r) {
         var arr, ret;
         if (r === void 0) {
@@ -11501,19 +11457,19 @@ module.exports = function() {
         }
       }
     },
-    "[]": {
+    "o([])": {
       "#default": function(rt, l, r) {
-        r = rt.types["pointer_array"]["+"]["#default"](rt, l, r);
-        return rt.types["pointer_array"]["*"]["#default"](rt, r);
+        r = rt.types["pointer_array"]["o(+)"]["#default"](rt, l, r);
+        return rt.types["pointer_array"]["o(*)"]["#default"](rt, r);
       }
     },
-    "->": {
+    "o(->)": {
       "#default": function(rt, l, r) {
-        l = rt.types["pointer_array"]["*"]["#default"](rt, l);
+        l = rt.types["pointer_array"]["o(*)"]["#default"](rt, l);
         return rt.getMember(l, r);
       }
     },
-    "-": {
+    "o(-)": {
       "#default": function(rt, l, r) {
         var i;
         if (rt.isNumericType(r.t)) {
@@ -11530,7 +11486,7 @@ module.exports = function() {
         }
       }
     },
-    "<": {
+    "o(<)": {
       "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
@@ -11543,7 +11499,7 @@ module.exports = function() {
         }
       }
     },
-    ">": {
+    "o(>)": {
       "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
@@ -11556,7 +11512,7 @@ module.exports = function() {
         }
       }
     },
-    "<=": {
+    "o(<=)": {
       "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
@@ -11569,7 +11525,7 @@ module.exports = function() {
         }
       }
     },
-    ">=": {
+    "o(>=)": {
       "#default": function(rt, l, r) {
         if (rt.isArrayType(r.t)) {
           if (l.v.target === r.v.target) {
@@ -11582,7 +11538,7 @@ module.exports = function() {
         }
       }
     },
-    "+": {
+    "o(+)": {
       "#default": function(rt, l, r) {
         var i;
         if (rt.isNumericType(r.t)) {
@@ -11593,19 +11549,19 @@ module.exports = function() {
         }
       }
     },
-    "+=": {
+    "o(+=)": {
       "#default": function(rt, l, r) {
-        r = rt.types["pointer_array"]["+"]["#default"](rt, l, r);
+        r = rt.types["pointer_array"]["o(+)"]["#default"](rt, l, r);
         return rt.types["pointer"]["="]["#default"](rt, l, r);
       }
     },
-    "-=": {
+    "o(-=)": {
       "#default": function(rt, l, r) {
-        r = rt.types["pointer_array"]["-"]["#default"](rt, l, r);
+        r = rt.types["pointer_array"]["o(-)"]["#default"](rt, l, r);
         return rt.types["pointer"]["="]["#default"](rt, l, r);
       }
     },
-    "++": {
+    "o(++)": {
       "#default": function(rt, l, dummy) {
         if (!l.left) {
           rt.raiseException(rt.makeValString(l) + " is not a left value");
@@ -11618,7 +11574,7 @@ module.exports = function() {
         }
       }
     },
-    "--": {
+    "o(--)": {
       "#default": function(rt, l, dummy) {
         if (!l.left) {
           rt.raiseException(rt.makeValString(l) + " is not a left value");
@@ -12401,7 +12357,7 @@ module.exports = {
       _cout.manipulators.active[m.v.members.name] = m.v.members.f;
       return _cout;
     };
-    rt.regFunc(_addManipulator, oType, "<<", [type], oType);
+    rt.regOperator(_addManipulator, oType, "<<", [type], oType);
   }
 };
 
@@ -12430,7 +12386,7 @@ _read = function(rt, reg, buf, type) {
 
 module.exports = {
   load: function(rt) {
-    var _cinString, _get, _getline, cin, cout, endl, pchar, stdio, type;
+    var _bool, _cinString, _get, _getline, cin, cout, endl, pchar, stdio, type;
     stdio = rt.config.stdio;
     type = rt.newClass("istream", []);
     cin = {
@@ -12446,7 +12402,7 @@ module.exports = {
     pchar = rt.normalPointerType(rt.charTypeLiteral);
     rt.types[rt.getTypeSigniture(type)] = {
       "#father": "object",
-      ">>": {
+      "o(>>)": {
         "#default": function(rt, _cin, t) {
           var b, len, r, v;
           if (!t.left) {
@@ -12456,6 +12412,7 @@ module.exports = {
             rt.raiseException(">> operator in istream cannot accept " + rt.makeTypeString(t.t));
           }
           b = _cin.v.buf;
+          _cin.v.eofbit = b.length === 0;
           switch (t.t.name) {
             case "char":
             case "signed char":
@@ -12507,6 +12464,7 @@ module.exports = {
               rt.raiseException(">> operator in istream cannot accept " + rt.makeTypeString(t.t));
           }
           len = r[0].length;
+          _cin.v.failbit = len === 0;
           t.v = rt.val(t.t, v).v;
           _cin.v.buf = b.substring(len);
           return _cin;
@@ -12519,8 +12477,10 @@ module.exports = {
         rt.raiseException("only a pointer to string can be used as storage");
       }
       b = _cin.v.buf;
+      _cin.v.eofbit = b.length === 0;
       b = _skipSpace(b);
       r = _read(rt, /^\S*/, b, t.t)[0];
+      _cin.v.failbit = r.length === 0;
       _cin.v.buf = b.substring(r.length);
       initialPos = t.v.position;
       tar = t.v.target;
@@ -12533,7 +12493,7 @@ module.exports = {
       tar[r.length + initialPos] = rt.val(rt.charTypeLiteral, 0);
       return _cin;
     };
-    rt.regFunc(_cinString, cin.t, ">>", [pchar], cin.t);
+    rt.regOperator(_cinString, cin.t, ">>", [pchar], cin.t);
     _getline = function(rt, _cin, t, limit, delim) {
       var b, i, initialPos, j, r, ref, removeDelim, tar;
       if (!rt.isStringType(t.t)) {
@@ -12542,12 +12502,16 @@ module.exports = {
       limit = limit.v;
       delim = delim != null ? delim.v : '\n';
       b = _cin.v.buf;
+      _cin.v.eofbit = b.length === 0;
       r = _read(rt, new RegExp("^[^" + delim + "]*"), b, t.t)[0];
       if (r.length + 1 > limit) {
         r = r.substring(0, limit - 1);
       }
       if (b.charAt(r.length) === delim.charAt(0)) {
         removeDelim = true;
+        _cin.v.failbit = false;
+      } else {
+        _cin.v.failbit = r.length === 0;
       }
       _cin.v.buf = b.substring(r.length + (removeDelim ? 1 : 0));
       initialPos = t.v.position;
@@ -12572,6 +12536,10 @@ module.exports = {
       return rt.val(rt.charTypeLiteral, v);
     };
     rt.regFunc(_get, cin.t, "get", [], cin.t);
+    _bool = function(rt, _cin) {
+      return rt.val(rt.boolTypeLiteral, !_cin.v.failbit);
+    };
+    rt.regOperator(_bool, cin.t, "bool", [], rt.boolTypeLiteral);
     type = rt.newClass("ostream", []);
     cout = {
       t: rt.simpleType("ostream"),
@@ -12584,7 +12552,7 @@ module.exports = {
     rt.scope[0]["cout"] = cout;
     rt.types[rt.getTypeSigniture(cout.t)] = {
       "#father": "object",
-      "<<": {
+      "o(<<)": {
         "#default": function(rt, _cout, t) {
           var r;
           if (_cout.manipulators != null) {
@@ -12637,6 +12605,7 @@ Interpreter = function(rt) {
   this.visitors = {
     TranslationUnit: function*(interp, s, param) {
       var dec, i;
+      rt = interp.rt;
       i = 0;
       while (i < s.ExternalDeclarations.length) {
         dec = s.ExternalDeclarations[i];
@@ -12646,15 +12615,16 @@ Interpreter = function(rt) {
     },
     FunctionDefinition: function*(interp, s, param) {
       var _basetype, _name, _param, _pointer, _type, argNames, argTypes, basetype, dim, dimensions, i, j, name, pointer, ptl, retType, scope, stat, varargs;
+      rt = interp.rt;
       scope = param.scope;
       name = s.Declarator.left.Identifier;
-      basetype = interp.rt.simpleType(s.DeclarationSpecifiers.join(" "));
+      basetype = rt.simpleType(s.DeclarationSpecifiers.join(" "));
       pointer = s.Declarator.Pointer;
       retType = interp.buildRecursivePointerType(pointer, basetype, 0);
       argTypes = [];
       argNames = [];
       if (s.Declarator.right.length !== 1) {
-        interp.rt.raiseException("you cannot have " + s.Declarator.right.length + " parameter lists (1 expected)");
+        rt.raiseException("you cannot have " + s.Declarator.right.length + " parameter lists (1 expected)");
       }
       ptl = void 0;
       varargs = void 0;
@@ -12667,13 +12637,13 @@ Interpreter = function(rt) {
         };
         varargs = false;
       } else {
-        interp.rt.raiseException("unacceptable argument list");
+        rt.raiseException("unacceptable argument list");
       }
       i = 0;
       while (i < ptl.ParameterList.length) {
         _param = ptl.ParameterList[i];
         _pointer = _param.Declarator.Pointer;
-        _basetype = interp.rt.simpleType(_param.DeclarationSpecifiers.join(" "));
+        _basetype = rt.simpleType(_param.DeclarationSpecifiers.join(" "));
         _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
         _name = _param.Declarator.left.Identifier;
         if (_param.Declarator.right.length > 0) {
@@ -12682,12 +12652,12 @@ Interpreter = function(rt) {
           while (j < _param.Declarator.right.length) {
             dim = _param.Declarator.right[j];
             if (dim.type !== "DirectDeclarator_modifier_array") {
-              interp.rt.raiseException("unacceptable array initialization");
+              rt.raiseException("unacceptable array initialization");
             }
             if (dim.Expression !== null) {
-              dim = interp.rt.cast(interp.rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
+              dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
             } else if (j > 0) {
-              interp.rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+              rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
             } else {
 
             }
@@ -12701,11 +12671,12 @@ Interpreter = function(rt) {
         i++;
       }
       stat = s.CompoundStatement;
-      interp.rt.defFunc(scope, name, retType, argTypes, argNames, stat, interp);
+      rt.defFunc(scope, name, retType, argTypes, argNames, stat, interp);
     },
     Declaration: function*(interp, s, param) {
       var basetype, dec, dim, dimensions, i, init, initializer, j, name, pointer, type;
-      basetype = interp.rt.simpleType(s.DeclarationSpecifiers.join(" "));
+      rt = interp.rt;
+      basetype = rt.simpleType(s.DeclarationSpecifiers.join(" "));
       i = 0;
       while (i < s.InitDeclaratorList.length) {
         dec = s.InitDeclaratorList[i];
@@ -12719,16 +12690,16 @@ Interpreter = function(rt) {
           while (j < dec.Declarator.right.length) {
             dim = dec.Declarator.right[j];
             if (dim.type !== "DirectDeclarator_modifier_array") {
-              interp.rt.raiseException("is interp really an array initialization?");
+              rt.raiseException("is interp really an array initialization?");
             }
             if (dim.Expression !== null) {
-              dim = interp.rt.cast(interp.rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
+              dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
             } else if (j > 0) {
-              interp.rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+              rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
             } else {
               if (init.type === "Initializer_expr") {
                 initializer = (yield* interp.visit(interp, init, param));
-                if (interp.rt.isTypeEqualTo(type, interp.rt.charTypeLiteral) && interp.rt.isArrayType(initializer.t) && interp.rt.isTypeEqualTo(initializer.t.eleType, interp.rt.charTypeLiteral)) {
+                if (rt.isTypeEqualTo(type, rt.charTypeLiteral) && rt.isArrayType(initializer.t) && rt.isTypeEqualTo(initializer.t.eleType, rt.charTypeLiteral)) {
                   dim = initializer.v.target.length;
                   init = {
                     type: "Initializer_array",
@@ -12740,7 +12711,7 @@ Interpreter = function(rt) {
                     })
                   };
                 } else {
-                  interp.rt.raiseException("cannot initialize an array to " + interp.rt.makeValString(initializer));
+                  rt.raiseException("cannot initialize an array to " + rt.makeValString(initializer));
                 }
               } else {
                 dim = init.Initializers.length;
@@ -12750,52 +12721,56 @@ Interpreter = function(rt) {
             j++;
           }
           init = (yield* interp.arrayInit(dimensions, init, 0, type, param));
-          interp.rt.defVar(name, init.t, init);
+          rt.defVar(name, init.t, init);
         } else {
           if (init === null) {
-            init = interp.rt.defaultValue(type);
+            init = rt.defaultValue(type);
           } else {
             init = (yield* interp.visit(interp, init.Expression));
           }
-          interp.rt.defVar(name, type, init);
+          rt.defVar(name, type, init);
         }
         i++;
       }
     },
     Initializer_expr: function*(interp, s, param) {
+      rt = interp.rt;
       return (yield* interp.visit(interp, s.Expression, param));
     },
     Label_case: function*(interp, s, param) {
       var ce;
+      rt = interp.rt;
       ce = (yield* interp.visit(interp, s.ConstantExpression));
       if (param["switch"] === void 0) {
-        interp.rt.raiseException("you cannot use case outside switch block");
+        rt.raiseException("you cannot use case outside switch block");
       }
       if (param.scope === "SelectionStatement_switch_cs") {
-        return ["switch", interp.rt.cast(ce.t, param["switch"]).v === ce.v];
+        return ["switch", rt.cast(ce.t, param["switch"]).v === ce.v];
       } else {
-        interp.rt.raiseException("you can only use case directly in a switch block");
+        rt.raiseException("you can only use case directly in a switch block");
       }
     },
     Label_default: function(interp, s, param) {
+      rt = interp.rt;
       if (param["switch"] === void 0) {
-        interp.rt.raiseException("you cannot use default outside switch block");
+        rt.raiseException("you cannot use default outside switch block");
       }
       if (param.scope === "SelectionStatement_switch_cs") {
         return ["switch", true];
       } else {
-        interp.rt.raiseException("you can only use default directly in a switch block");
+        rt.raiseException("you can only use default directly in a switch block");
       }
     },
     CompoundStatement: function*(interp, s, param) {
       var _scope, i, k, len, r, stmt, stmts, switchon;
+      rt = interp.rt;
       stmts = s.Statements;
       r = void 0;
       i = void 0;
       _scope = param.scope;
       if (param.scope === "SelectionStatement_switch") {
         param.scope = "SelectionStatement_switch_cs";
-        interp.rt.enterScope(param.scope);
+        rt.enterScope(param.scope);
         switchon = false;
         i = 0;
         while (i < stmts.length) {
@@ -12813,11 +12788,11 @@ Interpreter = function(rt) {
           }
           i++;
         }
-        interp.rt.exitScope(param.scope);
+        rt.exitScope(param.scope);
         param.scope = _scope;
       } else {
         param.scope = "CompoundStatement";
-        interp.rt.enterScope(param.scope);
+        rt.enterScope(param.scope);
         for (k = 0, len = stmts.length; k < len; k++) {
           stmt = stmts[k];
           r = (yield* interp.visit(interp, stmt, param));
@@ -12825,37 +12800,40 @@ Interpreter = function(rt) {
             break;
           }
         }
-        interp.rt.exitScope(param.scope);
+        rt.exitScope(param.scope);
         param.scope = _scope;
         return r;
       }
     },
     ExpressionStatement: function*(interp, s, param) {
+      rt = interp.rt;
       if (s.Expression != null) {
         (yield* interp.visit(interp, s.Expression, param));
       }
     },
     SelectionStatement_if: function*(interp, s, param) {
       var e, ret, scope_bak;
+      rt = interp.rt;
       scope_bak = param.scope;
       param.scope = "SelectionStatement_if";
-      interp.rt.enterScope(param.scope);
+      rt.enterScope(param.scope);
       e = (yield* interp.visit(interp, s.Expression, param));
       ret = void 0;
-      if (interp.rt.cast(interp.rt.boolTypeLiteral, e).v) {
+      if (rt.cast(rt.boolTypeLiteral, e).v) {
         ret = (yield* interp.visit(interp, s.Statement, param));
       } else if (s.ElseStatement) {
         ret = (yield* interp.visit(interp, s.ElseStatement, param));
       }
-      interp.rt.exitScope(param.scope);
+      rt.exitScope(param.scope);
       param.scope = scope_bak;
       return ret;
     },
     SelectionStatement_switch: function*(interp, s, param) {
       var e, r, ret, scope_bak, switch_bak;
+      rt = interp.rt;
       scope_bak = param.scope;
       param.scope = "SelectionStatement_switch";
-      interp.rt.enterScope(param.scope);
+      rt.enterScope(param.scope);
       e = (yield* interp.visit(interp, s.Expression, param));
       switch_bak = param["switch"];
       param["switch"] = e;
@@ -12867,19 +12845,20 @@ Interpreter = function(rt) {
           ret = r;
         }
       }
-      interp.rt.exitScope(param.scope);
+      rt.exitScope(param.scope);
       param.scope = scope_bak;
       return ret;
     },
     IterationStatement_while: function*(interp, s, param) {
       var cond, end_loop, r, return_val, scope_bak;
+      rt = interp.rt;
       scope_bak = param.scope;
       param.scope = "IterationStatement_while";
-      interp.rt.enterScope(param.scope);
+      rt.enterScope(param.scope);
       while (true) {
         if (s.Expression != null) {
           cond = (yield* interp.visit(interp, s.Expression, param));
-          cond = interp.rt.cast(interp.rt.boolTypeLiteral, cond).v;
+          cond = rt.cast(rt.boolTypeLiteral, cond).v;
           if (!cond) {
             break;
           }
@@ -12901,15 +12880,16 @@ Interpreter = function(rt) {
           }
         }
       }
-      interp.rt.exitScope(param.scope);
+      rt.exitScope(param.scope);
       param.scope = scope_bak;
       return return_val;
     },
     IterationStatement_do: function*(interp, s, param) {
       var cond, end_loop, r, return_val, scope_bak;
+      rt = interp.rt;
       scope_bak = param.scope;
       param.scope = "IterationStatement_do";
-      interp.rt.enterScope(param.scope);
+      rt.enterScope(param.scope);
       while (true) {
         r = (yield* interp.visit(interp, s.Statement, param));
         if (r instanceof Array) {
@@ -12929,21 +12909,22 @@ Interpreter = function(rt) {
         }
         if (s.Expression != null) {
           cond = (yield* interp.visit(interp, s.Expression, param));
-          cond = interp.rt.cast(interp.rt.boolTypeLiteral, cond).v;
+          cond = rt.cast(rt.boolTypeLiteral, cond).v;
           if (!cond) {
             break;
           }
         }
       }
-      interp.rt.exitScope(param.scope);
+      rt.exitScope(param.scope);
       param.scope = scope_bak;
       return return_val;
     },
     IterationStatement_for: function*(interp, s, param) {
       var cond, end_loop, r, return_val, scope_bak;
+      rt = interp.rt;
       scope_bak = param.scope;
       param.scope = "IterationStatement_for";
-      interp.rt.enterScope(param.scope);
+      rt.enterScope(param.scope);
       if (s.Initializer) {
         if (s.Initializer.type === "Declaration") {
           (yield* interp.visit(interp, s.Initializer, param));
@@ -12954,7 +12935,7 @@ Interpreter = function(rt) {
       while (true) {
         if (s.Expression != null) {
           cond = (yield* interp.visit(interp, s.Expression, param));
-          cond = interp.rt.cast(interp.rt.boolTypeLiteral, cond).v;
+          cond = rt.cast(rt.boolTypeLiteral, cond).v;
           if (!cond) {
             break;
           }
@@ -12979,21 +12960,25 @@ Interpreter = function(rt) {
           (yield* interp.visit(interp, s.Loop, param));
         }
       }
-      interp.rt.exitScope(param.scope);
+      rt.exitScope(param.scope);
       param.scope = scope_bak;
       return return_val;
     },
     JumpStatement_goto: function(interp, s, param) {
-      interp.rt.raiseException("not implemented");
+      rt = interp.rt;
+      rt.raiseException("not implemented");
     },
     JumpStatement_continue: function(interp, s, param) {
+      rt = interp.rt;
       return ["continue"];
     },
     JumpStatement_break: function(interp, s, param) {
+      rt = interp.rt;
       return ["break"];
     },
     JumpStatement_return: function*(interp, s, param) {
       var ret;
+      rt = interp.rt;
       if (s.Expression) {
         ret = (yield* interp.visit(interp, s.Expression, param));
         return ["return", ret];
@@ -13001,16 +12986,19 @@ Interpreter = function(rt) {
       return ["return"];
     },
     IdentifierExpression: function(interp, s, param) {
-      return interp.rt.readVar(s.Identifier);
+      rt = interp.rt;
+      return rt.readVar(s.Identifier);
     },
     ParenthesesExpression: function*(interp, s, param) {
+      rt = interp.rt;
       return (yield* interp.visit(interp, s.Expression, param));
     },
     PostfixExpression_ArrayAccess: function*(interp, s, param) {
       var index, r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
       index = (yield* interp.visit(interp, s.index, param));
-      r = interp.rt.getFunc(ret.t, "[]", [index.t])(interp.rt, ret, index);
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName("[]"), [index.t])(rt, ret, index);
       if (isGenerator(r)) {
         return (yield* r);
       } else {
@@ -13019,6 +13007,7 @@ Interpreter = function(rt) {
     },
     PostfixExpression_MethodInvocation: function*(interp, s, param) {
       var args, bindThis, e, r, ret, thisArg;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
       args = (yield* (function*() {
         var k, len, ref, results;
@@ -13036,9 +13025,9 @@ Interpreter = function(rt) {
       } else {
         bindThis = ret;
       }
-      r = interp.rt.getFunc(ret.t, "()", args.map(function(e) {
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName("()"), args.map(function(e) {
         return e.t;
-      }))(interp.rt, ret, bindThis, args);
+      }))(rt, ret, bindThis, args);
       if (isGenerator(r)) {
         return (yield* r);
       } else {
@@ -13047,16 +13036,18 @@ Interpreter = function(rt) {
     },
     PostfixExpression_MemberAccess: function*(interp, s, param) {
       var ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
       return rt.getMember(ret, s.member);
     },
     PostfixExpression_MemberPointerAccess: function*(interp, s, param) {
       var member, r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
       member = void 0;
-      if (interp.rt.isPointerType(ret.t) && !interp.rt.isFunctionType(ret.t)) {
+      if (rt.isPointerType(ret.t) && !rt.isFunctionType(ret.t)) {
         member = s.member;
-        r = interp.rt.getFunc(ret.t, "->", [])(interp.rt, ret, member);
+        r = rt.getFunc(ret.t, rt.makeOperatorFuncName("->"), [])(rt, ret, member);
         if (isGenerator(r)) {
           return (yield* r);
         } else {
@@ -13067,7 +13058,7 @@ Interpreter = function(rt) {
           type: "IdentifierExpression",
           Identifier: s.member
         }, param));
-        r = interp.rt.getFunc(ret.t, "->", [member.t])(interp.rt, ret, member);
+        r = rt.getFunc(ret.t, rt.makeOperatorFuncName("->"), [member.t])(rt, ret, member);
         if (isGenerator(r)) {
           return (yield* r);
         } else {
@@ -13077,8 +13068,9 @@ Interpreter = function(rt) {
     },
     PostfixExpression_PostIncrement: function*(interp, s, param) {
       var r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
-      r = interp.rt.getFunc(ret.t, "++", ["dummy"])(interp.rt, ret, {
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName("++"), ["dummy"])(rt, ret, {
         t: "dummy",
         v: null
       });
@@ -13090,8 +13082,9 @@ Interpreter = function(rt) {
     },
     PostfixExpression_PostDecrement: function*(interp, s, param) {
       var r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
-      r = interp.rt.getFunc(ret.t, "--", ["dummy"])(interp.rt, ret, {
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName("--"), ["dummy"])(rt, ret, {
         t: "dummy",
         v: null
       });
@@ -13103,8 +13096,9 @@ Interpreter = function(rt) {
     },
     UnaryExpression_PreIncrement: function*(interp, s, param) {
       var r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
-      r = interp.rt.getFunc(ret.t, "++", [])(interp.rt, ret);
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName("++"), [])(rt, ret);
       if (isGenerator(r)) {
         return (yield* r);
       } else {
@@ -13113,8 +13107,9 @@ Interpreter = function(rt) {
     },
     UnaryExpression_PreDecrement: function*(interp, s, param) {
       var r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
-      r = interp.rt.getFunc(ret.t, "--", [])(interp.rt, ret);
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName("--"), [])(rt, ret);
       if (isGenerator(r)) {
         return (yield* r);
       } else {
@@ -13123,8 +13118,9 @@ Interpreter = function(rt) {
     },
     UnaryExpression: function*(interp, s, param) {
       var r, ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
-      r = interp.rt.getFunc(ret.t, s.op, [])(interp.rt, ret);
+      r = rt.getFunc(ret.t, rt.makeOperatorFuncName(s.op), [])(rt, ret);
       if (isGenerator(r)) {
         return (yield* r);
       } else {
@@ -13133,22 +13129,26 @@ Interpreter = function(rt) {
     },
     UnaryExpression_Sizeof_Expr: function*(interp, s, param) {
       var ret;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
-      return interp.rt.val(interp.rt.intTypeLiteral, interp.rt.getSize(ret));
+      return rt.val(rt.intTypeLiteral, rt.getSize(ret));
     },
     UnaryExpression_Sizeof_Type: function*(interp, s, param) {
       var type;
+      rt = interp.rt;
       type = (yield* interp.visit(interp, s.TypeName, param));
-      return interp.rt.val(interp.rt.intTypeLiteral, interp.rt.getSizeByType(type));
+      return rt.val(rt.intTypeLiteral, rt.getSizeByType(type));
     },
     CastExpression: function*(interp, s, param) {
       var ret, type;
+      rt = interp.rt;
       ret = (yield* interp.visit(interp, s.Expression, param));
       type = (yield* interp.visit(interp, s.TypeName, param));
-      return interp.rt.cast(type, ret);
+      return rt.cast(type, ret);
     },
     TypeName: function(interp, s, param) {
       var baseType, k, len, ref, typename;
+      rt = interp.rt;
       typename = [];
       ref = s.base;
       for (k = 0, len = ref.length; k < len; k++) {
@@ -13157,10 +13157,11 @@ Interpreter = function(rt) {
           typename.push(baseType);
         }
       }
-      return interp.rt.simpleType(typename.join(" "));
+      return rt.simpleType(typename.join(" "));
     },
     BinOpExpression: function*(interp, s, param) {
       var left, op, r, right;
+      rt = interp.rt;
       op = s.op;
       if (op === "&&") {
         s.type = "LogicalANDExpression";
@@ -13171,7 +13172,7 @@ Interpreter = function(rt) {
       } else {
         left = (yield* interp.visit(interp, s.left, param));
         right = (yield* interp.visit(interp, s.right, param));
-        r = interp.rt.getFunc(left.t, op, [right.t])(interp.rt, left, right);
+        r = rt.getFunc(left.t, rt.makeOperatorFuncName(op), [right.t])(rt, left, right);
         if (isGenerator(r)) {
           return (yield* r);
         } else {
@@ -13181,18 +13182,19 @@ Interpreter = function(rt) {
     },
     LogicalANDExpression: function*(interp, s, param) {
       var left, lt, r, right;
+      rt = interp.rt;
       left = (yield* interp.visit(interp, s.left, param));
-      lt = interp.rt.types[interp.rt.getTypeSigniture(left.t)];
+      lt = rt.types[rt.getTypeSigniture(left.t)];
       if ("&&" in lt) {
         right = (yield* interp.visit(interp, s.right, param));
-        r = interp.rt.getFunc(left.t, "&&", [right.t])(interp.rt, left, right);
+        r = rt.getFunc(left.t, rt.makeOperatorFuncName("&&"), [right.t])(rt, left, right);
         if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
         }
       } else {
-        if (interp.rt.cast(interp.rt.boolTypeLiteral, left).v) {
+        if (rt.cast(rt.boolTypeLiteral, left).v) {
           return (yield* interp.visit(interp, s.right, param));
         } else {
           return left;
@@ -13201,18 +13203,19 @@ Interpreter = function(rt) {
     },
     LogicalORExpression: function*(interp, s, param) {
       var left, lt, r, right;
+      rt = interp.rt;
       left = (yield* interp.visit(interp, s.left, param));
-      lt = interp.rt.types[interp.rt.getTypeSigniture(left.t)];
+      lt = rt.types[rt.getTypeSigniture(left.t)];
       if ("||" in lt) {
         right = (yield* interp.visit(interp, s.right, param));
-        r = interp.rt.getFunc(left.t, "||", [right.t])(interp.rt, left, right);
+        r = rt.getFunc(left.t, rt.makeOperatorFuncName("||"), [right.t])(rt, left, right);
         if (isGenerator(r)) {
           return (yield* r);
         } else {
           return r;
         }
       } else {
-        if (interp.rt.cast(interp.rt.boolTypeLiteral, left).v) {
+        if (rt.cast(rt.boolTypeLiteral, left).v) {
           return left;
         } else {
           return (yield* interp.visit(interp, s.right, param));
@@ -13221,7 +13224,8 @@ Interpreter = function(rt) {
     },
     ConditionalExpression: function*(interp, s, param) {
       var cond;
-      cond = interp.rt.cast(interp.rt.boolTypeLiteral, (yield* interp.visit(interp, s.cond, param))).v;
+      rt = interp.rt;
+      cond = rt.cast(rt.boolTypeLiteral, (yield* interp.visit(interp, s.cond, param))).v;
       if (cond) {
         return (yield* interp.visit(interp, s.t, param));
       } else {
@@ -13229,65 +13233,81 @@ Interpreter = function(rt) {
       }
     },
     ConstantExpression: function*(interp, s, param) {
+      rt = interp.rt;
       return (yield* interp.visit(interp, s.Expression, param));
     },
     StringLiteralExpression: function(interp, s, param) {
       var str;
+      rt = interp.rt;
       str = s.value;
-      return interp.rt.makeCharArrayFromString(str);
+      return rt.makeCharArrayFromString(str);
     },
     BooleanConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.boolTypeLiteral, s.value === "true" ? 1 : 0);
+      rt = interp.rt;
+      return rt.val(rt.boolTypeLiteral, s.value === "true" ? 1 : 0);
     },
     CharacterConstant: function(interp, s, param) {
       var a;
+      rt = interp.rt;
       a = s.Char;
       if (a.length !== 1) {
-        interp.rt.raiseException("a character constant must have and only have one character.");
+        rt.raiseException("a character constant must have and only have one character.");
       }
-      return interp.rt.val(interp.rt.charTypeLiteral, a[0].charCodeAt(0));
+      return rt.val(rt.charTypeLiteral, a[0].charCodeAt(0));
     },
     FloatConstant: function*(interp, s, param) {
       var val;
+      rt = interp.rt;
       val = (yield* interp.visit(interp, s.Expression, param));
-      return interp.rt.val(interp.rt.floatTypeLiteral, val.v);
+      return rt.val(rt.floatTypeLiteral, val.v);
     },
     DecimalConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.unsignedintTypeLiteral, parseInt(s.value, 10));
+      rt = interp.rt;
+      return rt.val(rt.unsignedintTypeLiteral, parseInt(s.value, 10));
     },
     HexConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.unsignedintTypeLiteral, parseInt(s.value, 16));
+      rt = interp.rt;
+      return rt.val(rt.unsignedintTypeLiteral, parseInt(s.value, 16));
     },
     DecimalFloatConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.doubleTypeLiteral, parseFloat(s.value));
+      rt = interp.rt;
+      return rt.val(rt.doubleTypeLiteral, parseFloat(s.value));
     },
     HexFloatConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.doubleTypeLiteral, parseFloat(s.value, 16));
+      rt = interp.rt;
+      return rt.val(rt.doubleTypeLiteral, parseFloat(s.value, 16));
     },
     OctalConstant: function(interp, s, param) {
-      return interp.rt.val(interp.rt.unsignedintTypeLiteral, parseInt(s.value, 8));
+      rt = interp.rt;
+      return rt.val(rt.unsignedintTypeLiteral, parseInt(s.value, 8));
     },
     NamespaceDefinition: function(interp, s, param) {
-      interp.rt.raiseException("not implemented");
+      rt = interp.rt;
+      rt.raiseException("not implemented");
     },
     UsingDirective: function(interp, s, param) {
       var id;
+      rt = interp.rt;
       id = s.Identifier;
     },
     UsingDeclaration: function(interp, s, param) {
-      interp.rt.raiseException("not implemented");
+      rt = interp.rt;
+      rt.raiseException("not implemented");
     },
     NamespaceAliasDefinition: function(interp, s, param) {
-      interp.rt.raiseException("not implemented");
+      rt = interp.rt;
+      rt.raiseException("not implemented");
     },
     unknown: function(interp, s, param) {
-      interp.rt.raiseException("unhandled syntax " + s.type);
+      rt = interp.rt;
+      rt.raiseException("unhandled syntax " + s.type);
     }
   };
 };
 
 Interpreter.prototype.visit = function*(interp, s, param) {
-  var _node, f, ret;
+  var _node, f, ret, rt;
+  rt = interp.rt;
   if ("type" in s) {
     if (param === void 0) {
       param = {
@@ -13470,7 +13490,7 @@ module.exports = Interpreter;
 
 },{}],13:[function(require,module,exports){
 (function (process){
-var CRuntime, Debugger, Interpreter, ast, mergeConfig, preprocessor;
+var CRuntime, Debugger, Interpreter, alias, ast, headerAlias, includes, mergeConfig, preprocessor, realName;
 
 CRuntime = require("./rt");
 
@@ -13493,16 +13513,31 @@ mergeConfig = function(a, b) {
   }
 };
 
+includes = {
+  iostream: require("./includes/iostream"),
+  cctype: require("./includes/cctype"),
+  cstring: require("./includes/cstring"),
+  cmath: require("./includes/cmath"),
+  cstdio: require("./includes/cstdio"),
+  cstdlib: require("./includes/cstdlib"),
+  iomanip: require("./includes/iomanip")
+};
+
+headerAlias = {
+  "ctype.h": "cctype",
+  "string.h": "cstring",
+  "math.h": "cmath",
+  "stdio.h": "cstdio",
+  "stdlib.h": "cstdlib"
+};
+
+for (alias in headerAlias) {
+  realName = headerAlias[alias];
+  includes[alias] = includes[realName];
+}
+
 module.exports = {
-  includes: {
-    iostream: require("./includes/iostream"),
-    cctype: require("./includes/cctype"),
-    cstring: require("./includes/cstring"),
-    cmath: require("./includes/cmath"),
-    cstdio: require("./includes/cstdio"),
-    cstdlib: require("./includes/cstdlib"),
-    iomanip: require("./includes/iomanip")
-  },
+  includes: includes,
   run: function(code, input, config) {
     var _config, defGen, inputbuffer, interpreter, mainGen, mydebugger, rt, self, step, tree;
     inputbuffer = input.toString();
@@ -18479,7 +18514,8 @@ CRuntime.prototype.getMember = function(l, r) {
 };
 
 CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stmts, interp) {
-  var f;
+  var f, rt;
+  rt = this;
   f = function*() {
     var _this, args, ret, rt;
     rt = arguments[0], _this = arguments[1], args = 3 <= arguments.length ? slice.call(arguments, 2) : [];
@@ -18494,12 +18530,12 @@ CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stm
       if (ret instanceof Array && ret[0] === "return") {
         ret = rt.cast(retType, ret[1]);
       } else {
-        this.raiseException("you must return a value");
+        rt.raiseException("you must return a value");
       }
     } else {
       if (typeof ret === "Array") {
         if (ret[0] === "return" && ret[1]) {
-          this.raiseException("you cannot return a value of a void function");
+          rt.raiseException("you cannot return a value of a void function");
         }
       }
       ret = void 0;
@@ -18575,7 +18611,7 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
           }).join(",");
           this.raiseException("no method " + name + " in " + lt + " accepts " + argsStr);
         } else if (compatibles.length > 1) {
-          this.raiseException("ambiguous method invoking, " + compatibles.length + "compatible methods");
+          this.raiseException("ambiguous method invoking, " + compatibles.length + " compatible methods");
         } else {
           return compatibles[0];
         }
@@ -18656,6 +18692,14 @@ CRuntime.prototype.getFunc = function(lt, name, args) {
       this.raiseException("type " + this.makeTypeString(lt) + " is not defined");
     }
   }
+};
+
+CRuntime.prototype.makeOperatorFuncName = function(name) {
+  return "o(" + name + ")";
+};
+
+CRuntime.prototype.regOperator = function(f, lt, name, args, retType) {
+  return this.regFunc(f, lt, this.makeOperatorFuncName(name), args, retType);
 };
 
 CRuntime.prototype.regFunc = function(f, lt, name, args, retType) {
@@ -18961,11 +19005,8 @@ CRuntime.prototype.cast = function(type, value) {
   } else if (this.isClassType(type)) {
     this.raiseException("not implemented");
   } else if (this.isClassType(value.t)) {
-    if (this.isTypeEqualTo(this.boolTypeLiteral, type)) {
-      return this.val(this.boolTypeLiteral, 1);
-    } else {
-      this.raiseException("not implemented");
-    }
+    value = this.getCompatibleFunc(value.t, this.makeOperatorFuncName(type.name), [])(this, value);
+    return value;
   } else {
     this.raiseException("cast failed from type " + this.makeTypeString(type) + " to " + this.makeTypeString(value.t));
   }
@@ -19045,8 +19086,16 @@ CRuntime.prototype.isBoolType = function(type) {
   }
 };
 
+CRuntime.prototype.isVoidType = function(type) {
+  if (typeof type === "string") {
+    return type === "void";
+  } else {
+    return type.type === "primitive" && this.isVoidType(type.name);
+  }
+};
+
 CRuntime.prototype.isPrimitiveType = function(type) {
-  return this.isNumericType(type) || this.isBoolType(type);
+  return this.isNumericType(type) || this.isBoolType(type) || this.isVoidType(type);
 };
 
 CRuntime.prototype.isArrayType = function(type) {
@@ -19269,12 +19318,11 @@ CRuntime.prototype.defaultValue = function(type) {
 };
 
 CRuntime.prototype.raiseException = function(message) {
-  var col, interp, ln, ref, ref1;
+  var col, interp, ln, posInfo;
   interp = this.interp;
   if (interp) {
-    ln = ((ref = interp.currentNode) != null ? ref.sLine : void 0) || "unknown";
-    col = ((ref1 = interp.currentNode) != null ? ref1.sColumn : void 0) || "unknown";
-    throw ln + ":" + col + " " + message;
+    posInfo = interp.currentNode != null ? (ln = interp.currentNode.sLine, col = interp.currentNode.sColumn, ln + ":" + col) : "<position unavailable>";
+    throw posInfo + " " + message;
   } else {
     throw message;
   }

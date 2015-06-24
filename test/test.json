@@ -77,7 +77,7 @@
             "after": ["A+B"],
             "cpp": ["function.cpp"],
             "cases": [{
-                "out": "10\n50\n75"
+                "out": "10\n50\n105\n15 0\n5 10"
             }]
         },
         "8bit": {
@@ -136,6 +136,14 @@
             "cases": [{
                 "in": "I am a student of Peking University.",
                 "out": "University"
+            }]
+        },
+        "string": {
+            "after": ["function"],
+            "cpp": ["string.cpp"],
+            "cases": [{
+                "in": "((ABCD(x)\n)(rttyy())sss)(",
+                "out": "((ABCD(x)\n$$\n)(rttyy())sss)(\n?            ?$"
             }]
         }
     }

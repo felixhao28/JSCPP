@@ -13,15 +13,27 @@ mergeConfig = (a, b) ->
             a[o] = b[o]
     return
 
+includes =
+    iostream: require("./includes/iostream")
+    cctype: require("./includes/cctype")
+    cstring: require("./includes/cstring")
+    cmath: require("./includes/cmath")
+    cstdio: require("./includes/cstdio")
+    cstdlib: require("./includes/cstdlib")
+    iomanip: require("./includes/iomanip")
+
+headerAlias =
+    "ctype.h": "cctype"
+    "string.h": "cstring"
+    "math.h": "cmath"
+    "stdio.h": "cstdio"
+    "stdlib.h": "cstdlib"
+
+for alias, realName of headerAlias
+    includes[alias] = includes[realName]
+
 module.exports =
-    includes:
-        iostream: require("./includes/iostream")
-        cctype: require("./includes/cctype")
-        cstring: require("./includes/cstring")
-        cmath: require("./includes/cmath")
-        cstdio: require("./includes/cstdio")
-        cstdlib: require("./includes/cstdlib")
-        iomanip: require("./includes/iomanip")
+    includes: includes
     run: (code, input, config) ->
         inputbuffer = input.toString()
         self = this

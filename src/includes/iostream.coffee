@@ -28,13 +28,14 @@ module.exports = load: (rt) ->
      
     rt.types[rt.getTypeSigniture(type)] =
         "#father": "object"
-        ">>":
+        "o(>>)":
             "#default": (rt, _cin, t) ->
                 if not t.left
                     rt.raiseException "only left value can be used as storage"
                 if not rt.isPrimitiveType(t.t)
                     rt.raiseException ">> operator in istream cannot accept " + rt.makeTypeString(t.t)
                 b = _cin.v.buf
+                _cin.v.eofbit = b.length is 0
                 switch t.t.name
                     when "char", "signed char", "unsigned char"
                         b = _skipSpace(b)
@@ -55,6 +56,7 @@ module.exports = load: (rt) ->
                     else
                         rt.raiseException ">> operator in istream cannot accept " + rt.makeTypeString(t.t)
                 len = r[0].length
+                _cin.v.failbit = len is 0
                 t.v = rt.val(t.t, v).v
                 _cin.v.buf = b.substring(len)
                 return _cin
@@ -64,9 +66,11 @@ module.exports = load: (rt) ->
             rt.raiseException "only a pointer to string can be used as storage"
         
         b = _cin.v.buf
+        _cin.v.eofbit = b.length is 0
 
         b = _skipSpace(b)
         r = _read(rt, /^\S*/, b, t.t)[0]
+        _cin.v.failbit = r.length is 0
         _cin.v.buf = b.substring(r.length)
 
         initialPos = t.v.position
@@ -78,7 +82,7 @@ module.exports = load: (rt) ->
             tar[i + initialPos] = rt.val(rt.charTypeLiteral, r.charCodeAt(i))
         tar[r.length + initialPos] = rt.val(rt.charTypeLiteral, 0)
         return _cin
-    rt.regFunc(_cinString, cin.t, ">>", [pchar], cin.t)
+    rt.regOperator(_cinString, cin.t, ">>", [pchar], cin.t)
 
     _getline = (rt, _cin, t, limit, delim) ->
         if not rt.isStringType t.t
@@ -90,12 +94,16 @@ module.exports = load: (rt) ->
             else
                 '\n'
         b = _cin.v.buf
+        _cin.v.eofbit = b.length is 0
 
         r = _read(rt, new RegExp("^[^#{delim}]*"), b, t.t)[0]
         if r.length + 1 > limit
             r = r.substring(0, limit - 1)
         if b.charAt(r.length) is delim.charAt(0)
             removeDelim = true
+            _cin.v.failbit = false
+        else
+            _cin.v.failbit = r.length is 0
         _cin.v.buf = b.substring(r.length + if removeDelim then 1 else 0)
 
         initialPos = t.v.position
@@ -120,6 +128,11 @@ module.exports = load: (rt) ->
 
     rt.regFunc(_get, cin.t, "get", [], cin.t)
 
+    _bool = (rt, _cin) ->
+        rt.val(rt.boolTypeLiteral, not _cin.v.failbit)
+
+    rt.regOperator(_bool, cin.t, "bool", [], rt.boolTypeLiteral)
+
     ########################## cout
     type = rt.newClass("ostream", [])
     cout = 
@@ -132,7 +145,7 @@ module.exports = load: (rt) ->
 
     rt.types[rt.getTypeSigniture(cout.t)] =
         "#father": "object"
-        "<<":
+        "o(<<)":
             "#default": (rt, _cout, t) ->
                 if _cout.manipulators?
                     t = _cout.manipulators.use(t)

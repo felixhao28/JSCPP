@@ -88,7 +88,7 @@ CRuntime::getMember = (l, r) ->
     return
 
 CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
-
+    rt = this
     f = (rt, _this, args...) ->
         # logger.warn("calling function: %j", name);
         rt.enterScope "function " + name
@@ -100,11 +100,11 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
             if ret instanceof Array and ret[0] is "return"
                 ret = rt.cast(retType, ret[1])
             else
-                @raiseException "you must return a value"
+                rt.raiseException "you must return a value"
         else
             if typeof ret is "Array"
                 if ret[0] is "return" and ret[1]
-                    @raiseException "you cannot return a value of a void function"
+                    rt.raiseException "you cannot return a value of a void function"
             ret = undefined
         rt.exitScope "function " + name
         # logger.warn("function: returing %j", ret);
@@ -166,7 +166,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
                     ).join(",")
                     @raiseException "no method " + name + " in " + lt + " accepts " + argsStr
                 else if compatibles.length > 1
-                    @raiseException "ambiguous method invoking, " + compatibles.length + "compatible methods"
+                    @raiseException "ambiguous method invoking, " + compatibles.length + " compatible methods"
                 else
                     return compatibles[0]
         else
@@ -229,6 +229,12 @@ CRuntime::getFunc = (lt, name, args) ->
         else
             @raiseException "type " + @makeTypeString(lt) + " is not defined"
     return
+
+CRuntime::makeOperatorFuncName = (name) ->
+    "o(#{name})"
+
+CRuntime::regOperator = (f, lt, name, args, retType) ->
+    @regFunc(f, lt, @makeOperatorFuncName(name), args, retType)
 
 CRuntime::regFunc = (f, lt, name, args, retType) ->
     ltsig = @getTypeSigniture(lt)
@@ -442,10 +448,8 @@ CRuntime::cast = (type, value) ->
     else if @isClassType(type)
         @raiseException "not implemented"
     else if @isClassType(value.t)
-        if @isTypeEqualTo(@boolTypeLiteral, type)
-            return @val(@boolTypeLiteral, 1)
-        else
-            @raiseException "not implemented"
+        value = @getCompatibleFunc(value.t, @makeOperatorFuncName(type.name), [])(this, value)
+        return value
     else
         @raiseException "cast failed from type " + @makeTypeString(type) + " to " + @makeTypeString(value.t)
     return
@@ -504,8 +508,14 @@ CRuntime::isBoolType = (type) ->
     else
         type.type is "primitive" and @isBoolType(type.name)
 
+CRuntime::isVoidType = (type) ->
+    if typeof type is "string"
+        type is "void"
+    else
+        type.type is "primitive" and @isVoidType(type.name)
+
 CRuntime::isPrimitiveType = (type) ->
-    @isNumericType(type) or @isBoolType(type)
+    @isNumericType(type) or @isBoolType(type) or @isVoidType(type)
 
 CRuntime::isArrayType = (type) ->
     @isPointerType(type) and type.ptrType is "array"
@@ -676,9 +686,14 @@ CRuntime::defaultValue = (type) ->
 CRuntime::raiseException = (message) ->
     interp = @interp
     if interp
-        ln = interp.currentNode?.sLine or "unknown"
-        col = interp.currentNode?.sColumn or "unknown"
-        throw ln + ":" + col + " " + message
+        posInfo =
+            if interp.currentNode?
+                ln = interp.currentNode.sLine
+                col = interp.currentNode.sColumn
+                ln + ":" + col
+            else
+                "<position unavailable>"
+        throw posInfo + " " + message
     else
         throw message
     return

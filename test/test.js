@@ -14,8 +14,9 @@ expect = chai.expect;
 testFolder = './test/';
 
 prepareOutput = function(str) {
+  var lines;
   if (str != null) {
-    return str.replace(/\r\n/g, "\n").replace(/\r/, "\n").trim();
+    return lines = str.replace(/\r\n/g, "\n").replace(/\r/, "\n").replace(/[ \t]+\n/, "\n").replace(/\s$/, "");
   } else {
     return null;
   }
