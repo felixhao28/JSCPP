@@ -13,10 +13,15 @@ if (process.argv.length > 2) {
   if (indexOf.call(configs, "-debug") >= 0) {
     config.debug = true;
   }
-  tests = JSON.parse(fs.readFileSync("test/test.json"));
-  cppFile = tests.tests[testName].cpp[0];
-  input = tests.tests[testName].cases[0]["in"] || "";
-  code = fs.readFileSync("./test/" + cppFile);
+  if (indexOf.call(configs, "-f") >= 0) {
+    code = fs.readFileSync(testName);
+    input = "";
+  } else {
+    tests = JSON.parse(fs.readFileSync("test/test.json"));
+    cppFile = tests.tests[testName].cpp[0];
+    input = tests.tests[testName].cases[0]["in"] || "";
+    code = fs.readFileSync("./test/" + cppFile);
+  }
   if (!config.debug) {
     exitcode = JSCPP.run(code, input, config);
     console.info("\nprogram exited with code " + exitcode);

@@ -10,12 +10,16 @@ if process.argv.length > 2
     if "-debug" in configs
         config.debug = true
 
-    tests = JSON.parse(fs.readFileSync("test/test.json"))
+    if "-f" in configs
+        code = fs.readFileSync(testName)
+        input = ""
+    else
+        tests = JSON.parse(fs.readFileSync("test/test.json"))
 
-    cppFile = tests.tests[testName].cpp[0]
-    input = tests.tests[testName].cases[0].in or ""
+        cppFile = tests.tests[testName].cpp[0]
+        input = tests.tests[testName].cases[0].in or ""
 
-    code = fs.readFileSync("./test/" + cppFile)
+        code = fs.readFileSync("./test/" + cppFile)
     if not config.debug
         exitcode = JSCPP.run(code, input, config)
         console.info("\nprogram exited with code #{exitcode}")
