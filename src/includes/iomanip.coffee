@@ -30,6 +30,15 @@ module.exports = load: (rt) ->
                     config.setw = x.v
     rt.regFunc(_setw, "global", "setw", [rt.intTypeLiteral], type)
 
+    _setfill = (rt, _this, x) ->
+        t: type
+        v:
+            members:
+                name: "setfill"
+                f: (config) ->
+                    config.setfill = String.fromCharCode(x.v)
+    rt.regFunc(_setfill, "global", "setfill", [rt.charTypeLiteral], type)
+
     _addManipulator = (rt, _cout, m) ->
         _cout.manipulators or=
             config: {}
@@ -50,9 +59,21 @@ module.exports = load: (rt) ->
                     else
                         fill = " "
                     if not (rt.isTypeEqualTo(o.t, rt.charTypeLiteral) and (o.v is 10 or o.v is 13))
-                        tarStr or= o.v.toString()
+                        tarStr or=
+                            if rt.isPrimitiveType(o.t)
+                                if o.t.name.indexOf("char") >= 0
+                                    String.fromCharCode(o.v)
+                                else if o.t.name is "bool"
+                                    if o.v then "1" else "0"
+                                else
+                                    o.v.toString()
+                            else if rt.isStringType o.t
+                                rt.getStringFromCharArray o
+                            else
+                                rt.raiseException "<< operator in ostream cannot accept " + rt.makeTypeString(o.t)
                         for i in [0...@config.setw - tarStr.length] by 1
                             tarStr = fill + tarStr
+                        delete @active.setw
                 if tarStr?
                     rt.makeCharArrayFromString(tarStr)
                 else

@@ -12275,7 +12275,7 @@ module.exports = {
 },{}],9:[function(require,module,exports){
 module.exports = {
   load: function(rt) {
-    var _addManipulator, _fixed, _setprecesion, _setw, oType, type;
+    var _addManipulator, _fixed, _setfill, _setprecesion, _setw, oType, type;
     type = rt.newClass("iomanipulator", []);
     oType = rt.simpleType("ostream", []);
     _setprecesion = function(rt, _this, x) {
@@ -12319,6 +12319,20 @@ module.exports = {
       };
     };
     rt.regFunc(_setw, "global", "setw", [rt.intTypeLiteral], type);
+    _setfill = function(rt, _this, x) {
+      return {
+        t: type,
+        v: {
+          members: {
+            name: "setfill",
+            f: function(config) {
+              return config.setfill = String.fromCharCode(x.v);
+            }
+          }
+        }
+      };
+    };
+    rt.regFunc(_setfill, "global", "setfill", [rt.charTypeLiteral], type);
     _addManipulator = function(rt, _cout, m) {
       _cout.manipulators || (_cout.manipulators = {
         config: {},
@@ -12340,10 +12354,11 @@ module.exports = {
               fill = " ";
             }
             if (!(rt.isTypeEqualTo(o.t, rt.charTypeLiteral) && (o.v === 10 || o.v === 13))) {
-              tarStr || (tarStr = o.v.toString());
+              tarStr || (tarStr = rt.isPrimitiveType(o.t) ? o.t.name.indexOf("char") >= 0 ? String.fromCharCode(o.v) : o.t.name === "bool" ? o.v ? "1" : "0" : o.v.toString() : rt.isStringType(o.t) ? rt.getStringFromCharArray(o) : rt.raiseException("<< operator in ostream cannot accept " + rt.makeTypeString(o.t)));
               for (i = j = 0, ref = this.config.setw - tarStr.length; j < ref; i = j += 1) {
                 tarStr = fill + tarStr;
               }
+              delete this.active.setw;
             }
           }
           if (tarStr != null) {
@@ -12446,7 +12461,7 @@ module.exports = {
             case "unsigned long long":
             case "unsigned long long int":
               b = _skipSpace(b);
-              r = _read(rt, /^[-+]?(?:([1-9][0-9]*)([eE]\+?[0-9]+)?)|0/, b, t.t);
+              r = _read(rt, /^[-+]?(?:([0-9]*)([eE]\+?[0-9]+)?)|0/, b, t.t);
               v = parseInt(r[0]);
               break;
             case "float":
