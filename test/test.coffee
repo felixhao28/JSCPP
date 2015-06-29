@@ -32,18 +32,16 @@ skippedTest = []
 
 doTest = (test, cb) ->
     success = true
-    cppFiles = test.cpp
     cases = test.cases
-    for cppFile in cppFiles
-        code = fs.readFileSync testFolder + cppFile
-        _describe "source #{cppFile}", ->
-            doSource code, cases, (result) ->
-                success = success and result
+    doCases cases, (result) ->
+        success = success and result
     cb success
 
-doSource = (code, cases, cb) ->
+doCases = (cases, cb) ->
     success = true
     for sample, i in cases
+        cppFile = sample.cpp
+        code = fs.readFileSync testFolder + cppFile
         input = sample.in or ""
         expected = prepareOutput(sample.out) or ""
         except = prepareOutput(sample.exception)

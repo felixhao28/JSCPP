@@ -1,4 +1,4 @@
-var JSCPP, _describe, _it, assert, chai, doSample, doSource, doTest, expect, failedTest, fs, passedTest, pendingTests, prepareOutput, ref, skippedTest, task, test, testFinished, testFolder, testName, tests, todolist, totalNum, tryAddTest,
+var JSCPP, _describe, _it, assert, chai, doCases, doSample, doTest, expect, failedTest, fs, passedTest, pendingTests, prepareOutput, ref, skippedTest, task, test, testFinished, testFolder, testName, tests, todolist, totalNum, tryAddTest,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 assert = require("assert");
@@ -47,27 +47,22 @@ failedTest = [];
 skippedTest = [];
 
 doTest = function(test, cb) {
-  var cases, code, cppFile, cppFiles, j, len, success;
+  var cases, success;
   success = true;
-  cppFiles = test.cpp;
   cases = test.cases;
-  for (j = 0, len = cppFiles.length; j < len; j++) {
-    cppFile = cppFiles[j];
-    code = fs.readFileSync(testFolder + cppFile);
-    _describe("source " + cppFile, function() {
-      return doSource(code, cases, function(result) {
-        return success = success && result;
-      });
-    });
-  }
+  doCases(cases, function(result) {
+    return success = success && result;
+  });
   return cb(success);
 };
 
-doSource = function(code, cases, cb) {
-  var except, expected, i, input, j, len, sample, success;
+doCases = function(cases, cb) {
+  var code, cppFile, except, expected, i, input, j, len, sample, success;
   success = true;
   for (i = j = 0, len = cases.length; j < len; i = ++j) {
     sample = cases[i];
+    cppFile = sample.cpp;
+    code = fs.readFileSync(testFolder + cppFile);
     input = sample["in"] || "";
     expected = prepareOutput(sample.out) || "";
     except = prepareOutput(sample.exception);

@@ -18,7 +18,7 @@ if (process.argv.length > 2) {
     input = "";
   } else {
     tests = JSON.parse(fs.readFileSync("test/test.json"));
-    cppFile = tests.tests[testName].cpp[0];
+    cppFile = tests.tests[testName].cases[0].cpp;
     input = tests.tests[testName].cases[0]["in"] || "";
     code = fs.readFileSync("./test/" + cppFile);
   }

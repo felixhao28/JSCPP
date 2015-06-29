@@ -16,7 +16,7 @@ if process.argv.length > 2
     else
         tests = JSON.parse(fs.readFileSync("test/test.json"))
 
-        cppFile = tests.tests[testName].cpp[0]
+        cppFile = tests.tests[testName].cases[0].cpp
         input = tests.tests[testName].cases[0].in or ""
 
         code = fs.readFileSync("./test/" + cppFile)

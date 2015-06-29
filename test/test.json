@@ -1,156 +1,168 @@
 {
     "tests": {
         "cincout": {
-            "cpp": ["cincout.cpp"],
             "cases": [{
+                "cpp": "cincout.cpp",
                 "in": "123\nhello\nworld",
                 "out": "123\n10\nhello\nworld"
             }]
         },
         "A+B": {
             "after": ["cincout"],
-            "cpp": ["A+B.cpp"],
             "cases": [{
+                "cpp": "A+B.cpp",
                 "in": "10 506",
                 "out": "516"
             }]
         },
         "array": {
             "after": ["loop"],
-            "cpp": ["array.cpp"],
             "cases": [{
+                "cpp": "array.cpp",
                 "in": "5 8 6 5 4 1",
                 "out": "1 4 5 6 8"
             }]
         },
         "bubblesort": {
             "after": ["array", "ifelse"],
-            "cpp": ["bubblesort.cpp"],
             "cases": [{
+                "cpp": "bubblesort.cpp",
                 "in": "10 1 3 5 7 9 8 6 4 2 0",
                 "out": "0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
             }]
         },
         "ifelse": {
             "after": ["cincout"],
-            "cpp": ["ifelse.cpp"],
             "cases": [{
+                "cpp": "ifelse.cpp",
                 "in": "2",
                 "out": "YES"
             }, {
+                "cpp": "ifelse.cpp",
                 "in": "3",
                 "out": "NO"
             }]
         },
         "loop": {
             "after": ["A+B"],
-            "cpp": ["loop.cpp"],
             "cases": [{
+                "cpp": "loop.cpp",
                 "in": "7 15",
                 "out": "55"
             }]
         },
         "maze": {
             "after": ["loop"],
-            "cpp": ["maze.cpp"],
             "cases": [{
+                "cpp": "maze.cpp",
                 "in": "5\n....#\n.#.@.\n.#@..\n#....\n.....\n4",
                 "out": "16"
             }]
         },
         "binop": {
             "after": ["A+B"],
-            "cpp": ["binop.cpp"],
             "cases": [{
+                "cpp": "binop.cpp",
                 "out": "110\n90\n1000\n10\n0\n10\n0\n110\n110\n102400\n0\n1\n0\n0\n0\n1\n1\n1\n0\n2\n1"
             }]
         },
         "biginteger": {
             "after": ["array"],
-            "cpp": ["biginteger.cpp"],
             "cases": [{
+                "cpp": "biginteger.cpp",
                 "in": "22222222222222222222\n33333333333333333333",
                 "out": "55555555555555555555"
             }]
         },
         "function": {
             "after": ["A+B"],
-            "cpp": ["function.cpp"],
             "cases": [{
+                "cpp": "function.cpp",
                 "out": "10\n50\n105\n15 0\n5 10"
             }]
         },
         "8bit": {
             "after": ["A+B"],
-            "cpp": ["8bit.cpp"],
             "cases": [{
+                "cpp": "8bit.cpp",
                 "exception": "6:3 overflow during post-increment 256\\(unsigned char\\)"
             }]
         },
         "unary": {
             "after": ["A+B"],
-            "cpp": ["unary.cpp"],
             "cases": [{
+                "cpp": "unary.cpp",
                 "out": "5\n-5\n-5\n5\n-6\n4\n1\n0"
             }]
         },
         "type_conversion": {
             "after": ["cincout"],
-            "cpp": ["type_conversion.cpp"],
             "cases": [{
+                "cpp": "type_conversion.cpp",
                 "out": "1000\n3\n3333"
             }]
         },
         "literal": {
             "after": ["cincout"],
-            "cpp": ["literal.cpp"],
             "cases": [{
+                "cpp": "literal.cpp",
                 "out": "2147483647\n-2147483648\n0.00001\n100000\n0"
             }]
         },
         "io": {
             "after": ["cincout"],
-            "cpp": ["io.cpp"],
             "cases": [{
+                "cpp": "io.cpp",
                 "out": "3.1416\n3.14159\n3.14159\n3.141590000\n    3.141590000"
             }]
         },
         "loop_control": {
             "after": ["loop"],
-            "cpp": ["loop_control.cpp"],
             "cases": [{
+                "cpp": "loop_control.cpp",
                 "out": "0\n2\n4\n========\n1\n3\n4\n6\n7\n9\n10\n========\n11\n10\n7\n4\n1"
             }]
         },
         "char_compare": {
             "after": ["binop"],
-            "cpp": ["char_compare.cpp"],
             "cases": [{
+                "cpp": "char_compare.cpp",
                 "in": "Hello\nhello",
                 "out": "="
             }]
         },
         "maxWord": {
             "after": ["literal"],
-            "cpp": ["maxWord.cpp"],
             "cases": [{
+                "cpp": "maxWord.cpp",
                 "in": "I am a student of Peking University.",
                 "out": "University"
             }]
         },
         "string": {
             "after": ["function"],
-            "cpp": ["string.cpp"],
             "cases": [{
+                "cpp": "string2.cpp",
+                "in": "84\nOne sweltering day, I was scooping ice cream into cones and told my four children they could \"buy\" a cone from me for a hug. Almost immediately, the kids lined up to make their purchases. The three youngest each gave me a quick hug, grabbed their cones and raced back outside. But when my teenage son at the end of the line finally got his turn to \"buy\" his ice cream, he gave me two hugs. \"Keep the changes,\" he said with a smile.",
+                "out": "One sweltering day, I was scooping ice cream into cones and told my four\nchildren they could \"buy\" a cone from me for a hug. Almost immediately, the kids\nlined up to make their purchases. The three youngest each gave me a quick hug,\ngrabbed their cones and raced back outside. But when my teenage son at the end\nof the line finally got his turn to \"buy\" his ice cream, he gave me two hugs.\n\"Keep the changes,\" he said with a smile."
+            }, {
+                "cpp": "string.cpp",
                 "in": "((ABCD(x)\n)(rttyy())sss)(",
                 "out": "((ABCD(x)\n$$\n)(rttyy())sss)(\n?            ?$"
             }]
         },
         "math": {
             "after": ["io"],
-            "cpp": ["math.cpp"],
             "cases": [{
+                "cpp": "math.cpp",
                 "out": "-0.5947\n-0.8039\n1.3518\n1.0973\n0.4735\n1.5627\n0.4845\n1.1058\n0.4720\n1.0000\n5.5090\n5.5090\n0.5493\n219695.9887\n4.8159\n2.0915\n11.1111\n124.0000\n123.0000\n123.4560\n123.4560"
+            }]
+        },
+        "stdlib": {
+            "after": ["cincout"],
+            "cases": [{
+                "cpp": "stdlib.cpp",
+                "out": "1.234\n1234\n1234\n1234\n2\n1\n1234\n2\n1"
             }]
         }
     }

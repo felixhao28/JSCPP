@@ -48,7 +48,7 @@ module.exports =
                 str = rt.getStringFromCharArray str
                 try
                     ret = eval str
-                    if ret isnt undefined
+                    if ret?
                         console.log ret
                     rt.val(rt.intTypeLiteral, 1)
                 catch e
@@ -88,7 +88,7 @@ module.exports =
             else
                 rt.raiseException "base must be an array"
 
-        cmpType = this.functionPointerType(rt.intTypeLiteral, [rt.voidPointerType, rt.voidPointerType])
+        cmpType = rt.functionPointerType(rt.intTypeLiteral, [rt.voidPointerType, rt.voidPointerType])
         rt.regFunc(_bsearch, "global", "bsearch", [rt.voidPointerType, rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType], rt.voidPointerType)
 
         _qsort = (rt, _this, base, num, size, cmp) ->
@@ -110,14 +110,22 @@ module.exports =
             else
                 rt.raiseException "base must be an array"
 
-        rt.regFunc(_qsort, "global", "qsort", [rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType])
+        rt.regFunc(_qsort, "global", "qsort", [rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType], rt.voidTypeLiteral)
 
         _abs = (rt, _this, n) -> rt.val(rt.intTypeLiteral, Math.abs(n.v))
 
         rt.regFunc(_abs, "global", "abs", [rt.intTypeLiteral], rt.intTypeLiteral)
 
         _div = (rt, _this, numer, denom) ->
-            rt.val(rt.intTypeLiteral, Math.floor(numer / denom))
+            if denom.v is 0
+                rt.raiseException "divided by zero"
+            quot = rt.val(rt.intTypeLiteral, Math.floor(numer.v / denom.v))
+            rem = rt.val(rt.intTypeLiteral, numer.v % denom.v)
+            t: div_t_t
+            v:
+                members:
+                    quot: quot
+                    rem: rem
 
         div_t_t = rt.newClass("div_t", [
                 {
@@ -136,7 +144,15 @@ module.exports =
         rt.regFunc(_labs, "global", "labs", [rt.longTypeLiteral], rt.longTypeLiteral)
 
         _ldiv = (rt, _this, numer, denom) ->
-            rt.val(rt.longTypeLiteral, Math.floor(numer / denom))
+            if denom.v is 0
+                rt.raiseException "divided by zero"
+            quot = rt.val(rt.longTypeLiteral, Math.floor(numer.v / denom.v))
+            rem = rt.val(rt.longTypeLiteral, numer.v % denom.v)
+            t: ldiv_t_t
+            v:
+                members:
+                    quot: quot
+                    rem: rem
 
         ldiv_t_t = rt.newClass("ldiv_t", [
                 {

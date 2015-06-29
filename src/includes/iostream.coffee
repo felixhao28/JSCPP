@@ -57,8 +57,9 @@ module.exports = load: (rt) ->
                         rt.raiseException ">> operator in istream cannot accept " + rt.makeTypeString(t.t)
                 len = r[0].length
                 _cin.v.failbit = len is 0
-                t.v = rt.val(t.t, v).v
-                _cin.v.buf = b.substring(len)
+                if not _cin.v.failbit
+                    t.v = rt.val(t.t, v).v
+                    _cin.v.buf = b.substring(len)
                 return _cin
 
     _cinString = (rt, _cin, t) ->

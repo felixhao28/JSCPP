@@ -533,7 +533,7 @@ ConditionalExpression
     = a:LogicalORExpression b:(QUERY Expression COLON LogicalORExpression)* {
       var ret = a;
       for (var i=0;i<b.length;i++) {
-        ret = addPositionInfo({type:'ConditionalExpression', cond:ret, t:b[1], f:b[3]});
+        ret = addPositionInfo({type:'ConditionalExpression', cond:ret, t:b[i][1], f:b[i][3]});
       }
       return ret;
     }

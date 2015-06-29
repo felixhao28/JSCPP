@@ -210,7 +210,7 @@ module.exports = (function() {
         peg$c66 = function(a, b) {
               var ret = a;
               for (var i=0;i<b.length;i++) {
-                ret = addPositionInfo({type:'ConditionalExpression', cond:ret, t:b[1], f:b[3]});
+                ret = addPositionInfo({type:'ConditionalExpression', cond:ret, t:b[i][1], f:b[i][3]});
               }
               return ret;
             },
@@ -11911,7 +11911,7 @@ module.exports = {
         str = rt.getStringFromCharArray(str);
         try {
           ret = eval(str);
-          if (ret !== void 0) {
+          if (ret != null) {
             console.log(ret);
           }
           return rt.val(rt.intTypeLiteral, 1);
@@ -11962,7 +11962,7 @@ module.exports = {
         return rt.raiseException("base must be an array");
       }
     };
-    cmpType = this.functionPointerType(rt.intTypeLiteral, [rt.voidPointerType, rt.voidPointerType]);
+    cmpType = rt.functionPointerType(rt.intTypeLiteral, [rt.voidPointerType, rt.voidPointerType]);
     rt.regFunc(_bsearch, "global", "bsearch", [rt.voidPointerType, rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType], rt.voidPointerType);
     _qsort = function(rt, _this, base, num, size, cmp) {
       var L, ele, i, j, len, wrapper;
@@ -11986,13 +11986,27 @@ module.exports = {
         return rt.raiseException("base must be an array");
       }
     };
-    rt.regFunc(_qsort, "global", "qsort", [rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType]);
+    rt.regFunc(_qsort, "global", "qsort", [rt.voidPointerType, rt.intTypeLiteral, rt.intTypeLiteral, cmpType], rt.voidTypeLiteral);
     _abs = function(rt, _this, n) {
       return rt.val(rt.intTypeLiteral, Math.abs(n.v));
     };
     rt.regFunc(_abs, "global", "abs", [rt.intTypeLiteral], rt.intTypeLiteral);
     _div = function(rt, _this, numer, denom) {
-      return rt.val(rt.intTypeLiteral, Math.floor(numer / denom));
+      var quot, rem;
+      if (denom.v === 0) {
+        rt.raiseException("divided by zero");
+      }
+      quot = rt.val(rt.intTypeLiteral, Math.floor(numer.v / denom.v));
+      rem = rt.val(rt.intTypeLiteral, numer.v % denom.v);
+      return {
+        t: div_t_t,
+        v: {
+          members: {
+            quot: quot,
+            rem: rem
+          }
+        }
+      };
     };
     div_t_t = rt.newClass("div_t", [
       {
@@ -12009,7 +12023,21 @@ module.exports = {
     };
     rt.regFunc(_labs, "global", "labs", [rt.longTypeLiteral], rt.longTypeLiteral);
     _ldiv = function(rt, _this, numer, denom) {
-      return rt.val(rt.longTypeLiteral, Math.floor(numer / denom));
+      var quot, rem;
+      if (denom.v === 0) {
+        rt.raiseException("divided by zero");
+      }
+      quot = rt.val(rt.longTypeLiteral, Math.floor(numer.v / denom.v));
+      rem = rt.val(rt.longTypeLiteral, numer.v % denom.v);
+      return {
+        t: ldiv_t_t,
+        v: {
+          members: {
+            quot: quot,
+            rem: rem
+          }
+        }
+      };
     };
     ldiv_t_t = rt.newClass("ldiv_t", [
       {
@@ -12480,8 +12508,10 @@ module.exports = {
           }
           len = r[0].length;
           _cin.v.failbit = len === 0;
-          t.v = rt.val(t.t, v).v;
-          _cin.v.buf = b.substring(len);
+          if (!_cin.v.failbit) {
+            t.v = rt.val(t.t, v).v;
+            _cin.v.buf = b.substring(len);
+          }
           return _cin;
         }
       }
@@ -19271,9 +19301,11 @@ CRuntime.prototype.getTypeSigniture = function(type) {
     } else if (type.ptrType === "array") {
       ret += "!" + this.getTypeSigniture(type.eleType);
     } else if (type.ptrType === "function") {
-      ret += "#" + this.getTypeSigniture(type.retType) + "!" + type.signature.map(function(e) {
-        return this.getTypeSigniture(e);
-      }).join(",");
+      ret += "#" + this.getTypeSigniture(type.retType) + "!" + type.signature.map((function(_this) {
+        return function(e) {
+          return _this.getTypeSigniture(e);
+        };
+      })(this)).join(",");
     }
     ret += "}";
   }
