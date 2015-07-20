@@ -536,6 +536,9 @@ Interpreter = (rt) ->
         HexConstant: (interp, s, param) ->
             rt = interp.rt
             rt.val rt.unsignedintTypeLiteral, parseInt(s.value, 16)
+        BinaryConstant: (interp, s, param) ->
+            rt = interp.rt
+            rt.val rt.unsignedintTypeLiteral, parseInt(s.value, 2)
         DecimalFloatConstant: (interp, s, param) ->
             rt = interp.rt
             rt.val rt.doubleTypeLiteral, parseFloat(s.value)

@@ -167,6 +167,13 @@
                 "cpp": "stdlib.cpp",
                 "out": "1.234\n1234\n1234\n1234\n2\n1\n1234\n2\n1"
             }]
+        },
+        "binary": {
+            "after": ["cincout"],
+            "cases": [{
+                "cpp": "binary.cpp",
+                "out": "85"
+            }]
         }
     }
 }

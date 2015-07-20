@@ -750,7 +750,8 @@ BooleanConstant
     }
 
 IntegerConstant
-    = a:( DecimalConstant
+    = a:( BinaryConstant
+      / DecimalConstant
       / HexConstant
       / OctalConstant
       )
@@ -771,6 +772,12 @@ HexConstant     = HexPrefix a:HexDigit+ {return addPositionInfo({type:'HexConsta
 HexPrefix       = "0x" / "0X" ;
 
 HexDigit        = [a-f] / [A-F] / [0-9] ;
+
+BinaryPrefix    = "0b" ;
+
+BinaryDigit     = [0-1] ;
+
+BinaryConstant  = BinaryPrefix a:BinaryDigit+ {return addPositionInfo({type:'BinaryConstant', value:a.join("")});};
 
 IntegerSuffix
     = [uU] Lsuffix?
