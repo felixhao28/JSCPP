@@ -1,4 +1,5 @@
 module.exports = ->
+    defaults = this
     @config =
         limits:
             "char":
@@ -103,13 +104,13 @@ module.exports = ->
     ]
     defaultOpHandler = 
         "o(*)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support * on " + rt.makeTypeString(r.t)
             ret = l.v * r.v
             rett = rt.promoteNumeric(l.t, r.t)
             rt.val rett, ret
         "o(/)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support / on " + rt.makeTypeString(r.t)
             ret = l.v / r.v
             if rt.isIntegerType(l.t) and rt.isIntegerType(r.t)
@@ -117,7 +118,7 @@ module.exports = ->
             rett = rt.promoteNumeric(l.t, r.t)
             rt.val rett, ret
         "o(%)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t) or !rt.isIntegerType(l.t) or !rt.isIntegerType(r.t)
+            if not rt.isNumericType(r.t) or not rt.isIntegerType(l.t) or not rt.isIntegerType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support % on " + rt.makeTypeString(r.t)
             ret = l.v % r.v
             rett = rt.promoteNumeric(l.t, r.t)
@@ -127,7 +128,7 @@ module.exports = ->
                 # unary
                 l
             else
-                if !rt.isNumericType(r.t)
+                if not rt.isNumericType(r.t)
                     rt.raiseException rt.makeTypeString(l.t) + " does not support + on " + rt.makeTypeString(r.t)
                 if rt.isArrayType(r.t)
                     i = rt.cast(rt.intTypeLiteral, l).v
@@ -143,57 +144,57 @@ module.exports = ->
                 rt.val rett, -l.v
             else
                 # binary
-                if !rt.isNumericType(r.t)
+                if not rt.isNumericType(r.t)
                     rt.raiseException rt.makeTypeString(l.t) + " does not support - on " + rt.makeTypeString(r.t)
                 ret = l.v - r.v
                 rett = rt.promoteNumeric(l.t, r.t)
                 rt.val rett, ret
         "o(<<)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t) or !rt.isIntegerType(l.t) or !rt.isIntegerType(r.t)
+            if not rt.isNumericType(r.t) or not rt.isIntegerType(l.t) or not rt.isIntegerType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support << on " + rt.makeTypeString(r.t)
             ret = l.v << r.v
             rett = l.t
             rt.val rett, ret
         "o(>>)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t) or !rt.isIntegerType(l.t) or !rt.isIntegerType(r.t)
+            if not rt.isNumericType(r.t) or not rt.isIntegerType(l.t) or not rt.isIntegerType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support >> on " + rt.makeTypeString(r.t)
             ret = l.v >> r.v
             rett = l.t
             rt.val rett, ret
         "o(<)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support < on " + rt.makeTypeString(r.t)
             ret = l.v < r.v
             rett = rt.boolTypeLiteral
             rt.val rett, ret
         "o(<=)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support <= on " + rt.makeTypeString(r.t)
             ret = l.v <= r.v
             rett = rt.boolTypeLiteral
             rt.val rett, ret
         "o(>)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support > on " + rt.makeTypeString(r.t)
             ret = l.v > r.v
             rett = rt.boolTypeLiteral
             rt.val rett, ret
         "o(>=)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support >= on " + rt.makeTypeString(r.t)
             ret = l.v >= r.v
             rett = rt.boolTypeLiteral
             rt.val rett, ret
         "o(==)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support == on " + rt.makeTypeString(r.t)
             ret = l.v == r.v
             rett = rt.boolTypeLiteral
             rt.val rett, ret
         "o(!=)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t)
+            if not rt.isNumericType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support != on " + rt.makeTypeString(r.t)
-            ret = l.v != r.v
+            ret = l.v isnt r.v
             rett = rt.boolTypeLiteral
             rt.val rett, ret
         "o(&)": "#default": (rt, l, r) ->
@@ -204,19 +205,19 @@ module.exports = ->
                     t = rt.normalPointerType(l.t)
                     rt.val t, rt.makeNormalPointerValue(l)
             else
-                if !rt.isIntegerType(l.t) or !rt.isNumericType(r.t) or !rt.isIntegerType(r.t)
+                if not rt.isIntegerType(l.t) or not rt.isNumericType(r.t) or not rt.isIntegerType(r.t)
                     rt.raiseException rt.makeTypeString(l.t) + " does not support & on " + rt.makeTypeString(r.t)
                 ret = l.v & r.v
                 rett = rt.promoteNumeric(l.t, r.t)
                 rt.val rett, ret
         "o(^)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t) or !rt.isIntegerType(l.t) or !rt.isIntegerType(r.t)
+            if not rt.isNumericType(r.t) or not rt.isIntegerType(l.t) or not rt.isIntegerType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support ^ on " + rt.makeTypeString(r.t)
             ret = l.v ^ r.v
             rett = rt.promoteNumeric(l.t, r.t)
             rt.val rett, ret
         "o(|)": "#default": (rt, l, r) ->
-            if !rt.isNumericType(r.t) or !rt.isIntegerType(l.t) or !rt.isIntegerType(r.t)
+            if not rt.isNumericType(r.t) or not rt.isIntegerType(l.t) or not rt.isIntegerType(r.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support | on " + rt.makeTypeString(r.t)
             ret = l.v | r.v
             rett = rt.promoteNumeric(l.t, r.t)
@@ -261,7 +262,7 @@ module.exports = ->
             r = defaultOpHandler["o(|)"]["#default"](rt, l, r)
             defaultOpHandler["o(=)"]["#default"] rt, l, r
         "o(++)": "#default": (rt, l, dummy) ->
-            if !rt.isNumericType(l.t)
+            if not rt.isNumericType(l.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support increment"
             if !l.left
                 rt.raiseException rt.makeValString(l) + " is not a left value"
@@ -278,7 +279,7 @@ module.exports = ->
                 rt.raiseException "overflow during pre-increment #{rt.makeValString(l)}"
             return
         "o(--)": "#default": (rt, l, dummy) ->
-            if !rt.isNumericType(l.t)
+            if not rt.isNumericType(l.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support decrement"
             if !l.left
                 rt.raiseException rt.makeValString(l) + " is not a left value"
@@ -296,13 +297,13 @@ module.exports = ->
                 rt.raiseException "overflow during pre-decrement"
             return
         "o(~)": "#default": (rt, l, dummy) ->
-            if !rt.isIntegerType(l.t)
+            if not rt.isIntegerType(l.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support ~ on itself"
             ret = ~l.v
-            rett = if ret < 0 then rt.getSignedType(l.t) else l.t
+            rett = rt.promoteNumeric l.t, rt.intTypeLiteral
             rt.val rett, ret
         "o(!)": "#default": (rt, l, dummy) ->
-            if !rt.isIntegerType(l.t)
+            if not rt.isIntegerType(l.t)
                 rt.raiseException rt.makeTypeString(l.t) + " does not support ! on itself"
             ret = if l.v then 0 else 1
             rett = l.t
@@ -347,7 +348,7 @@ module.exports = ->
                     return l.v.target == r.v.target
             false
         "o(!=)": "#default": (rt, l, r) ->
-            !rt.types["pointer"]["=="]["#default"](rt, l, r)
+            not rt.types["pointer"]["=="]["#default"](rt, l, r)
         "o(,)": "#default": (rt, l, r) ->
             r
         "o(=)": "#default": (rt, l, r) ->
@@ -369,7 +370,7 @@ module.exports = ->
             return
     @types["pointer_function"] =
         "o(())": "#default": (rt, l, bindThis, args) ->
-            if l.t.type != "pointer" or l.t.ptrType != "function"
+            if l.t.type isnt "pointer" or l.t.ptrType isnt "function"
                 rt.raiseException rt.makeTypeString(l.t.type) + " is not function"
             rt.getCompatibleFunc(l.v.defineType, l.v.name, args) rt, bindThis, args...
     @types["pointer_normal"] =

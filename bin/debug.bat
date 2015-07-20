@@ -1,1 +1,1 @@
-node-debug --nodejs --harmony demo/debug %1 %2
+node-debug --nodejs --harmony demo/debug.js %1 %2

@@ -84,6 +84,9 @@
         "8bit": {
             "after": ["A+B"],
             "cases": [{
+                "cpp": "8bit2.cpp",
+                "out": "127\n"
+            }, {
                 "cpp": "8bit.cpp",
                 "exception": "6:3 overflow during post-increment 256\\(unsigned char\\)"
             }]

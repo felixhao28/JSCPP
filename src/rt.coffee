@@ -96,7 +96,7 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
             rt.defVar v, argTypes[i], args[i]
             return
         ret = yield from interp.run(stmts, scope: "function")
-        if !rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
+        if not rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
             if ret instanceof Array and ret[0] is "return"
                 ret = rt.cast(retType, ret[1])
             else
@@ -234,9 +234,9 @@ CRuntime::regFunc = (f, lt, name, args, retType) ->
     ltsig = @getTypeSigniture(lt)
     if ltsig of @types
         t = @types[ltsig]
-        if !(name of t)
+        if name not of t
             t[name] = {}
-        if !("reg" of t[name])
+        if "reg" not of t[name]
             t[name]["reg"] = []
         sig = @makeParametersSigniture(args)
         if sig of t[name]
@@ -251,7 +251,7 @@ CRuntime::regFunc = (f, lt, name, args, retType) ->
     return
 
 CRuntime::promoteNumeric = (l, r) ->
-    if !@isNumericType(l) or !@isNumericType(r)
+    if not @isNumericType(l) or not @isNumericType(r)
         @raiseException "you cannot promote (to) a non numeric type"
     if @isTypeEqualTo(l, r)
         if @isTypeEqualTo(l, @boolTypeLiteral)
@@ -280,11 +280,11 @@ CRuntime::promoteNumeric = (l, r) ->
                 else
                     rett = slt
         return rett
-    else if !@isIntegerType(l) and @isIntegerType(r)
+    else if not @isIntegerType(l) and @isIntegerType(r)
         return l
-    else if @isIntegerType(l) and !@isIntegerType(r)
+    else if @isIntegerType(l) and not @isIntegerType(r)
         return r
-    else if !@isIntegerType(l) and !@isIntegerType(r)
+    else if not @isIntegerType(l) and not @isIntegerType(r)
         return @primitiveType("double")
     return
 
@@ -366,7 +366,7 @@ CRuntime::castable = (type1, type2) ->
     else if @isPointerType(type1) and @isPointerType(type2)
         if @isFunctionType(type1)
             return @isPointerType(type2)
-        return !@isFunctionType(type2)
+        return not @isFunctionType(type2)
     else if @isClassType(type1) or @isClassType(type2)
         @raiseException "not implemented"
     return false
@@ -379,7 +379,7 @@ CRuntime::cast = (type, value) ->
         if type.name is "bool"
             return @val(type, if value.v then 1 else 0)
         else if type.name in ["float", "double"]
-            if !@isNumericType(value.t)
+            if not @isNumericType(value.t)
                 @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
             if @inrange(type, value.v)
                 return @val(type, value.v)
@@ -387,11 +387,17 @@ CRuntime::cast = (type, value) ->
                 @raiseException "overflow when casting " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
         else
             if type.name.slice(0, 8) is "unsigned"
-                if !@isNumericType(value.t)
+                if not @isNumericType(value.t)
                     @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
                 else if value.v < 0
-                    @raiseException "cannot cast negative value to " + @makeTypeString(type)
-            if !@isNumericType(value.t)
+                    {bytes} = @config.limits[type.name]
+                    newValue = value.v & ((1<<8*bytes)-1) # truncates
+                    if not @inrange(type, newValue)
+                        @raiseException "cannot cast negative value #{newValue} to " + @makeTypeString(type)
+                    else
+                        # unsafe! bitwise truncation is platform dependent
+                        return @val(type, newValue)
+            if not @isNumericType(value.t)
                 @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
             if value.t.name is "float" or value.t.name is "double"
                 v = if value.v > 0 then Math.floor(value.v) else Math.ceil(value.v)
@@ -461,7 +467,7 @@ CRuntime::exitScope = (scopename) ->
     return
 
 CRuntime::val = (type, v, left) ->
-    if @isNumericType(type) and !@inrange(type, v)
+    if @isNumericType(type) and not @inrange(type, v)
         @raiseException "overflow of #{@makeValueString(v)}(#{@makeTypeString(type)})"
     if left is undefined
         left = false
