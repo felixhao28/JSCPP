@@ -47,11 +47,12 @@
     "mocha": "^2.2.5",
     "mocha-traceur": "^2.1.0",
     "pegjs": "^0.8.0",
-    "printf": "^0.2.3"
+    "traceur": "0.0.91",
+    "traceur-runner": "^2.0.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/felixhao28/JSCPP.git"
   },
-  "licenses": "MIT"
+  "license": "MIT"
 }
