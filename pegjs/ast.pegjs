@@ -862,9 +862,19 @@ HexEscape    = a:"\\x" b:HexDigit+ {return eval('"'+a+b.join('')+'"');};
 //  A.1.6  String Literals
 //-------------------------------------------------------------------------
 
-StringLiteral = "L"? a:(["] a:StringChar* ["] Spacing {return a.join('');})+ {
+StringLiteral = a:("L" / "u8" / "u" / "U")? b:(RawStringLiteral / EscapedStringLiteral) {
+  return addPositionInfo({type: 'StringLiteral', prefix:a, value:b});
+};
+
+RawStringLiteral = "R" a:(["] a:RawStringChar* ["] Spacing {return a.join('');})+ {
   return a.join('');
 };
+
+EscapedStringLiteral = a:(["] a:StringChar* ["] Spacing {return a.join('');})+ {
+  return a.join('');
+};
+
+RawStringChar = ![\"\n] a:_ {return a;};
 
 StringChar = Escape / ![\"\n\\] a:_ {return a;};
 

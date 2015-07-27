@@ -1,7 +1,9 @@
-var JSCPP, code, config, configs, cppFile, exitcode, fs, i, input, j, l, lastOutputPos, len, mydebugger, onPrompt, readline, rl, srcLines, testName, tests,
+var JSCPP, cases, code, config, configs, cppFile, exitcode, fs, i, input, j, l, lastOutputPos, len, mydebugger, onPrompt, readline, rl, srcLines, testName, tests, yaml,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 JSCPP = require("../lib/main");
+
+yaml = require("js-yaml");
 
 fs = require("fs");
 
@@ -17,9 +19,13 @@ if (process.argv.length > 2) {
     code = fs.readFileSync(testName);
     input = "";
   } else {
-    tests = JSON.parse(fs.readFileSync("test/test.json"));
-    cppFile = tests.tests[testName].cases[0].cpp;
-    input = tests.tests[testName].cases[0]["in"] || "";
+    tests = yaml.safeLoad(fs.readFileSync("test/test.yaml"));
+    cases = tests.tests[testName].cases;
+    if (Array.isArray(cases)) {
+      cases = cases[0];
+    }
+    cppFile = cases.cpp;
+    input = cases["in"] || "";
     code = fs.readFileSync("./test/" + cppFile);
   }
   if (!config.debug) {

@@ -468,7 +468,7 @@ CRuntime::exitScope = (scopename) ->
 
 CRuntime::val = (type, v, left) ->
     if @isNumericType(type) and not @inrange(type, v)
-        @raiseException "overflow of #{@makeValueString(v)}(#{@makeTypeString(type)})"
+        @raiseException "overflow of #{@makeValString({t:type, v:v})}"
     if left is undefined
         left = false
     {
@@ -592,8 +592,11 @@ CRuntime::primitiveType = (type) ->
     type: "primitive"
     name: type
 
+CRuntime::isCharType = (type) ->
+    @config.charTypes.indexOf(type.eleType.name) isnt -1
+
 CRuntime::isStringType = (type) ->
-    @isArrayType(type) and @isTypeEqualTo(type.eleType, @charTypeLiteral)
+    @isArrayType(type) and @isCharType(type)
 
 CRuntime::getStringFromCharArray = (element) ->
     if @isStringType(element.t)
@@ -601,7 +604,7 @@ CRuntime::getStringFromCharArray = (element) ->
         result = ""
         i = 0
         while i < target.length
-            charVal = this.cast(this.charTypeLiteral, target[i])
+            charVal = target[i]
             if charVal.v is 0
                 break
             result += String.fromCharCode(charVal.v)
@@ -611,13 +614,15 @@ CRuntime::getStringFromCharArray = (element) ->
         @raiseException "target is not a string"
     return
 
-CRuntime::makeCharArrayFromString = (str) ->
+CRuntime::makeCharArrayFromString = (str, typename) ->
     self = this
-    type = @arrayPointerType(@charTypeLiteral, str.length + 1)
-    trailingZero = @val(@charTypeLiteral, 0)
+    typename or= "char"
+    charType = @primitiveType(typename)
+    type = @arrayPointerType(charType, str.length + 1)
+    trailingZero = @val(charType, 0)
     @val type,
         target: str.split("").map((c) ->
-            self.val self.charTypeLiteral, c.charCodeAt(0)
+            self.val charType, c.charCodeAt(0)
         ).concat([ trailingZero ])
         position: 0
 

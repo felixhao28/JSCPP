@@ -2,6 +2,7 @@ assert = require "assert"
 fs = require "fs"
 JSCPP = require "../lib/main"
 chai = require "chai"
+yaml = require "js-yaml"
 
 expect = chai.expect
 
@@ -33,6 +34,8 @@ skippedTest = []
 doTest = (test, cb) ->
     success = true
     cases = test.cases
+    if not Array.isArray cases
+        cases = [cases]
     doCases cases, (result) ->
         success = success and result
     cb success
@@ -77,7 +80,7 @@ doSample = (code, input, expected, except, cb) ->
             expect(output).to.equal(expected)
             cb output is expected
 
-tests = JSON.parse fs.readFileSync testFolder + "test.json"
+tests = yaml.safeLoad fs.readFileSync testFolder + "test.yaml"
 
 todolist = []
 

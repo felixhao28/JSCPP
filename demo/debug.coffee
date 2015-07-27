@@ -1,5 +1,6 @@
 #JSCPP = require "JSCPP"
 JSCPP = require "../lib/main"
+yaml = require "js-yaml"
 fs = require "fs"
 
 config = {}
@@ -14,10 +15,12 @@ if process.argv.length > 2
         code = fs.readFileSync(testName)
         input = ""
     else
-        tests = JSON.parse(fs.readFileSync("test/test.json"))
-
-        cppFile = tests.tests[testName].cases[0].cpp
-        input = tests.tests[testName].cases[0].in or ""
+        tests = yaml.safeLoad fs.readFileSync "test/test.yaml"
+        cases = tests.tests[testName].cases
+        if Array.isArray cases
+            cases = cases[0]
+        cppFile = cases.cpp
+        input = cases.in or ""
 
         code = fs.readFileSync("./test/" + cppFile)
     if not config.debug

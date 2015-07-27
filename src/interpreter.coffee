@@ -514,9 +514,30 @@ Interpreter = (rt) ->
             rt = interp.rt
             yield from interp.visit interp, s.Expression, param
         StringLiteralExpression: (interp, s, param) ->
+            yield from interp.visit(interp, s.value, param)
+        StringLiteral: (interp, s, param) ->
             rt = interp.rt
-            str = s.value
-            rt.makeCharArrayFromString str
+            switch s.prefix
+                when null
+                    maxCode = -1
+                    for i in s.value
+                        code = i.charCodeAt(0)
+                        maxCode = code if maxCode < code
+                    limits = rt.config.limits
+                    typeName =
+                        if maxCode < limits["char"].max
+                            "char"
+                        else
+                            "wchar_t"
+                    rt.makeCharArrayFromString s.value, typeName
+                when "L"
+                    rt.makeCharArrayFromString s.value, "wchar_t"
+                when "u8"
+                    rt.makeCharArrayFromString s.value, "char"
+                when "u"
+                    rt.makeCharArrayFromString s.value, "char16_t"
+                when "U"
+                    rt.makeCharArrayFromString s.value, "char32_t"
         BooleanConstant: (interp, s, param) ->
             rt = interp.rt
             rt.val rt.boolTypeLiteral, if s.value is "true" then 1 else 0

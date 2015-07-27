@@ -265,7 +265,11 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Many small fixes
 * v2.0.2 (-)
 	- Fix
-		+ fix an issue when truncating negative number to positive
+		+ Truncating negative number to positive
+		+ Error message when overflow
+		+ Wide char support
+	- Dev
+		+ test.json -> test.yaml
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

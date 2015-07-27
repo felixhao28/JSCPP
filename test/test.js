@@ -1,4 +1,4 @@
-var JSCPP, _describe, _it, assert, chai, doCases, doSample, doTest, expect, failedTest, fs, passedTest, pendingTests, prepareOutput, ref, skippedTest, task, test, testFinished, testFolder, testName, tests, todolist, totalNum, tryAddTest,
+var JSCPP, _describe, _it, assert, chai, doCases, doSample, doTest, expect, failedTest, fs, passedTest, pendingTests, prepareOutput, ref, skippedTest, task, test, testFinished, testFolder, testName, tests, todolist, totalNum, tryAddTest, yaml,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 assert = require("assert");
@@ -8,6 +8,8 @@ fs = require("fs");
 JSCPP = require("../lib/main");
 
 chai = require("chai");
+
+yaml = require("js-yaml");
 
 expect = chai.expect;
 
@@ -50,6 +52,9 @@ doTest = function(test, cb) {
   var cases, success;
   success = true;
   cases = test.cases;
+  if (!Array.isArray(cases)) {
+    cases = [cases];
+  }
   doCases(cases, function(result) {
     return success = success && result;
   });
@@ -113,7 +118,7 @@ doSample = function(code, input, expected, except, cb) {
   }
 };
 
-tests = JSON.parse(fs.readFileSync(testFolder + "test.json"));
+tests = yaml.safeLoad(fs.readFileSync(testFolder + "test.yaml"));
 
 todolist = [];
 

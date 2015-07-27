@@ -1,6 +1,9 @@
 module.exports = ->
     defaults = this
-    @config =
+    @config =    
+        charTypes: ["char", "signed char", "unsigned char", "wchar_t",
+                    "unsigned wchar_t", "char16_t", "unsigned char16_t",
+                    "char32_t", "unsigned char32_t"]
         limits:
             "char":
                 max: 0x7f
@@ -14,6 +17,30 @@ module.exports = ->
                 max: 0xff
                 min: 0x00
                 bytes: 1
+            "wchar_t":
+                max: 0x7fffffff
+                min: -0x80000000
+                bytes: 4
+            "unsigned wchar_t":
+                max: 0xffffffff
+                min: 0x00000000
+                bytes: 4
+            "char16_t":
+                max: 0x7fff
+                min: -0x8000
+                bytes: 4
+            "unsigned char16_t":
+                max: 0xffff
+                min: 0x0000
+                bytes: 4
+            "char32_t":
+                max: 0x7fffffff
+                min: -0x80000000
+                bytes: 4
+            "unsigned char32_t":
+                max: 0xffffffff
+                min: 0x00000000
+                bytes: 4
             "short":
                 max: 0x7fff
                 min: -0x8000
