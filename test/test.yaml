@@ -69,9 +69,13 @@
     function: 
       after: 
         - "A+B"
-      cases: 
-        cpp: "function.cpp"
-        out: "10\n50\n105\n15 0\n5 10"
+      cases:
+        -
+          cpp: "function.cpp"
+          out: "10\n50\n105\n15 0\n5 10"
+        -
+          cpp: "function_prototypes.cpp"
+          exitcode: 20
     8bit: 
       after: 
         - "A+B"

@@ -69,10 +69,10 @@ doCases = function(cases, cb) {
     cppFile = sample.cpp;
     code = fs.readFileSync(testFolder + cppFile);
     input = sample["in"] || "";
-    expected = prepareOutput(sample.out) || "";
+    expected = prepareOutput(sample.out);
     except = prepareOutput(sample.exception);
     _describe("sample " + i, function() {
-      return doSample(code, input, expected, except, function(result) {
+      return doSample(code, input, expected, except, exitcode, function(result) {
         return success = success && result;
       });
     });
@@ -80,8 +80,8 @@ doCases = function(cases, cb) {
   return cb(success);
 };
 
-doSample = function(code, input, expected, except, cb) {
-  var config, e, output, outputBuffer;
+doSample = function(code, input, expected, except, exp_exitcode, cb) {
+  var config, e, exitcode, output, outputBuffer;
   outputBuffer = "";
   config = {
     stdio: {
@@ -92,7 +92,7 @@ doSample = function(code, input, expected, except, cb) {
     }
   };
   try {
-    return JSCPP.run(code, input, config);
+    return exitcode = JSCPP.run(code, input, config);
   } catch (_error) {
     e = _error;
     if (except) {
@@ -110,11 +110,18 @@ doSample = function(code, input, expected, except, cb) {
       });
     }
   } finally {
-    output = prepareOutput(outputBuffer);
-    _it("should match expected output", function() {
-      expect(output).to.equal(expected);
-      return cb(output === expected);
-    });
+    if (expected != null) {
+      output = prepareOutput(outputBuffer);
+      _it("should match expected output", function() {
+        expect(output).to.equal(expected);
+        return cb(output === expected);
+      });
+    } else if (exp_exitcode != null) {
+      _it("should match exit code", function() {
+        expect(exitcode).to.equal(exp_exitcode);
+        return cb(exitcode === exp_exitcode);
+      });
+    }
   }
 };
 

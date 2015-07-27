@@ -46,14 +46,14 @@ doCases = (cases, cb) ->
         cppFile = sample.cpp
         code = fs.readFileSync testFolder + cppFile
         input = sample.in or ""
-        expected = prepareOutput(sample.out) or ""
+        expected = prepareOutput(sample.out)
         except = prepareOutput(sample.exception)
         _describe "sample #{i}", ->
-            doSample code, input, expected, except, (result) ->
+            doSample code, input, expected, except, exitcode, (result) ->
                 success = success and result
     cb success
 
-doSample = (code, input, expected, except, cb) ->
+doSample = (code, input, expected, except, exp_exitcode, cb) ->
     outputBuffer = ""
 
     config =
@@ -62,7 +62,7 @@ doSample = (code, input, expected, except, cb) ->
                 outputBuffer += str
                 str.length
     try
-        JSCPP.run(code, input, config)
+        exitcode = JSCPP.run(code, input, config)
     catch e
         if except
             _it "expected exception", ->
@@ -75,10 +75,15 @@ doSample = (code, input, expected, except, cb) ->
                 assert.ok false
                 cb false
     finally
-        output = prepareOutput outputBuffer
-        _it "should match expected output", ->
-            expect(output).to.equal(expected)
-            cb output is expected
+        if expected?
+            output = prepareOutput outputBuffer
+            _it "should match expected output", ->
+                expect(output).to.equal(expected)
+                cb output is expected
+        else if exp_exitcode?
+            _it "should match exit code", ->
+                expect(exitcode).to.equal(exp_exitcode)
+                cb exitcode is exp_exitcode
 
 tests = yaml.safeLoad fs.readFileSync testFolder + "test.yaml"
 
