@@ -264,10 +264,12 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Integer type promotion issue
 		+ Many small fixes
 * v2.0.2 (-)
+	- New
+		+ Wide char support (русский язык)
 	- Fix
 		+ Truncating negative number to positive
 		+ Error message when overflow
-		+ Wide char support
+		+ Error when using function prototypes
 	- Dev
 		+ test.json -> test.yaml
 
