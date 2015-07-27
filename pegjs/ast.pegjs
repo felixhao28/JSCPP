@@ -61,7 +61,7 @@ NamespaceAliasDefinition
     ;
 
 FunctionDefinition
-    = a:DeclarationSpecifiers b:Declarator c:DeclarationList? d:CompoundStatement {
+    = a:DeclarationSpecifiers b:Declarator c:DeclarationList? d:(SEMI {return null;} / CompoundStatement) {
       return addPositionInfo({type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, DeclarationList:c, CompoundStatement:d});
     }
     ;

@@ -48,7 +48,8 @@ doCases = (cases, cb) ->
         input = sample.in or ""
         expected = prepareOutput(sample.out)
         except = prepareOutput(sample.exception)
-        _describe "sample #{i}", ->
+        exitcode = sample.exitcode
+        _describe "#{cppFile}", ->
             doSample code, input, expected, except, exitcode, (result) ->
                 success = success and result
     cb success

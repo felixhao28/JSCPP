@@ -29,7 +29,7 @@ Interpreter = (rt) ->
             retType = interp.buildRecursivePointerType(pointer, basetype, 0)
             argTypes = []
             argNames = []
-            if s.Declarator.right.length != 1
+            if s.Declarator.right.length isnt 1
                 rt.raiseException "you cannot have " + s.Declarator.right.length + " parameter lists (1 expected)"
             ptl = undefined
             varargs = undefined
@@ -53,9 +53,9 @@ Interpreter = (rt) ->
                     j = 0
                     while j < _param.Declarator.right.length
                         dim = _param.Declarator.right[j]
-                        if dim.type != "DirectDeclarator_modifier_array"
+                        if dim.type isnt "DirectDeclarator_modifier_array"
                             rt.raiseException "unacceptable array initialization"
-                        if dim.Expression != null
+                        if dim.Expression isnt null
                             dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
                         else if j > 0
                             rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
@@ -84,31 +84,31 @@ Interpreter = (rt) ->
                     j = 0
                     while j < dec.Declarator.right.length
                         dim = dec.Declarator.right[j]
-                        if dim.type != "DirectDeclarator_modifier_array"
-                            rt.raiseException "is interp really an array initialization?"
-                        if dim.Expression != null
-                            dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
-                        else if j > 0
-                            rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
-                        else
-                            if init.type is "Initializer_expr"
-                                initializer = yield from interp.visit(interp, init, param)
-                                if rt.isTypeEqualTo(type, rt.charTypeLiteral) and rt.isArrayType(initializer.t) and rt.isTypeEqualTo(initializer.t.eleType, rt.charTypeLiteral)
-                                    # string init
-                                    dim = initializer.v.target.length
-                                    init =
-                                        type: "Initializer_array"
-                                        Initializers: initializer.v.target.map((e) ->
-                                            {
-                                                type: "Initializer_expr"
-                                                shorthand: e
-                                            }
-                                        )
+                        switch dim.type
+                            when "DirectDeclarator_modifier_array"
+                                if dim.Expression isnt null
+                                    dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
+                                else if j > 0
+                                    rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
                                 else
-                                    rt.raiseException "cannot initialize an array to " + rt.makeValString(initializer)
-                            else
-                                dim = init.Initializers.length
-                        dimensions.push dim
+                                    if init.type is "Initializer_expr"
+                                        initializer = yield from interp.visit(interp, init, param)
+                                        if rt.isTypeEqualTo(type, rt.charTypeLiteral) and rt.isArrayType(initializer.t) and rt.isTypeEqualTo(initializer.t.eleType, rt.charTypeLiteral)
+                                            # string init
+                                            dim = initializer.v.target.length
+                                            init =
+                                                type: "Initializer_array"
+                                                Initializers: initializer.v.target.map((e) ->
+                                                    {
+                                                        type: "Initializer_expr"
+                                                        shorthand: e
+                                                    }
+                                                )
+                                        else
+                                            rt.raiseException "cannot initialize an array to " + rt.makeValString(initializer)
+                                    else
+                                        dim = init.Initializers.length
+                                dimensions.push dim
                         j++
                     init = yield from interp.arrayInit(dimensions, init, 0, type, param)
                     rt.defVar name, init.t, init
@@ -214,7 +214,7 @@ Interpreter = (rt) ->
             param["switch"] = switch_bak
             ret = undefined
             if r instanceof Array
-                if r[0] != "break"
+                if r[0] isnt "break"
                     ret = r
             rt.exitScope param.scope
             param.scope = scope_bak
@@ -544,7 +544,7 @@ Interpreter = (rt) ->
         CharacterConstant: (interp, s, param) ->
             rt = interp.rt
             a = s.Char
-            if a.length != 1
+            if a.length isnt 1
                 rt.raiseException "a character constant must have and only have one character."
             rt.val rt.charTypeLiteral, a[0].charCodeAt(0)
         FloatConstant: (interp, s, param) ->
@@ -709,9 +709,8 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
             i++
         ret
     else
-        if init and init.type != "Initializer_expr"
+        if init and init.type isnt "Initializer_expr"
             @rt.raiseException "dimensions do not agree, too few initializers"
-        initval
         if init
             if "shorthand" of init
                 initval = init.shorthand

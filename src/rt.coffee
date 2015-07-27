@@ -89,28 +89,31 @@ CRuntime::getMember = (l, r) ->
 
 CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
     rt = this
-    f = (rt, _this, args...) ->
-        # logger.warn("calling function: %j", name);
-        rt.enterScope "function " + name
-        argNames.forEach (v, i) ->
-            rt.defVar v, argTypes[i], args[i]
-            return
-        ret = yield from interp.run(stmts, scope: "function")
-        if not rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
-            if ret instanceof Array and ret[0] is "return"
-                ret = rt.cast(retType, ret[1])
+    if stmts?
+        f = (rt, _this, args...) ->
+            # logger.warn("calling function: %j", name);
+            rt.enterScope "function " + name
+            argNames.forEach (v, i) ->
+                rt.defVar v, argTypes[i], args[i]
+                return
+            ret = yield from interp.run(stmts, scope: "function")
+            if not rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
+                if ret instanceof Array and ret[0] is "return"
+                    ret = rt.cast(retType, ret[1])
+                else
+                    rt.raiseException "you must return a value"
             else
-                rt.raiseException "you must return a value"
-        else
-            if typeof ret is "Array"
-                if ret[0] is "return" and ret[1]
-                    rt.raiseException "you cannot return a value of a void function"
-            ret = undefined
-        rt.exitScope "function " + name
-        # logger.warn("function: returing %j", ret);
-        ret
+                if typeof ret is "Array"
+                    if ret[0] is "return" and ret[1]
+                        rt.raiseException "you cannot return a value of a void function"
+                ret = undefined
+            rt.exitScope "function " + name
+            # logger.warn("function: returing %j", ret);
+            ret
 
-    @regFunc f, lt, name, argTypes, retType
+        @regFunc f, lt, name, argTypes, retType
+    else
+        @regFuncPrototype lt, name, argTypes, retType
     return
 
 CRuntime::makeParametersSigniture = (args) ->
@@ -132,7 +135,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
             )
             sig = @makeParametersSigniture(ts)
             if sig of t[name]
-                return t[name][sig]
+                ret = t[name][sig]
             else
                 compatibles = []
                 rt = this
@@ -153,21 +156,24 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
                     return
                 if compatibles.length is 0
                     if "#default" of t[name]
-                        return t[name]["#default"]
-                    rt = this
-                    argsStr = ts.map((v) ->
-                        rt.makeTypeString v
-                    ).join(",")
-                    @raiseException "no method " + name + " in " + lt + " accepts " + argsStr
+                        ret = t[name]["#default"]
+                    else
+                        rt = this
+                        argsStr = ts.map((v) ->
+                            rt.makeTypeString v
+                        ).join(",")
+                        @raiseException "no method " + name + " in " + lt + " accepts " + argsStr
                 else if compatibles.length > 1
                     @raiseException "ambiguous method invoking, " + compatibles.length + " compatible methods"
                 else
-                    return compatibles[0]
+                    ret = compatibles[0]
         else
             @raiseException "method " + name + " is not defined in " + @makeTypeString(lt)
     else
         @raiseException "type " + @makeTypeString(lt) + " is unknown"
-    return
+    if not ret?
+        @raiseException "method " + name + " does not seem to be implemented"
+    return ret
 
 CRuntime::matchVarArg = (methods, sig) ->
     for _sig of methods
@@ -230,7 +236,7 @@ CRuntime::makeOperatorFuncName = (name) ->
 CRuntime::regOperator = (f, lt, name, args, retType) ->
     @regFunc(f, lt, @makeOperatorFuncName(name), args, retType)
 
-CRuntime::regFunc = (f, lt, name, args, retType) ->
+CRuntime::regFuncPrototype = (lt, name, args, retType) ->
     ltsig = @getTypeSigniture(lt)
     if ltsig of @types
         t = @types[ltsig]
@@ -243,7 +249,34 @@ CRuntime::regFunc = (f, lt, name, args, retType) ->
             @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
         type = @functionPointerType(retType, args)
         if lt is "global"
-            @defVar name, type, @val(type, @makeFunctionPointerValue(f, name, lt, args, retType))
+            @defVar name, type, @val(type, @makeFunctionPointerValue(null, name, lt, args, retType))
+        t[name][sig] = null
+        t[name]["reg"].push args
+    else
+        @raiseException "type " + @makeTypeString(lt) + " is unknown"
+    return
+
+CRuntime::regFunc = (f, lt, name, args, retType) ->
+    ltsig = @getTypeSigniture(lt)
+    if ltsig of @types
+        t = @types[ltsig]
+        if name not of t
+            t[name] = {}
+        if "reg" not of t[name]
+            t[name]["reg"] = []
+        sig = @makeParametersSigniture(args)
+        if sig of t[name] and t[name][sig]?
+            @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
+        type = @functionPointerType(retType, args)
+        if lt is "global"
+            if @varAlreadyDefined(name)
+                func = @scope[0][name]
+                if func.v.target isnt null
+                    @raiseException "global method " + name + " with parameters (" + sig + ") is already defined"
+                else
+                    func.v.target = f
+            else
+                @defVar name, type, @val(type, @makeFunctionPointerValue(f, name, lt, args, retType))
         t[name][sig] = f
         t[name]["reg"].push args
     else
@@ -293,16 +326,24 @@ CRuntime::readVar = (varname) ->
     while i >= 0
         vc = @scope[i]
         if vc[varname]
-            return vc[varname]
+            ret = vc[varname]
+            if @isFunctionType(ret.t) and ret.v.target is null
+                @raiseException "function #{ret.v.name} does not seem to be implemented"
+            else
+                return ret
         i--
     @raiseException "variable " + varname + " does not exist"
     return
 
-CRuntime::defVar = (varname, type, initval) ->
-    # logger.log("defining variable: %j, %j", varname, type);
+CRuntime::varAlreadyDefined = (varname) ->
     vc = @scope[@scope.length - 1]
-    if varname of vc
+    return varname of vc
+
+CRuntime::defVar = (varname, type, initval) ->
+    if @varAlreadyDefined(varname)
         @raiseException "variable " + varname + " already defined"
+    vc = @scope[@scope.length - 1]
+    # logger.log("defining variable: %j, %j", varname, type);
     initval = @clone(@cast(type, initval))
     if initval is undefined
         vc[varname] = @defaultValue(type)

@@ -6,7 +6,6 @@ argv = require("minimist") process.argv.slice(2)
 
 config = {}
 
-console.log JSON.stringify(argv)
 if process.argv.length > 2
     testName = argv._[0];
     if argv.d or argv.debug

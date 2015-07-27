@@ -76,6 +76,9 @@
         -
           cpp: "function_prototypes.cpp"
           exitcode: 20
+        -
+          cpp: "function_prototypes_fail.cpp"
+          exception: "8:9 function func does not seem to be implemented"
     8bit: 
       after: 
         - "A+B"

@@ -62,7 +62,7 @@ doTest = function(test, cb) {
 };
 
 doCases = function(cases, cb) {
-  var code, cppFile, except, expected, i, input, j, len, sample, success;
+  var code, cppFile, except, exitcode, expected, i, input, j, len, sample, success;
   success = true;
   for (i = j = 0, len = cases.length; j < len; i = ++j) {
     sample = cases[i];
@@ -71,7 +71,8 @@ doCases = function(cases, cb) {
     input = sample["in"] || "";
     expected = prepareOutput(sample.out);
     except = prepareOutput(sample.exception);
-    _describe("sample " + i, function() {
+    exitcode = sample.exitcode;
+    _describe("" + cppFile, function() {
       return doSample(code, input, expected, except, exitcode, function(result) {
         return success = success && result;
       });
