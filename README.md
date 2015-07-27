@@ -263,6 +263,9 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ An issue on Chrome Canary
 		+ Integer type promotion issue
 		+ Many small fixes
+* v2.0.2 (-)
+	- Fix
+		+ fix an issue when truncating negative number to positive
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
