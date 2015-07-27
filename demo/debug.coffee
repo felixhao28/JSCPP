@@ -2,18 +2,22 @@
 JSCPP = require "../lib/main"
 yaml = require "js-yaml"
 fs = require "fs"
+argv = require("minimist") process.argv.slice(2)
 
 config = {}
 
+console.log JSON.stringify(argv)
 if process.argv.length > 2
-    testName = process.argv[2];
-    configs = process.argv.slice(3)
-    if "-debug" in configs
+    testName = argv._[0];
+    if argv.d or argv.debug
         config.debug = true
 
-    if "-f" in configs
-        code = fs.readFileSync(testName)
-        input = ""
+    if argv.i or argv.in
+        input = argv.i or argv.in
+
+    if argv.f or argv.file
+        code = fs.readFileSync(argv.f or argv.file)
+        input or= ""
     else
         tests = yaml.safeLoad fs.readFileSync "test/test.yaml"
         cases = tests.tests[testName].cases
@@ -23,6 +27,7 @@ if process.argv.length > 2
         input = cases.in or ""
 
         code = fs.readFileSync("./test/" + cppFile)
+
     if not config.debug
         exitcode = JSCPP.run(code, input, config)
         console.info("\nprogram exited with code #{exitcode}")

@@ -1,5 +1,4 @@
-var JSCPP, cases, code, config, configs, cppFile, exitcode, fs, i, input, j, l, lastOutputPos, len, mydebugger, onPrompt, readline, rl, srcLines, testName, tests, yaml,
-  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+var JSCPP, argv, cases, code, config, cppFile, exitcode, fs, i, input, j, l, lastOutputPos, len, mydebugger, onPrompt, readline, rl, srcLines, testName, tests, yaml;
 
 JSCPP = require("../lib/main");
 
@@ -7,17 +6,23 @@ yaml = require("js-yaml");
 
 fs = require("fs");
 
+argv = require("minimist")(process.argv.slice(2));
+
 config = {};
 
+console.log(JSON.stringify(argv));
+
 if (process.argv.length > 2) {
-  testName = process.argv[2];
-  configs = process.argv.slice(3);
-  if (indexOf.call(configs, "-debug") >= 0) {
+  testName = argv._[0];
+  if (argv.d || argv.debug) {
     config.debug = true;
   }
-  if (indexOf.call(configs, "-f") >= 0) {
-    code = fs.readFileSync(testName);
-    input = "";
+  if (argv.i || argv["in"]) {
+    input = argv.i || argv["in"];
+  }
+  if (argv.f || argv.file) {
+    code = fs.readFileSync(argv.f || argv.file);
+    input || (input = "");
   } else {
     tests = yaml.safeLoad(fs.readFileSync("test/test.yaml"));
     cases = tests.tests[testName].cases;
