@@ -169,3 +169,10 @@
       cases: 
         cpp: "cyrillic.cpp"
         out: "some cyrillic text: кириллический текст"
+    string_sizeof:
+      after:
+        - "cyrillic"
+        - "char_compare"
+      cases:
+        cpp: "string_sizeof.cpp"
+        out: "2 3 2 4 12 4 12"
