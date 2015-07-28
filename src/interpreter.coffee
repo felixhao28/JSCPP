@@ -520,12 +520,14 @@ Interpreter = (rt) ->
             switch s.prefix
                 when null
                     maxCode = -1
+                    minCode = 1
                     for i in s.value
                         code = i.charCodeAt(0)
                         maxCode = code if maxCode < code
+                        minCode = code if minCode > code
                     limits = rt.config.limits
                     typeName =
-                        if maxCode < limits["char"].max
+                        if maxCode <= limits["char"].max && minCode >= limits["char"].min
                             "char"
                         else
                             "wchar_t"
