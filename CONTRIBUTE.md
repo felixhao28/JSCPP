@@ -59,34 +59,33 @@ Don't forget to add your library into `launcher.js`.
 
 ### On adding/fixing test cases
 
-Each test can have many source files and many input cases. First you need to put your C++ source file in `test\` folder. Then you add the test description in `test\test.json`. Each test description reads like this:
+Each test can have many source files and many input cases. First you need to put your C++ source file in `test\` folder. Then you add the test description in `test\test.yaml`. Each test description reads like this:
 
-```json
-"A+B": {
-    "after": ["cincout"],
-    "cpp": ["A+B.cpp"],
-    "cases": [{
-        "in": "10 506",
-        "out": "516"
-    }, {
-        "in": "-24 -123",
-        "out": "-147"
-    }]
-}
+```yaml
+A+B:
+  after:
+    - "cincout"
+  cases:
+    cpp: "A+B.cpp"
+    in: "10 506"
+    out: "516"
 ```
 
 Each test description has a "after" field that requires this test to be run after the designated tests. When all prerequisite tests have passes, the test will start immediately. Each source file in "cpp" field will be tested against each input/output case. Not passing a "in" or "out" field will have the same result as passing an empty string.
 
 Sometime you need to test for exceptions. You can use "exception" field in a test case:
 
-```json
-"8bit": {
-    "after": ["A+B"],
-    "cpp": ["8bit.cpp"],
-    "cases": [{
-        "exception": "6:3 overflow during post-increment 256\\(unsigned char\\)"
-    }]
-}
+```yaml
+8bit:
+  after:
+    - "A+B"
+  cases:
+    -
+      cpp: "8bit2.cpp"
+      out: "127\n"
+    -
+      cpp: "8bit.cpp"
+      exception: "6:3 overflow during post-increment 256\\(unsigned char\\)"
 ```
 
 The exception is tested as a regex rather than plain string matching.
