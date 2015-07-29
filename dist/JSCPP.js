@@ -11180,6 +11180,7 @@ module.exports = function() {
   defaults = this;
   this.config = {
     charTypes: ["char", "signed char", "unsigned char", "wchar_t", "unsigned wchar_t", "char16_t", "unsigned char16_t", "char32_t", "unsigned char32_t"],
+    intTypes: ["short", "short int", "signed short", "signed short int", "unsigned short", "unsigned short int", "int", "signed int", "unsigned", "unsigned int", "long", "long int", "long int", "signed long", "signed long int", "unsigned long", "unsigned long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "unsigned long long", "unsigned long long int", "bool"],
     limits: {
       "char": {
         max: 0x7f,
@@ -13074,7 +13075,7 @@ Interpreter = function(rt) {
                 } else {
                   if (init.type === "Initializer_expr") {
                     initializer = (yield* interp.visit(interp, init, param));
-                    if (rt.isTypeEqualTo(type, rt.charTypeLiteral) && rt.isArrayType(initializer.t) && rt.isTypeEqualTo(initializer.t.eleType, rt.charTypeLiteral)) {
+                    if (rt.isCharType(type) && rt.isArrayType(initializer.t) && rt.isCharType(initializer.t.eleType)) {
                       dim = initializer.v.target.length;
                       init = {
                         type: "Initializer_array",
@@ -13827,7 +13828,7 @@ Interpreter.prototype.arrayInit = function*(dimensions, init, level, type, param
         } else {
           initializer = (yield* this.visit(this, init, param));
         }
-        if (this.rt.isTypeEqualTo(type, this.rt.charTypeLiteral) && this.rt.isArrayType(initializer.t) && this.rt.isTypeEqualTo(initializer.t.eleType, this.rt.charTypeLiteral)) {
+        if (this.rt.isCharType(type) && this.rt.isArrayType(initializer.t) && this.rt.isCharType(initializer.t.eleType)) {
           init = {
             type: "Initializer_array",
             Initializers: initializer.v.target.map(function(e) {
@@ -19295,39 +19296,7 @@ CRuntime.prototype.isUnsignedType = function(type) {
 
 CRuntime.prototype.isIntegerType = function(type) {
   if (typeof type === "string") {
-    switch (type) {
-      case "char":
-      case "signed char":
-      case "unsigned char":
-      case "short":
-      case "short int":
-      case "signed short":
-      case "signed short int":
-      case "unsigned short":
-      case "unsigned short int":
-      case "int":
-      case "signed int":
-      case "unsigned":
-      case "unsigned int":
-      case "long":
-      case "long int":
-      case "long int":
-      case "signed long":
-      case "signed long int":
-      case "unsigned long":
-      case "unsigned long int":
-      case "long long":
-      case "long long int":
-      case "long long int":
-      case "signed long long":
-      case "signed long long int":
-      case "unsigned long long":
-      case "unsigned long long int":
-      case "bool":
-        return true;
-      default:
-        return false;
-    }
+    return indexOf.call(this.config.charTypes, type) >= 0 || indexOf.call(this.config.intTypes, type) >= 0;
   } else {
     return type.type === "primitive" && this.isIntegerType(type.name);
   }
@@ -19676,11 +19645,11 @@ CRuntime.prototype.primitiveType = function(type) {
 };
 
 CRuntime.prototype.isCharType = function(type) {
-  return this.config.charTypes.indexOf(type.eleType.name) !== -1;
+  return this.config.charTypes.indexOf(type.name) !== -1;
 };
 
 CRuntime.prototype.isStringType = function(type) {
-  return this.isArrayType(type) && this.isCharType(type);
+  return this.isArrayType(type) && this.isCharType(type.eleType);
 };
 
 CRuntime.prototype.getStringFromCharArray = function(element) {

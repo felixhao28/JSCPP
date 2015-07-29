@@ -93,7 +93,7 @@ Interpreter = (rt) ->
                                 else
                                     if init.type is "Initializer_expr"
                                         initializer = yield from interp.visit(interp, init, param)
-                                        if rt.isTypeEqualTo(type, rt.charTypeLiteral) and rt.isArrayType(initializer.t) and rt.isTypeEqualTo(initializer.t.eleType, rt.charTypeLiteral)
+                                        if rt.isCharType(type) and rt.isArrayType(initializer.t) and rt.isCharType(initializer.t.eleType)
                                             # string init
                                             dim = initializer.v.target.length
                                             init =
@@ -686,7 +686,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
                     initializer = init.shorthand
                 else
                     initializer = yield from @visit(this, init, param)
-                if @rt.isTypeEqualTo(type, @rt.charTypeLiteral) and @rt.isArrayType(initializer.t) and @rt.isTypeEqualTo(initializer.t.eleType, @rt.charTypeLiteral)
+                if @rt.isCharType(type) and @rt.isArrayType(initializer.t) and @rt.isCharType(initializer.t.eleType)
                     # string init
                     init =
                         type: "Initializer_array"
