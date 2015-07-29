@@ -375,11 +375,7 @@ CRuntime::isUnsignedType = (type) ->
 
 CRuntime::isIntegerType = (type) ->
     if typeof type is "string"
-        switch type
-            when "char", "signed char", "unsigned char", "short", "short int", "signed short", "signed short int", "unsigned short", "unsigned short int", "int", "signed int", "unsigned", "unsigned int", "long", "long int", "long int", "signed long", "signed long int", "unsigned long", "unsigned long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "unsigned long long", "unsigned long long int", "bool"
-                true
-            else
-                false
+        type in @config.charTypes or type in @config.intTypes
     else
         type.type is "primitive" and @isIntegerType(type.name)
     
@@ -634,10 +630,10 @@ CRuntime::primitiveType = (type) ->
     name: type
 
 CRuntime::isCharType = (type) ->
-    @config.charTypes.indexOf(type.eleType.name) isnt -1
+    @config.charTypes.indexOf(type.name) isnt -1
 
 CRuntime::isStringType = (type) ->
-    @isArrayType(type) and @isCharType(type)
+    @isArrayType(type) and @isCharType(type.eleType)
 
 CRuntime::getStringFromCharArray = (element) ->
     if @isStringType(element.t)

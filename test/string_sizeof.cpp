@@ -8,8 +8,8 @@ int main() {
     cout << sizeof("\u007f") << ' ';
     cout << sizeof("11") << ' ';
     cout << sizeof("\u0080\u003f") << ' ';
-    char сstring[]="123";
-    cout << sizeof(сstring) << ' ';
+    char cstring[]="123";
+    cout << sizeof(cstring) << ' ';
     wchar_t wstring[]="\u0080\u003f";
     cout << sizeof(wstring);
     return 0;
