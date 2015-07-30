@@ -77,11 +77,15 @@ Main = React.createClass({
     });
   },
   quickSave: function(e) {
-    e.preventDefault();
+    if (e != null) {
+      e.preventDefault();
+    }
     return setCookie("code", this.state.code);
   },
   quickLoad: function(e) {
-    e.preventDefault();
+    if (e != null) {
+      e.preventDefault();
+    }
     return this.setState({
       code: getCookie("code")
     });
@@ -236,6 +240,50 @@ Main = React.createClass({
       output: this.refs.output.getValue()
     });
   },
+  download: function() {
+    var event, pom;
+    pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.state.code));
+    pom.setAttribute('download', 'source.cpp');
+    if (document.createEvent != null) {
+      event = document.createEvent('MouseEvents');
+      event.initEvent('click', true, true);
+      return pom.dispatchEvent(event);
+    } else {
+      return pom.click();
+    }
+  },
+  upload: function() {
+    return this.refs.hiddenfile.getDOMNode().click();
+  },
+  handleFile: function(e) {
+    var file, files, fr;
+    files = e.target.files;
+    if (files.length > 0) {
+      file = files.item(0);
+      fr = new FileReader();
+      fr.onloadend = (function(_this) {
+        return function() {
+          return _this.setState({
+            code: fr.result
+          });
+        };
+      })(this);
+      return fr.readAsText(file);
+    }
+  },
+  filemenu: function(eventKey) {
+    switch (eventKey) {
+      case "quick-open":
+        return this.quickLoad();
+      case "quick-save":
+        return this.quickSave();
+      case "download":
+        return this.download();
+      case "upload":
+        return this.upload();
+    }
+  },
   render: function() {
     var brand, code, debugging, editing, input, lastVars, markers, output, running, status, vars, _ref;
     _ref = this.state, code = _ref.code, input = _ref.input, output = _ref.output, status = _ref.status, markers = _ref.markers, vars = _ref.vars, lastVars = _ref.lastVars;
@@ -246,19 +294,47 @@ Main = React.createClass({
       "href": "https://github.com/felixhao28/JSCPP",
       "className": "logo"
     }, "JSCPP");
-    return React.createElement("div", null, React.createElement(Navbar, {
+    return React.createElement("div", null, React.createElement("input", {
+      "type": "file",
+      "ref": "hiddenfile",
+      "style": {
+        display: "none"
+      },
+      "onChange": this.handleFile
+    }), React.createElement(Navbar, {
       "brand": brand
     }, React.createElement(Nav, null, React.createElement(DropdownButton, {
-      "title": "File"
-    }, React.createElement(MenuItem, null, "Quick Open (Ctrl + O)"), React.createElement(MenuItem, null, "Quick Save (Ctrl + S)")), React.createElement(NavItem, {
+      "title": "File",
+      "onSelect": this.filemenu
+    }, React.createElement(MenuItem, {
+      "eventKey": "quick-open"
+    }, React.createElement(Glyphicon, {
+      "glyph": "floppy-open"
+    }), "Quick Open (Ctrl + O)"), React.createElement(MenuItem, {
+      "eventKey": "quick-save"
+    }, React.createElement(Glyphicon, {
+      "glyph": "floppy-save"
+    }), "Quick Save (Ctrl + S)"), React.createElement(MenuItem, {
+      "eventKey": "upload"
+    }, React.createElement(Glyphicon, {
+      "glyph": "upload"
+    }), "Open..."), React.createElement(MenuItem, {
+      "eventKey": "download"
+    }, React.createElement(Glyphicon, {
+      "glyph": "save"
+    }), "Download")), React.createElement(NavItem, {
       "href": "#",
       "onClick": (editing ? this.run.bind(this, false) : void 0),
       "disabled": !editing
-    }, "Run"), React.createElement(NavItem, {
+    }, React.createElement(Glyphicon, {
+      "glyph": "play"
+    }), "Run"), React.createElement(NavItem, {
       "href": "#",
       "onClick": (editing ? this.run.bind(this, true) : void 0),
       "disabled": !editing
-    }, "Debug"))), React.createElement(Grid, null, (debugging ? React.createElement(Row, {
+    }, React.createElement(Glyphicon, {
+      "glyph": "sunglasses"
+    }), "Debug"))), React.createElement(Grid, null, (debugging ? React.createElement(Row, {
       "className": "debug-toolbar"
     }, React.createElement(Col, {
       "md": 12.

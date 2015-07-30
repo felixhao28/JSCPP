@@ -1,0 +1,1 @@
+use `http-server` to serve `index.html` to enable cookie.

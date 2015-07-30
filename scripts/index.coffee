@@ -73,11 +73,13 @@ Main = React.createClass
             code: code
 
     quickSave: (e) ->
-        e.preventDefault()
+        if e?
+            e.preventDefault()
         setCookie("code", @state.code)
 
     quickLoad: (e) ->
-        e.preventDefault()
+        if e?
+            e.preventDefault()
         @setState
             code: getCookie("code")
 
@@ -200,6 +202,42 @@ Main = React.createClass
         @setState
             output: @refs.output.getValue()
 
+    download: ->
+        pom = document.createElement 'a'
+        pom.setAttribute 'href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(@state.code)
+        pom.setAttribute 'download', 'source.cpp'
+
+        if document.createEvent?
+            event = document.createEvent 'MouseEvents'
+            event.initEvent 'click', true, true
+            pom.dispatchEvent event
+        else
+            pom.click()
+
+    upload: ->
+        @refs.hiddenfile.getDOMNode().click()
+
+    handleFile: (e) ->
+        {files} = e.target
+        if files.length > 0
+            file = files.item(0)
+            fr = new FileReader()
+            fr.onloadend = =>
+                @setState
+                    code: fr.result
+            fr.readAsText file
+
+    filemenu: (eventKey) ->
+        switch eventKey
+            when "quick-open"
+                @quickLoad()
+            when "quick-save"
+                @quickSave()
+            when "download"
+                @download()
+            when "upload"
+                @upload()
+
     render: ->
         {code, input, output, status, markers, vars, lastVars} = @state
         debugging = status is "debugging"
@@ -211,14 +249,29 @@ Main = React.createClass
                 JSCPP
             </a>
         <div>
+            <input type="file" ref="hiddenfile" style={{display: "none"}} onChange={@handleFile} />
             <Navbar brand={brand}>
                 <Nav>
-                    <DropdownButton title="File">
-                        <MenuItem>Quick Open (Ctrl + O)</MenuItem>
-                        <MenuItem>Quick Save (Ctrl + S)</MenuItem>
+                    <DropdownButton title="File" onSelect={@filemenu}>
+                        <MenuItem eventKey="quick-open">
+                            <Glyphicon glyph="floppy-open" />Quick Open (Ctrl + O)
+                        </MenuItem>
+                        <MenuItem eventKey="quick-save">
+                            <Glyphicon glyph="floppy-save" />Quick Save (Ctrl + S)
+                        </MenuItem>
+                        <MenuItem eventKey="upload">
+                            <Glyphicon glyph="upload" />Open...
+                        </MenuItem>
+                        <MenuItem eventKey="download">
+                            <Glyphicon glyph="save" />Download
+                        </MenuItem>
                     </DropdownButton>
-                    <NavItem href="#" onClick={if editing then @run.bind(@, false)} disabled={not editing}>Run</NavItem>
-                    <NavItem href="#" onClick={if editing then @run.bind(@, true)} disabled={not editing}>Debug</NavItem>
+                    <NavItem href="#" onClick={if editing then @run.bind(@, false)} disabled={not editing}>
+                        <Glyphicon glyph="play" />Run
+                    </NavItem>
+                    <NavItem href="#" onClick={if editing then @run.bind(@, true)} disabled={not editing}>
+                        <Glyphicon glyph="sunglasses" />Debug
+                    </NavItem>
                 </Nav>
             </Navbar>
             <Grid>
