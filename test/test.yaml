@@ -176,3 +176,9 @@
       cases:
         cpp: "string_sizeof.cpp"
         out: "2 3 2 4 12 4 12"
+    number_sizeof: 
+      after: 
+        - "type_conversion"
+      cases: 
+        cpp: "number_sizeof.cpp"
+        out: "111111111"
