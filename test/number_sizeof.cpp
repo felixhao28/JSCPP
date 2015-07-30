@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 int  main()
 {
     int n_int=1;
