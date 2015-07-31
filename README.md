@@ -5,7 +5,7 @@ This is a simple C++ interpreter written in JavaScript.
 Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
 
 [![Travis Build Status][build-badge]][build]
-
+[![npm version](https://badge.fury.io/js/JSCPP.svg)](http://badge.fury.io/js/JSCPP)
 ## Purpose of the project
 
 As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
@@ -16,8 +16,8 @@ Currently, it is mainly for educational uses for a MOOC course I am running (and
 
 ## Prerequisites
 
-* NodeJS with -harmony flag or
-* A modern browser that [supports generators](https://kangax.github.io/compat-table/es6/#generators) (Firefox, Chrome)
+* NodeJS versoin >= 0.11
+* A modern browser
 
 ## How to use
 
