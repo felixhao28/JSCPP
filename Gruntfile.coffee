@@ -55,7 +55,7 @@ module.exports = (grunt) ->
 
         shell:
             dist:
-                command: "node node_modules\\traceur\\traceur --out dist\\JSCPP.es5.js --script dist\\JSCPP.js"
+                command: "node node_modules/traceur/traceur --out dist/JSCPP.es5.js --script dist/JSCPP.js"
 
         concat:
             options:
