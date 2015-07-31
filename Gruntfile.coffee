@@ -1,4 +1,3 @@
-es6ify = require "es6ify"
 module.exports = (grunt) ->
     require("load-grunt-tasks")(grunt)
     grunt.registerTask "build", "to build", ["clean", "copy", "peg", "coffee", "dist"]
@@ -41,12 +40,6 @@ module.exports = (grunt) ->
                         cwd: "demo"
                         src: ["**/*.coffee"]
                         dest: "demo"
-                        ext: ".js"
-                    ,
-                        expand: true
-                        cwd: ""
-                        src: ["*.coffee"]
-                        desc: ""
                         ext: ".js"
                 ]
 
