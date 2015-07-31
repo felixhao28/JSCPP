@@ -1,1 +1,1 @@
-node -harmony demo/debug %*
+node --harmony demo/debug
