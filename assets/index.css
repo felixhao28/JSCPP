@@ -1,19 +1,11 @@
-.editor { 
-	height: 500px;
-}
-
 .debug-highlight {
 	position: absolute;
 	z-index: 20;
 	background-color: Maroon;
 }
 
-.input-area {
-	float: left;
-}
-
-.output-area {
-	float: right;
+#editor {
+	height: 500px;
 }
 
 .logo {
