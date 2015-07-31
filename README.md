@@ -263,7 +263,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ An issue on Chrome Canary
 		+ Integer type promotion issue
 		+ Many small fixes
-* v2.0.2 (-)
+* v2.0.2 (7.31)
 	- New
 		+ Wide char support (русский язык)
 	- Fix
@@ -275,6 +275,8 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Transpile to es5 properly (dist/JSCPP.es5.js)
 		+ Minified version (dist/JSCPP.es5.min.js)
 		+ Online site uses minified es5 version now
+		+ A few dependencies have been updated
+		+ Added linux helper for running and debugging (bin/run & bin/debug)
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

@@ -6,68 +6,68 @@ preprocessor = require("./preprocessor")
 Debugger = require("./debugger")
 
 mergeConfig = (a, b) ->
-    for o of b
-        if o of a and typeof b[o] == "object"
-            mergeConfig a[o], b[o]
-        else
-            a[o] = b[o]
-    return
+  for o of b
+    if o of a and typeof b[o] == "object"
+      mergeConfig a[o], b[o]
+    else
+      a[o] = b[o]
+  return
 
 includes =
-    iostream: require("./includes/iostream")
-    cctype: require("./includes/cctype")
-    cstring: require("./includes/cstring")
-    cmath: require("./includes/cmath")
-    cstdio: require("./includes/cstdio")
-    cstdlib: require("./includes/cstdlib")
-    iomanip: require("./includes/iomanip")
+  iostream: require("./includes/iostream")
+  cctype: require("./includes/cctype")
+  cstring: require("./includes/cstring")
+  cmath: require("./includes/cmath")
+  cstdio: require("./includes/cstdio")
+  cstdlib: require("./includes/cstdlib")
+  iomanip: require("./includes/iomanip")
 
 headerAlias =
-    "ctype.h": "cctype"
-    "string.h": "cstring"
-    "math.h": "cmath"
-    "stdio.h": "cstdio"
-    "stdlib.h": "cstdlib"
+  "ctype.h": "cctype"
+  "string.h": "cstring"
+  "math.h": "cmath"
+  "stdio.h": "cstdio"
+  "stdlib.h": "cstdlib"
 
 for alias, realName of headerAlias
-    includes[alias] = includes[realName]
+  includes[alias] = includes[realName]
 
 module.exports =
-    includes: includes
-    run: (code, input, config) ->
-        inputbuffer = input.toString()
-        self = this
-        _config = 
-            stdio:
-                drain: ->
-                    x = inputbuffer
-                    inputbuffer = null
-                    x
-                write: (s) ->
-                    process.stdout.write s
-                    return
-            includes: self.includes
-        mergeConfig _config, config
-        rt = new CRuntime(_config)
-        code = code.toString()
-        code = preprocessor.parse(rt, code)
+  includes: includes
+  run: (code, input, config) ->
+    inputbuffer = input.toString()
+    self = this
+    _config = 
+      stdio:
+        drain: ->
+          x = inputbuffer
+          inputbuffer = null
+          x
+        write: (s) ->
+          process.stdout.write s
+          return
+      includes: self.includes
+    mergeConfig _config, config
+    rt = new CRuntime(_config)
+    code = code.toString()
+    code = preprocessor.parse(rt, code)
 
-        mydebugger = new Debugger()
-        if _config.debug
-            mydebugger.src = code
+    mydebugger = new Debugger()
+    if _config.debug
+      mydebugger.src = code
 
-        tree = ast.parse(code)
-        interpreter = new Interpreter(rt)
-        defGen = interpreter.run tree
-        loop
-            step = defGen.next()
-            break if step.done
-        mainGen = rt.getFunc("global", "main", [])(rt, null, [])
-        if _config.debug
-            mydebugger.start(rt, mainGen)
-            mydebugger
-        else
-            loop
-                step = mainGen.next()
-                break if step.done
-            step.value.v
+    tree = ast.parse(code)
+    interpreter = new Interpreter(rt)
+    defGen = interpreter.run tree
+    loop
+      step = defGen.next()
+      break if step.done
+    mainGen = rt.getFunc("global", "main", [])(rt, null, [])
+    if _config.debug
+      mydebugger.start(rt, mainGen)
+      mydebugger
+    else
+      loop
+        step = mainGen.next()
+        break if step.done
+      step.value.v
