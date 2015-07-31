@@ -272,6 +272,9 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Error when using function prototypes
 	- Dev
 		+ test.json -> test.yaml
+		+ transpile to es5 properly (dist/JSCPP.es5.js)
+		+ minified version (dist/JSCPP.es5.min.js)
+		+ online site uses minified es5 version now
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

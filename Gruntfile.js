@@ -1,9 +1,12 @@
+var es6ify;
+
+es6ify = require("es6ify");
+
 module.exports = function(grunt) {
   var pkg;
   require("load-grunt-tasks")(grunt);
   grunt.registerTask("build", "to build", ["clean", "copy", "peg", "coffee", "dist"]);
-  grunt.registerTask("build6to5", "to build es6 with traceur", ["traceur", "rename:build_es6", "concat:build_es6"]);
-  grunt.registerTask("dist", "to make distribution version", ["browserify:dist"]);
+  grunt.registerTask("dist", "to make distribution version", ["browserify", "shell", "concat", "uglify"]);
   grunt.registerTask("default", "to watch & compile", ["build", "watch"]);
   grunt.registerTask("test", "to test", ["mochaTest"]);
   pkg = grunt.file.readJSON("package.json");
@@ -19,7 +22,7 @@ module.exports = function(grunt) {
     },
     clean: {
       build: {
-        src: ["lib", "dist", "lib-es5"]
+        src: ["lib", "dist"]
       }
     },
     coffee: {
@@ -61,56 +64,27 @@ module.exports = function(grunt) {
         files: {
           "dist/JSCPP.js": ["lib/**/*.js"]
         }
-      },
-      dist_es6: {
-        files: {
-          "dist/JSCPP_es5.js": ["lib-es5/**/*.js", "!lib-es5/traceur_runtime.js", "!lib-es5/main.js"]
-        }
       }
     },
     uglify: {
-      dist_es6: {
+      dist: {
         files: {
-          "dist/JSCPP_es5.min.js": ["dist/JSCPP_es5.js"]
+          "dist/JSCPP.es5.min.js": ["dist/JSCPP.es5.js"]
         }
       }
     },
-    rename: {
-      build_es6: {
-        src: "lib-es5/main.js",
-        dest: "lib-es5/main-es6.js"
+    shell: {
+      dist: {
+        command: "node node_modules\\traceur\\traceur --out dist\\JSCPP.es5.js --script dist\\JSCPP.js"
       }
     },
     concat: {
-      build_es6: {
-        src: ["lib-es5/traceur_runtime.js", "lib-es5/main-es6.js"],
-        dest: "lib-es5/main.js"
-      },
-      dist_es6: {
-        src: ["lib-es5/traceur_runtime.js", "dist/JSCPP_es5.js"],
-        dest: "dist/JSCPP_es5.js"
-      }
-    },
-    traceur: {
       options: {
-        sourceMap: false,
-        generators: true,
-        copyRuntime: "lib-es5"
+        separator: ";"
       },
-      es6: {
-        files: [
-          {
-            expand: true,
-            cwd: "lib",
-            src: ["**/*.js"],
-            dest: "lib-es5"
-          }
-        ]
-      },
-      dist_es6: {
-        files: {
-          "dist/JSCPP_es5.js": "dist/JSCPP.js"
-        }
+      dist: {
+        src: ["node_modules/traceur/bin/traceur-runtime.js", "dist/JSCPP.es5.js"],
+        dest: "dist/JSCPP.es5.js"
       }
     },
     mochaTest: {
