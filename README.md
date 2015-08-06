@@ -41,14 +41,14 @@ npm install .
 
 ```js
 var JSCPP = require("JSCPP");
-var code =    "#include <iostream>"    + "\n"
-            + "using namespace std;"   + "\n"
-            + "int main() {"           + "\n"
-            + "    int a;"             + "\n"
-            + "    cin >> a;"          + "\n"
-            + "    cout << a << endl;" + "\n"
-            + "    return 0;"          + "\n"
-            + "}"                      + "\n"
+var code =    "#include <iostream>"
+            + "using namespace std;"
+            + "int main() {"
+            + "    int a;"
+            + "    cin >> a;"
+            + "    cout << a << endl;"
+            + "    return 0;"
+            + "}"
 ;
 var input = "4321";
 var exitcode = JSCPP.run(code, input);
@@ -148,22 +148,32 @@ There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, 
 Then you can add it to your html. The exported global name for this package is "JSCPP".
 
 ```html
-<script src="JSCPP.js"></script>
+<script src="JSCPP.es5.min.js"></script>
 <script type="text/javascript">
-	function run(code, input){
-		var config = {
-			stdio: {
-				write: function(s) {
-					output.value += s;
-				}
+	var code = 	"#include <iostream>"+
+				"using namespace std;"+
+				"int main() {"+
+				"    int a;"+
+				"    cin >> a;"+
+				"    cout << a << endl;"+
+				"    return 0;"+
+				"}"
+	;
+	var input = "4321";
+	var output = "";
+	var config = {
+		stdio: {
+			write: function(s) {
+				output += s;
 			}
 		}
-		return JSCPP.run(code, input, config);
-	}
+	};
+	var exitCode = JSCPP.run(code, input, config);
+	alert(output + "\nprogram exited with code " + exitCode);
 </script>
 ```
 
-If you do not provide a customized `write` method for `stdio` configuration, console output will not be correctly shown. See _index.html_ in **gh_pages** branch for an example.
+If you do not provide a customized `write` method for `stdio` configuration, console output will not be correctly shown. See _demo/demo.html_ for example.
 
 ### Run tests
 
