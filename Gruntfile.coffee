@@ -31,12 +31,6 @@ module.exports = (grunt) ->
             ext: ".js"
           ,
             expand: true
-            cwd: "test"
-            src: ["**/*.coffee"]
-            dest: "test"
-            ext: ".js"
-          ,
-            expand: true
             cwd: "demo"
             src: ["**/*.coffee"]
             dest: "demo"
@@ -69,9 +63,9 @@ module.exports = (grunt) ->
         options:
           reporter: "spec",
           captureFile: "test.log"
-          require: "mocha-traceur"
+          require: "coffee-script/register"
 
-        src: ["test/**/*.js"]
+        src: ["test/**/*.coffee"]
 
     peg:
       build:

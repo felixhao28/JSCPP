@@ -29267,15 +29267,14 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
     Buffer.poolSize = 8192;
     var rootParent = {};
     Buffer.TYPED_ARRAY_SUPPORT = (function() {
-      function Foo() {}
+      function Bar() {}
       try {
-        var buf = new ArrayBuffer(0);
-        var arr = new Uint8Array(buf);
+        var arr = new Uint8Array(1);
         arr.foo = function() {
           return 42;
         };
-        arr.constructor = Foo;
-        return arr.foo() === 42 && arr.constructor === Foo && typeof arr.subarray === 'function' && new Uint8Array(1).subarray(1, 1).byteLength === 0;
+        arr.constructor = Bar;
+        return arr.foo() === 42 && arr.constructor === Bar && typeof arr.subarray === 'function' && arr.subarray(1, 1).byteLength === 0;
       } catch (e) {
         return false;
       }
@@ -29324,8 +29323,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       if (object == null) {
         throw new TypeError('must start with number, buffer, array or string');
       }
-      if (typeof ArrayBuffer !== 'undefined' && object.buffer instanceof ArrayBuffer) {
-        return fromTypedArray(that, object);
+      if (typeof ArrayBuffer !== 'undefined') {
+        if (object.buffer instanceof ArrayBuffer) {
+          return fromTypedArray(that, object);
+        }
+        if (object instanceof ArrayBuffer) {
+          return fromArrayBuffer(that, object);
+        }
       }
       if (object.length)
         return fromArrayLike(that, object);
@@ -29350,6 +29354,15 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       that = allocate(that, length);
       for (var i = 0; i < length; i += 1) {
         that[i] = array[i] & 255;
+      }
+      return that;
+    }
+    function fromArrayBuffer(that, array) {
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        array.byteLength;
+        that = Buffer._augment(new Uint8Array(array));
+      } else {
+        that = fromTypedArray(that, new Uint8Array(array));
       }
       return that;
     }
@@ -29450,8 +29463,6 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         throw new TypeError('list argument must be an Array of Buffers.');
       if (list.length === 0) {
         return new Buffer(0);
-      } else if (list.length === 1) {
-        return list[0];
       }
       var i;
       if (length === undefined) {
@@ -30356,7 +30367,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       arr.toArrayBuffer = BP.toArrayBuffer;
       return arr;
     };
-    var INVALID_BASE64_RE = /[^+\/0-9A-z\-]/g;
+    var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g;
     function base64clean(str) {
       str = stringtrim(str).replace(INVALID_BASE64_RE, '');
       if (str.length < 2)

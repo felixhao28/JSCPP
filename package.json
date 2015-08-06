@@ -21,7 +21,7 @@
     "Felix Hao <felixhao28@gmail.com>"
   ],
   "scripts": {
-    "test": "grunt test",
+    "test": "node --harmony ./node_modules/grunt-cli/bin/grunt test",
     "prepublish": "grunt build"
   },
   "main": "main.js",
@@ -33,6 +33,7 @@
     "coffee-script": "^1.9.3",
     "grunt": "^0.4.5",
     "grunt-browserify": "^4.0.0",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-concat": "^0.5.1",
@@ -44,14 +45,12 @@
     "grunt-peg": "^1.5.0",
     "grunt-rename": "^0.1.4",
     "grunt-shell": "^1.1.2",
-    "load-grunt-tasks": "^3.2.0",
     "js-yaml": "^3.3.1",
+    "load-grunt-tasks": "^3.2.0",
     "minimist": "^1.1.2",
     "mocha": "^2.2.5",
-    "mocha-traceur": "^2.1.0",
     "pegjs": "^0.8.0",
-    "traceur": "0.0.91",
-    "traceur-runner": "^2.0.1"
+    "traceur": "0.0.91"
   },
   "repository": {
     "type": "git",
