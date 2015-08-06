@@ -1,1 +1,2 @@
-node --harmony demo/debug
+@echo off
+node --harmony demo/debug %*

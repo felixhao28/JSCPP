@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JSCPP test</title>
+  <title>JSCPP test</title>
 </head>
 
 <body>
@@ -9,25 +9,25 @@
 </body>
 <script src="../dist/JSCPP.es5.min.js"></script>
 <script type="text/javascript">
-	var code = 	"#include <iostream>"+
-							"using namespace std;"+
-							"int main() {"+
-							"    int a;"+
-							"    cin >> a;"+
-							"    cout << a << endl;"+
-							"    return 0;"+
-							"}"
-	;
-	var input = "4321";
-	var output = "";
-	var config = {
-		stdio: {
-			write: function(s) {
-				output += s;
-			}
-		}
-	};
-	var exitCode = JSCPP.run(code, input, config);
-	alert(output + "\nprogram exited with code " + exitCode);
+  var code = "#include <iostream>"+
+             "using namespace std;"+
+             "int main() {"+
+             "    int a;"+
+             "    cin >> a;"+
+             "    cout << a << endl;"+
+             "    return 0;"+
+             "}"
+  ;
+  var input = "4321";
+  var output = "";
+  var config = {
+    stdio: {
+      write: function(s) {
+        output += s;
+      }
+    }
+  };
+  var exitCode = JSCPP.run(code, input, config);
+  alert(output + "\nprogram exited with code " + exitCode);
 </script>
 </html>
