@@ -50,6 +50,7 @@
     "minimist": "^1.1.2",
     "mocha": "^2.2.5",
     "pegjs": "^0.8.0",
+    "pegjs-util": "^1.0.6",
     "traceur": "0.0.91"
   },
   "repository": {

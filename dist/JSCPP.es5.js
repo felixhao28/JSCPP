@@ -3609,47 +3609,56 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 Identifier: a
               });
             },
-            peg$c7 = null,
-            peg$c8 = function() {
+            peg$c7 = function(a) {
+              return a;
+            },
+            peg$c8 = function(a, b, c) {
+              return addPositionInfo({
+                type: 'TypedefDeclaration',
+                DeclarationSpecifiers: a,
+                Declarators: [b].concat(c)
+              });
+            },
+            peg$c9 = function() {
               return null;
             },
-            peg$c9 = function(a, b, c, d) {
+            peg$c10 = function(a, b, c) {
               return addPositionInfo({
                 type: 'FunctionDefinition',
                 DeclarationSpecifiers: a,
                 Declarator: b,
-                DeclarationList: c,
-                CompoundStatement: d
+                CompoundStatement: c
               });
             },
-            peg$c10 = function(a) {
+            peg$c11 = function(a) {
               return addPositionInfo({
                 type: 'DeclarationList',
                 Declarations: a
               });
             },
-            peg$c11 = function(a) {
+            peg$c12 = function(a) {
               return addPositionInfo({
                 type: 'Label_case',
                 ConstantExpression: a
               });
             },
-            peg$c12 = function() {
+            peg$c13 = function() {
               return addPositionInfo({type: 'Label_default'});
             },
-            peg$c13 = function(a) {
+            peg$c14 = function(a) {
               return addPositionInfo({
                 type: 'CompoundStatement',
                 Statements: a
               });
             },
-            peg$c14 = function(a) {
+            peg$c15 = null,
+            peg$c16 = function(a) {
               return addPositionInfo({
                 type: 'ExpressionStatement',
                 Expression: a
               });
             },
-            peg$c15 = function(a, b, c) {
+            peg$c17 = function(a, b, c) {
               return addPositionInfo({
                 type: 'SelectionStatement_if',
                 Expression: a,
@@ -3657,28 +3666,28 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 ElseStatement: c ? c[1] : null
               });
             },
-            peg$c16 = function(a, b) {
+            peg$c18 = function(a, b) {
               return addPositionInfo({
                 type: 'SelectionStatement_switch',
                 Expression: a,
                 Statement: b
               });
             },
-            peg$c17 = function(a, b) {
+            peg$c19 = function(a, b) {
               return addPositionInfo({
                 type: 'IterationStatement_while',
                 Expression: a,
                 Statement: b
               });
             },
-            peg$c18 = function(a, b) {
+            peg$c20 = function(a, b) {
               return addPositionInfo({
                 type: 'IterationStatement_do',
                 Expression: b,
                 Statement: a
               });
             },
-            peg$c19 = function(a, c, d, e) {
+            peg$c21 = function(a, c, d, e) {
               return addPositionInfo({
                 type: 'IterationStatement_for',
                 Initializer: a,
@@ -3687,63 +3696,56 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 Statement: e
               });
             },
-            peg$c20 = function(a) {
+            peg$c22 = function(a) {
               return addPositionInfo({
                 type: 'JumpStatement_goto',
                 Identifier: a
               });
             },
-            peg$c21 = function() {
+            peg$c23 = function() {
               return addPositionInfo({type: 'JumpStatement_continue'});
             },
-            peg$c22 = function() {
+            peg$c24 = function() {
               return addPositionInfo({type: 'JumpStatement_break'});
             },
-            peg$c23 = function(a) {
+            peg$c25 = function(a) {
               return addPositionInfo({
                 type: 'JumpStatement_return',
                 Expression: a
               });
             },
-            peg$c24 = function(a, b) {
+            peg$c26 = function(a, b) {
               return addPositionInfo({
                 type: 'Declaration',
                 DeclarationSpecifiers: a,
                 InitDeclaratorList: b
               });
             },
-            peg$c25 = function(a, b, c) {
+            peg$c27 = function(a, b, c) {
               return a.concat([b]).concat(c);
-            },
-            peg$c26 = function(a) {
-              return a;
-            },
-            peg$c27 = function(a) {
-              return a;
             },
             peg$c28 = function(a) {
               return a;
             },
-            peg$c29 = function(x) {
+            peg$c29 = function(a) {
+              return a;
+            },
+            peg$c30 = function(x) {
               return x;
             },
-            peg$c30 = function(a, b) {
+            peg$c31 = function(a, b) {
               return [a].concat(b);
             },
-            peg$c31 = function(a, b) {
+            peg$c32 = function(a, b) {
               return addPositionInfo({
                 type: 'InitDeclarator',
                 Declarator: a,
                 Initializers: b
               });
             },
-            peg$c32 = void 0,
-            peg$c33 = function(a) {
+            peg$c33 = void 0,
+            peg$c34 = function(a) {
               return a;
-            },
-            peg$c34 = function(a, b) {
-              b.Pointer = a;
-              return b;
             },
             peg$c35 = function(a) {
               return addPositionInfo({
@@ -3751,124 +3753,140 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 Identifier: a
               });
             },
-            peg$c36 = function(a, b) {
-              return addPositionInfo({
-                type: 'DirectDeclarator_modifier_array',
-                Modifier: a || [],
-                Expression: b
-              });
-            },
-            peg$c37 = function(a, b) {
-              return addPositionInfo({
-                type: 'DirectDeclarator_modifier_array',
-                Modifier: ['static'].concat(a),
-                Expression: b
-              });
-            },
-            peg$c38 = function(a) {
-              return addPositionInfo({
-                type: 'DirectDeclarator_modifier_star_array',
-                Modifier: a.concat['*']
-              });
-            },
-            peg$c39 = function(a) {
+            peg$c36 = function(a) {
               return addPositionInfo({
                 type: 'DirectDeclarator_modifier_ParameterTypeList',
                 ParameterTypeList: a
               });
             },
-            peg$c40 = function(a) {
-              return addPositionInfo({
-                type: 'DirectDeclarator_modifier_IdentifierList',
-                IdentifierList: a
-              });
-            },
-            peg$c41 = function(a, b) {
+            peg$c37 = function(a, b) {
               return addPositionInfo({
                 type: 'DirectDeclarator',
                 left: a,
                 right: b
               });
             },
-            peg$c42 = function(a, b) {
+            peg$c38 = function(a, b) {
+              b.Pointer = a;
+              return b;
+            },
+            peg$c39 = function(a, b) {
+              return addPositionInfo({
+                type: 'DirectDeclarator_modifier_array',
+                Modifier: a || [],
+                Expression: b
+              });
+            },
+            peg$c40 = function(a, b) {
+              return addPositionInfo({
+                type: 'DirectDeclarator_modifier_array',
+                Modifier: ['static'].concat(a),
+                Expression: b
+              });
+            },
+            peg$c41 = function(a) {
+              return addPositionInfo({
+                type: 'DirectDeclarator_modifier_star_array',
+                Modifier: a.concat['*']
+              });
+            },
+            peg$c42 = function(a) {
+              return addPositionInfo({
+                type: 'DirectDeclarator_modifier_IdentifierList',
+                IdentifierList: a
+              });
+            },
+            peg$c43 = function(a, b) {
               return addPositionInfo({
                 type: 'ParameterTypeList',
                 ParameterList: a,
                 varargs: b !== null
               });
             },
-            peg$c43 = function(a, b) {
+            peg$c44 = function(a, b) {
+              if (a)
+                return [a].concat(b);
+              else
+                return b;
+            },
+            peg$c45 = function(a, b) {
               return addPositionInfo({
                 type: 'ParameterDeclaration',
                 DeclarationSpecifiers: a,
                 Declarator: b
               });
             },
-            peg$c44 = function(a, b) {
+            peg$c46 = function(a, b) {
               return addPositionInfo({
                 type: 'TypeName',
                 base: a,
                 extra: b
               });
             },
-            peg$c45 = function(a) {
+            peg$c47 = function(a) {
+              return addPositionInfo({
+                type: 'AbstractDeclarator',
+                Pointer: a
+              });
+            },
+            peg$c48 = function(a) {
               return addPositionInfo({
                 type: 'Initializer_expr',
                 Expression: a
               });
             },
-            peg$c46 = function(a) {
+            peg$c49 = function(a) {
               return addPositionInfo({
                 type: 'Initializer_array',
                 Initializers: a
               });
             },
-            peg$c47 = function(a, b) {
+            peg$c50 = function(a, b) {
               return [a].concat(b);
             },
-            peg$c48 = function(a) {
+            peg$c51 = function(a) {
               return addPositionInfo({
                 type: 'IdentifierExpression',
                 Identifier: a
               });
             },
-            peg$c49 = function(a) {
+            peg$c52 = function(a) {
               return addPositionInfo({
                 type: 'ConstantExpression',
                 Expression: a
               });
             },
-            peg$c50 = function(a) {
+            peg$c53 = function(a) {
               return addPositionInfo({
                 type: 'StringLiteralExpression',
                 value: a
               });
             },
-            peg$c51 = function(a) {
+            peg$c54 = function(a) {
               return addPositionInfo({
                 type: 'ParenthesesExpression',
                 Expression: a
               });
             },
-            peg$c52 = function(c) {
+            peg$c55 = function(c) {
               return [0, c];
             },
-            peg$c53 = function(c) {
+            peg$c56 = function(c) {
               return [1, c ? c : []];
             },
-            peg$c54 = function(c) {
+            peg$c57 = function(c) {
               return [2, c];
             },
-            peg$c55 = function(c) {
+            peg$c58 = function(c) {
               return [3, c];
             },
-            peg$c56 = function(c) {
+            peg$c59 = function(c) {
               return [4];
             },
-            peg$c57 = function(c) {
+            peg$c60 = function(c) {
               return [5];
             },
-            peg$c58 = function(a, b) {
+            peg$c61 = function(a, b) {
               if (b.length > 0) {
                 var ret = addPositionInfo({Expression: a});
                 for (var i = 0; i < b.length; i++) {
@@ -3903,54 +3921,54 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               } else
                 return a;
             },
-            peg$c59 = function(a, b) {
+            peg$c62 = function(a, b) {
               var ret = [a];
               for (var i = 0; i < b.length; i++)
                 ret.push(b[i][1]);
               return ret;
             },
-            peg$c60 = function(a) {
+            peg$c63 = function(a) {
               return addPositionInfo({
                 type: 'UnaryExpression_PreIncrement',
                 Expression: a
               });
             },
-            peg$c61 = function(a) {
+            peg$c64 = function(a) {
               return addPositionInfo({
                 type: 'UnaryExpression_PreDecrement',
                 Expression: a
               });
             },
-            peg$c62 = function(a, b) {
+            peg$c65 = function(a, b) {
               return addPositionInfo({
                 type: 'UnaryExpression',
                 op: a,
                 Expression: b
               });
             },
-            peg$c63 = function(a) {
+            peg$c66 = function(a) {
               return addPositionInfo({
                 type: 'UnaryExpression_Sizeof_Expr',
                 Expression: a
               });
             },
-            peg$c64 = function(a) {
+            peg$c67 = function(a) {
               return addPositionInfo({
                 type: 'UnaryExpression_Sizeof_Type',
                 TypeName: a
               });
             },
-            peg$c65 = function(a, b) {
+            peg$c68 = function(a, b) {
               return addPositionInfo({
                 type: 'CastExpression',
                 TypeName: a[1],
                 Expression: b
               });
             },
-            peg$c66 = function(a, b) {
+            peg$c69 = function(a, b) {
               return buildRecursiveBinop(a, b);
             },
-            peg$c67 = function(a, b) {
+            peg$c70 = function(a, b) {
               var ret = a;
               for (var i = 0; i < b.length; i++) {
                 ret = addPositionInfo({
@@ -3962,7 +3980,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               return ret;
             },
-            peg$c68 = function(a, b, c) {
+            peg$c71 = function(a, b, c) {
               return addPositionInfo({
                 type: 'BinOpExpression',
                 op: b,
@@ -3970,307 +3988,307 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 right: c
               });
             },
-            peg$c69 = function(a) {
+            peg$c72 = function(a) {
               return a.join('');
             },
-            peg$c70 = /^[ \n\r\t\x0B\f]/,
-            peg$c71 = {
+            peg$c73 = /^[ \n\r\t\x0B\f]/,
+            peg$c74 = {
               type: "class",
               value: "[ \\n\\r\\t\\x0B\\f]",
               description: "[ \\n\\r\\t\\x0B\\f]"
             },
-            peg$c72 = "/*",
-            peg$c73 = {
+            peg$c75 = "/*",
+            peg$c76 = {
               type: "literal",
               value: "/*",
               description: "\"/*\""
             },
-            peg$c74 = "*/",
-            peg$c75 = {
+            peg$c77 = "*/",
+            peg$c78 = {
               type: "literal",
               value: "*/",
               description: "\"*/\""
             },
-            peg$c76 = function(a) {
+            peg$c79 = function(a) {
               return a.join('');
             },
-            peg$c77 = "//",
-            peg$c78 = {
+            peg$c80 = "//",
+            peg$c81 = {
               type: "literal",
               value: "//",
               description: "\"//\""
             },
-            peg$c79 = "\n",
-            peg$c80 = {
+            peg$c82 = "\n",
+            peg$c83 = {
               type: "literal",
               value: "\n",
               description: "\"\\n\""
             },
-            peg$c81 = "auto",
-            peg$c82 = {
+            peg$c84 = "auto",
+            peg$c85 = {
               type: "literal",
               value: "auto",
               description: "\"auto\""
             },
-            peg$c83 = "break",
-            peg$c84 = {
+            peg$c86 = "break",
+            peg$c87 = {
               type: "literal",
               value: "break",
               description: "\"break\""
             },
-            peg$c85 = "case",
-            peg$c86 = {
+            peg$c88 = "case",
+            peg$c89 = {
               type: "literal",
               value: "case",
               description: "\"case\""
             },
-            peg$c87 = "char",
-            peg$c88 = {
+            peg$c90 = "char",
+            peg$c91 = {
               type: "literal",
               value: "char",
               description: "\"char\""
             },
-            peg$c89 = "const",
-            peg$c90 = {
+            peg$c92 = "const",
+            peg$c93 = {
               type: "literal",
               value: "const",
               description: "\"const\""
             },
-            peg$c91 = "continue",
-            peg$c92 = {
+            peg$c94 = "continue",
+            peg$c95 = {
               type: "literal",
               value: "continue",
               description: "\"continue\""
             },
-            peg$c93 = "default",
-            peg$c94 = {
+            peg$c96 = "default",
+            peg$c97 = {
               type: "literal",
               value: "default",
               description: "\"default\""
             },
-            peg$c95 = "double",
-            peg$c96 = {
+            peg$c98 = "double",
+            peg$c99 = {
               type: "literal",
               value: "double",
               description: "\"double\""
             },
-            peg$c97 = "do",
-            peg$c98 = {
+            peg$c100 = "do",
+            peg$c101 = {
               type: "literal",
               value: "do",
               description: "\"do\""
             },
-            peg$c99 = "else",
-            peg$c100 = {
+            peg$c102 = "else",
+            peg$c103 = {
               type: "literal",
               value: "else",
               description: "\"else\""
             },
-            peg$c101 = "enum",
-            peg$c102 = {
+            peg$c104 = "enum",
+            peg$c105 = {
               type: "literal",
               value: "enum",
               description: "\"enum\""
             },
-            peg$c103 = "extern",
-            peg$c104 = {
+            peg$c106 = "extern",
+            peg$c107 = {
               type: "literal",
               value: "extern",
               description: "\"extern\""
             },
-            peg$c105 = "float",
-            peg$c106 = {
+            peg$c108 = "float",
+            peg$c109 = {
               type: "literal",
               value: "float",
               description: "\"float\""
             },
-            peg$c107 = "for",
-            peg$c108 = {
+            peg$c110 = "for",
+            peg$c111 = {
               type: "literal",
               value: "for",
               description: "\"for\""
             },
-            peg$c109 = "goto",
-            peg$c110 = {
+            peg$c112 = "goto",
+            peg$c113 = {
               type: "literal",
               value: "goto",
               description: "\"goto\""
             },
-            peg$c111 = "if",
-            peg$c112 = {
+            peg$c114 = "if",
+            peg$c115 = {
               type: "literal",
               value: "if",
               description: "\"if\""
             },
-            peg$c113 = "int",
-            peg$c114 = {
+            peg$c116 = "int",
+            peg$c117 = {
               type: "literal",
               value: "int",
               description: "\"int\""
             },
-            peg$c115 = "inline",
-            peg$c116 = {
+            peg$c118 = "inline",
+            peg$c119 = {
               type: "literal",
               value: "inline",
               description: "\"inline\""
             },
-            peg$c117 = "long",
-            peg$c118 = {
+            peg$c120 = "long",
+            peg$c121 = {
               type: "literal",
               value: "long",
               description: "\"long\""
             },
-            peg$c119 = "register",
-            peg$c120 = {
+            peg$c122 = "register",
+            peg$c123 = {
               type: "literal",
               value: "register",
               description: "\"register\""
             },
-            peg$c121 = "restrict",
-            peg$c122 = {
+            peg$c124 = "restrict",
+            peg$c125 = {
               type: "literal",
               value: "restrict",
               description: "\"restrict\""
             },
-            peg$c123 = "return",
-            peg$c124 = {
+            peg$c126 = "return",
+            peg$c127 = {
               type: "literal",
               value: "return",
               description: "\"return\""
             },
-            peg$c125 = "short",
-            peg$c126 = {
+            peg$c128 = "short",
+            peg$c129 = {
               type: "literal",
               value: "short",
               description: "\"short\""
             },
-            peg$c127 = "signed",
-            peg$c128 = {
+            peg$c130 = "signed",
+            peg$c131 = {
               type: "literal",
               value: "signed",
               description: "\"signed\""
             },
-            peg$c129 = "sizeof",
-            peg$c130 = {
+            peg$c132 = "sizeof",
+            peg$c133 = {
               type: "literal",
               value: "sizeof",
               description: "\"sizeof\""
             },
-            peg$c131 = "static",
-            peg$c132 = {
+            peg$c134 = "static",
+            peg$c135 = {
               type: "literal",
               value: "static",
               description: "\"static\""
             },
-            peg$c133 = "struct",
-            peg$c134 = {
+            peg$c136 = "struct",
+            peg$c137 = {
               type: "literal",
               value: "struct",
               description: "\"struct\""
             },
-            peg$c135 = "switch",
-            peg$c136 = {
+            peg$c138 = "switch",
+            peg$c139 = {
               type: "literal",
               value: "switch",
               description: "\"switch\""
             },
-            peg$c137 = "typedef",
-            peg$c138 = {
+            peg$c140 = "typedef",
+            peg$c141 = {
               type: "literal",
               value: "typedef",
               description: "\"typedef\""
             },
-            peg$c139 = "union",
-            peg$c140 = {
+            peg$c142 = "union",
+            peg$c143 = {
               type: "literal",
               value: "union",
               description: "\"union\""
             },
-            peg$c141 = "unsigned",
-            peg$c142 = {
+            peg$c144 = "unsigned",
+            peg$c145 = {
               type: "literal",
               value: "unsigned",
               description: "\"unsigned\""
             },
-            peg$c143 = "void",
-            peg$c144 = {
+            peg$c146 = "void",
+            peg$c147 = {
               type: "literal",
               value: "void",
               description: "\"void\""
             },
-            peg$c145 = "volatile",
-            peg$c146 = {
+            peg$c148 = "volatile",
+            peg$c149 = {
               type: "literal",
               value: "volatile",
               description: "\"volatile\""
             },
-            peg$c147 = "while",
-            peg$c148 = {
+            peg$c150 = "while",
+            peg$c151 = {
               type: "literal",
               value: "while",
               description: "\"while\""
             },
-            peg$c149 = "_Bool",
-            peg$c150 = {
+            peg$c152 = "_Bool",
+            peg$c153 = {
               type: "literal",
               value: "_Bool",
               description: "\"_Bool\""
             },
-            peg$c151 = "_Complex",
-            peg$c152 = {
+            peg$c154 = "_Complex",
+            peg$c155 = {
               type: "literal",
               value: "_Complex",
               description: "\"_Complex\""
             },
-            peg$c153 = "_stdcall",
-            peg$c154 = {
+            peg$c156 = "_stdcall",
+            peg$c157 = {
               type: "literal",
               value: "_stdcall",
               description: "\"_stdcall\""
             },
-            peg$c155 = "__declspec",
-            peg$c156 = {
+            peg$c158 = "__declspec",
+            peg$c159 = {
               type: "literal",
               value: "__declspec",
               description: "\"__declspec\""
             },
-            peg$c157 = "__attribute__",
-            peg$c158 = {
+            peg$c160 = "__attribute__",
+            peg$c161 = {
               type: "literal",
               value: "__attribute__",
               description: "\"__attribute__\""
             },
-            peg$c159 = "namespace",
-            peg$c160 = {
+            peg$c162 = "namespace",
+            peg$c163 = {
               type: "literal",
               value: "namespace",
               description: "\"namespace\""
             },
-            peg$c161 = "using",
-            peg$c162 = {
+            peg$c164 = "using",
+            peg$c165 = {
               type: "literal",
               value: "using",
               description: "\"using\""
             },
-            peg$c163 = "true",
-            peg$c164 = {
+            peg$c166 = "true",
+            peg$c167 = {
               type: "literal",
               value: "true",
               description: "\"true\""
             },
-            peg$c165 = "false",
-            peg$c166 = {
+            peg$c168 = "false",
+            peg$c169 = {
               type: "literal",
               value: "false",
               description: "\"false\""
             },
-            peg$c167 = "_Imaginary",
-            peg$c168 = {
+            peg$c170 = "_Imaginary",
+            peg$c171 = {
               type: "literal",
               value: "_Imaginary",
               description: "\"_Imaginary\""
             },
-            peg$c169 = function(a, b, c) {
+            peg$c172 = function(a, b, c) {
               var scope = a ? "global" : null;
               for (var i = 0; i < b.length; i++) {
                 scope = addPositionInfo({
@@ -4285,76 +4303,76 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 Identifier: c
               });
             },
-            peg$c170 = function(a, b) {
+            peg$c173 = function(a, b) {
               return a + b.join('');
             },
-            peg$c171 = /^[a-z]/,
-            peg$c172 = {
+            peg$c174 = /^[a-z]/,
+            peg$c175 = {
               type: "class",
               value: "[a-z]",
               description: "[a-z]"
             },
-            peg$c173 = /^[A-Z]/,
-            peg$c174 = {
+            peg$c176 = /^[A-Z]/,
+            peg$c177 = {
               type: "class",
               value: "[A-Z]",
               description: "[A-Z]"
             },
-            peg$c175 = /^[_]/,
-            peg$c176 = {
+            peg$c178 = /^[_]/,
+            peg$c179 = {
               type: "class",
               value: "[_]",
               description: "[_]"
             },
-            peg$c177 = /^[0-9]/,
-            peg$c178 = {
+            peg$c180 = /^[0-9]/,
+            peg$c181 = {
               type: "class",
               value: "[0-9]",
               description: "[0-9]"
             },
-            peg$c179 = "\\u",
-            peg$c180 = {
+            peg$c182 = "\\u",
+            peg$c183 = {
               type: "literal",
               value: "\\u",
               description: "\"\\\\u\""
             },
-            peg$c181 = "\\U",
-            peg$c182 = {
+            peg$c184 = "\\U",
+            peg$c185 = {
               type: "literal",
               value: "\\U",
               description: "\"\\\\U\""
             },
-            peg$c183 = function(a) {
+            peg$c186 = function(a) {
               return addPositionInfo({
                 type: 'BooleanConstant',
                 value: a
               });
             },
-            peg$c184 = /^[1-9]/,
-            peg$c185 = {
+            peg$c187 = /^[1-9]/,
+            peg$c188 = {
               type: "class",
               value: "[1-9]",
               description: "[1-9]"
             },
-            peg$c186 = function(a, b) {
+            peg$c189 = function(a, b) {
               return addPositionInfo({
                 type: 'DecimalConstant',
                 value: a + b.join("")
               });
             },
-            peg$c187 = "0",
-            peg$c188 = {
+            peg$c190 = "0",
+            peg$c191 = {
               type: "literal",
               value: "0",
               description: "\"0\""
             },
-            peg$c189 = /^[0-7]/,
-            peg$c190 = {
+            peg$c192 = /^[0-7]/,
+            peg$c193 = {
               type: "class",
               value: "[0-7]",
               description: "[0-7]"
             },
-            peg$c191 = function(a) {
+            peg$c194 = function(a) {
               if (a.length > 0)
                 return addPositionInfo({
                   type: 'OctalConstant',
@@ -4366,79 +4384,79 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   value: '0'
                 });
             },
-            peg$c192 = function(a) {
+            peg$c195 = function(a) {
               return addPositionInfo({
                 type: 'HexConstant',
                 value: a.join("")
               });
             },
-            peg$c193 = "0x",
-            peg$c194 = {
+            peg$c196 = "0x",
+            peg$c197 = {
               type: "literal",
               value: "0x",
               description: "\"0x\""
             },
-            peg$c195 = "0X",
-            peg$c196 = {
+            peg$c198 = "0X",
+            peg$c199 = {
               type: "literal",
               value: "0X",
               description: "\"0X\""
             },
-            peg$c197 = /^[a-f]/,
-            peg$c198 = {
+            peg$c200 = /^[a-f]/,
+            peg$c201 = {
               type: "class",
               value: "[a-f]",
               description: "[a-f]"
             },
-            peg$c199 = /^[A-F]/,
-            peg$c200 = {
+            peg$c202 = /^[A-F]/,
+            peg$c203 = {
               type: "class",
               value: "[A-F]",
               description: "[A-F]"
             },
-            peg$c201 = "0b",
-            peg$c202 = {
+            peg$c204 = "0b",
+            peg$c205 = {
               type: "literal",
               value: "0b",
               description: "\"0b\""
             },
-            peg$c203 = /^[0-1]/,
-            peg$c204 = {
+            peg$c206 = /^[0-1]/,
+            peg$c207 = {
               type: "class",
               value: "[0-1]",
               description: "[0-1]"
             },
-            peg$c205 = function(a) {
+            peg$c208 = function(a) {
               return addPositionInfo({
                 type: 'BinaryConstant',
                 value: a.join("")
               });
             },
-            peg$c206 = /^[uU]/,
-            peg$c207 = {
+            peg$c209 = /^[uU]/,
+            peg$c210 = {
               type: "class",
               value: "[uU]",
               description: "[uU]"
             },
-            peg$c208 = "ll",
-            peg$c209 = {
+            peg$c211 = "ll",
+            peg$c212 = {
               type: "literal",
               value: "ll",
               description: "\"ll\""
             },
-            peg$c210 = "LL",
-            peg$c211 = {
+            peg$c213 = "LL",
+            peg$c214 = {
               type: "literal",
               value: "LL",
               description: "\"LL\""
             },
-            peg$c212 = /^[lL]/,
-            peg$c213 = {
+            peg$c215 = /^[lL]/,
+            peg$c216 = {
               type: "class",
               value: "[lL]",
               description: "[lL]"
             },
-            peg$c214 = function(a, b) {
+            peg$c217 = function(a, b) {
               if (b)
                 return addPositionInfo({
                   type: 'FloatConstant',
@@ -4447,118 +4465,118 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               else
                 return a;
             },
-            peg$c215 = function(a, b) {
+            peg$c218 = function(a, b) {
               return addPositionInfo({
                 type: 'DecimalFloatConstant',
                 value: a + b || ''
               });
             },
-            peg$c216 = function(a, b) {
+            peg$c219 = function(a, b) {
               return addPositionInfo({
                 type: 'DecimalFloatConstant',
                 value: a.join('') + b
               });
             },
-            peg$c217 = function(a, b, c) {
+            peg$c220 = function(a, b, c) {
               return addPositionInfo({
                 type: 'HexFloatConstant',
                 value: a + b + c || ''
               });
             },
-            peg$c218 = function(a, b, c) {
+            peg$c221 = function(a, b, c) {
               return addPositionInfo({
                 type: 'HexFloatConstant',
                 value: a + b.join('') + c
               });
             },
-            peg$c219 = ".",
-            peg$c220 = {
+            peg$c222 = ".",
+            peg$c223 = {
               type: "literal",
               value: ".",
               description: "\".\""
             },
-            peg$c221 = function(a, b) {
+            peg$c224 = function(a, b) {
               return a.join('') + '.' + b.join('');
             },
-            peg$c222 = function(a) {
+            peg$c225 = function(a) {
               return a.join('') + '.';
             },
-            peg$c223 = /^[eE]/,
-            peg$c224 = {
+            peg$c226 = /^[eE]/,
+            peg$c227 = {
               type: "class",
               value: "[eE]",
               description: "[eE]"
             },
-            peg$c225 = /^[+\-]/,
-            peg$c226 = {
+            peg$c228 = /^[+\-]/,
+            peg$c229 = {
               type: "class",
               value: "[+\\-]",
               description: "[+\\-]"
             },
-            peg$c227 = function(a, b, c) {
+            peg$c230 = function(a, b, c) {
               return a + (b || "") + c.join('');
             },
-            peg$c228 = /^[pP]/,
-            peg$c229 = {
+            peg$c231 = /^[pP]/,
+            peg$c232 = {
               type: "class",
               value: "[pP]",
               description: "[pP]"
             },
-            peg$c230 = function(a, b) {
+            peg$c233 = function(a, b) {
               return a + b.join('');
             },
-            peg$c231 = /^[flFL]/,
-            peg$c232 = {
+            peg$c234 = /^[flFL]/,
+            peg$c235 = {
               type: "class",
               value: "[flFL]",
               description: "[flFL]"
             },
-            peg$c233 = function(a) {
+            peg$c236 = function(a) {
               return addPositionInfo({
                 type: 'EnumerationConstant',
                 Identifier: a
               });
             },
-            peg$c234 = "L",
-            peg$c235 = {
+            peg$c237 = "L",
+            peg$c238 = {
               type: "literal",
               value: "L",
               description: "\"L\""
             },
-            peg$c236 = "'",
-            peg$c237 = {
+            peg$c239 = "'",
+            peg$c240 = {
               type: "literal",
               value: "'",
               description: "\"'\""
             },
-            peg$c238 = function(a) {
+            peg$c241 = function(a) {
               return addPositionInfo({
                 type: 'CharacterConstant',
                 Char: a
               });
             },
-            peg$c239 = /^['\n\\]/,
-            peg$c240 = {
+            peg$c242 = /^['\n\\]/,
+            peg$c243 = {
               type: "class",
               value: "['\\n\\\\]",
               description: "['\\n\\\\]"
             },
-            peg$c241 = "\\",
-            peg$c242 = {
+            peg$c244 = "\\",
+            peg$c245 = {
               type: "literal",
               value: "\\",
               description: "\"\\\\\""
             },
-            peg$c243 = /^['"?\\abfnrtv]/,
-            peg$c244 = {
+            peg$c246 = /^['"?\\abfnrtv]/,
+            peg$c247 = {
               type: "class",
               value: "['\"?\\\\abfnrtv]",
               description: "['\"?\\\\abfnrtv]"
             },
-            peg$c245 = function(a, b) {
+            peg$c248 = function(a, b) {
               return eval('"' + a + b + '"');
             },
-            peg$c246 = function(a, b, c, d) {
+            peg$c249 = function(a, b, c, d) {
               var ret = "\"";
               ret += a;
               ret += b;
@@ -4569,380 +4587,380 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               ret += "\"";
               return eval(ret);
             },
-            peg$c247 = "\\x",
-            peg$c248 = {
+            peg$c250 = "\\x",
+            peg$c251 = {
               type: "literal",
               value: "\\x",
               description: "\"\\\\x\""
             },
-            peg$c249 = function(a, b) {
+            peg$c252 = function(a, b) {
               return eval('"' + a + b.join('') + '"');
             },
-            peg$c250 = "u8",
-            peg$c251 = {
+            peg$c253 = "u8",
+            peg$c254 = {
               type: "literal",
               value: "u8",
               description: "\"u8\""
             },
-            peg$c252 = "u",
-            peg$c253 = {
+            peg$c255 = "u",
+            peg$c256 = {
               type: "literal",
               value: "u",
               description: "\"u\""
             },
-            peg$c254 = "U",
-            peg$c255 = {
+            peg$c257 = "U",
+            peg$c258 = {
               type: "literal",
               value: "U",
               description: "\"U\""
             },
-            peg$c256 = function(a, b) {
+            peg$c259 = function(a, b) {
               return addPositionInfo({
                 type: 'StringLiteral',
                 prefix: a,
                 value: b
               });
             },
-            peg$c257 = "R",
-            peg$c258 = {
+            peg$c260 = "R",
+            peg$c261 = {
               type: "literal",
               value: "R",
               description: "\"R\""
             },
-            peg$c259 = /^["]/,
-            peg$c260 = {
+            peg$c262 = /^["]/,
+            peg$c263 = {
               type: "class",
               value: "[\"]",
               description: "[\"]"
             },
-            peg$c261 = function(a) {
+            peg$c264 = function(a) {
               return a.join('');
             },
-            peg$c262 = /^["\n]/,
-            peg$c263 = {
+            peg$c265 = /^["\n]/,
+            peg$c266 = {
               type: "class",
               value: "[\"\\n]",
               description: "[\"\\n]"
             },
-            peg$c264 = /^["\n\\]/,
-            peg$c265 = {
+            peg$c267 = /^["\n\\]/,
+            peg$c268 = {
               type: "class",
               value: "[\"\\n\\\\]",
               description: "[\"\\n\\\\]"
             },
-            peg$c266 = "[",
-            peg$c267 = {
+            peg$c269 = "[",
+            peg$c270 = {
               type: "literal",
               value: "[",
               description: "\"[\""
             },
-            peg$c268 = "]",
-            peg$c269 = {
+            peg$c271 = "]",
+            peg$c272 = {
               type: "literal",
               value: "]",
               description: "\"]\""
             },
-            peg$c270 = "(",
-            peg$c271 = {
+            peg$c273 = "(",
+            peg$c274 = {
               type: "literal",
               value: "(",
               description: "\"(\""
             },
-            peg$c272 = ")",
-            peg$c273 = {
+            peg$c275 = ")",
+            peg$c276 = {
               type: "literal",
               value: ")",
               description: "\")\""
             },
-            peg$c274 = "{",
-            peg$c275 = {
+            peg$c277 = "{",
+            peg$c278 = {
               type: "literal",
               value: "{",
               description: "\"{\""
             },
-            peg$c276 = "}",
-            peg$c277 = {
+            peg$c279 = "}",
+            peg$c280 = {
               type: "literal",
               value: "}",
               description: "\"}\""
             },
-            peg$c278 = "->",
-            peg$c279 = {
+            peg$c281 = "->",
+            peg$c282 = {
               type: "literal",
               value: "->",
               description: "\"->\""
             },
-            peg$c280 = "++",
-            peg$c281 = {
+            peg$c283 = "++",
+            peg$c284 = {
               type: "literal",
               value: "++",
               description: "\"++\""
             },
-            peg$c282 = "--",
-            peg$c283 = {
+            peg$c285 = "--",
+            peg$c286 = {
               type: "literal",
               value: "--",
               description: "\"--\""
             },
-            peg$c284 = "&",
-            peg$c285 = {
+            peg$c287 = "&",
+            peg$c288 = {
               type: "literal",
               value: "&",
               description: "\"&\""
             },
-            peg$c286 = /^[&]/,
-            peg$c287 = {
+            peg$c289 = /^[&]/,
+            peg$c290 = {
               type: "class",
               value: "[&]",
               description: "[&]"
             },
-            peg$c288 = "*",
-            peg$c289 = {
+            peg$c291 = "*",
+            peg$c292 = {
               type: "literal",
               value: "*",
               description: "\"*\""
             },
-            peg$c290 = /^[=]/,
-            peg$c291 = {
+            peg$c293 = /^[=]/,
+            peg$c294 = {
               type: "class",
               value: "[=]",
               description: "[=]"
             },
-            peg$c292 = "+",
-            peg$c293 = {
+            peg$c295 = "+",
+            peg$c296 = {
               type: "literal",
               value: "+",
               description: "\"+\""
             },
-            peg$c294 = /^[+=]/,
-            peg$c295 = {
+            peg$c297 = /^[+=]/,
+            peg$c298 = {
               type: "class",
               value: "[+=]",
               description: "[+=]"
             },
-            peg$c296 = "-",
-            peg$c297 = {
+            peg$c299 = "-",
+            peg$c300 = {
               type: "literal",
               value: "-",
               description: "\"-\""
             },
-            peg$c298 = /^[\-=>]/,
-            peg$c299 = {
+            peg$c301 = /^[\-=>]/,
+            peg$c302 = {
               type: "class",
               value: "[\\-=>]",
               description: "[\\-=>]"
             },
-            peg$c300 = "~",
-            peg$c301 = {
+            peg$c303 = "~",
+            peg$c304 = {
               type: "literal",
               value: "~",
               description: "\"~\""
             },
-            peg$c302 = "!",
-            peg$c303 = {
+            peg$c305 = "!",
+            peg$c306 = {
               type: "literal",
               value: "!",
               description: "\"!\""
             },
-            peg$c304 = "/",
-            peg$c305 = {
+            peg$c307 = "/",
+            peg$c308 = {
               type: "literal",
               value: "/",
               description: "\"/\""
             },
-            peg$c306 = "%",
-            peg$c307 = {
+            peg$c309 = "%",
+            peg$c310 = {
               type: "literal",
               value: "%",
               description: "\"%\""
             },
-            peg$c308 = /^[=>]/,
-            peg$c309 = {
+            peg$c311 = /^[=>]/,
+            peg$c312 = {
               type: "class",
               value: "[=>]",
               description: "[=>]"
             },
-            peg$c310 = "<<",
-            peg$c311 = {
+            peg$c313 = "<<",
+            peg$c314 = {
               type: "literal",
               value: "<<",
               description: "\"<<\""
             },
-            peg$c312 = ">>",
-            peg$c313 = {
+            peg$c315 = ">>",
+            peg$c316 = {
               type: "literal",
               value: ">>",
               description: "\">>\""
             },
-            peg$c314 = "<",
-            peg$c315 = {
+            peg$c317 = "<",
+            peg$c318 = {
               type: "literal",
               value: "<",
               description: "\"<\""
             },
-            peg$c316 = ">",
-            peg$c317 = {
+            peg$c319 = ">",
+            peg$c320 = {
               type: "literal",
               value: ">",
               description: "\">\""
             },
-            peg$c318 = "<=",
-            peg$c319 = {
+            peg$c321 = "<=",
+            peg$c322 = {
               type: "literal",
               value: "<=",
               description: "\"<=\""
             },
-            peg$c320 = ">=",
-            peg$c321 = {
+            peg$c323 = ">=",
+            peg$c324 = {
               type: "literal",
               value: ">=",
               description: "\">=\""
             },
-            peg$c322 = "==",
-            peg$c323 = {
+            peg$c325 = "==",
+            peg$c326 = {
               type: "literal",
               value: "==",
               description: "\"==\""
             },
-            peg$c324 = "!=",
-            peg$c325 = {
+            peg$c327 = "!=",
+            peg$c328 = {
               type: "literal",
               value: "!=",
               description: "\"!=\""
             },
-            peg$c326 = "^",
-            peg$c327 = {
+            peg$c329 = "^",
+            peg$c330 = {
               type: "literal",
               value: "^",
               description: "\"^\""
             },
-            peg$c328 = "|",
-            peg$c329 = {
+            peg$c331 = "|",
+            peg$c332 = {
               type: "literal",
               value: "|",
               description: "\"|\""
             },
-            peg$c330 = "&&",
-            peg$c331 = {
+            peg$c333 = "&&",
+            peg$c334 = {
               type: "literal",
               value: "&&",
               description: "\"&&\""
             },
-            peg$c332 = "||",
-            peg$c333 = {
+            peg$c335 = "||",
+            peg$c336 = {
               type: "literal",
               value: "||",
               description: "\"||\""
             },
-            peg$c334 = "?",
-            peg$c335 = {
+            peg$c337 = "?",
+            peg$c338 = {
               type: "literal",
               value: "?",
               description: "\"?\""
             },
-            peg$c336 = ":",
-            peg$c337 = {
+            peg$c339 = ":",
+            peg$c340 = {
               type: "literal",
               value: ":",
               description: "\":\""
             },
-            peg$c338 = /^[>]/,
-            peg$c339 = {
+            peg$c341 = /^[>]/,
+            peg$c342 = {
               type: "class",
               value: "[>]",
               description: "[>]"
             },
-            peg$c340 = ";",
-            peg$c341 = {
+            peg$c343 = ";",
+            peg$c344 = {
               type: "literal",
               value: ";",
               description: "\";\""
             },
-            peg$c342 = "...",
-            peg$c343 = {
+            peg$c345 = "...",
+            peg$c346 = {
               type: "literal",
               value: "...",
               description: "\"...\""
             },
-            peg$c344 = "=",
-            peg$c345 = {
+            peg$c347 = "=",
+            peg$c348 = {
               type: "literal",
               value: "=",
               description: "\"=\""
             },
-            peg$c346 = "*=",
-            peg$c347 = {
+            peg$c349 = "*=",
+            peg$c350 = {
               type: "literal",
               value: "*=",
               description: "\"*=\""
             },
-            peg$c348 = "/=",
-            peg$c349 = {
+            peg$c351 = "/=",
+            peg$c352 = {
               type: "literal",
               value: "/=",
               description: "\"/=\""
             },
-            peg$c350 = "%=",
-            peg$c351 = {
+            peg$c353 = "%=",
+            peg$c354 = {
               type: "literal",
               value: "%=",
               description: "\"%=\""
             },
-            peg$c352 = "+=",
-            peg$c353 = {
+            peg$c355 = "+=",
+            peg$c356 = {
               type: "literal",
               value: "+=",
               description: "\"+=\""
             },
-            peg$c354 = "-=",
-            peg$c355 = {
+            peg$c357 = "-=",
+            peg$c358 = {
               type: "literal",
               value: "-=",
               description: "\"-=\""
             },
-            peg$c356 = "<<=",
-            peg$c357 = {
+            peg$c359 = "<<=",
+            peg$c360 = {
               type: "literal",
               value: "<<=",
               description: "\"<<=\""
             },
-            peg$c358 = ">>=",
-            peg$c359 = {
+            peg$c361 = ">>=",
+            peg$c362 = {
               type: "literal",
               value: ">>=",
               description: "\">>=\""
             },
-            peg$c360 = "&=",
-            peg$c361 = {
+            peg$c363 = "&=",
+            peg$c364 = {
               type: "literal",
               value: "&=",
               description: "\"&=\""
             },
-            peg$c362 = "^=",
-            peg$c363 = {
+            peg$c365 = "^=",
+            peg$c366 = {
               type: "literal",
               value: "^=",
               description: "\"^=\""
             },
-            peg$c364 = "|=",
-            peg$c365 = {
+            peg$c367 = "|=",
+            peg$c368 = {
               type: "literal",
               value: "|=",
               description: "\"|=\""
             },
-            peg$c366 = ",",
-            peg$c367 = {
+            peg$c369 = ",",
+            peg$c370 = {
               type: "literal",
               value: ",",
               description: "\",\""
             },
-            peg$c368 = "::",
-            peg$c369 = {
+            peg$c371 = "::",
+            peg$c372 = {
               type: "literal",
               value: "::",
               description: "\"::\""
             },
-            peg$c370 = {
+            peg$c373 = {
               type: "any",
               description: "any character"
             },
@@ -5126,9 +5144,12 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           var s0;
           s0 = peg$parseNamespace();
           if (s0 === peg$FAILED) {
-            s0 = peg$parseFunctionDefinition();
+            s0 = peg$parseTypedefDeclaration();
             if (s0 === peg$FAILED) {
-              s0 = peg$parseDeclaration();
+              s0 = peg$parseFunctionDefinition();
+              if (s0 === peg$FAILED) {
+                s0 = peg$parseDeclaration();
+              }
             }
           }
           return s0;
@@ -5321,41 +5342,111 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           return s0;
         }
-        function peg$parseFunctionDefinition() {
+        function peg$parseTypedefDeclaration() {
           var s0,
               s1,
               s2,
               s3,
               s4,
-              s5;
+              s5,
+              s6,
+              s7;
           s0 = peg$currPos;
-          s1 = peg$parseDeclarationSpecifiers();
+          s1 = peg$parseTYPEDEF();
           if (s1 !== peg$FAILED) {
-            s2 = peg$parseDeclarator();
+            s2 = peg$parseDeclarationSpecifiers();
             if (s2 !== peg$FAILED) {
-              s3 = peg$parseDeclarationList();
-              if (s3 === peg$FAILED) {
-                s3 = peg$c7;
-              }
+              s3 = peg$parseDeclarator();
               if (s3 !== peg$FAILED) {
-                s4 = peg$currPos;
-                s5 = peg$parseSEMI();
-                if (s5 !== peg$FAILED) {
-                  peg$reportedPos = s4;
-                  s5 = peg$c8();
+                s4 = [];
+                s5 = peg$currPos;
+                s6 = peg$parseCOMMA();
+                if (s6 !== peg$FAILED) {
+                  s7 = peg$parseDeclarator();
+                  if (s7 !== peg$FAILED) {
+                    peg$reportedPos = s5;
+                    s6 = peg$c7(s7);
+                    s5 = s6;
+                  } else {
+                    peg$currPos = s5;
+                    s5 = peg$c0;
+                  }
+                } else {
+                  peg$currPos = s5;
+                  s5 = peg$c0;
                 }
-                s4 = s5;
-                if (s4 === peg$FAILED) {
-                  s4 = peg$parseCompoundStatement();
+                while (s5 !== peg$FAILED) {
+                  s4.push(s5);
+                  s5 = peg$currPos;
+                  s6 = peg$parseCOMMA();
+                  if (s6 !== peg$FAILED) {
+                    s7 = peg$parseDeclarator();
+                    if (s7 !== peg$FAILED) {
+                      peg$reportedPos = s5;
+                      s6 = peg$c7(s7);
+                      s5 = s6;
+                    } else {
+                      peg$currPos = s5;
+                      s5 = peg$c0;
+                    }
+                  } else {
+                    peg$currPos = s5;
+                    s5 = peg$c0;
+                  }
                 }
                 if (s4 !== peg$FAILED) {
-                  peg$reportedPos = s0;
-                  s1 = peg$c9(s1, s2, s3, s4);
-                  s0 = s1;
+                  s5 = peg$parseSEMI();
+                  if (s5 !== peg$FAILED) {
+                    peg$reportedPos = s0;
+                    s1 = peg$c8(s2, s3, s4);
+                    s0 = s1;
+                  } else {
+                    peg$currPos = s0;
+                    s0 = peg$c0;
+                  }
                 } else {
                   peg$currPos = s0;
                   s0 = peg$c0;
                 }
+              } else {
+                peg$currPos = s0;
+                s0 = peg$c0;
+              }
+            } else {
+              peg$currPos = s0;
+              s0 = peg$c0;
+            }
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c0;
+          }
+          return s0;
+        }
+        function peg$parseFunctionDefinition() {
+          var s0,
+              s1,
+              s2,
+              s3,
+              s4;
+          s0 = peg$currPos;
+          s1 = peg$parseDeclarationSpecifiers();
+          if (s1 !== peg$FAILED) {
+            s2 = peg$parseFunctionDirectDeclarator();
+            if (s2 !== peg$FAILED) {
+              s3 = peg$currPos;
+              s4 = peg$parseSEMI();
+              if (s4 !== peg$FAILED) {
+                peg$reportedPos = s3;
+                s4 = peg$c9();
+              }
+              s3 = s4;
+              if (s3 === peg$FAILED) {
+                s3 = peg$parseCompoundStatement();
+              }
+              if (s3 !== peg$FAILED) {
+                peg$reportedPos = s0;
+                s1 = peg$c10(s1, s2, s3);
+                s0 = s1;
               } else {
                 peg$currPos = s0;
                 s0 = peg$c0;
@@ -5387,7 +5478,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c10(s1);
+            s1 = peg$c11(s1);
           }
           s0 = s1;
           return s0;
@@ -5433,7 +5524,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseCOLON();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c11(s2);
+                s1 = peg$c12(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -5454,7 +5545,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parseCOLON();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c12();
+                s1 = peg$c13();
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -5491,7 +5582,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseRWING();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c13(s2);
+                s1 = peg$c14(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -5514,13 +5605,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$parseExpression();
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSEMI();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c14(s1);
+              s1 = peg$c16(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -5569,11 +5660,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       s6 = peg$c0;
                     }
                     if (s6 === peg$FAILED) {
-                      s6 = peg$c7;
+                      s6 = peg$c15;
                     }
                     if (s6 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c15(s3, s5, s6);
+                      s1 = peg$c17(s3, s5, s6);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -5612,7 +5703,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s5 = peg$parseStatement();
                     if (s5 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c16(s3, s5);
+                      s1 = peg$c18(s3, s5);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -5659,7 +5750,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s5 = peg$parseStatement();
                   if (s5 !== peg$FAILED) {
                     peg$reportedPos = s0;
-                    s1 = peg$c17(s3, s5);
+                    s1 = peg$c19(s3, s5);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
@@ -5698,7 +5789,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         s7 = peg$parseSEMI();
                         if (s7 !== peg$FAILED) {
                           peg$reportedPos = s0;
-                          s1 = peg$c18(s2, s5);
+                          s1 = peg$c20(s2, s5);
                           s0 = s1;
                         } else {
                           peg$currPos = s0;
@@ -5739,19 +5830,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s3 = peg$parseExpressionStatement();
                   }
                   if (s3 === peg$FAILED) {
-                    s3 = peg$c7;
+                    s3 = peg$c15;
                   }
                   if (s3 !== peg$FAILED) {
                     s4 = peg$parseExpression();
                     if (s4 === peg$FAILED) {
-                      s4 = peg$c7;
+                      s4 = peg$c15;
                     }
                     if (s4 !== peg$FAILED) {
                       s5 = peg$parseSEMI();
                       if (s5 !== peg$FAILED) {
                         s6 = peg$parseExpression();
                         if (s6 === peg$FAILED) {
-                          s6 = peg$c7;
+                          s6 = peg$c15;
                         }
                         if (s6 !== peg$FAILED) {
                           s7 = peg$parseRPAR();
@@ -5759,7 +5850,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                             s8 = peg$parseStatement();
                             if (s8 !== peg$FAILED) {
                               peg$reportedPos = s0;
-                              s1 = peg$c19(s3, s4, s6, s8);
+                              s1 = peg$c21(s3, s4, s6, s8);
                               s0 = s1;
                             } else {
                               peg$currPos = s0;
@@ -5810,7 +5901,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSEMI();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c20(s2);
+                s1 = peg$c22(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -5831,7 +5922,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parseSEMI();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c21();
+                s1 = peg$c23();
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -5848,7 +5939,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s2 = peg$parseSEMI();
                 if (s2 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c22();
+                  s1 = peg$c24();
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -5864,13 +5955,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 if (s1 !== peg$FAILED) {
                   s2 = peg$parseExpression();
                   if (s2 === peg$FAILED) {
-                    s2 = peg$c7;
+                    s2 = peg$c15;
                   }
                   if (s2 !== peg$FAILED) {
                     s3 = peg$parseSEMI();
                     if (s3 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c23(s2);
+                      s1 = peg$c25(s2);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -5899,13 +5990,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s1 !== peg$FAILED) {
             s2 = peg$parseInitDeclaratorList();
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s3 = peg$parseSEMI();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c24(s1, s2);
+                s1 = peg$c26(s1, s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -5971,7 +6062,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               if (s4 !== peg$FAILED) {
                 peg$reportedPos = s1;
-                s2 = peg$c25(s2, s3, s4);
+                s2 = peg$c27(s2, s3, s4);
                 s1 = s2;
               } else {
                 peg$currPos = s1;
@@ -5987,7 +6078,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c26(s1);
+            s1 = peg$c28(s1);
           }
           s0 = s1;
           if (s0 === peg$FAILED) {
@@ -5997,7 +6088,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseStorageClassSpecifier();
             if (s3 !== peg$FAILED) {
               peg$reportedPos = s2;
-              s3 = peg$c27(s3);
+              s3 = peg$c7(s3);
             }
             s2 = s3;
             if (s2 === peg$FAILED) {
@@ -6005,7 +6096,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseTypeSpecifier();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s2;
-                s3 = peg$c27(s3);
+                s3 = peg$c7(s3);
               }
               s2 = s3;
               if (s2 === peg$FAILED) {
@@ -6013,7 +6104,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s3 = peg$parseTypeQualifier();
                 if (s3 !== peg$FAILED) {
                   peg$reportedPos = s2;
-                  s3 = peg$c27(s3);
+                  s3 = peg$c7(s3);
                 }
                 s2 = s3;
                 if (s2 === peg$FAILED) {
@@ -6021,7 +6112,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s3 = peg$parseFunctionSpecifier();
                   if (s3 !== peg$FAILED) {
                     peg$reportedPos = s2;
-                    s3 = peg$c27(s3);
+                    s3 = peg$c7(s3);
                   }
                   s2 = s3;
                 }
@@ -6034,7 +6125,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s3 = peg$parseStorageClassSpecifier();
                 if (s3 !== peg$FAILED) {
                   peg$reportedPos = s2;
-                  s3 = peg$c27(s3);
+                  s3 = peg$c7(s3);
                 }
                 s2 = s3;
                 if (s2 === peg$FAILED) {
@@ -6042,7 +6133,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s3 = peg$parseTypeSpecifier();
                   if (s3 !== peg$FAILED) {
                     peg$reportedPos = s2;
-                    s3 = peg$c27(s3);
+                    s3 = peg$c7(s3);
                   }
                   s2 = s3;
                   if (s2 === peg$FAILED) {
@@ -6050,7 +6141,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s3 = peg$parseTypeQualifier();
                     if (s3 !== peg$FAILED) {
                       peg$reportedPos = s2;
-                      s3 = peg$c27(s3);
+                      s3 = peg$c7(s3);
                     }
                     s2 = s3;
                     if (s2 === peg$FAILED) {
@@ -6058,7 +6149,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       s3 = peg$parseFunctionSpecifier();
                       if (s3 !== peg$FAILED) {
                         peg$reportedPos = s2;
-                        s3 = peg$c27(s3);
+                        s3 = peg$c7(s3);
                       }
                       s2 = s3;
                     }
@@ -6070,7 +6161,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s1 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c28(s1);
+              s1 = peg$c29(s1);
             }
             s0 = s1;
           }
@@ -6093,7 +6184,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5 = peg$parseInitDeclarator();
               if (s5 !== peg$FAILED) {
                 peg$reportedPos = s3;
-                s4 = peg$c29(s5);
+                s4 = peg$c30(s5);
                 s3 = s4;
               } else {
                 peg$currPos = s3;
@@ -6111,7 +6202,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s5 = peg$parseInitDeclarator();
                 if (s5 !== peg$FAILED) {
                   peg$reportedPos = s3;
-                  s4 = peg$c29(s5);
+                  s4 = peg$c30(s5);
                   s3 = s4;
                 } else {
                   peg$currPos = s3;
@@ -6124,7 +6215,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c30(s1, s2);
+              s1 = peg$c31(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -6151,7 +6242,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s4 = peg$parseInitializer();
               if (s4 !== peg$FAILED) {
                 peg$reportedPos = s2;
-                s3 = peg$c29(s4);
+                s3 = peg$c30(s4);
                 s2 = s3;
               } else {
                 peg$currPos = s2;
@@ -6162,11 +6253,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$c0;
             }
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c31(s1, s2);
+              s1 = peg$c32(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -6189,31 +6280,55 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s7,
               s8;
           s0 = peg$currPos;
-          s1 = peg$parseTYPEDEF();
+          s1 = peg$parseEXTERN();
           if (s1 === peg$FAILED) {
-            s1 = peg$parseEXTERN();
+            s1 = peg$parseSTATIC();
             if (s1 === peg$FAILED) {
-              s1 = peg$parseSTATIC();
+              s1 = peg$parseAUTO();
               if (s1 === peg$FAILED) {
-                s1 = peg$parseAUTO();
+                s1 = peg$parseREGISTER();
                 if (s1 === peg$FAILED) {
-                  s1 = peg$parseREGISTER();
-                  if (s1 === peg$FAILED) {
-                    s1 = peg$currPos;
-                    s2 = peg$parseATTRIBUTE();
-                    if (s2 !== peg$FAILED) {
-                      s3 = peg$parseLPAR();
-                      if (s3 !== peg$FAILED) {
-                        s4 = peg$parseLPAR();
-                        if (s4 !== peg$FAILED) {
-                          s5 = [];
+                  s1 = peg$currPos;
+                  s2 = peg$parseATTRIBUTE();
+                  if (s2 !== peg$FAILED) {
+                    s3 = peg$parseLPAR();
+                    if (s3 !== peg$FAILED) {
+                      s4 = peg$parseLPAR();
+                      if (s4 !== peg$FAILED) {
+                        s5 = [];
+                        s6 = peg$currPos;
+                        s7 = peg$currPos;
+                        peg$silentFails++;
+                        s8 = peg$parseRPAR();
+                        peg$silentFails--;
+                        if (s8 === peg$FAILED) {
+                          s7 = peg$c33;
+                        } else {
+                          peg$currPos = s7;
+                          s7 = peg$c0;
+                        }
+                        if (s7 !== peg$FAILED) {
+                          s8 = peg$parse_();
+                          if (s8 !== peg$FAILED) {
+                            s7 = [s7, s8];
+                            s6 = s7;
+                          } else {
+                            peg$currPos = s6;
+                            s6 = peg$c0;
+                          }
+                        } else {
+                          peg$currPos = s6;
+                          s6 = peg$c0;
+                        }
+                        while (s6 !== peg$FAILED) {
+                          s5.push(s6);
                           s6 = peg$currPos;
                           s7 = peg$currPos;
                           peg$silentFails++;
                           s8 = peg$parseRPAR();
                           peg$silentFails--;
                           if (s8 === peg$FAILED) {
-                            s7 = peg$c32;
+                            s7 = peg$c33;
                           } else {
                             peg$currPos = s7;
                             s7 = peg$c0;
@@ -6231,44 +6346,14 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                             peg$currPos = s6;
                             s6 = peg$c0;
                           }
-                          while (s6 !== peg$FAILED) {
-                            s5.push(s6);
-                            s6 = peg$currPos;
-                            s7 = peg$currPos;
-                            peg$silentFails++;
-                            s8 = peg$parseRPAR();
-                            peg$silentFails--;
-                            if (s8 === peg$FAILED) {
-                              s7 = peg$c32;
-                            } else {
-                              peg$currPos = s7;
-                              s7 = peg$c0;
-                            }
+                        }
+                        if (s5 !== peg$FAILED) {
+                          s6 = peg$parseRPAR();
+                          if (s6 !== peg$FAILED) {
+                            s7 = peg$parseRPAR();
                             if (s7 !== peg$FAILED) {
-                              s8 = peg$parse_();
-                              if (s8 !== peg$FAILED) {
-                                s7 = [s7, s8];
-                                s6 = s7;
-                              } else {
-                                peg$currPos = s6;
-                                s6 = peg$c0;
-                              }
-                            } else {
-                              peg$currPos = s6;
-                              s6 = peg$c0;
-                            }
-                          }
-                          if (s5 !== peg$FAILED) {
-                            s6 = peg$parseRPAR();
-                            if (s6 !== peg$FAILED) {
-                              s7 = peg$parseRPAR();
-                              if (s7 !== peg$FAILED) {
-                                s2 = [s2, s3, s4, s5, s6, s7];
-                                s1 = s2;
-                              } else {
-                                peg$currPos = s1;
-                                s1 = peg$c0;
-                              }
+                              s2 = [s2, s3, s4, s5, s6, s7];
+                              s1 = s2;
                             } else {
                               peg$currPos = s1;
                               s1 = peg$c0;
@@ -6289,6 +6374,9 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       peg$currPos = s1;
                       s1 = peg$c0;
                     }
+                  } else {
+                    peg$currPos = s1;
+                    s1 = peg$c0;
                   }
                 }
               }
@@ -6296,7 +6384,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c33(s1);
+            s1 = peg$c34(s1);
           }
           s0 = s1;
           return s0;
@@ -6344,7 +6432,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c33(s1);
+            s1 = peg$c34(s1);
           }
           s0 = s1;
           return s0;
@@ -6363,7 +6451,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s2 = peg$currPos;
             s3 = peg$parseIdentifier();
             if (s3 === peg$FAILED) {
-              s3 = peg$c7;
+              s3 = peg$c15;
             }
             if (s3 !== peg$FAILED) {
               s4 = peg$parseLWING();
@@ -6382,7 +6470,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s6 = peg$parseRWING();
                   if (s6 !== peg$FAILED) {
                     peg$reportedPos = s2;
-                    s3 = peg$c28(s3);
+                    s3 = peg$c29(s3);
                     s2 = s3;
                   } else {
                     peg$currPos = s2;
@@ -6426,7 +6514,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c27(s1);
+            s1 = peg$c7(s1);
           }
           s0 = s1;
           return s0;
@@ -6581,7 +6669,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$parseDeclarator();
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseCOLON();
@@ -6622,7 +6710,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s2 = peg$currPos;
             s3 = peg$parseIdentifier();
             if (s3 === peg$FAILED) {
-              s3 = peg$c7;
+              s3 = peg$c15;
             }
             if (s3 !== peg$FAILED) {
               s4 = peg$parseLWING();
@@ -6631,7 +6719,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 if (s5 !== peg$FAILED) {
                   s6 = peg$parseCOMMA();
                   if (s6 === peg$FAILED) {
-                    s6 = peg$c7;
+                    s6 = peg$c15;
                   }
                   if (s6 !== peg$FAILED) {
                     s7 = peg$parseRWING();
@@ -6756,7 +6844,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$c0;
             }
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s1 = [s1, s2];
@@ -6778,7 +6866,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s1 = peg$parseCONST();
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c33(s1);
+            s1 = peg$c34(s1);
           }
           s0 = s1;
           return s0;
@@ -6793,9 +6881,85 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c33(s1);
+            s1 = peg$c34(s1);
           }
           s0 = s1;
+          return s0;
+        }
+        function peg$parseFunctionDirectDeclarator() {
+          var s0,
+              s1,
+              s2,
+              s3,
+              s4,
+              s5;
+          s0 = peg$currPos;
+          s1 = peg$currPos;
+          s2 = peg$parseIdentifier();
+          if (s2 !== peg$FAILED) {
+            peg$reportedPos = s1;
+            s2 = peg$c35(s2);
+          }
+          s1 = s2;
+          if (s1 === peg$FAILED) {
+            s1 = peg$currPos;
+            s2 = peg$parseLPAR();
+            if (s2 !== peg$FAILED) {
+              s3 = peg$parseDeclarator();
+              if (s3 !== peg$FAILED) {
+                s4 = peg$parseRPAR();
+                if (s4 !== peg$FAILED) {
+                  peg$reportedPos = s1;
+                  s2 = peg$c7(s3);
+                  s1 = s2;
+                } else {
+                  peg$currPos = s1;
+                  s1 = peg$c0;
+                }
+              } else {
+                peg$currPos = s1;
+                s1 = peg$c0;
+              }
+            } else {
+              peg$currPos = s1;
+              s1 = peg$c0;
+            }
+          }
+          if (s1 !== peg$FAILED) {
+            s2 = peg$currPos;
+            s3 = peg$parseLPAR();
+            if (s3 !== peg$FAILED) {
+              s4 = peg$parseParameterTypeList();
+              if (s4 !== peg$FAILED) {
+                s5 = peg$parseRPAR();
+                if (s5 !== peg$FAILED) {
+                  peg$reportedPos = s2;
+                  s3 = peg$c36(s4);
+                  s2 = s3;
+                } else {
+                  peg$currPos = s2;
+                  s2 = peg$c0;
+                }
+              } else {
+                peg$currPos = s2;
+                s2 = peg$c0;
+              }
+            } else {
+              peg$currPos = s2;
+              s2 = peg$c0;
+            }
+            if (s2 !== peg$FAILED) {
+              peg$reportedPos = s0;
+              s1 = peg$c37(s1, s2);
+              s0 = s1;
+            } else {
+              peg$currPos = s0;
+              s0 = peg$c0;
+            }
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c0;
+          }
           return s0;
         }
         function peg$parseDeclarator() {
@@ -6805,13 +6969,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$parsePointer();
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseDirectDeclarator();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c34(s1, s2);
+              s1 = peg$c38(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -6850,7 +7014,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s4 = peg$parseRPAR();
                 if (s4 !== peg$FAILED) {
                   peg$reportedPos = s1;
-                  s2 = peg$c27(s3);
+                  s2 = peg$c7(s3);
                   s1 = s2;
                 } else {
                   peg$currPos = s1;
@@ -6879,13 +7043,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               if (s5 !== peg$FAILED) {
                 s6 = peg$parseAssignmentExpression();
                 if (s6 === peg$FAILED) {
-                  s6 = peg$c7;
+                  s6 = peg$c15;
                 }
                 if (s6 !== peg$FAILED) {
                   s7 = peg$parseRBRK();
                   if (s7 !== peg$FAILED) {
                     peg$reportedPos = s3;
-                    s4 = peg$c36(s5, s6);
+                    s4 = peg$c39(s5, s6);
                     s3 = s4;
                   } else {
                     peg$currPos = s3;
@@ -6921,7 +7085,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       s8 = peg$parseRBRK();
                       if (s8 !== peg$FAILED) {
                         peg$reportedPos = s3;
-                        s4 = peg$c37(s6, s7);
+                        s4 = peg$c40(s6, s7);
                         s3 = s4;
                       } else {
                         peg$currPos = s3;
@@ -6965,7 +7129,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         s8 = peg$parseRBRK();
                         if (s8 !== peg$FAILED) {
                           peg$reportedPos = s3;
-                          s4 = peg$c37(s5, s7);
+                          s4 = peg$c40(s5, s7);
                           s3 = s4;
                         } else {
                           peg$currPos = s3;
@@ -7003,7 +7167,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         s7 = peg$parseRBRK();
                         if (s7 !== peg$FAILED) {
                           peg$reportedPos = s3;
-                          s4 = peg$c38(s5);
+                          s4 = peg$c41(s5);
                           s3 = s4;
                         } else {
                           peg$currPos = s3;
@@ -7030,7 +7194,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         s6 = peg$parseRPAR();
                         if (s6 !== peg$FAILED) {
                           peg$reportedPos = s3;
-                          s4 = peg$c39(s5);
+                          s4 = peg$c36(s5);
                           s3 = s4;
                         } else {
                           peg$currPos = s3;
@@ -7050,13 +7214,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       if (s4 !== peg$FAILED) {
                         s5 = peg$parseIdentifierList();
                         if (s5 === peg$FAILED) {
-                          s5 = peg$c7;
+                          s5 = peg$c15;
                         }
                         if (s5 !== peg$FAILED) {
                           s6 = peg$parseRPAR();
                           if (s6 !== peg$FAILED) {
                             peg$reportedPos = s3;
-                            s4 = peg$c40(s5);
+                            s4 = peg$c42(s5);
                             s3 = s4;
                           } else {
                             peg$currPos = s3;
@@ -7089,13 +7253,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 if (s5 !== peg$FAILED) {
                   s6 = peg$parseAssignmentExpression();
                   if (s6 === peg$FAILED) {
-                    s6 = peg$c7;
+                    s6 = peg$c15;
                   }
                   if (s6 !== peg$FAILED) {
                     s7 = peg$parseRBRK();
                     if (s7 !== peg$FAILED) {
                       peg$reportedPos = s3;
-                      s4 = peg$c36(s5, s6);
+                      s4 = peg$c39(s5, s6);
                       s3 = s4;
                     } else {
                       peg$currPos = s3;
@@ -7131,7 +7295,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         s8 = peg$parseRBRK();
                         if (s8 !== peg$FAILED) {
                           peg$reportedPos = s3;
-                          s4 = peg$c37(s6, s7);
+                          s4 = peg$c40(s6, s7);
                           s3 = s4;
                         } else {
                           peg$currPos = s3;
@@ -7175,7 +7339,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                           s8 = peg$parseRBRK();
                           if (s8 !== peg$FAILED) {
                             peg$reportedPos = s3;
-                            s4 = peg$c37(s5, s7);
+                            s4 = peg$c40(s5, s7);
                             s3 = s4;
                           } else {
                             peg$currPos = s3;
@@ -7213,7 +7377,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                           s7 = peg$parseRBRK();
                           if (s7 !== peg$FAILED) {
                             peg$reportedPos = s3;
-                            s4 = peg$c38(s5);
+                            s4 = peg$c41(s5);
                             s3 = s4;
                           } else {
                             peg$currPos = s3;
@@ -7240,7 +7404,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                           s6 = peg$parseRPAR();
                           if (s6 !== peg$FAILED) {
                             peg$reportedPos = s3;
-                            s4 = peg$c39(s5);
+                            s4 = peg$c36(s5);
                             s3 = s4;
                           } else {
                             peg$currPos = s3;
@@ -7260,13 +7424,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         if (s4 !== peg$FAILED) {
                           s5 = peg$parseIdentifierList();
                           if (s5 === peg$FAILED) {
-                            s5 = peg$c7;
+                            s5 = peg$c15;
                           }
                           if (s5 !== peg$FAILED) {
                             s6 = peg$parseRPAR();
                             if (s6 !== peg$FAILED) {
                               peg$reportedPos = s3;
-                              s4 = peg$c40(s5);
+                              s4 = peg$c42(s5);
                               s3 = s4;
                             } else {
                               peg$currPos = s3;
@@ -7288,7 +7452,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c41(s1, s2);
+              s1 = peg$c37(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7318,7 +7482,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s3 !== peg$FAILED) {
               peg$reportedPos = s1;
-              s2 = peg$c27(s3);
+              s2 = peg$c7(s3);
               s1 = s2;
             } else {
               peg$currPos = s1;
@@ -7342,7 +7506,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 }
                 if (s3 !== peg$FAILED) {
                   peg$reportedPos = s1;
-                  s2 = peg$c27(s3);
+                  s2 = peg$c7(s3);
                   s1 = s2;
                 } else {
                   peg$currPos = s1;
@@ -7383,11 +7547,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$c0;
             }
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c42(s1, s2);
+              s1 = peg$c43(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7408,6 +7572,9 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5;
           s0 = peg$currPos;
           s1 = peg$parseParameterDeclaration();
+          if (s1 === peg$FAILED) {
+            s1 = peg$c15;
+          }
           if (s1 !== peg$FAILED) {
             s2 = [];
             s3 = peg$currPos;
@@ -7416,7 +7583,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5 = peg$parseParameterDeclaration();
               if (s5 !== peg$FAILED) {
                 peg$reportedPos = s3;
-                s4 = peg$c27(s5);
+                s4 = peg$c7(s5);
                 s3 = s4;
               } else {
                 peg$currPos = s3;
@@ -7434,7 +7601,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s5 = peg$parseParameterDeclaration();
                 if (s5 !== peg$FAILED) {
                   peg$reportedPos = s3;
-                  s4 = peg$c27(s5);
+                  s4 = peg$c7(s5);
                   s3 = s4;
                 } else {
                   peg$currPos = s3;
@@ -7447,7 +7614,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c30(s1, s2);
+              s1 = peg$c44(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7471,11 +7638,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parseAbstractDeclarator();
             }
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c43(s1, s2);
+              s1 = peg$c45(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7504,7 +7671,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5 = peg$parseIdentifier();
               if (s5 !== peg$FAILED) {
                 peg$reportedPos = s3;
-                s4 = peg$c29(s5);
+                s4 = peg$c30(s5);
                 s3 = s4;
               } else {
                 peg$currPos = s3;
@@ -7522,7 +7689,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s5 = peg$parseIdentifier();
                 if (s5 !== peg$FAILED) {
                   peg$reportedPos = s3;
-                  s4 = peg$c29(s5);
+                  s4 = peg$c30(s5);
                   s3 = s4;
                 } else {
                   peg$currPos = s3;
@@ -7535,7 +7702,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c30(s1, s2);
+              s1 = peg$c31(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7556,11 +7723,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s1 !== peg$FAILED) {
             s2 = peg$parseAbstractDeclarator();
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c44(s1, s2);
+              s1 = peg$c46(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7579,12 +7746,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$parsePointer();
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseDirectAbstractDeclarator();
             if (s2 !== peg$FAILED) {
-              s1 = [s1, s2];
+              peg$reportedPos = s0;
+              s1 = peg$c38(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7595,7 +7763,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s0 = peg$c0;
           }
           if (s0 === peg$FAILED) {
-            s0 = peg$parsePointer();
+            s0 = peg$currPos;
+            s1 = peg$parsePointer();
+            if (s1 !== peg$FAILED) {
+              peg$reportedPos = s0;
+              s1 = peg$c47(s1);
+            }
+            s0 = s1;
           }
           return s0;
         }
@@ -7638,7 +7812,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s3 = peg$parseSTAR();
               }
               if (s3 === peg$FAILED) {
-                s3 = peg$c7;
+                s3 = peg$c15;
               }
               if (s3 !== peg$FAILED) {
                 s4 = peg$parseRBRK();
@@ -7663,7 +7837,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               if (s2 !== peg$FAILED) {
                 s3 = peg$parseParameterTypeList();
                 if (s3 === peg$FAILED) {
-                  s3 = peg$c7;
+                  s3 = peg$c15;
                 }
                 if (s3 !== peg$FAILED) {
                   s4 = peg$parseRPAR();
@@ -7694,7 +7868,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s5 = peg$parseSTAR();
               }
               if (s5 === peg$FAILED) {
-                s5 = peg$c7;
+                s5 = peg$c15;
               }
               if (s5 !== peg$FAILED) {
                 s6 = peg$parseRBRK();
@@ -7719,7 +7893,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               if (s4 !== peg$FAILED) {
                 s5 = peg$parseParameterTypeList();
                 if (s5 === peg$FAILED) {
-                  s5 = peg$c7;
+                  s5 = peg$c15;
                 }
                 if (s5 !== peg$FAILED) {
                   s6 = peg$parseRPAR();
@@ -7749,7 +7923,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s5 = peg$parseSTAR();
                 }
                 if (s5 === peg$FAILED) {
-                  s5 = peg$c7;
+                  s5 = peg$c15;
                 }
                 if (s5 !== peg$FAILED) {
                   s6 = peg$parseRBRK();
@@ -7774,7 +7948,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 if (s4 !== peg$FAILED) {
                   s5 = peg$parseParameterTypeList();
                   if (s5 === peg$FAILED) {
-                    s5 = peg$c7;
+                    s5 = peg$c15;
                   }
                   if (s5 !== peg$FAILED) {
                     s6 = peg$parseRPAR();
@@ -7818,7 +7992,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s1 = peg$parseAssignmentExpression();
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c45(s1);
+            s1 = peg$c48(s1);
           }
           s0 = s1;
           if (s0 === peg$FAILED) {
@@ -7829,13 +8003,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               if (s2 !== peg$FAILED) {
                 s3 = peg$parseCOMMA();
                 if (s3 === peg$FAILED) {
-                  s3 = peg$c7;
+                  s3 = peg$c15;
                 }
                 if (s3 !== peg$FAILED) {
                   s4 = peg$parseRWING();
                   if (s4 !== peg$FAILED) {
                     peg$reportedPos = s0;
-                    s1 = peg$c46(s2);
+                    s1 = peg$c49(s2);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
@@ -7873,7 +8047,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5 = peg$parseInitializer();
               if (s5 !== peg$FAILED) {
                 peg$reportedPos = s3;
-                s4 = peg$c27(s5);
+                s4 = peg$c7(s5);
                 s3 = s4;
               } else {
                 peg$currPos = s3;
@@ -7891,7 +8065,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s5 = peg$parseInitializer();
                 if (s5 !== peg$FAILED) {
                   peg$reportedPos = s3;
-                  s4 = peg$c27(s5);
+                  s4 = peg$c7(s5);
                   s3 = s4;
                 } else {
                   peg$currPos = s3;
@@ -7904,7 +8078,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c47(s1, s2);
+              s1 = peg$c50(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -7925,7 +8099,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s1 = peg$parseIdentifier();
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c48(s1);
+            s1 = peg$c51(s1);
           }
           s0 = s1;
           if (s0 === peg$FAILED) {
@@ -7933,7 +8107,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s1 = peg$parseConstant();
             if (s1 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c49(s1);
+              s1 = peg$c52(s1);
             }
             s0 = s1;
             if (s0 === peg$FAILED) {
@@ -7941,7 +8115,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1 = peg$parseStringLiteral();
               if (s1 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c50(s1);
+                s1 = peg$c53(s1);
               }
               s0 = s1;
               if (s0 === peg$FAILED) {
@@ -7953,7 +8127,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s3 = peg$parseRPAR();
                     if (s3 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c51(s2);
+                      s1 = peg$c54(s2);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -7992,7 +8166,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s6 = peg$parseRBRK();
                 if (s6 !== peg$FAILED) {
                   peg$reportedPos = s3;
-                  s4 = peg$c52(s5);
+                  s4 = peg$c55(s5);
                   s3 = s4;
                 } else {
                   peg$currPos = s3;
@@ -8012,13 +8186,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               if (s4 !== peg$FAILED) {
                 s5 = peg$parseArgumentExpressionList();
                 if (s5 === peg$FAILED) {
-                  s5 = peg$c7;
+                  s5 = peg$c15;
                 }
                 if (s5 !== peg$FAILED) {
                   s6 = peg$parseRPAR();
                   if (s6 !== peg$FAILED) {
                     peg$reportedPos = s3;
-                    s4 = peg$c53(s5);
+                    s4 = peg$c56(s5);
                     s3 = s4;
                   } else {
                     peg$currPos = s3;
@@ -8039,7 +8213,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s5 = peg$parseIdentifier();
                   if (s5 !== peg$FAILED) {
                     peg$reportedPos = s3;
-                    s4 = peg$c54(s5);
+                    s4 = peg$c57(s5);
                     s3 = s4;
                   } else {
                     peg$currPos = s3;
@@ -8056,7 +8230,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s5 = peg$parseIdentifier();
                     if (s5 !== peg$FAILED) {
                       peg$reportedPos = s3;
-                      s4 = peg$c55(s5);
+                      s4 = peg$c58(s5);
                       s3 = s4;
                     } else {
                       peg$currPos = s3;
@@ -8071,7 +8245,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s4 = peg$parseINC();
                     if (s4 !== peg$FAILED) {
                       peg$reportedPos = s3;
-                      s4 = peg$c56(s4);
+                      s4 = peg$c59(s4);
                     }
                     s3 = s4;
                     if (s3 === peg$FAILED) {
@@ -8079,7 +8253,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       s4 = peg$parseDEC();
                       if (s4 !== peg$FAILED) {
                         peg$reportedPos = s3;
-                        s4 = peg$c57(s4);
+                        s4 = peg$c60(s4);
                       }
                       s3 = s4;
                     }
@@ -8097,7 +8271,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s6 = peg$parseRBRK();
                   if (s6 !== peg$FAILED) {
                     peg$reportedPos = s3;
-                    s4 = peg$c52(s5);
+                    s4 = peg$c55(s5);
                     s3 = s4;
                   } else {
                     peg$currPos = s3;
@@ -8117,13 +8291,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 if (s4 !== peg$FAILED) {
                   s5 = peg$parseArgumentExpressionList();
                   if (s5 === peg$FAILED) {
-                    s5 = peg$c7;
+                    s5 = peg$c15;
                   }
                   if (s5 !== peg$FAILED) {
                     s6 = peg$parseRPAR();
                     if (s6 !== peg$FAILED) {
                       peg$reportedPos = s3;
-                      s4 = peg$c53(s5);
+                      s4 = peg$c56(s5);
                       s3 = s4;
                     } else {
                       peg$currPos = s3;
@@ -8144,7 +8318,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s5 = peg$parseIdentifier();
                     if (s5 !== peg$FAILED) {
                       peg$reportedPos = s3;
-                      s4 = peg$c54(s5);
+                      s4 = peg$c57(s5);
                       s3 = s4;
                     } else {
                       peg$currPos = s3;
@@ -8161,7 +8335,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       s5 = peg$parseIdentifier();
                       if (s5 !== peg$FAILED) {
                         peg$reportedPos = s3;
-                        s4 = peg$c55(s5);
+                        s4 = peg$c58(s5);
                         s3 = s4;
                       } else {
                         peg$currPos = s3;
@@ -8176,7 +8350,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                       s4 = peg$parseINC();
                       if (s4 !== peg$FAILED) {
                         peg$reportedPos = s3;
-                        s4 = peg$c56(s4);
+                        s4 = peg$c59(s4);
                       }
                       s3 = s4;
                       if (s3 === peg$FAILED) {
@@ -8184,7 +8358,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                         s4 = peg$parseDEC();
                         if (s4 !== peg$FAILED) {
                           peg$reportedPos = s3;
-                          s4 = peg$c57(s4);
+                          s4 = peg$c60(s4);
                         }
                         s3 = s4;
                       }
@@ -8195,7 +8369,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c58(s1, s2);
+              s1 = peg$c61(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8253,7 +8427,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c59(s1, s2);
+              s1 = peg$c62(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8280,7 +8454,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parseUnaryExpression();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c60(s2);
+                s1 = peg$c63(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -8297,7 +8471,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s2 = peg$parseUnaryExpression();
                 if (s2 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c61(s2);
+                  s1 = peg$c64(s2);
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -8314,7 +8488,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s2 = peg$parseCastExpression();
                   if (s2 !== peg$FAILED) {
                     peg$reportedPos = s0;
-                    s1 = peg$c62(s1, s2);
+                    s1 = peg$c65(s1, s2);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
@@ -8332,7 +8506,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s3 = peg$parseUnaryExpression();
                     if (s3 !== peg$FAILED) {
                       peg$reportedPos = s2;
-                      s3 = peg$c63(s3);
+                      s3 = peg$c66(s3);
                     }
                     s2 = s3;
                     if (s2 === peg$FAILED) {
@@ -8344,7 +8518,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                           s5 = peg$parseRPAR();
                           if (s5 !== peg$FAILED) {
                             peg$reportedPos = s2;
-                            s3 = peg$c64(s4);
+                            s3 = peg$c67(s4);
                             s2 = s3;
                           } else {
                             peg$currPos = s2;
@@ -8361,7 +8535,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     }
                     if (s2 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c27(s2);
+                      s1 = peg$c7(s2);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -8431,7 +8605,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parseCastExpression();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c65(s1, s2);
+                s1 = peg$c68(s1, s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -8502,7 +8676,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8566,7 +8740,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8630,7 +8804,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8706,7 +8880,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8770,7 +8944,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8828,7 +9002,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8886,7 +9060,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -8944,7 +9118,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -9002,7 +9176,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -9060,7 +9234,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -9144,7 +9318,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c67(s1, s2);
+              s1 = peg$c70(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -9169,7 +9343,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseAssignmentExpression();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c68(s1, s2, s3);
+                s1 = peg$c71(s1, s2, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9269,7 +9443,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c66(s1, s2);
+              s1 = peg$c69(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -9306,7 +9480,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c69(s1);
+            s1 = peg$c72(s1);
           }
           s0 = s1;
           return s0;
@@ -9315,18 +9489,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           var s0,
               s1;
           s0 = peg$currPos;
-          if (peg$c70.test(input.charAt(peg$currPos))) {
+          if (peg$c73.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c71);
+              peg$fail(peg$c74);
             }
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c27(s1);
+            s1 = peg$c7(s1);
           }
           s0 = s1;
           return s0;
@@ -9339,13 +9513,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s4,
               s5;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c72) {
-            s1 = peg$c72;
+          if (input.substr(peg$currPos, 2) === peg$c75) {
+            s1 = peg$c75;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c73);
+              peg$fail(peg$c76);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9353,18 +9527,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$currPos;
             s4 = peg$currPos;
             peg$silentFails++;
-            if (input.substr(peg$currPos, 2) === peg$c74) {
-              s5 = peg$c74;
+            if (input.substr(peg$currPos, 2) === peg$c77) {
+              s5 = peg$c77;
               peg$currPos += 2;
             } else {
               s5 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c75);
+                peg$fail(peg$c78);
               }
             }
             peg$silentFails--;
             if (s5 === peg$FAILED) {
-              s4 = peg$c32;
+              s4 = peg$c33;
             } else {
               peg$currPos = s4;
               s4 = peg$c0;
@@ -9387,18 +9561,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$currPos;
               s4 = peg$currPos;
               peg$silentFails++;
-              if (input.substr(peg$currPos, 2) === peg$c74) {
-                s5 = peg$c74;
+              if (input.substr(peg$currPos, 2) === peg$c77) {
+                s5 = peg$c77;
                 peg$currPos += 2;
               } else {
                 s5 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c75);
+                  peg$fail(peg$c78);
                 }
               }
               peg$silentFails--;
               if (s5 === peg$FAILED) {
-                s4 = peg$c32;
+                s4 = peg$c33;
               } else {
                 peg$currPos = s4;
                 s4 = peg$c0;
@@ -9418,18 +9592,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
             }
             if (s2 !== peg$FAILED) {
-              if (input.substr(peg$currPos, 2) === peg$c74) {
-                s3 = peg$c74;
+              if (input.substr(peg$currPos, 2) === peg$c77) {
+                s3 = peg$c77;
                 peg$currPos += 2;
               } else {
                 s3 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c75);
+                  peg$fail(peg$c78);
                 }
               }
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c76(s2);
+                s1 = peg$c79(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9453,13 +9627,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s4,
               s5;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c77) {
-            s1 = peg$c77;
+          if (input.substr(peg$currPos, 2) === peg$c80) {
+            s1 = peg$c80;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c78);
+              peg$fail(peg$c81);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9468,17 +9642,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s4 = peg$currPos;
             peg$silentFails++;
             if (input.charCodeAt(peg$currPos) === 10) {
-              s5 = peg$c79;
+              s5 = peg$c82;
               peg$currPos++;
             } else {
               s5 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c80);
+                peg$fail(peg$c83);
               }
             }
             peg$silentFails--;
             if (s5 === peg$FAILED) {
-              s4 = peg$c32;
+              s4 = peg$c33;
             } else {
               peg$currPos = s4;
               s4 = peg$c0;
@@ -9502,17 +9676,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s4 = peg$currPos;
               peg$silentFails++;
               if (input.charCodeAt(peg$currPos) === 10) {
-                s5 = peg$c79;
+                s5 = peg$c82;
                 peg$currPos++;
               } else {
                 s5 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c80);
+                  peg$fail(peg$c83);
                 }
               }
               peg$silentFails--;
               if (s5 === peg$FAILED) {
-                s4 = peg$c32;
+                s4 = peg$c33;
               } else {
                 peg$currPos = s4;
                 s4 = peg$c0;
@@ -9533,7 +9707,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c76(s2);
+              s1 = peg$c79(s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -9551,13 +9725,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c81) {
-            s1 = peg$c81;
+          if (input.substr(peg$currPos, 4) === peg$c84) {
+            s1 = peg$c84;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c82);
+              peg$fail(peg$c85);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9566,7 +9740,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9575,7 +9749,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9597,13 +9771,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c83) {
-            s1 = peg$c83;
+          if (input.substr(peg$currPos, 5) === peg$c86) {
+            s1 = peg$c86;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c84);
+              peg$fail(peg$c87);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9612,7 +9786,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9621,7 +9795,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9643,13 +9817,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c85) {
-            s1 = peg$c85;
+          if (input.substr(peg$currPos, 4) === peg$c88) {
+            s1 = peg$c88;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c86);
+              peg$fail(peg$c89);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9658,7 +9832,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9667,7 +9841,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9689,13 +9863,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c87) {
-            s1 = peg$c87;
+          if (input.substr(peg$currPos, 4) === peg$c90) {
+            s1 = peg$c90;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c88);
+              peg$fail(peg$c91);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9704,7 +9878,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9713,7 +9887,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9735,13 +9909,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c89) {
-            s1 = peg$c89;
+          if (input.substr(peg$currPos, 5) === peg$c92) {
+            s1 = peg$c92;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c90);
+              peg$fail(peg$c93);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9750,7 +9924,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9759,7 +9933,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9781,13 +9955,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c91) {
-            s1 = peg$c91;
+          if (input.substr(peg$currPos, 8) === peg$c94) {
+            s1 = peg$c94;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c92);
+              peg$fail(peg$c95);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9796,7 +9970,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9805,7 +9979,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9827,13 +10001,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 7) === peg$c93) {
-            s1 = peg$c93;
+          if (input.substr(peg$currPos, 7) === peg$c96) {
+            s1 = peg$c96;
             peg$currPos += 7;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c94);
+              peg$fail(peg$c97);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9842,7 +10016,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9851,7 +10025,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9873,13 +10047,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c95) {
-            s1 = peg$c95;
+          if (input.substr(peg$currPos, 6) === peg$c98) {
+            s1 = peg$c98;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c96);
+              peg$fail(peg$c99);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9888,7 +10062,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9897,7 +10071,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9919,13 +10093,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c97) {
-            s1 = peg$c97;
+          if (input.substr(peg$currPos, 2) === peg$c100) {
+            s1 = peg$c100;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c98);
+              peg$fail(peg$c101);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9934,7 +10108,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9943,7 +10117,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -9965,13 +10139,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c99) {
-            s1 = peg$c99;
+          if (input.substr(peg$currPos, 4) === peg$c102) {
+            s1 = peg$c102;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c100);
+              peg$fail(peg$c103);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -9980,7 +10154,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -9989,7 +10163,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10011,13 +10185,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c101) {
-            s1 = peg$c101;
+          if (input.substr(peg$currPos, 4) === peg$c104) {
+            s1 = peg$c104;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c102);
+              peg$fail(peg$c105);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10026,7 +10200,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10035,7 +10209,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10057,13 +10231,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c103) {
-            s1 = peg$c103;
+          if (input.substr(peg$currPos, 6) === peg$c106) {
+            s1 = peg$c106;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c104);
+              peg$fail(peg$c107);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10072,7 +10246,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10081,7 +10255,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10103,13 +10277,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c105) {
-            s1 = peg$c105;
+          if (input.substr(peg$currPos, 5) === peg$c108) {
+            s1 = peg$c108;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c106);
+              peg$fail(peg$c109);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10118,7 +10292,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10127,7 +10301,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10149,13 +10323,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 3) === peg$c107) {
-            s1 = peg$c107;
+          if (input.substr(peg$currPos, 3) === peg$c110) {
+            s1 = peg$c110;
             peg$currPos += 3;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c108);
+              peg$fail(peg$c111);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10164,7 +10338,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10173,7 +10347,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10195,13 +10369,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c109) {
-            s1 = peg$c109;
+          if (input.substr(peg$currPos, 4) === peg$c112) {
+            s1 = peg$c112;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c110);
+              peg$fail(peg$c113);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10210,7 +10384,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10219,7 +10393,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10241,13 +10415,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c111) {
-            s1 = peg$c111;
+          if (input.substr(peg$currPos, 2) === peg$c114) {
+            s1 = peg$c114;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c112);
+              peg$fail(peg$c115);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10256,7 +10430,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10265,7 +10439,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10287,13 +10461,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 3) === peg$c113) {
-            s1 = peg$c113;
+          if (input.substr(peg$currPos, 3) === peg$c116) {
+            s1 = peg$c116;
             peg$currPos += 3;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c114);
+              peg$fail(peg$c117);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10302,7 +10476,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10311,7 +10485,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10333,13 +10507,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c115) {
-            s1 = peg$c115;
+          if (input.substr(peg$currPos, 6) === peg$c118) {
+            s1 = peg$c118;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c116);
+              peg$fail(peg$c119);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10348,7 +10522,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10357,7 +10531,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10379,13 +10553,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c117) {
-            s1 = peg$c117;
+          if (input.substr(peg$currPos, 4) === peg$c120) {
+            s1 = peg$c120;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c118);
+              peg$fail(peg$c121);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10394,7 +10568,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10403,7 +10577,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10425,13 +10599,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c119) {
-            s1 = peg$c119;
+          if (input.substr(peg$currPos, 8) === peg$c122) {
+            s1 = peg$c122;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c120);
+              peg$fail(peg$c123);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10440,7 +10614,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10449,7 +10623,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10471,13 +10645,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c121) {
-            s1 = peg$c121;
+          if (input.substr(peg$currPos, 8) === peg$c124) {
+            s1 = peg$c124;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c122);
+              peg$fail(peg$c125);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10486,7 +10660,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10495,7 +10669,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10517,13 +10691,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c123) {
-            s1 = peg$c123;
+          if (input.substr(peg$currPos, 6) === peg$c126) {
+            s1 = peg$c126;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c124);
+              peg$fail(peg$c127);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10532,7 +10706,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10541,7 +10715,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10563,13 +10737,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c125) {
-            s1 = peg$c125;
+          if (input.substr(peg$currPos, 5) === peg$c128) {
+            s1 = peg$c128;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c126);
+              peg$fail(peg$c129);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10578,7 +10752,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10587,7 +10761,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10609,13 +10783,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c127) {
-            s1 = peg$c127;
+          if (input.substr(peg$currPos, 6) === peg$c130) {
+            s1 = peg$c130;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c128);
+              peg$fail(peg$c131);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10624,7 +10798,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10633,7 +10807,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10655,13 +10829,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c129) {
-            s1 = peg$c129;
+          if (input.substr(peg$currPos, 6) === peg$c132) {
+            s1 = peg$c132;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c130);
+              peg$fail(peg$c133);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10670,7 +10844,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10679,7 +10853,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10701,13 +10875,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c131) {
-            s1 = peg$c131;
+          if (input.substr(peg$currPos, 6) === peg$c134) {
+            s1 = peg$c134;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c132);
+              peg$fail(peg$c135);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10716,7 +10890,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10725,7 +10899,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10747,13 +10921,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c133) {
-            s1 = peg$c133;
+          if (input.substr(peg$currPos, 6) === peg$c136) {
+            s1 = peg$c136;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c134);
+              peg$fail(peg$c137);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10762,7 +10936,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10771,7 +10945,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10793,13 +10967,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c135) {
-            s1 = peg$c135;
+          if (input.substr(peg$currPos, 6) === peg$c138) {
+            s1 = peg$c138;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c136);
+              peg$fail(peg$c139);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10808,7 +10982,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10817,7 +10991,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10839,13 +11013,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 7) === peg$c137) {
-            s1 = peg$c137;
+          if (input.substr(peg$currPos, 7) === peg$c140) {
+            s1 = peg$c140;
             peg$currPos += 7;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c138);
+              peg$fail(peg$c141);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10854,7 +11028,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10863,7 +11037,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10885,13 +11059,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c139) {
-            s1 = peg$c139;
+          if (input.substr(peg$currPos, 5) === peg$c142) {
+            s1 = peg$c142;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c140);
+              peg$fail(peg$c143);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10900,7 +11074,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10909,7 +11083,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10931,13 +11105,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c141) {
-            s1 = peg$c141;
+          if (input.substr(peg$currPos, 8) === peg$c144) {
+            s1 = peg$c144;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c142);
+              peg$fail(peg$c145);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10946,7 +11120,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -10955,7 +11129,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -10977,13 +11151,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c143) {
-            s1 = peg$c143;
+          if (input.substr(peg$currPos, 4) === peg$c146) {
+            s1 = peg$c146;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c144);
+              peg$fail(peg$c147);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -10992,7 +11166,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11001,7 +11175,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11023,13 +11197,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c145) {
-            s1 = peg$c145;
+          if (input.substr(peg$currPos, 8) === peg$c148) {
+            s1 = peg$c148;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c146);
+              peg$fail(peg$c149);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11038,7 +11212,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11047,7 +11221,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11069,13 +11243,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c147) {
-            s1 = peg$c147;
+          if (input.substr(peg$currPos, 5) === peg$c150) {
+            s1 = peg$c150;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c148);
+              peg$fail(peg$c151);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11084,7 +11258,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11093,7 +11267,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11115,13 +11289,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c149) {
-            s1 = peg$c149;
+          if (input.substr(peg$currPos, 5) === peg$c152) {
+            s1 = peg$c152;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c150);
+              peg$fail(peg$c153);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11130,7 +11304,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11139,7 +11313,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11161,13 +11335,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c151) {
-            s1 = peg$c151;
+          if (input.substr(peg$currPos, 8) === peg$c154) {
+            s1 = peg$c154;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c152);
+              peg$fail(peg$c155);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11176,7 +11350,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11185,7 +11359,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11207,13 +11381,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 8) === peg$c153) {
-            s1 = peg$c153;
+          if (input.substr(peg$currPos, 8) === peg$c156) {
+            s1 = peg$c156;
             peg$currPos += 8;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c154);
+              peg$fail(peg$c157);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11222,7 +11396,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11231,7 +11405,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11253,13 +11427,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 10) === peg$c155) {
-            s1 = peg$c155;
+          if (input.substr(peg$currPos, 10) === peg$c158) {
+            s1 = peg$c158;
             peg$currPos += 10;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c156);
+              peg$fail(peg$c159);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11268,7 +11442,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11277,7 +11451,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11299,13 +11473,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 13) === peg$c157) {
-            s1 = peg$c157;
+          if (input.substr(peg$currPos, 13) === peg$c160) {
+            s1 = peg$c160;
             peg$currPos += 13;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c158);
+              peg$fail(peg$c161);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11314,7 +11488,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11323,7 +11497,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11345,13 +11519,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 9) === peg$c159) {
-            s1 = peg$c159;
+          if (input.substr(peg$currPos, 9) === peg$c162) {
+            s1 = peg$c162;
             peg$currPos += 9;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c160);
+              peg$fail(peg$c163);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11360,7 +11534,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11369,7 +11543,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11391,13 +11565,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c161) {
-            s1 = peg$c161;
+          if (input.substr(peg$currPos, 5) === peg$c164) {
+            s1 = peg$c164;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c162);
+              peg$fail(peg$c165);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11406,7 +11580,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11415,7 +11589,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11437,13 +11611,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c163) {
-            s1 = peg$c163;
+          if (input.substr(peg$currPos, 4) === peg$c166) {
+            s1 = peg$c166;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c164);
+              peg$fail(peg$c167);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11452,7 +11626,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11461,7 +11635,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11483,13 +11657,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 5) === peg$c165) {
-            s1 = peg$c165;
+          if (input.substr(peg$currPos, 5) === peg$c168) {
+            s1 = peg$c168;
             peg$currPos += 5;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c166);
+              peg$fail(peg$c169);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -11498,7 +11672,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -11507,7 +11681,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -11529,443 +11703,443 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 4) === peg$c81) {
-            s1 = peg$c81;
+          if (input.substr(peg$currPos, 4) === peg$c84) {
+            s1 = peg$c84;
             peg$currPos += 4;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c82);
+              peg$fail(peg$c85);
             }
           }
           if (s1 === peg$FAILED) {
-            if (input.substr(peg$currPos, 5) === peg$c83) {
-              s1 = peg$c83;
+            if (input.substr(peg$currPos, 5) === peg$c86) {
+              s1 = peg$c86;
               peg$currPos += 5;
             } else {
               s1 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c84);
+                peg$fail(peg$c87);
               }
             }
             if (s1 === peg$FAILED) {
-              if (input.substr(peg$currPos, 4) === peg$c85) {
-                s1 = peg$c85;
+              if (input.substr(peg$currPos, 4) === peg$c88) {
+                s1 = peg$c88;
                 peg$currPos += 4;
               } else {
                 s1 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c86);
+                  peg$fail(peg$c89);
                 }
               }
               if (s1 === peg$FAILED) {
-                if (input.substr(peg$currPos, 4) === peg$c87) {
-                  s1 = peg$c87;
+                if (input.substr(peg$currPos, 4) === peg$c90) {
+                  s1 = peg$c90;
                   peg$currPos += 4;
                 } else {
                   s1 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c88);
+                    peg$fail(peg$c91);
                   }
                 }
                 if (s1 === peg$FAILED) {
-                  if (input.substr(peg$currPos, 5) === peg$c89) {
-                    s1 = peg$c89;
+                  if (input.substr(peg$currPos, 5) === peg$c92) {
+                    s1 = peg$c92;
                     peg$currPos += 5;
                   } else {
                     s1 = peg$FAILED;
                     if (peg$silentFails === 0) {
-                      peg$fail(peg$c90);
+                      peg$fail(peg$c93);
                     }
                   }
                   if (s1 === peg$FAILED) {
-                    if (input.substr(peg$currPos, 8) === peg$c91) {
-                      s1 = peg$c91;
+                    if (input.substr(peg$currPos, 8) === peg$c94) {
+                      s1 = peg$c94;
                       peg$currPos += 8;
                     } else {
                       s1 = peg$FAILED;
                       if (peg$silentFails === 0) {
-                        peg$fail(peg$c92);
+                        peg$fail(peg$c95);
                       }
                     }
                     if (s1 === peg$FAILED) {
-                      if (input.substr(peg$currPos, 7) === peg$c93) {
-                        s1 = peg$c93;
+                      if (input.substr(peg$currPos, 7) === peg$c96) {
+                        s1 = peg$c96;
                         peg$currPos += 7;
                       } else {
                         s1 = peg$FAILED;
                         if (peg$silentFails === 0) {
-                          peg$fail(peg$c94);
+                          peg$fail(peg$c97);
                         }
                       }
                       if (s1 === peg$FAILED) {
-                        if (input.substr(peg$currPos, 6) === peg$c95) {
-                          s1 = peg$c95;
+                        if (input.substr(peg$currPos, 6) === peg$c98) {
+                          s1 = peg$c98;
                           peg$currPos += 6;
                         } else {
                           s1 = peg$FAILED;
                           if (peg$silentFails === 0) {
-                            peg$fail(peg$c96);
+                            peg$fail(peg$c99);
                           }
                         }
                         if (s1 === peg$FAILED) {
-                          if (input.substr(peg$currPos, 2) === peg$c97) {
-                            s1 = peg$c97;
+                          if (input.substr(peg$currPos, 2) === peg$c100) {
+                            s1 = peg$c100;
                             peg$currPos += 2;
                           } else {
                             s1 = peg$FAILED;
                             if (peg$silentFails === 0) {
-                              peg$fail(peg$c98);
+                              peg$fail(peg$c101);
                             }
                           }
                           if (s1 === peg$FAILED) {
-                            if (input.substr(peg$currPos, 4) === peg$c99) {
-                              s1 = peg$c99;
+                            if (input.substr(peg$currPos, 4) === peg$c102) {
+                              s1 = peg$c102;
                               peg$currPos += 4;
                             } else {
                               s1 = peg$FAILED;
                               if (peg$silentFails === 0) {
-                                peg$fail(peg$c100);
+                                peg$fail(peg$c103);
                               }
                             }
                             if (s1 === peg$FAILED) {
-                              if (input.substr(peg$currPos, 4) === peg$c101) {
-                                s1 = peg$c101;
+                              if (input.substr(peg$currPos, 4) === peg$c104) {
+                                s1 = peg$c104;
                                 peg$currPos += 4;
                               } else {
                                 s1 = peg$FAILED;
                                 if (peg$silentFails === 0) {
-                                  peg$fail(peg$c102);
+                                  peg$fail(peg$c105);
                                 }
                               }
                               if (s1 === peg$FAILED) {
-                                if (input.substr(peg$currPos, 6) === peg$c103) {
-                                  s1 = peg$c103;
+                                if (input.substr(peg$currPos, 6) === peg$c106) {
+                                  s1 = peg$c106;
                                   peg$currPos += 6;
                                 } else {
                                   s1 = peg$FAILED;
                                   if (peg$silentFails === 0) {
-                                    peg$fail(peg$c104);
+                                    peg$fail(peg$c107);
                                   }
                                 }
                                 if (s1 === peg$FAILED) {
-                                  if (input.substr(peg$currPos, 5) === peg$c105) {
-                                    s1 = peg$c105;
+                                  if (input.substr(peg$currPos, 5) === peg$c108) {
+                                    s1 = peg$c108;
                                     peg$currPos += 5;
                                   } else {
                                     s1 = peg$FAILED;
                                     if (peg$silentFails === 0) {
-                                      peg$fail(peg$c106);
+                                      peg$fail(peg$c109);
                                     }
                                   }
                                   if (s1 === peg$FAILED) {
-                                    if (input.substr(peg$currPos, 3) === peg$c107) {
-                                      s1 = peg$c107;
+                                    if (input.substr(peg$currPos, 3) === peg$c110) {
+                                      s1 = peg$c110;
                                       peg$currPos += 3;
                                     } else {
                                       s1 = peg$FAILED;
                                       if (peg$silentFails === 0) {
-                                        peg$fail(peg$c108);
+                                        peg$fail(peg$c111);
                                       }
                                     }
                                     if (s1 === peg$FAILED) {
-                                      if (input.substr(peg$currPos, 4) === peg$c109) {
-                                        s1 = peg$c109;
+                                      if (input.substr(peg$currPos, 4) === peg$c112) {
+                                        s1 = peg$c112;
                                         peg$currPos += 4;
                                       } else {
                                         s1 = peg$FAILED;
                                         if (peg$silentFails === 0) {
-                                          peg$fail(peg$c110);
+                                          peg$fail(peg$c113);
                                         }
                                       }
                                       if (s1 === peg$FAILED) {
-                                        if (input.substr(peg$currPos, 2) === peg$c111) {
-                                          s1 = peg$c111;
+                                        if (input.substr(peg$currPos, 2) === peg$c114) {
+                                          s1 = peg$c114;
                                           peg$currPos += 2;
                                         } else {
                                           s1 = peg$FAILED;
                                           if (peg$silentFails === 0) {
-                                            peg$fail(peg$c112);
+                                            peg$fail(peg$c115);
                                           }
                                         }
                                         if (s1 === peg$FAILED) {
-                                          if (input.substr(peg$currPos, 3) === peg$c113) {
-                                            s1 = peg$c113;
+                                          if (input.substr(peg$currPos, 3) === peg$c116) {
+                                            s1 = peg$c116;
                                             peg$currPos += 3;
                                           } else {
                                             s1 = peg$FAILED;
                                             if (peg$silentFails === 0) {
-                                              peg$fail(peg$c114);
+                                              peg$fail(peg$c117);
                                             }
                                           }
                                           if (s1 === peg$FAILED) {
-                                            if (input.substr(peg$currPos, 6) === peg$c115) {
-                                              s1 = peg$c115;
+                                            if (input.substr(peg$currPos, 6) === peg$c118) {
+                                              s1 = peg$c118;
                                               peg$currPos += 6;
                                             } else {
                                               s1 = peg$FAILED;
                                               if (peg$silentFails === 0) {
-                                                peg$fail(peg$c116);
+                                                peg$fail(peg$c119);
                                               }
                                             }
                                             if (s1 === peg$FAILED) {
-                                              if (input.substr(peg$currPos, 4) === peg$c117) {
-                                                s1 = peg$c117;
+                                              if (input.substr(peg$currPos, 4) === peg$c120) {
+                                                s1 = peg$c120;
                                                 peg$currPos += 4;
                                               } else {
                                                 s1 = peg$FAILED;
                                                 if (peg$silentFails === 0) {
-                                                  peg$fail(peg$c118);
+                                                  peg$fail(peg$c121);
                                                 }
                                               }
                                               if (s1 === peg$FAILED) {
-                                                if (input.substr(peg$currPos, 8) === peg$c119) {
-                                                  s1 = peg$c119;
+                                                if (input.substr(peg$currPos, 8) === peg$c122) {
+                                                  s1 = peg$c122;
                                                   peg$currPos += 8;
                                                 } else {
                                                   s1 = peg$FAILED;
                                                   if (peg$silentFails === 0) {
-                                                    peg$fail(peg$c120);
+                                                    peg$fail(peg$c123);
                                                   }
                                                 }
                                                 if (s1 === peg$FAILED) {
-                                                  if (input.substr(peg$currPos, 8) === peg$c121) {
-                                                    s1 = peg$c121;
+                                                  if (input.substr(peg$currPos, 8) === peg$c124) {
+                                                    s1 = peg$c124;
                                                     peg$currPos += 8;
                                                   } else {
                                                     s1 = peg$FAILED;
                                                     if (peg$silentFails === 0) {
-                                                      peg$fail(peg$c122);
+                                                      peg$fail(peg$c125);
                                                     }
                                                   }
                                                   if (s1 === peg$FAILED) {
-                                                    if (input.substr(peg$currPos, 6) === peg$c123) {
-                                                      s1 = peg$c123;
+                                                    if (input.substr(peg$currPos, 6) === peg$c126) {
+                                                      s1 = peg$c126;
                                                       peg$currPos += 6;
                                                     } else {
                                                       s1 = peg$FAILED;
                                                       if (peg$silentFails === 0) {
-                                                        peg$fail(peg$c124);
+                                                        peg$fail(peg$c127);
                                                       }
                                                     }
                                                     if (s1 === peg$FAILED) {
-                                                      if (input.substr(peg$currPos, 5) === peg$c125) {
-                                                        s1 = peg$c125;
+                                                      if (input.substr(peg$currPos, 5) === peg$c128) {
+                                                        s1 = peg$c128;
                                                         peg$currPos += 5;
                                                       } else {
                                                         s1 = peg$FAILED;
                                                         if (peg$silentFails === 0) {
-                                                          peg$fail(peg$c126);
+                                                          peg$fail(peg$c129);
                                                         }
                                                       }
                                                       if (s1 === peg$FAILED) {
-                                                        if (input.substr(peg$currPos, 6) === peg$c127) {
-                                                          s1 = peg$c127;
+                                                        if (input.substr(peg$currPos, 6) === peg$c130) {
+                                                          s1 = peg$c130;
                                                           peg$currPos += 6;
                                                         } else {
                                                           s1 = peg$FAILED;
                                                           if (peg$silentFails === 0) {
-                                                            peg$fail(peg$c128);
+                                                            peg$fail(peg$c131);
                                                           }
                                                         }
                                                         if (s1 === peg$FAILED) {
-                                                          if (input.substr(peg$currPos, 6) === peg$c129) {
-                                                            s1 = peg$c129;
+                                                          if (input.substr(peg$currPos, 6) === peg$c132) {
+                                                            s1 = peg$c132;
                                                             peg$currPos += 6;
                                                           } else {
                                                             s1 = peg$FAILED;
                                                             if (peg$silentFails === 0) {
-                                                              peg$fail(peg$c130);
+                                                              peg$fail(peg$c133);
                                                             }
                                                           }
                                                           if (s1 === peg$FAILED) {
-                                                            if (input.substr(peg$currPos, 6) === peg$c131) {
-                                                              s1 = peg$c131;
+                                                            if (input.substr(peg$currPos, 6) === peg$c134) {
+                                                              s1 = peg$c134;
                                                               peg$currPos += 6;
                                                             } else {
                                                               s1 = peg$FAILED;
                                                               if (peg$silentFails === 0) {
-                                                                peg$fail(peg$c132);
+                                                                peg$fail(peg$c135);
                                                               }
                                                             }
                                                             if (s1 === peg$FAILED) {
-                                                              if (input.substr(peg$currPos, 6) === peg$c133) {
-                                                                s1 = peg$c133;
+                                                              if (input.substr(peg$currPos, 6) === peg$c136) {
+                                                                s1 = peg$c136;
                                                                 peg$currPos += 6;
                                                               } else {
                                                                 s1 = peg$FAILED;
                                                                 if (peg$silentFails === 0) {
-                                                                  peg$fail(peg$c134);
+                                                                  peg$fail(peg$c137);
                                                                 }
                                                               }
                                                               if (s1 === peg$FAILED) {
-                                                                if (input.substr(peg$currPos, 6) === peg$c135) {
-                                                                  s1 = peg$c135;
+                                                                if (input.substr(peg$currPos, 6) === peg$c138) {
+                                                                  s1 = peg$c138;
                                                                   peg$currPos += 6;
                                                                 } else {
                                                                   s1 = peg$FAILED;
                                                                   if (peg$silentFails === 0) {
-                                                                    peg$fail(peg$c136);
+                                                                    peg$fail(peg$c139);
                                                                   }
                                                                 }
                                                                 if (s1 === peg$FAILED) {
-                                                                  if (input.substr(peg$currPos, 7) === peg$c137) {
-                                                                    s1 = peg$c137;
+                                                                  if (input.substr(peg$currPos, 7) === peg$c140) {
+                                                                    s1 = peg$c140;
                                                                     peg$currPos += 7;
                                                                   } else {
                                                                     s1 = peg$FAILED;
                                                                     if (peg$silentFails === 0) {
-                                                                      peg$fail(peg$c138);
+                                                                      peg$fail(peg$c141);
                                                                     }
                                                                   }
                                                                   if (s1 === peg$FAILED) {
-                                                                    if (input.substr(peg$currPos, 5) === peg$c139) {
-                                                                      s1 = peg$c139;
+                                                                    if (input.substr(peg$currPos, 5) === peg$c142) {
+                                                                      s1 = peg$c142;
                                                                       peg$currPos += 5;
                                                                     } else {
                                                                       s1 = peg$FAILED;
                                                                       if (peg$silentFails === 0) {
-                                                                        peg$fail(peg$c140);
+                                                                        peg$fail(peg$c143);
                                                                       }
                                                                     }
                                                                     if (s1 === peg$FAILED) {
-                                                                      if (input.substr(peg$currPos, 8) === peg$c141) {
-                                                                        s1 = peg$c141;
+                                                                      if (input.substr(peg$currPos, 8) === peg$c144) {
+                                                                        s1 = peg$c144;
                                                                         peg$currPos += 8;
                                                                       } else {
                                                                         s1 = peg$FAILED;
                                                                         if (peg$silentFails === 0) {
-                                                                          peg$fail(peg$c142);
+                                                                          peg$fail(peg$c145);
                                                                         }
                                                                       }
                                                                       if (s1 === peg$FAILED) {
-                                                                        if (input.substr(peg$currPos, 4) === peg$c143) {
-                                                                          s1 = peg$c143;
+                                                                        if (input.substr(peg$currPos, 4) === peg$c146) {
+                                                                          s1 = peg$c146;
                                                                           peg$currPos += 4;
                                                                         } else {
                                                                           s1 = peg$FAILED;
                                                                           if (peg$silentFails === 0) {
-                                                                            peg$fail(peg$c144);
+                                                                            peg$fail(peg$c147);
                                                                           }
                                                                         }
                                                                         if (s1 === peg$FAILED) {
-                                                                          if (input.substr(peg$currPos, 8) === peg$c145) {
-                                                                            s1 = peg$c145;
+                                                                          if (input.substr(peg$currPos, 8) === peg$c148) {
+                                                                            s1 = peg$c148;
                                                                             peg$currPos += 8;
                                                                           } else {
                                                                             s1 = peg$FAILED;
                                                                             if (peg$silentFails === 0) {
-                                                                              peg$fail(peg$c146);
+                                                                              peg$fail(peg$c149);
                                                                             }
                                                                           }
                                                                           if (s1 === peg$FAILED) {
-                                                                            if (input.substr(peg$currPos, 5) === peg$c147) {
-                                                                              s1 = peg$c147;
+                                                                            if (input.substr(peg$currPos, 5) === peg$c150) {
+                                                                              s1 = peg$c150;
                                                                               peg$currPos += 5;
                                                                             } else {
                                                                               s1 = peg$FAILED;
                                                                               if (peg$silentFails === 0) {
-                                                                                peg$fail(peg$c148);
+                                                                                peg$fail(peg$c151);
                                                                               }
                                                                             }
                                                                             if (s1 === peg$FAILED) {
-                                                                              if (input.substr(peg$currPos, 5) === peg$c149) {
-                                                                                s1 = peg$c149;
+                                                                              if (input.substr(peg$currPos, 5) === peg$c152) {
+                                                                                s1 = peg$c152;
                                                                                 peg$currPos += 5;
                                                                               } else {
                                                                                 s1 = peg$FAILED;
                                                                                 if (peg$silentFails === 0) {
-                                                                                  peg$fail(peg$c150);
+                                                                                  peg$fail(peg$c153);
                                                                                 }
                                                                               }
                                                                               if (s1 === peg$FAILED) {
-                                                                                if (input.substr(peg$currPos, 8) === peg$c151) {
-                                                                                  s1 = peg$c151;
+                                                                                if (input.substr(peg$currPos, 8) === peg$c154) {
+                                                                                  s1 = peg$c154;
                                                                                   peg$currPos += 8;
                                                                                 } else {
                                                                                   s1 = peg$FAILED;
                                                                                   if (peg$silentFails === 0) {
-                                                                                    peg$fail(peg$c152);
+                                                                                    peg$fail(peg$c155);
                                                                                   }
                                                                                 }
                                                                                 if (s1 === peg$FAILED) {
-                                                                                  if (input.substr(peg$currPos, 10) === peg$c167) {
-                                                                                    s1 = peg$c167;
+                                                                                  if (input.substr(peg$currPos, 10) === peg$c170) {
+                                                                                    s1 = peg$c170;
                                                                                     peg$currPos += 10;
                                                                                   } else {
                                                                                     s1 = peg$FAILED;
                                                                                     if (peg$silentFails === 0) {
-                                                                                      peg$fail(peg$c168);
+                                                                                      peg$fail(peg$c171);
                                                                                     }
                                                                                   }
                                                                                   if (s1 === peg$FAILED) {
-                                                                                    if (input.substr(peg$currPos, 8) === peg$c153) {
-                                                                                      s1 = peg$c153;
+                                                                                    if (input.substr(peg$currPos, 8) === peg$c156) {
+                                                                                      s1 = peg$c156;
                                                                                       peg$currPos += 8;
                                                                                     } else {
                                                                                       s1 = peg$FAILED;
                                                                                       if (peg$silentFails === 0) {
-                                                                                        peg$fail(peg$c154);
+                                                                                        peg$fail(peg$c157);
                                                                                       }
                                                                                     }
                                                                                     if (s1 === peg$FAILED) {
-                                                                                      if (input.substr(peg$currPos, 10) === peg$c155) {
-                                                                                        s1 = peg$c155;
+                                                                                      if (input.substr(peg$currPos, 10) === peg$c158) {
+                                                                                        s1 = peg$c158;
                                                                                         peg$currPos += 10;
                                                                                       } else {
                                                                                         s1 = peg$FAILED;
                                                                                         if (peg$silentFails === 0) {
-                                                                                          peg$fail(peg$c156);
+                                                                                          peg$fail(peg$c159);
                                                                                         }
                                                                                       }
                                                                                       if (s1 === peg$FAILED) {
-                                                                                        if (input.substr(peg$currPos, 13) === peg$c157) {
-                                                                                          s1 = peg$c157;
+                                                                                        if (input.substr(peg$currPos, 13) === peg$c160) {
+                                                                                          s1 = peg$c160;
                                                                                           peg$currPos += 13;
                                                                                         } else {
                                                                                           s1 = peg$FAILED;
                                                                                           if (peg$silentFails === 0) {
-                                                                                            peg$fail(peg$c158);
+                                                                                            peg$fail(peg$c161);
                                                                                           }
                                                                                         }
                                                                                         if (s1 === peg$FAILED) {
-                                                                                          if (input.substr(peg$currPos, 9) === peg$c159) {
-                                                                                            s1 = peg$c159;
+                                                                                          if (input.substr(peg$currPos, 9) === peg$c162) {
+                                                                                            s1 = peg$c162;
                                                                                             peg$currPos += 9;
                                                                                           } else {
                                                                                             s1 = peg$FAILED;
                                                                                             if (peg$silentFails === 0) {
-                                                                                              peg$fail(peg$c160);
+                                                                                              peg$fail(peg$c163);
                                                                                             }
                                                                                           }
                                                                                           if (s1 === peg$FAILED) {
-                                                                                            if (input.substr(peg$currPos, 5) === peg$c161) {
-                                                                                              s1 = peg$c161;
+                                                                                            if (input.substr(peg$currPos, 5) === peg$c164) {
+                                                                                              s1 = peg$c164;
                                                                                               peg$currPos += 5;
                                                                                             } else {
                                                                                               s1 = peg$FAILED;
                                                                                               if (peg$silentFails === 0) {
-                                                                                                peg$fail(peg$c162);
+                                                                                                peg$fail(peg$c165);
                                                                                               }
                                                                                             }
                                                                                             if (s1 === peg$FAILED) {
-                                                                                              if (input.substr(peg$currPos, 4) === peg$c163) {
-                                                                                                s1 = peg$c163;
+                                                                                              if (input.substr(peg$currPos, 4) === peg$c166) {
+                                                                                                s1 = peg$c166;
                                                                                                 peg$currPos += 4;
                                                                                               } else {
                                                                                                 s1 = peg$FAILED;
                                                                                                 if (peg$silentFails === 0) {
-                                                                                                  peg$fail(peg$c164);
+                                                                                                  peg$fail(peg$c167);
                                                                                                 }
                                                                                               }
                                                                                               if (s1 === peg$FAILED) {
-                                                                                                if (input.substr(peg$currPos, 5) === peg$c165) {
-                                                                                                  s1 = peg$c165;
+                                                                                                if (input.substr(peg$currPos, 5) === peg$c168) {
+                                                                                                  s1 = peg$c168;
                                                                                                   peg$currPos += 5;
                                                                                                 } else {
                                                                                                   s1 = peg$FAILED;
                                                                                                   if (peg$silentFails === 0) {
-                                                                                                    peg$fail(peg$c166);
+                                                                                                    peg$fail(peg$c169);
                                                                                                   }
                                                                                                 }
                                                                                               }
@@ -12017,7 +12191,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s3 = peg$parseIdChar();
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -12045,7 +12219,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$parseSCOPEOP();
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             s2 = [];
@@ -12055,7 +12229,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5 = peg$parseSCOPEOP();
               if (s5 !== peg$FAILED) {
                 peg$reportedPos = s3;
-                s4 = peg$c27(s4);
+                s4 = peg$c7(s4);
                 s3 = s4;
               } else {
                 peg$currPos = s3;
@@ -12073,7 +12247,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s5 = peg$parseSCOPEOP();
                 if (s5 !== peg$FAILED) {
                   peg$reportedPos = s3;
-                  s4 = peg$c27(s4);
+                  s4 = peg$c7(s4);
                   s3 = s4;
                 } else {
                   peg$currPos = s3;
@@ -12088,7 +12262,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseIdentifier();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c169(s1, s2, s3);
+                s1 = peg$c172(s1, s2, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -12116,7 +12290,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s2 = peg$parseKeyword();
           peg$silentFails--;
           if (s2 === peg$FAILED) {
-            s1 = peg$c32;
+            s1 = peg$c33;
           } else {
             peg$currPos = s1;
             s1 = peg$c0;
@@ -12134,7 +12308,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s4 = peg$parseSpacing();
                 if (s4 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c170(s2, s3);
+                  s1 = peg$c173(s2, s3);
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -12156,33 +12330,33 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         }
         function peg$parseIdNondigit() {
           var s0;
-          if (peg$c171.test(input.charAt(peg$currPos))) {
+          if (peg$c174.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c172);
+              peg$fail(peg$c175);
             }
           }
           if (s0 === peg$FAILED) {
-            if (peg$c173.test(input.charAt(peg$currPos))) {
+            if (peg$c176.test(input.charAt(peg$currPos))) {
               s0 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s0 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c174);
+                peg$fail(peg$c177);
               }
             }
             if (s0 === peg$FAILED) {
-              if (peg$c175.test(input.charAt(peg$currPos))) {
+              if (peg$c178.test(input.charAt(peg$currPos))) {
                 s0 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s0 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c176);
+                  peg$fail(peg$c179);
                 }
               }
               if (s0 === peg$FAILED) {
@@ -12194,43 +12368,43 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         }
         function peg$parseIdChar() {
           var s0;
-          if (peg$c171.test(input.charAt(peg$currPos))) {
+          if (peg$c174.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c172);
+              peg$fail(peg$c175);
             }
           }
           if (s0 === peg$FAILED) {
-            if (peg$c173.test(input.charAt(peg$currPos))) {
+            if (peg$c176.test(input.charAt(peg$currPos))) {
               s0 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s0 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c174);
+                peg$fail(peg$c177);
               }
             }
             if (s0 === peg$FAILED) {
-              if (peg$c177.test(input.charAt(peg$currPos))) {
+              if (peg$c180.test(input.charAt(peg$currPos))) {
                 s0 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s0 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c178);
+                  peg$fail(peg$c181);
                 }
               }
               if (s0 === peg$FAILED) {
-                if (peg$c175.test(input.charAt(peg$currPos))) {
+                if (peg$c178.test(input.charAt(peg$currPos))) {
                   s0 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s0 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c176);
+                    peg$fail(peg$c179);
                   }
                 }
                 if (s0 === peg$FAILED) {
@@ -12247,13 +12421,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c179) {
-            s1 = peg$c179;
+          if (input.substr(peg$currPos, 2) === peg$c182) {
+            s1 = peg$c182;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c180);
+              peg$fail(peg$c183);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -12271,13 +12445,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
-            if (input.substr(peg$currPos, 2) === peg$c181) {
-              s1 = peg$c181;
+            if (input.substr(peg$currPos, 2) === peg$c184) {
+              s1 = peg$c184;
               peg$currPos += 2;
             } else {
               s1 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c182);
+                peg$fail(peg$c185);
               }
             }
             if (s1 !== peg$FAILED) {
@@ -12356,7 +12530,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c27(s1);
+            s1 = peg$c7(s1);
           }
           s0 = s1;
           return s0;
@@ -12371,7 +12545,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c183(s1);
+            s1 = peg$c186(s1);
           }
           s0 = s1;
           return s0;
@@ -12395,13 +12569,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s1 !== peg$FAILED) {
             s2 = peg$parseIntegerSuffix();
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -12423,41 +12597,41 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (peg$c184.test(input.charAt(peg$currPos))) {
+          if (peg$c187.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c185);
+              peg$fail(peg$c188);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = [];
-            if (peg$c177.test(input.charAt(peg$currPos))) {
+            if (peg$c180.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c178);
+                peg$fail(peg$c181);
               }
             }
             while (s3 !== peg$FAILED) {
               s2.push(s3);
-              if (peg$c177.test(input.charAt(peg$currPos))) {
+              if (peg$c180.test(input.charAt(peg$currPos))) {
                 s3 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c178);
+                  peg$fail(peg$c181);
                 }
               }
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c186(s1, s2);
+              s1 = peg$c189(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -12476,40 +12650,40 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 48) {
-            s1 = peg$c187;
+            s1 = peg$c190;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c188);
+              peg$fail(peg$c191);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = [];
-            if (peg$c189.test(input.charAt(peg$currPos))) {
+            if (peg$c192.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c190);
+                peg$fail(peg$c193);
               }
             }
             while (s3 !== peg$FAILED) {
               s2.push(s3);
-              if (peg$c189.test(input.charAt(peg$currPos))) {
+              if (peg$c192.test(input.charAt(peg$currPos))) {
                 s3 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c190);
+                  peg$fail(peg$c193);
                 }
               }
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c191(s2);
+              s1 = peg$c194(s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -12541,7 +12715,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c192(s2);
+              s1 = peg$c195(s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -12555,23 +12729,23 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         }
         function peg$parseHexPrefix() {
           var s0;
-          if (input.substr(peg$currPos, 2) === peg$c193) {
-            s0 = peg$c193;
+          if (input.substr(peg$currPos, 2) === peg$c196) {
+            s0 = peg$c196;
             peg$currPos += 2;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c194);
+              peg$fail(peg$c197);
             }
           }
           if (s0 === peg$FAILED) {
-            if (input.substr(peg$currPos, 2) === peg$c195) {
-              s0 = peg$c195;
+            if (input.substr(peg$currPos, 2) === peg$c198) {
+              s0 = peg$c198;
               peg$currPos += 2;
             } else {
               s0 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c196);
+                peg$fail(peg$c199);
               }
             }
           }
@@ -12579,33 +12753,33 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         }
         function peg$parseHexDigit() {
           var s0;
-          if (peg$c197.test(input.charAt(peg$currPos))) {
+          if (peg$c200.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c198);
+              peg$fail(peg$c201);
             }
           }
           if (s0 === peg$FAILED) {
-            if (peg$c199.test(input.charAt(peg$currPos))) {
+            if (peg$c202.test(input.charAt(peg$currPos))) {
               s0 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s0 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c200);
+                peg$fail(peg$c203);
               }
             }
             if (s0 === peg$FAILED) {
-              if (peg$c177.test(input.charAt(peg$currPos))) {
+              if (peg$c180.test(input.charAt(peg$currPos))) {
                 s0 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s0 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c178);
+                  peg$fail(peg$c181);
                 }
               }
             }
@@ -12614,26 +12788,26 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         }
         function peg$parseBinaryPrefix() {
           var s0;
-          if (input.substr(peg$currPos, 2) === peg$c201) {
-            s0 = peg$c201;
+          if (input.substr(peg$currPos, 2) === peg$c204) {
+            s0 = peg$c204;
             peg$currPos += 2;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c202);
+              peg$fail(peg$c205);
             }
           }
           return s0;
         }
         function peg$parseBinaryDigit() {
           var s0;
-          if (peg$c203.test(input.charAt(peg$currPos))) {
+          if (peg$c206.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c204);
+              peg$fail(peg$c207);
             }
           }
           return s0;
@@ -12658,7 +12832,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c205(s2);
+              s1 = peg$c208(s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -12675,19 +12849,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (peg$c206.test(input.charAt(peg$currPos))) {
+          if (peg$c209.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c207);
+              peg$fail(peg$c210);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseLsuffix();
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s1 = [s1, s2];
@@ -12704,17 +12878,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s0 = peg$currPos;
             s1 = peg$parseLsuffix();
             if (s1 !== peg$FAILED) {
-              if (peg$c206.test(input.charAt(peg$currPos))) {
+              if (peg$c209.test(input.charAt(peg$currPos))) {
                 s2 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s2 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c207);
+                  peg$fail(peg$c210);
                 }
               }
               if (s2 === peg$FAILED) {
-                s2 = peg$c7;
+                s2 = peg$c15;
               }
               if (s2 !== peg$FAILED) {
                 s1 = [s1, s2];
@@ -12732,33 +12906,33 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         }
         function peg$parseLsuffix() {
           var s0;
-          if (input.substr(peg$currPos, 2) === peg$c208) {
-            s0 = peg$c208;
+          if (input.substr(peg$currPos, 2) === peg$c211) {
+            s0 = peg$c211;
             peg$currPos += 2;
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c209);
+              peg$fail(peg$c212);
             }
           }
           if (s0 === peg$FAILED) {
-            if (input.substr(peg$currPos, 2) === peg$c210) {
-              s0 = peg$c210;
+            if (input.substr(peg$currPos, 2) === peg$c213) {
+              s0 = peg$c213;
               peg$currPos += 2;
             } else {
               s0 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c211);
+                peg$fail(peg$c214);
               }
             }
             if (s0 === peg$FAILED) {
-              if (peg$c212.test(input.charAt(peg$currPos))) {
+              if (peg$c215.test(input.charAt(peg$currPos))) {
                 s0 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s0 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c213);
+                  peg$fail(peg$c216);
                 }
               }
             }
@@ -12778,13 +12952,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s1 !== peg$FAILED) {
             s2 = peg$parseFloatSuffix();
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c214(s1, s2);
+                s1 = peg$c217(s1, s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -12809,11 +12983,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s1 !== peg$FAILED) {
             s2 = peg$parseExponent();
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c215(s1, s2);
+              s1 = peg$c218(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -12826,25 +13000,25 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
             s1 = [];
-            if (peg$c177.test(input.charAt(peg$currPos))) {
+            if (peg$c180.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c178);
+                peg$fail(peg$c181);
               }
             }
             if (s2 !== peg$FAILED) {
               while (s2 !== peg$FAILED) {
                 s1.push(s2);
-                if (peg$c177.test(input.charAt(peg$currPos))) {
+                if (peg$c180.test(input.charAt(peg$currPos))) {
                   s2 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s2 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c178);
+                    peg$fail(peg$c181);
                   }
                 }
               }
@@ -12855,7 +13029,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parseExponent();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c216(s1, s2);
+                s1 = peg$c219(s1, s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -12880,11 +13054,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             if (s2 !== peg$FAILED) {
               s3 = peg$parseBinaryExponent();
               if (s3 === peg$FAILED) {
-                s3 = peg$c7;
+                s3 = peg$c15;
               }
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c217(s1, s2, s3);
+                s1 = peg$c220(s1, s2, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -12916,7 +13090,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s3 = peg$parseBinaryExponent();
                 if (s3 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c218(s1, s2, s3);
+                  s1 = peg$c221(s1, s2, s3);
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -12941,58 +13115,58 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s4;
           s0 = peg$currPos;
           s1 = [];
-          if (peg$c177.test(input.charAt(peg$currPos))) {
+          if (peg$c180.test(input.charAt(peg$currPos))) {
             s2 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c178);
+              peg$fail(peg$c181);
             }
           }
           while (s2 !== peg$FAILED) {
             s1.push(s2);
-            if (peg$c177.test(input.charAt(peg$currPos))) {
+            if (peg$c180.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c178);
+                peg$fail(peg$c181);
               }
             }
           }
           if (s1 !== peg$FAILED) {
             if (input.charCodeAt(peg$currPos) === 46) {
-              s2 = peg$c219;
+              s2 = peg$c222;
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c220);
+                peg$fail(peg$c223);
               }
             }
             if (s2 !== peg$FAILED) {
               s3 = [];
-              if (peg$c177.test(input.charAt(peg$currPos))) {
+              if (peg$c180.test(input.charAt(peg$currPos))) {
                 s4 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s4 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c178);
+                  peg$fail(peg$c181);
                 }
               }
               if (s4 !== peg$FAILED) {
                 while (s4 !== peg$FAILED) {
                   s3.push(s4);
-                  if (peg$c177.test(input.charAt(peg$currPos))) {
+                  if (peg$c180.test(input.charAt(peg$currPos))) {
                     s4 = input.charAt(peg$currPos);
                     peg$currPos++;
                   } else {
                     s4 = peg$FAILED;
                     if (peg$silentFails === 0) {
-                      peg$fail(peg$c178);
+                      peg$fail(peg$c181);
                     }
                   }
                 }
@@ -13001,7 +13175,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c221(s1, s3);
+                s1 = peg$c224(s1, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13018,25 +13192,25 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
             s1 = [];
-            if (peg$c177.test(input.charAt(peg$currPos))) {
+            if (peg$c180.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c178);
+                peg$fail(peg$c181);
               }
             }
             if (s2 !== peg$FAILED) {
               while (s2 !== peg$FAILED) {
                 s1.push(s2);
-                if (peg$c177.test(input.charAt(peg$currPos))) {
+                if (peg$c180.test(input.charAt(peg$currPos))) {
                   s2 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s2 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c178);
+                    peg$fail(peg$c181);
                   }
                 }
               }
@@ -13045,17 +13219,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s1 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 46) {
-                s2 = peg$c219;
+                s2 = peg$c222;
                 peg$currPos++;
               } else {
                 s2 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c220);
+                  peg$fail(peg$c223);
                 }
               }
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c76(s1);
+                s1 = peg$c79(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13083,12 +13257,12 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             if (input.charCodeAt(peg$currPos) === 46) {
-              s2 = peg$c219;
+              s2 = peg$c222;
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c220);
+                peg$fail(peg$c223);
               }
             }
             if (s2 !== peg$FAILED) {
@@ -13104,7 +13278,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c221(s1, s3);
+                s1 = peg$c224(s1, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13132,17 +13306,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s1 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 46) {
-                s2 = peg$c219;
+                s2 = peg$c222;
                 peg$currPos++;
               } else {
                 s2 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c220);
+                  peg$fail(peg$c223);
                 }
               }
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c222(s1);
+                s1 = peg$c225(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13162,49 +13336,49 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3,
               s4;
           s0 = peg$currPos;
-          if (peg$c223.test(input.charAt(peg$currPos))) {
+          if (peg$c226.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c224);
+              peg$fail(peg$c227);
             }
           }
           if (s1 !== peg$FAILED) {
-            if (peg$c225.test(input.charAt(peg$currPos))) {
+            if (peg$c228.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c226);
+                peg$fail(peg$c229);
               }
             }
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s3 = [];
-              if (peg$c177.test(input.charAt(peg$currPos))) {
+              if (peg$c180.test(input.charAt(peg$currPos))) {
                 s4 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s4 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c178);
+                  peg$fail(peg$c181);
                 }
               }
               if (s4 !== peg$FAILED) {
                 while (s4 !== peg$FAILED) {
                   s3.push(s4);
-                  if (peg$c177.test(input.charAt(peg$currPos))) {
+                  if (peg$c180.test(input.charAt(peg$currPos))) {
                     s4 = input.charAt(peg$currPos);
                     peg$currPos++;
                   } else {
                     s4 = peg$FAILED;
                     if (peg$silentFails === 0) {
-                      peg$fail(peg$c178);
+                      peg$fail(peg$c181);
                     }
                   }
                 }
@@ -13213,7 +13387,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c227(s1, s2, s3);
+                s1 = peg$c230(s1, s2, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13236,49 +13410,49 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3,
               s4;
           s0 = peg$currPos;
-          if (peg$c228.test(input.charAt(peg$currPos))) {
+          if (peg$c231.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c229);
+              peg$fail(peg$c232);
             }
           }
           if (s1 !== peg$FAILED) {
-            if (peg$c225.test(input.charAt(peg$currPos))) {
+            if (peg$c228.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c226);
+                peg$fail(peg$c229);
               }
             }
             if (s2 === peg$FAILED) {
-              s2 = peg$c7;
+              s2 = peg$c15;
             }
             if (s2 !== peg$FAILED) {
               s3 = [];
-              if (peg$c177.test(input.charAt(peg$currPos))) {
+              if (peg$c180.test(input.charAt(peg$currPos))) {
                 s4 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s4 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c178);
+                  peg$fail(peg$c181);
                 }
               }
               if (s4 !== peg$FAILED) {
                 while (s4 !== peg$FAILED) {
                   s3.push(s4);
-                  if (peg$c177.test(input.charAt(peg$currPos))) {
+                  if (peg$c180.test(input.charAt(peg$currPos))) {
                     s4 = input.charAt(peg$currPos);
                     peg$currPos++;
                   } else {
                     s4 = peg$FAILED;
                     if (peg$silentFails === 0) {
-                      peg$fail(peg$c178);
+                      peg$fail(peg$c181);
                     }
                   }
                 }
@@ -13287,7 +13461,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c230(s1, s3);
+                s1 = peg$c233(s1, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13307,18 +13481,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           var s0,
               s1;
           s0 = peg$currPos;
-          if (peg$c231.test(input.charAt(peg$currPos))) {
+          if (peg$c234.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c232);
+              peg$fail(peg$c235);
             }
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c27(s1);
+            s1 = peg$c7(s1);
           }
           s0 = s1;
           return s0;
@@ -13330,7 +13504,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s1 = peg$parseIdentifier();
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c233(s1);
+            s1 = peg$c236(s1);
           }
           s0 = s1;
           return s0;
@@ -13344,25 +13518,25 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 76) {
-            s1 = peg$c234;
+            s1 = peg$c237;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c235);
+              peg$fail(peg$c238);
             }
           }
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             if (input.charCodeAt(peg$currPos) === 39) {
-              s2 = peg$c236;
+              s2 = peg$c239;
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c237);
+                peg$fail(peg$c240);
               }
             }
             if (s2 !== peg$FAILED) {
@@ -13374,19 +13548,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
               if (s3 !== peg$FAILED) {
                 if (input.charCodeAt(peg$currPos) === 39) {
-                  s4 = peg$c236;
+                  s4 = peg$c239;
                   peg$currPos++;
                 } else {
                   s4 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c237);
+                    peg$fail(peg$c240);
                   }
                 }
                 if (s4 !== peg$FAILED) {
                   s5 = peg$parseSpacing();
                   if (s5 !== peg$FAILED) {
                     peg$reportedPos = s0;
-                    s1 = peg$c238(s3);
+                    s1 = peg$c241(s3);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
@@ -13418,25 +13592,25 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s1 = peg$parseEscape();
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c27(s1);
+            s1 = peg$c7(s1);
           }
           s0 = s1;
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
             s1 = peg$currPos;
             peg$silentFails++;
-            if (peg$c239.test(input.charAt(peg$currPos))) {
+            if (peg$c242.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c240);
+                peg$fail(peg$c243);
               }
             }
             peg$silentFails--;
             if (s2 === peg$FAILED) {
-              s1 = peg$c32;
+              s1 = peg$c33;
             } else {
               peg$currPos = s1;
               s1 = peg$c0;
@@ -13445,7 +13619,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parse_();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s2);
+                s1 = peg$c7(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -13474,7 +13648,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c27(s1);
+            s1 = peg$c7(s1);
           }
           s0 = s1;
           return s0;
@@ -13485,27 +13659,27 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 92) {
-            s1 = peg$c241;
+            s1 = peg$c244;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c242);
+              peg$fail(peg$c245);
             }
           }
           if (s1 !== peg$FAILED) {
-            if (peg$c243.test(input.charAt(peg$currPos))) {
+            if (peg$c246.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c244);
+                peg$fail(peg$c247);
               }
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c245(s1, s2);
+              s1 = peg$c248(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -13525,53 +13699,53 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s4;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 92) {
-            s1 = peg$c241;
+            s1 = peg$c244;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c242);
+              peg$fail(peg$c245);
             }
           }
           if (s1 !== peg$FAILED) {
-            if (peg$c189.test(input.charAt(peg$currPos))) {
+            if (peg$c192.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c190);
+                peg$fail(peg$c193);
               }
             }
             if (s2 !== peg$FAILED) {
-              if (peg$c189.test(input.charAt(peg$currPos))) {
+              if (peg$c192.test(input.charAt(peg$currPos))) {
                 s3 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c190);
+                  peg$fail(peg$c193);
                 }
               }
               if (s3 === peg$FAILED) {
-                s3 = peg$c7;
+                s3 = peg$c15;
               }
               if (s3 !== peg$FAILED) {
-                if (peg$c189.test(input.charAt(peg$currPos))) {
+                if (peg$c192.test(input.charAt(peg$currPos))) {
                   s4 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s4 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c190);
+                    peg$fail(peg$c193);
                   }
                 }
                 if (s4 === peg$FAILED) {
-                  s4 = peg$c7;
+                  s4 = peg$c15;
                 }
                 if (s4 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c246(s1, s2, s3, s4);
+                  s1 = peg$c249(s1, s2, s3, s4);
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -13597,13 +13771,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c247) {
-            s1 = peg$c247;
+          if (input.substr(peg$currPos, 2) === peg$c250) {
+            s1 = peg$c250;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c248);
+              peg$fail(peg$c251);
             }
           }
           if (s1 !== peg$FAILED) {
@@ -13619,7 +13793,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c249(s1, s2);
+              s1 = peg$c252(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -13637,49 +13811,49 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 76) {
-            s1 = peg$c234;
+            s1 = peg$c237;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c235);
+              peg$fail(peg$c238);
             }
           }
           if (s1 === peg$FAILED) {
-            if (input.substr(peg$currPos, 2) === peg$c250) {
-              s1 = peg$c250;
+            if (input.substr(peg$currPos, 2) === peg$c253) {
+              s1 = peg$c253;
               peg$currPos += 2;
             } else {
               s1 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c251);
+                peg$fail(peg$c254);
               }
             }
             if (s1 === peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 117) {
-                s1 = peg$c252;
+                s1 = peg$c255;
                 peg$currPos++;
               } else {
                 s1 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c253);
+                  peg$fail(peg$c256);
                 }
               }
               if (s1 === peg$FAILED) {
                 if (input.charCodeAt(peg$currPos) === 85) {
-                  s1 = peg$c254;
+                  s1 = peg$c257;
                   peg$currPos++;
                 } else {
                   s1 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c255);
+                    peg$fail(peg$c258);
                   }
                 }
               }
             }
           }
           if (s1 === peg$FAILED) {
-            s1 = peg$c7;
+            s1 = peg$c15;
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseRawStringLiteral();
@@ -13688,7 +13862,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c256(s1, s2);
+              s1 = peg$c259(s1, s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -13711,24 +13885,24 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s7;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 82) {
-            s1 = peg$c257;
+            s1 = peg$c260;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c258);
+              peg$fail(peg$c261);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = [];
             s3 = peg$currPos;
-            if (peg$c259.test(input.charAt(peg$currPos))) {
+            if (peg$c262.test(input.charAt(peg$currPos))) {
               s4 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s4 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c260);
+                peg$fail(peg$c263);
               }
             }
             if (s4 !== peg$FAILED) {
@@ -13739,20 +13913,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 s6 = peg$parseRawStringChar();
               }
               if (s5 !== peg$FAILED) {
-                if (peg$c259.test(input.charAt(peg$currPos))) {
+                if (peg$c262.test(input.charAt(peg$currPos))) {
                   s6 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s6 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c260);
+                    peg$fail(peg$c263);
                   }
                 }
                 if (s6 !== peg$FAILED) {
                   s7 = peg$parseSpacing();
                   if (s7 !== peg$FAILED) {
                     peg$reportedPos = s3;
-                    s4 = peg$c76(s5);
+                    s4 = peg$c79(s5);
                     s3 = s4;
                   } else {
                     peg$currPos = s3;
@@ -13774,13 +13948,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               while (s3 !== peg$FAILED) {
                 s2.push(s3);
                 s3 = peg$currPos;
-                if (peg$c259.test(input.charAt(peg$currPos))) {
+                if (peg$c262.test(input.charAt(peg$currPos))) {
                   s4 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s4 = peg$FAILED;
                   if (peg$silentFails === 0) {
-                    peg$fail(peg$c260);
+                    peg$fail(peg$c263);
                   }
                 }
                 if (s4 !== peg$FAILED) {
@@ -13791,20 +13965,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                     s6 = peg$parseRawStringChar();
                   }
                   if (s5 !== peg$FAILED) {
-                    if (peg$c259.test(input.charAt(peg$currPos))) {
+                    if (peg$c262.test(input.charAt(peg$currPos))) {
                       s6 = input.charAt(peg$currPos);
                       peg$currPos++;
                     } else {
                       s6 = peg$FAILED;
                       if (peg$silentFails === 0) {
-                        peg$fail(peg$c260);
+                        peg$fail(peg$c263);
                       }
                     }
                     if (s6 !== peg$FAILED) {
                       s7 = peg$parseSpacing();
                       if (s7 !== peg$FAILED) {
                         peg$reportedPos = s3;
-                        s4 = peg$c76(s5);
+                        s4 = peg$c79(s5);
                         s3 = s4;
                       } else {
                         peg$currPos = s3;
@@ -13828,7 +14002,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             }
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c261(s2);
+              s1 = peg$c264(s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -13851,13 +14025,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = [];
           s2 = peg$currPos;
-          if (peg$c259.test(input.charAt(peg$currPos))) {
+          if (peg$c262.test(input.charAt(peg$currPos))) {
             s3 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s3 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c260);
+              peg$fail(peg$c263);
             }
           }
           if (s3 !== peg$FAILED) {
@@ -13868,20 +14042,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s5 = peg$parseStringChar();
             }
             if (s4 !== peg$FAILED) {
-              if (peg$c259.test(input.charAt(peg$currPos))) {
+              if (peg$c262.test(input.charAt(peg$currPos))) {
                 s5 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s5 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c260);
+                  peg$fail(peg$c263);
                 }
               }
               if (s5 !== peg$FAILED) {
                 s6 = peg$parseSpacing();
                 if (s6 !== peg$FAILED) {
                   peg$reportedPos = s2;
-                  s3 = peg$c76(s4);
+                  s3 = peg$c79(s4);
                   s2 = s3;
                 } else {
                   peg$currPos = s2;
@@ -13903,13 +14077,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             while (s2 !== peg$FAILED) {
               s1.push(s2);
               s2 = peg$currPos;
-              if (peg$c259.test(input.charAt(peg$currPos))) {
+              if (peg$c262.test(input.charAt(peg$currPos))) {
                 s3 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                  peg$fail(peg$c260);
+                  peg$fail(peg$c263);
                 }
               }
               if (s3 !== peg$FAILED) {
@@ -13920,20 +14094,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   s5 = peg$parseStringChar();
                 }
                 if (s4 !== peg$FAILED) {
-                  if (peg$c259.test(input.charAt(peg$currPos))) {
+                  if (peg$c262.test(input.charAt(peg$currPos))) {
                     s5 = input.charAt(peg$currPos);
                     peg$currPos++;
                   } else {
                     s5 = peg$FAILED;
                     if (peg$silentFails === 0) {
-                      peg$fail(peg$c260);
+                      peg$fail(peg$c263);
                     }
                   }
                   if (s5 !== peg$FAILED) {
                     s6 = peg$parseSpacing();
                     if (s6 !== peg$FAILED) {
                       peg$reportedPos = s2;
-                      s3 = peg$c76(s4);
+                      s3 = peg$c79(s4);
                       s2 = s3;
                     } else {
                       peg$currPos = s2;
@@ -13957,7 +14131,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c261(s1);
+            s1 = peg$c264(s1);
           }
           s0 = s1;
           return s0;
@@ -13969,18 +14143,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$currPos;
           peg$silentFails++;
-          if (peg$c262.test(input.charAt(peg$currPos))) {
+          if (peg$c265.test(input.charAt(peg$currPos))) {
             s2 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c263);
+              peg$fail(peg$c266);
             }
           }
           peg$silentFails--;
           if (s2 === peg$FAILED) {
-            s1 = peg$c32;
+            s1 = peg$c33;
           } else {
             peg$currPos = s1;
             s1 = peg$c0;
@@ -13989,7 +14163,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s2 = peg$parse_();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s2);
+              s1 = peg$c7(s2);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14010,18 +14184,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             s0 = peg$currPos;
             s1 = peg$currPos;
             peg$silentFails++;
-            if (peg$c264.test(input.charAt(peg$currPos))) {
+            if (peg$c267.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c265);
+                peg$fail(peg$c268);
               }
             }
             peg$silentFails--;
             if (s2 === peg$FAILED) {
-              s1 = peg$c32;
+              s1 = peg$c33;
             } else {
               peg$currPos = s1;
               s1 = peg$c0;
@@ -14030,7 +14204,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2 = peg$parse_();
               if (s2 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s2);
+                s1 = peg$c7(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14049,19 +14223,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 91) {
-            s1 = peg$c266;
+            s1 = peg$c269;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c267);
+              peg$fail(peg$c270);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14079,19 +14253,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 93) {
-            s1 = peg$c268;
+            s1 = peg$c271;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c269);
+              peg$fail(peg$c272);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14109,19 +14283,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 40) {
-            s1 = peg$c270;
+            s1 = peg$c273;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c271);
+              peg$fail(peg$c274);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14139,19 +14313,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 41) {
-            s1 = peg$c272;
+            s1 = peg$c275;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c273);
+              peg$fail(peg$c276);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14169,19 +14343,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 123) {
-            s1 = peg$c274;
+            s1 = peg$c277;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c275);
+              peg$fail(peg$c278);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14199,19 +14373,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 125) {
-            s1 = peg$c276;
+            s1 = peg$c279;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c277);
+              peg$fail(peg$c280);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14229,19 +14403,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 46) {
-            s1 = peg$c219;
+            s1 = peg$c222;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c220);
+              peg$fail(peg$c223);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14258,20 +14432,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c278) {
-            s1 = peg$c278;
+          if (input.substr(peg$currPos, 2) === peg$c281) {
+            s1 = peg$c281;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c279);
+              peg$fail(peg$c282);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14288,20 +14462,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c280) {
-            s1 = peg$c280;
+          if (input.substr(peg$currPos, 2) === peg$c283) {
+            s1 = peg$c283;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c281);
+              peg$fail(peg$c284);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14318,20 +14492,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c282) {
-            s1 = peg$c282;
+          if (input.substr(peg$currPos, 2) === peg$c285) {
+            s1 = peg$c285;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c283);
+              peg$fail(peg$c286);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14350,29 +14524,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 38) {
-            s1 = peg$c284;
+            s1 = peg$c287;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c285);
+              peg$fail(peg$c288);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c286.test(input.charAt(peg$currPos))) {
+            if (peg$c289.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c287);
+                peg$fail(peg$c290);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14381,7 +14555,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14404,29 +14578,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 42) {
-            s1 = peg$c288;
+            s1 = peg$c291;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c289);
+              peg$fail(peg$c292);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14435,7 +14609,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14458,29 +14632,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 43) {
-            s1 = peg$c292;
+            s1 = peg$c295;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c293);
+              peg$fail(peg$c296);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c294.test(input.charAt(peg$currPos))) {
+            if (peg$c297.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c295);
+                peg$fail(peg$c298);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14489,7 +14663,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14512,29 +14686,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 45) {
-            s1 = peg$c296;
+            s1 = peg$c299;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c297);
+              peg$fail(peg$c300);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c298.test(input.charAt(peg$currPos))) {
+            if (peg$c301.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c299);
+                peg$fail(peg$c302);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14543,7 +14717,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14565,19 +14739,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 126) {
-            s1 = peg$c300;
+            s1 = peg$c303;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c301);
+              peg$fail(peg$c304);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -14596,29 +14770,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 33) {
-            s1 = peg$c302;
+            s1 = peg$c305;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c303);
+              peg$fail(peg$c306);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14627,7 +14801,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14650,29 +14824,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 47) {
-            s1 = peg$c304;
+            s1 = peg$c307;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c305);
+              peg$fail(peg$c308);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14681,7 +14855,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14704,29 +14878,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 37) {
-            s1 = peg$c306;
+            s1 = peg$c309;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c307);
+              peg$fail(peg$c310);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c308.test(input.charAt(peg$currPos))) {
+            if (peg$c311.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c309);
+                peg$fail(peg$c312);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14735,7 +14909,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14757,30 +14931,30 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c310) {
-            s1 = peg$c310;
+          if (input.substr(peg$currPos, 2) === peg$c313) {
+            s1 = peg$c313;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c311);
+              peg$fail(peg$c314);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14789,7 +14963,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14811,30 +14985,30 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2,
               s3;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c312) {
-            s1 = peg$c312;
+          if (input.substr(peg$currPos, 2) === peg$c315) {
+            s1 = peg$c315;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c313);
+              peg$fail(peg$c316);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14843,7 +15017,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14866,29 +15040,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 60) {
-            s1 = peg$c314;
+            s1 = peg$c317;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c315);
+              peg$fail(peg$c318);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14897,7 +15071,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14920,29 +15094,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 62) {
-            s1 = peg$c316;
+            s1 = peg$c319;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c317);
+              peg$fail(peg$c320);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -14951,7 +15125,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -14972,20 +15146,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c318) {
-            s1 = peg$c318;
+          if (input.substr(peg$currPos, 2) === peg$c321) {
+            s1 = peg$c321;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c319);
+              peg$fail(peg$c322);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15002,20 +15176,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c320) {
-            s1 = peg$c320;
+          if (input.substr(peg$currPos, 2) === peg$c323) {
+            s1 = peg$c323;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c321);
+              peg$fail(peg$c324);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15032,20 +15206,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c322) {
-            s1 = peg$c322;
+          if (input.substr(peg$currPos, 2) === peg$c325) {
+            s1 = peg$c325;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c323);
+              peg$fail(peg$c326);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15062,20 +15236,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c324) {
-            s1 = peg$c324;
+          if (input.substr(peg$currPos, 2) === peg$c327) {
+            s1 = peg$c327;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c325);
+              peg$fail(peg$c328);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15094,29 +15268,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 94) {
-            s1 = peg$c326;
+            s1 = peg$c329;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c327);
+              peg$fail(peg$c330);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -15125,7 +15299,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -15148,29 +15322,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 124) {
-            s1 = peg$c328;
+            s1 = peg$c331;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c329);
+              peg$fail(peg$c332);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c290.test(input.charAt(peg$currPos))) {
+            if (peg$c293.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c291);
+                peg$fail(peg$c294);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -15179,7 +15353,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -15200,20 +15374,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c330) {
-            s1 = peg$c330;
+          if (input.substr(peg$currPos, 2) === peg$c333) {
+            s1 = peg$c333;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c331);
+              peg$fail(peg$c334);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15230,20 +15404,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c332) {
-            s1 = peg$c332;
+          if (input.substr(peg$currPos, 2) === peg$c335) {
+            s1 = peg$c335;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c333);
+              peg$fail(peg$c336);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15261,19 +15435,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 63) {
-            s1 = peg$c334;
+            s1 = peg$c337;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c335);
+              peg$fail(peg$c338);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15292,29 +15466,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 58) {
-            s1 = peg$c336;
+            s1 = peg$c339;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c337);
+              peg$fail(peg$c340);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
-            if (peg$c338.test(input.charAt(peg$currPos))) {
+            if (peg$c341.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c339);
+                peg$fail(peg$c342);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -15323,7 +15497,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -15345,19 +15519,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 59) {
-            s1 = peg$c340;
+            s1 = peg$c343;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c341);
+              peg$fail(peg$c344);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15374,20 +15548,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 3) === peg$c342) {
-            s1 = peg$c342;
+          if (input.substr(peg$currPos, 3) === peg$c345) {
+            s1 = peg$c345;
             peg$currPos += 3;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c343);
+              peg$fail(peg$c346);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15406,29 +15580,29 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 61) {
-            s1 = peg$c344;
+            s1 = peg$c347;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c345);
+              peg$fail(peg$c348);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$currPos;
             peg$silentFails++;
             if (input.charCodeAt(peg$currPos) === 61) {
-              s3 = peg$c344;
+              s3 = peg$c347;
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
               if (peg$silentFails === 0) {
-                peg$fail(peg$c345);
+                peg$fail(peg$c348);
               }
             }
             peg$silentFails--;
             if (s3 === peg$FAILED) {
-              s2 = peg$c32;
+              s2 = peg$c33;
             } else {
               peg$currPos = s2;
               s2 = peg$c0;
@@ -15437,7 +15611,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s3 = peg$parseSpacing();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c27(s1);
+                s1 = peg$c7(s1);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -15458,20 +15632,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c346) {
-            s1 = peg$c346;
+          if (input.substr(peg$currPos, 2) === peg$c349) {
+            s1 = peg$c349;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c347);
+              peg$fail(peg$c350);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15488,20 +15662,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c348) {
-            s1 = peg$c348;
+          if (input.substr(peg$currPos, 2) === peg$c351) {
+            s1 = peg$c351;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c349);
+              peg$fail(peg$c352);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15518,20 +15692,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c350) {
-            s1 = peg$c350;
+          if (input.substr(peg$currPos, 2) === peg$c353) {
+            s1 = peg$c353;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c351);
+              peg$fail(peg$c354);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15548,20 +15722,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c352) {
-            s1 = peg$c352;
+          if (input.substr(peg$currPos, 2) === peg$c355) {
+            s1 = peg$c355;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c353);
+              peg$fail(peg$c356);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15578,20 +15752,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c354) {
-            s1 = peg$c354;
+          if (input.substr(peg$currPos, 2) === peg$c357) {
+            s1 = peg$c357;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c355);
+              peg$fail(peg$c358);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15608,20 +15782,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 3) === peg$c356) {
-            s1 = peg$c356;
+          if (input.substr(peg$currPos, 3) === peg$c359) {
+            s1 = peg$c359;
             peg$currPos += 3;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c357);
+              peg$fail(peg$c360);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15638,20 +15812,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 3) === peg$c358) {
-            s1 = peg$c358;
+          if (input.substr(peg$currPos, 3) === peg$c361) {
+            s1 = peg$c361;
             peg$currPos += 3;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c359);
+              peg$fail(peg$c362);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15668,20 +15842,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c360) {
-            s1 = peg$c360;
+          if (input.substr(peg$currPos, 2) === peg$c363) {
+            s1 = peg$c363;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c361);
+              peg$fail(peg$c364);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15698,20 +15872,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c362) {
-            s1 = peg$c362;
+          if (input.substr(peg$currPos, 2) === peg$c365) {
+            s1 = peg$c365;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c363);
+              peg$fail(peg$c366);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15728,20 +15902,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c364) {
-            s1 = peg$c364;
+          if (input.substr(peg$currPos, 2) === peg$c367) {
+            s1 = peg$c367;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c365);
+              peg$fail(peg$c368);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15759,19 +15933,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s2;
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 44) {
-            s1 = peg$c366;
+            s1 = peg$c369;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c367);
+              peg$fail(peg$c370);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15788,20 +15962,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2;
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 2) === peg$c368) {
-            s1 = peg$c368;
+          if (input.substr(peg$currPos, 2) === peg$c371) {
+            s1 = peg$c371;
             peg$currPos += 2;
           } else {
             s1 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c369);
+              peg$fail(peg$c372);
             }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parseSpacing();
             if (s2 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c27(s1);
+              s1 = peg$c7(s1);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -15821,7 +15995,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           s1 = peg$parse_();
           peg$silentFails--;
           if (s1 === peg$FAILED) {
-            s0 = peg$c32;
+            s0 = peg$c33;
           } else {
             peg$currPos = s0;
             s0 = peg$c0;
@@ -15836,7 +16010,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           } else {
             s0 = peg$FAILED;
             if (peg$silentFails === 0) {
-              peg$fail(peg$c370);
+              peg$fail(peg$c373);
             }
           }
           return s0;
@@ -16013,6 +16187,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           defaults;
       defaults = this;
       this.config = {
+        specifiers: ["const", "inline", "_stdcall", "extern", "static", "auto", "register"],
         charTypes: ["char", "signed char", "unsigned char", "wchar_t", "unsigned wchar_t", "char16_t", "unsigned char16_t", "char32_t", "unsigned char32_t"],
         intTypes: ["short", "short int", "signed short", "signed short int", "unsigned short", "unsigned short int", "int", "signed int", "unsigned", "unsigned int", "long", "long int", "long int", "signed long", "signed long int", "unsigned long", "unsigned long int", "long long", "long long int", "long long int", "signed long long", "signed long long int", "unsigned long long", "unsigned long long int", "bool"],
         limits: {
@@ -16519,14 +16694,34 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             } else {
               rt.raiseException("you cannot cast bitwise and on pointer");
             }
+          }},
+        "o(())": {"#default": function(rt, l, bindThis, args) {
+            if (!rt.isFunctionType(l.v.target)) {
+              rt.raiseException("pointer target(" + (rt.makeValueString(l.v.target)) + ") is not a function");
+            }
+            return rt.types["function"]["o(())"]["default"](rt, l.v.target, bindThis, args);
           }}
       };
-      this.types["pointer_function"] = {"o(())": {"#default": function(rt, l, bindThis, args) {
-            if (l.t.type !== "pointer" || l.t.ptrType !== "function") {
-              rt.raiseException(rt.makeTypeString(l.t.type) + " is not function");
+      this.types["function"] = {
+        "o(())": {"#default": function(rt, l, bindThis, args) {
+            if (l.t.type === "pointer" && l.t.targetType.type === "function") {
+              l = l.v.target;
+            }
+            if (l.v.target === null) {
+              rt.raiseException("function " + l.v.name + " does not seem to be implemented");
             }
             return rt.getCompatibleFunc(l.v.defineType, l.v.name, args).apply(null, [rt, bindThis].concat(slice.call(args)));
-          }}};
+          }},
+        "o(&)": {"#default": function(rt, l, r) {
+            var t;
+            if (r === void 0) {
+              t = rt.normalPointerType(l.t);
+              return rt.val(t, rt.makeNormalPointerValue(l));
+            } else {
+              rt.raiseException("you cannot cast bitwise and on function");
+            }
+          }}
+      };
       this.types["pointer_normal"] = {
         "o(*)": {"#default": function(rt, l, r) {
             if (r === void 0) {
@@ -16950,7 +17145,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         };
         return rt.regFunc(_printf, "global", "printf", [pchar, "?"], rt.intTypeLiteral);
       }};
-  }, {"printf": 44}],
+  }, {"printf": 45}],
   7: [function(require, module, exports) {
     module.exports = {load: function(rt) {
         var _abs,
@@ -17600,7 +17795,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         };
         rt.scope[0]["cin"] = cin;
         pchar = rt.normalPointerType(rt.charTypeLiteral);
-        rt.types[rt.getTypeSigniture(type)] = {
+        rt.types[rt.getTypeSignature(type)] = {
           "#father": "object",
           "o(>>)": {"#default": function(rt, _cin, t) {
               var b,
@@ -17768,7 +17963,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           left: false
         };
         rt.scope[0]["cout"] = cout;
-        rt.types[rt.getTypeSigniture(cout.t)] = {
+        rt.types[rt.getTypeSignature(cout.t)] = {
           "#father": "object",
           "o(<<)": {"#default": function(rt, _cout, t) {
               var r;
@@ -17897,25 +18092,28 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               }
           }, $__4, this);
         }),
-        FunctionDefinition: $traceurRuntime.initGeneratorFunction(function $__10(interp, s, param) {
+        DirectDeclarator: $traceurRuntime.initGeneratorFunction(function $__10(interp, s, param) {
           var _basetype,
-              _name,
               _param,
               _pointer,
               _type,
-              argNames,
               argTypes,
               basetype,
               dim,
               dimensions,
-              i,
               j,
-              name,
-              pointer,
+              k,
+              l,
+              len,
+              len1,
+              len2,
+              m,
               ptl,
-              retType,
-              scope,
-              stat,
+              ref,
+              ref1,
+              ref2,
+              ret,
+              right,
               varargs,
               $__11,
               $__12,
@@ -17926,59 +18124,100 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $__17,
               $__18,
               $__19,
-              $__20;
+              $__20,
+              $__21,
+              $__22,
+              $__23,
+              $__24,
+              $__25,
+              $__26,
+              $__27,
+              $__28,
+              $__29,
+              $__30,
+              $__31,
+              $__32,
+              $__33,
+              $__34,
+              $__35,
+              $__36;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
                 case 0:
                   rt = interp.rt;
-                  scope = param.scope;
-                  name = s.Declarator.left.Identifier;
-                  basetype = rt.simpleType(s.DeclarationSpecifiers.join(" "));
-                  pointer = s.Declarator.Pointer;
-                  retType = interp.buildRecursivePointerType(pointer, basetype, 0);
-                  argTypes = [];
-                  argNames = [];
-                  if (s.Declarator.right.length !== 1) {
-                    rt.raiseException("you cannot have " + s.Declarator.right.length + " parameter lists (1 expected)");
-                  }
-                  ptl = void 0;
-                  varargs = void 0;
-                  if (s.Declarator.right[0].type === "DirectDeclarator_modifier_ParameterTypeList") {
-                    ptl = s.Declarator.right[0].ParameterTypeList;
+                  basetype = param.basetype;
+                  basetype = interp.buildRecursivePointerType(s.Pointer, basetype, 0);
+                  $ctx.state = 115;
+                  break;
+                case 115:
+                  $ctx.state = (s.right.length === 1) ? 51 : 49;
+                  break;
+                case 51:
+                  right = s.right[0];
+                  ptl = null;
+                  if (right.type === "DirectDeclarator_modifier_ParameterTypeList") {
+                    ptl = right.ParameterTypeList;
                     varargs = ptl.varargs;
-                  } else if (s.Declarator.right[0].type === "DirectDeclarator_modifier_IdentifierList" && s.Declarator.right[0].IdentifierList === null) {
-                    ptl = {ParameterList: []};
+                  } else if (right.type === "DirectDeclarator_modifier_IdentifierList" && right.IdentifierList === null) {
+                    ptl = right.ParameterTypeList;
                     varargs = false;
-                  } else {
-                    rt.raiseException("unacceptable argument list");
                   }
-                  i = 0;
-                  $ctx.state = 38;
+                  $ctx.state = 52;
                   break;
-                case 38:
-                  $ctx.state = (i < ptl.ParameterList.length) ? 32 : 36;
+                case 52:
+                  $ctx.state = (ptl != null) ? 46 : 49;
                   break;
-                case 32:
-                  _param = ptl.ParameterList[i];
+                case 46:
+                  argTypes = [];
+                  ref = ptl.ParameterList;
+                  $ctx.state = 47;
+                  break;
+                case 47:
+                  k = 0, len = ref.length;
+                  $ctx.state = 45;
+                  break;
+                case 45:
+                  $ctx.state = (k < len) ? 39 : 43;
+                  break;
+                case 42:
+                  k++;
+                  $ctx.state = 45;
+                  break;
+                case 39:
+                  _param = ref[k];
+                  _basetype = rt.simpleType(_param.DeclarationSpecifiers);
+                  $ctx.state = 40;
+                  break;
+                case 40:
+                  $ctx.state = (_param.Declarator != null) ? 34 : 36;
+                  break;
+                case 34:
                   _pointer = _param.Declarator.Pointer;
-                  _basetype = rt.simpleType(_param.DeclarationSpecifiers.join(" "));
                   _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
-                  _name = _param.Declarator.left.Identifier;
-                  $ctx.state = 33;
+                  $ctx.state = 35;
                   break;
-                case 33:
-                  $ctx.state = (_param.Declarator.right.length > 0) ? 27 : 30;
+                case 35:
+                  $ctx.state = ((_param.Declarator.right != null) && _param.Declarator.right.length > 0) ? 29 : 32;
                   break;
-                case 27:
+                case 29:
                   dimensions = [];
-                  j = 0;
+                  ref1 = _param.Declarator.right;
+                  $ctx.state = 30;
+                  break;
+                case 30:
+                  j = l = 0, len1 = ref1.length;
                   $ctx.state = 28;
                   break;
                 case 28:
-                  $ctx.state = (j < _param.Declarator.right.length) ? 22 : 26;
+                  $ctx.state = (l < len1) ? 22 : 26;
+                  break;
+                case 25:
+                  j = ++l;
+                  $ctx.state = 28;
                   break;
                 case 22:
+                  dim = ref1[j];
                   dim = _param.Declarator.right[j];
                   if (dim.type !== "DirectDeclarator_modifier_array") {
                     rt.raiseException("unacceptable array initialization");
@@ -18029,7 +18268,403 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 case 19:
                   if (j > 0) {
                     rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
-                  } else {}
+                  } else {
+                    dim = -1;
+                  }
+                  $ctx.state = 18;
+                  break;
+                case 18:
+                  dimensions.push(dim);
+                  $ctx.state = 25;
+                  break;
+                case 26:
+                  _type = interp.arrayType(dimensions, 0, _type);
+                  $ctx.state = 32;
+                  break;
+                case 36:
+                  _type = _basetype;
+                  $ctx.state = 32;
+                  break;
+                case 32:
+                  argTypes.push(_type);
+                  $ctx.state = 42;
+                  break;
+                case 43:
+                  basetype = rt.functionType(basetype, argTypes);
+                  $ctx.state = 49;
+                  break;
+                case 49:
+                  $ctx.state = (s.right.length > 0 && s.right[0].type === "DirectDeclarator_modifier_array") ? 82 : 85;
+                  break;
+                case 82:
+                  dimensions = [];
+                  ref2 = s.right;
+                  $ctx.state = 83;
+                  break;
+                case 83:
+                  j = m = 0, len2 = ref2.length;
+                  $ctx.state = 81;
+                  break;
+                case 81:
+                  $ctx.state = (m < len2) ? 75 : 79;
+                  break;
+                case 78:
+                  j = ++m;
+                  $ctx.state = 81;
+                  break;
+                case 75:
+                  dim = ref2[j];
+                  if (dim.type !== "DirectDeclarator_modifier_array") {
+                    rt.raiseException("unacceptable array initialization");
+                  }
+                  if (dim.type !== "DirectDeclarator_modifier_array") {
+                    rt.raiseException("unacceptable array initialization");
+                  }
+                  $ctx.state = 76;
+                  break;
+                case 76:
+                  $ctx.state = (dim.Expression !== null) ? 68 : 72;
+                  break;
+                case 68:
+                  $__21 = rt.cast;
+                  $__22 = rt.intTypeLiteral;
+                  $__23 = interp.visit;
+                  $__24 = dim.Expression;
+                  $__25 = $__23.call(interp, interp, $__24, param);
+                  $ctx.state = 69;
+                  break;
+                case 69:
+                  $__29 = $ctx.wrapYieldStar($__25[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 65;
+                  break;
+                case 65:
+                  $__30 = $__29[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 62;
+                  break;
+                case 62:
+                  $ctx.state = ($__30.done) ? 56 : 55;
+                  break;
+                case 56:
+                  $ctx.sent = $__30.value;
+                  $ctx.state = 63;
+                  break;
+                case 55:
+                  $ctx.state = 65;
+                  return $__30.value;
+                case 63:
+                  $__26 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 67;
+                  break;
+                case 67:
+                  $__27 = $__21.call(rt, $__22, $__26);
+                  $__28 = $__27.v;
+                  dim = $__28;
+                  $ctx.state = 71;
+                  break;
+                case 72:
+                  if (j > 0) {
+                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                  } else {
+                    dim = -1;
+                  }
+                  $ctx.state = 71;
+                  break;
+                case 71:
+                  dimensions.push(dim);
+                  $ctx.state = 78;
+                  break;
+                case 79:
+                  basetype = interp.arrayType(dimensions, 0, basetype);
+                  $ctx.state = 85;
+                  break;
+                case 85:
+                  $ctx.state = (s.left.type === "Identifier") ? 87 : 109;
+                  break;
+                case 87:
+                  $ctx.returnValue = {
+                    type: basetype,
+                    name: s.left.Identifier
+                  };
+                  $ctx.state = -2;
+                  break;
+                case 109:
+                  _basetype = param.basetype;
+                  param.basetype = basetype;
+                  $ctx.state = 110;
+                  break;
+                case 110:
+                  $__31 = interp.visit;
+                  $__32 = s.left;
+                  $__33 = $__31.call(interp, interp, $__32, param);
+                  $ctx.state = 104;
+                  break;
+                case 104:
+                  $__35 = $ctx.wrapYieldStar($__33[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 100;
+                  break;
+                case 100:
+                  $__36 = $__35[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 97;
+                  break;
+                case 97:
+                  $ctx.state = ($__36.done) ? 91 : 90;
+                  break;
+                case 91:
+                  $ctx.sent = $__36.value;
+                  $ctx.state = 98;
+                  break;
+                case 90:
+                  $ctx.state = 100;
+                  return $__36.value;
+                case 98:
+                  $__34 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 102;
+                  break;
+                case 102:
+                  ret = $__34;
+                  $ctx.state = 106;
+                  break;
+                case 106:
+                  param.basetype = _basetype;
+                  $ctx.state = 112;
+                  break;
+                case 112:
+                  $ctx.returnValue = ret;
+                  $ctx.state = -2;
+                  break;
+                default:
+                  return $ctx.end();
+              }
+          }, $__10, this);
+        }),
+        TypedefDeclaration: $traceurRuntime.initGeneratorFunction(function $__37(interp, s, param) {
+          var _basetype,
+              basetype,
+              declarator,
+              k,
+              len,
+              name,
+              ref,
+              ref1,
+              type,
+              $__38,
+              $__39,
+              $__40,
+              $__41,
+              $__42,
+              $__43,
+              $__44;
+          return $traceurRuntime.createGeneratorInstance(function($ctx) {
+            while (true)
+              switch ($ctx.state) {
+                case 0:
+                  rt = interp.rt;
+                  basetype = rt.simpleType(s.DeclarationSpecifiers);
+                  _basetype = param.basetype;
+                  param.basetype = basetype;
+                  ref = s.Declarators;
+                  $ctx.state = 27;
+                  break;
+                case 27:
+                  k = 0, len = ref.length;
+                  $ctx.state = 25;
+                  break;
+                case 25:
+                  $ctx.state = (k < len) ? 19 : 23;
+                  break;
+                case 22:
+                  k++;
+                  $ctx.state = 25;
+                  break;
+                case 19:
+                  declarator = ref[k];
+                  $ctx.state = 20;
+                  break;
+                case 20:
+                  $__38 = interp.visit;
+                  $__39 = $__38.call(interp, interp, declarator, param);
+                  $ctx.state = 16;
+                  break;
+                case 16:
+                  $__43 = $ctx.wrapYieldStar($__39[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 12;
+                  break;
+                case 12:
+                  $__44 = $__43[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 9;
+                  break;
+                case 9:
+                  $ctx.state = ($__44.done) ? 3 : 2;
+                  break;
+                case 3:
+                  $ctx.sent = $__44.value;
+                  $ctx.state = 10;
+                  break;
+                case 2:
+                  $ctx.state = 12;
+                  return $__44.value;
+                case 10:
+                  $__40 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 14;
+                  break;
+                case 14:
+                  ref1 = $__40;
+                  $__41 = ref1.type;
+                  type = $__41;
+                  $__42 = ref1.name;
+                  name = $__42;
+                  $ctx.state = 18;
+                  break;
+                case 18:
+                  rt.registerTypedef(type, name);
+                  $ctx.state = 22;
+                  break;
+                case 23:
+                  param.basetype = _basetype;
+                  $ctx.state = -2;
+                  break;
+                default:
+                  return $ctx.end();
+              }
+          }, $__37, this);
+        }),
+        FunctionDefinition: $traceurRuntime.initGeneratorFunction(function $__45(interp, s, param) {
+          var _basetype,
+              _name,
+              _param,
+              _pointer,
+              _type,
+              argNames,
+              argTypes,
+              basetype,
+              dim,
+              dimensions,
+              i,
+              j,
+              name,
+              pointer,
+              ptl,
+              scope,
+              stat,
+              varargs,
+              $__46,
+              $__47,
+              $__48,
+              $__49,
+              $__50,
+              $__51,
+              $__52,
+              $__53,
+              $__54,
+              $__55;
+          return $traceurRuntime.createGeneratorInstance(function($ctx) {
+            while (true)
+              switch ($ctx.state) {
+                case 0:
+                  rt = interp.rt;
+                  scope = param.scope;
+                  name = s.Declarator.left.Identifier;
+                  basetype = rt.simpleType(s.DeclarationSpecifiers);
+                  pointer = s.Declarator.Pointer;
+                  basetype = interp.buildRecursivePointerType(pointer, basetype, 0);
+                  argTypes = [];
+                  argNames = [];
+                  ptl = void 0;
+                  varargs = void 0;
+                  if (s.Declarator.right.type === "DirectDeclarator_modifier_ParameterTypeList") {
+                    ptl = s.Declarator.right.ParameterTypeList;
+                    varargs = ptl.varargs;
+                  } else if (s.Declarator.right.type === "DirectDeclarator_modifier_IdentifierList" && s.Declarator.right.IdentifierList === null) {
+                    ptl = {ParameterList: []};
+                    varargs = false;
+                  } else {
+                    rt.raiseException("unacceptable argument list");
+                  }
+                  i = 0;
+                  $ctx.state = 38;
+                  break;
+                case 38:
+                  $ctx.state = (i < ptl.ParameterList.length) ? 32 : 36;
+                  break;
+                case 32:
+                  _param = ptl.ParameterList[i];
+                  _pointer = _param.Declarator.Pointer;
+                  _basetype = rt.simpleType(_param.DeclarationSpecifiers);
+                  _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
+                  _name = _param.Declarator.left.Identifier;
+                  $ctx.state = 33;
+                  break;
+                case 33:
+                  $ctx.state = (_param.Declarator.right.length > 0) ? 27 : 30;
+                  break;
+                case 27:
+                  dimensions = [];
+                  j = 0;
+                  $ctx.state = 28;
+                  break;
+                case 28:
+                  $ctx.state = (j < _param.Declarator.right.length) ? 22 : 26;
+                  break;
+                case 22:
+                  dim = _param.Declarator.right[j];
+                  if (dim.type !== "DirectDeclarator_modifier_array") {
+                    rt.raiseException("unacceptable array initialization");
+                  }
+                  $ctx.state = 23;
+                  break;
+                case 23:
+                  $ctx.state = (dim.Expression !== null) ? 15 : 19;
+                  break;
+                case 15:
+                  $__46 = rt.cast;
+                  $__47 = rt.intTypeLiteral;
+                  $__48 = interp.visit;
+                  $__49 = dim.Expression;
+                  $__50 = $__48.call(interp, interp, $__49, param);
+                  $ctx.state = 16;
+                  break;
+                case 16:
+                  $__54 = $ctx.wrapYieldStar($__50[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 12;
+                  break;
+                case 12:
+                  $__55 = $__54[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 9;
+                  break;
+                case 9:
+                  $ctx.state = ($__55.done) ? 3 : 2;
+                  break;
+                case 3:
+                  $ctx.sent = $__55.value;
+                  $ctx.state = 10;
+                  break;
+                case 2:
+                  $ctx.state = 12;
+                  return $__55.value;
+                case 10:
+                  $__51 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 14;
+                  break;
+                case 14:
+                  $__52 = $__46.call(rt, $__47, $__51);
+                  $__53 = $__52.v;
+                  dim = $__53;
+                  $ctx.state = 18;
+                  break;
+                case 19:
+                  if (j > 0) {
+                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                  } else {
+                    dim = -1;
+                  }
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -18049,16 +18684,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   break;
                 case 36:
                   stat = s.CompoundStatement;
-                  rt.defFunc(scope, name, retType, argTypes, argNames, stat, interp);
+                  rt.defFunc(scope, name, basetype, argTypes, argNames, stat, interp);
                   $ctx.state = -2;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__10, this);
+          }, $__45, this);
         }),
-        Declaration: $traceurRuntime.initGeneratorFunction(function $__21(interp, s, param) {
-          var basetype,
+        Declaration: $traceurRuntime.initGeneratorFunction(function $__56(interp, s, param) {
+          var _basetype,
+              basetype,
               dec,
               dim,
               dimensions,
@@ -18066,90 +18702,192 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               init,
               initializer,
               j,
+              k,
+              l,
+              len,
+              len1,
               name,
-              pointer,
+              ref,
+              ref1,
+              ref2,
+              ref3,
               type,
-              $__22,
-              $__23,
-              $__24,
-              $__25,
-              $__26,
-              $__27,
-              $__28,
-              $__29,
-              $__30,
-              $__31,
-              $__32,
-              $__33,
-              $__34,
-              $__35,
-              $__36,
-              $__37,
-              $__38,
-              $__39,
-              $__40,
-              $__41,
-              $__42,
-              $__43,
-              $__44,
-              $__45,
-              $__46,
-              $__47;
+              $__57,
+              $__58,
+              $__59,
+              $__60,
+              $__61,
+              $__62,
+              $__63,
+              $__64,
+              $__65,
+              $__66,
+              $__67,
+              $__68,
+              $__69,
+              $__70,
+              $__71,
+              $__72,
+              $__73,
+              $__74,
+              $__75,
+              $__76,
+              $__77,
+              $__78,
+              $__79,
+              $__80,
+              $__81,
+              $__82,
+              $__83,
+              $__84,
+              $__85,
+              $__86,
+              $__87,
+              $__88,
+              $__89,
+              $__90,
+              $__91,
+              $__92,
+              $__93,
+              $__94,
+              $__95,
+              $__96,
+              $__97,
+              $__98;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
                 case 0:
                   rt = interp.rt;
-                  basetype = rt.simpleType(s.DeclarationSpecifiers.join(" "));
-                  i = 0;
-                  $ctx.state = 107;
+                  basetype = rt.simpleType(s.DeclarationSpecifiers);
+                  ref = s.InitDeclaratorList;
+                  $ctx.state = 147;
                   break;
-                case 107:
-                  $ctx.state = (i < s.InitDeclaratorList.length) ? 101 : -2;
+                case 147:
+                  i = k = 0, len = ref.length;
+                  $ctx.state = 145;
                   break;
-                case 101:
-                  dec = s.InitDeclaratorList[i];
-                  pointer = dec.Declarator.Pointer;
-                  type = interp.buildRecursivePointerType(pointer, basetype, 0);
-                  name = dec.Declarator.left.Identifier;
+                case 145:
+                  $ctx.state = (k < len) ? 141 : -2;
+                  break;
+                case 94:
+                  i = ++k;
+                  $ctx.state = 145;
+                  break;
+                case 141:
+                  dec = ref[i];
                   init = dec.Initializers;
-                  $ctx.state = 102;
+                  $ctx.state = 142;
                   break;
-                case 102:
-                  $ctx.state = (dec.Declarator.right.length > 0) ? 73 : 97;
+                case 142:
+                  $ctx.state = (dec.Declarator.right.length > 0 && dec.Declarator.right[0].type === "DirectDeclarator_modifier_array") ? 89 : 134;
                   break;
-                case 73:
+                case 89:
                   dimensions = [];
-                  j = 0;
-                  $ctx.state = 74;
+                  ref1 = dec.Declarator.right;
+                  $ctx.state = 90;
                   break;
-                case 74:
-                  $ctx.state = (j < dec.Declarator.right.length) ? 50 : 54;
+                case 90:
+                  j = l = 0, len1 = ref1.length;
+                  $ctx.state = 52;
                   break;
-                case 50:
-                  dim = dec.Declarator.right[j];
-                  $ctx.state = 51;
+                case 52:
+                  $ctx.state = (l < len1) ? 46 : 50;
                   break;
-                case 51:
-                  switch (dim.type) {
-                    default:
-                      $ctx.state = 49;
-                      break;
-                    case "DirectDeclarator_modifier_array":
-                      $ctx.state = 45;
-                      break;
-                  }
+                case 49:
+                  j = ++l;
+                  $ctx.state = 52;
                   break;
-                case 18:
-                  dimensions.push(dim);
-                  $ctx.state = 49;
+                case 46:
+                  dim = ref1[j];
+                  $ctx.state = 47;
                   break;
-                case 39:
-                  dim = init.Initializers.length;
+                case 47:
+                  $ctx.state = (dim.Expression !== null) ? 15 : 44;
+                  break;
+                case 15:
+                  $__57 = rt.cast;
+                  $__58 = rt.intTypeLiteral;
+                  $__59 = interp.visit;
+                  $__60 = dim.Expression;
+                  $__61 = $__59.call(interp, interp, $__60, param);
+                  $ctx.state = 16;
+                  break;
+                case 16:
+                  $__65 = $ctx.wrapYieldStar($__61[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 12;
+                  break;
+                case 12:
+                  $__66 = $__65[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 9;
+                  break;
+                case 9:
+                  $ctx.state = ($__66.done) ? 3 : 2;
+                  break;
+                case 3:
+                  $ctx.sent = $__66.value;
+                  $ctx.state = 10;
+                  break;
+                case 2:
+                  $ctx.state = 12;
+                  return $__66.value;
+                case 10:
+                  $__62 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 14;
+                  break;
+                case 14:
+                  $__63 = $__57.call(rt, $__58, $__62);
+                  $__64 = $__63.v;
+                  dim = $__64;
                   $ctx.state = 18;
                   break;
+                case 44:
+                  $ctx.state = (j > 0) ? 42 : 41;
+                  break;
+                case 42:
+                  rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                  $ctx.state = 18;
+                  break;
+                case 41:
+                  $ctx.state = (init.type === "Initializer_expr") ? 33 : 39;
+                  break;
+                case 33:
+                  $__67 = interp.visit;
+                  $__68 = $__67.call(interp, interp, init, param);
+                  $ctx.state = 34;
+                  break;
+                case 34:
+                  $__70 = $ctx.wrapYieldStar($__68[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 30;
+                  break;
+                case 30:
+                  $__71 = $__70[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 27;
+                  break;
+                case 27:
+                  $ctx.state = ($__71.done) ? 21 : 20;
+                  break;
+                case 21:
+                  $ctx.sent = $__71.value;
+                  $ctx.state = 28;
+                  break;
+                case 20:
+                  $ctx.state = 30;
+                  return $__71.value;
+                case 28:
+                  $__69 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 32;
+                  break;
+                case 32:
+                  initializer = $__69;
+                  $ctx.state = 36;
+                  break;
                 case 36:
-                  if (rt.isCharType(type) && rt.isArrayType(initializer.t) && rt.isCharType(initializer.t.eleType)) {
+                  if (rt.isCharType(basetype) && rt.isArrayType(initializer.t) && rt.isCharType(initializer.t.eleType)) {
                     dim = initializer.v.target.length;
                     init = {
                       type: "Initializer_array",
@@ -18165,192 +18903,199 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   }
                   $ctx.state = 18;
                   break;
-                case 32:
-                  initializer = $__34;
-                  $ctx.state = 36;
-                  break;
-                case 28:
-                  $__34 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 32;
-                  break;
-                case 20:
-                  $ctx.state = 30;
-                  return $__36.value;
-                case 21:
-                  $ctx.sent = $__36.value;
-                  $ctx.state = 28;
-                  break;
-                case 27:
-                  $ctx.state = ($__36.done) ? 21 : 20;
-                  break;
-                case 30:
-                  $__36 = $__35[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 27;
-                  break;
-                case 34:
-                  $__35 = $ctx.wrapYieldStar($__33[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 30;
-                  break;
-                case 33:
-                  $__32 = interp.visit;
-                  $__33 = $__32.call(interp, interp, init, param);
-                  $ctx.state = 34;
-                  break;
-                case 41:
-                  $ctx.state = (init.type === "Initializer_expr") ? 33 : 39;
-                  break;
-                case 42:
-                  rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                case 39:
+                  dim = init.Initializers.length;
                   $ctx.state = 18;
                   break;
-                case 44:
-                  $ctx.state = (j > 0) ? 42 : 41;
+                case 18:
+                  dimensions.push(dim);
+                  $ctx.state = 49;
                   break;
-                case 14:
-                  $__28 = $__22.call(rt, $__23, $__27);
-                  $__29 = $__28.v;
-                  dim = $__29;
-                  $ctx.state = 18;
-                  break;
-                case 10:
-                  $__27 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 14;
-                  break;
-                case 2:
-                  $ctx.state = 12;
-                  return $__31.value;
-                case 3:
-                  $ctx.sent = $__31.value;
-                  $ctx.state = 10;
-                  break;
-                case 9:
-                  $ctx.state = ($__31.done) ? 3 : 2;
-                  break;
-                case 12:
-                  $__31 = $__30[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 9;
-                  break;
-                case 16:
-                  $__30 = $ctx.wrapYieldStar($__26[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 12;
-                  break;
-                case 15:
-                  $__22 = rt.cast;
-                  $__23 = rt.intTypeLiteral;
-                  $__24 = interp.visit;
-                  $__25 = dim.Expression;
-                  $__26 = $__24.call(interp, interp, $__25, param);
-                  $ctx.state = 16;
-                  break;
-                case 45:
-                  $ctx.state = (dim.Expression !== null) ? 15 : 44;
-                  break;
-                case 49:
-                  j++;
-                  $ctx.state = 74;
-                  break;
-                case 54:
-                  $__37 = interp.arrayInit;
-                  $__38 = $__37.call(interp, dimensions, init, 0, type, param);
-                  $ctx.state = 70;
-                  break;
-                case 70:
-                  $__40 = $ctx.wrapYieldStar($__38[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 66;
-                  break;
-                case 66:
-                  $__41 = $__40[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 63;
-                  break;
-                case 63:
-                  $ctx.state = ($__41.done) ? 57 : 56;
-                  break;
-                case 57:
-                  $ctx.sent = $__41.value;
-                  $ctx.state = 64;
-                  break;
-                case 56:
-                  $ctx.state = 66;
-                  return $__41.value;
-                case 64:
-                  $__39 = $ctx.sentIgnoreThrow;
+                case 50:
+                  $__72 = interp.arrayInit;
+                  $__73 = $__72.call(interp, dimensions, init, 0, basetype, param);
                   $ctx.state = 68;
                   break;
                 case 68:
-                  init = $__39;
-                  $ctx.state = 72;
+                  $__75 = $ctx.wrapYieldStar($__73[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 64;
                   break;
-                case 72:
-                  rt.defVar(name, init.t, init);
-                  $ctx.state = 76;
+                case 64:
+                  $__76 = $__75[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 61;
                   break;
-                case 97:
-                  $ctx.state = (init === null) ? 95 : 91;
+                case 61:
+                  $ctx.state = ($__76.done) ? 55 : 54;
                   break;
-                case 95:
-                  init = rt.defaultValue(type);
-                  $ctx.state = 96;
+                case 55:
+                  $ctx.sent = $__76.value;
+                  $ctx.state = 62;
                   break;
-                case 91:
-                  $__42 = interp.visit;
-                  $__43 = init.Expression;
-                  $__44 = $__42.call(interp, interp, $__43);
+                case 54:
+                  $ctx.state = 64;
+                  return $__76.value;
+                case 62:
+                  $__74 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 66;
+                  break;
+                case 66:
+                  init = $__74;
+                  $ctx.state = 70;
+                  break;
+                case 70:
+                  _basetype = param.basetype;
+                  param.basetype = basetype;
                   $ctx.state = 92;
                   break;
                 case 92:
-                  $__46 = $ctx.wrapYieldStar($__44[Symbol.iterator]());
+                  $__77 = interp.visit;
+                  $__78 = dec.Declarator;
+                  $__79 = $__77.call(interp, interp, $__78, param);
+                  $ctx.state = 86;
+                  break;
+                case 86:
+                  $__83 = $ctx.wrapYieldStar($__79[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
+                  $ctx.state = 82;
+                  break;
+                case 82:
+                  $__84 = $__83[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 79;
+                  break;
+                case 79:
+                  $ctx.state = ($__84.done) ? 73 : 72;
+                  break;
+                case 73:
+                  $ctx.sent = $__84.value;
+                  $ctx.state = 80;
+                  break;
+                case 72:
+                  $ctx.state = 82;
+                  return $__84.value;
+                case 80:
+                  $__80 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 84;
+                  break;
+                case 84:
+                  ref2 = $__80;
+                  $__81 = ref2.name;
+                  name = $__81;
+                  $__82 = ref2.type;
+                  type = $__82;
                   $ctx.state = 88;
                   break;
                 case 88:
-                  $__47 = $__46[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 85;
+                  param.basetype = _basetype;
+                  rt.defVar(name, init.t, init);
+                  $ctx.state = 94;
                   break;
-                case 85:
-                  $ctx.state = ($__47.done) ? 79 : 78;
+                case 134:
+                  _basetype = param.basetype;
+                  param.basetype = basetype;
+                  $ctx.state = 135;
                   break;
-                case 79:
-                  $ctx.sent = $__47.value;
-                  $ctx.state = 86;
+                case 135:
+                  $__85 = interp.visit;
+                  $__86 = dec.Declarator;
+                  $__87 = $__85.call(interp, interp, $__86, param);
+                  $ctx.state = 110;
                   break;
-                case 78:
-                  $ctx.state = 88;
-                  return $__47.value;
-                case 86:
-                  $__45 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 90;
+                case 110:
+                  $__91 = $ctx.wrapYieldStar($__87[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 106;
                   break;
-                case 90:
-                  init = $__45;
-                  $ctx.state = 96;
+                case 106:
+                  $__92 = $__91[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 103;
+                  break;
+                case 103:
+                  $ctx.state = ($__92.done) ? 97 : 96;
+                  break;
+                case 97:
+                  $ctx.sent = $__92.value;
+                  $ctx.state = 104;
                   break;
                 case 96:
-                  rt.defVar(name, type, init);
-                  $ctx.state = 76;
+                  $ctx.state = 106;
+                  return $__92.value;
+                case 104:
+                  $__88 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 108;
                   break;
-                case 76:
-                  i++;
-                  $ctx.state = 107;
+                case 108:
+                  ref3 = $__88;
+                  $__89 = ref3.name;
+                  name = $__89;
+                  $__90 = ref3.type;
+                  type = $__90;
+                  $ctx.state = 112;
+                  break;
+                case 112:
+                  param.basetype = _basetype;
+                  $ctx.state = 137;
+                  break;
+                case 137:
+                  $ctx.state = (init == null) ? 131 : 127;
+                  break;
+                case 131:
+                  init = rt.defaultValue(type, true);
+                  $ctx.state = 132;
+                  break;
+                case 127:
+                  $__93 = interp.visit;
+                  $__94 = init.Expression;
+                  $__95 = $__93.call(interp, interp, $__94);
+                  $ctx.state = 128;
+                  break;
+                case 128:
+                  $__97 = $ctx.wrapYieldStar($__95[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 124;
+                  break;
+                case 124:
+                  $__98 = $__97[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 121;
+                  break;
+                case 121:
+                  $ctx.state = ($__98.done) ? 115 : 114;
+                  break;
+                case 115:
+                  $ctx.sent = $__98.value;
+                  $ctx.state = 122;
+                  break;
+                case 114:
+                  $ctx.state = 124;
+                  return $__98.value;
+                case 122:
+                  $__96 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 126;
+                  break;
+                case 126:
+                  init = $__96;
+                  $ctx.state = 132;
+                  break;
+                case 132:
+                  rt.defVar(name, type, init);
+                  $ctx.state = 94;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__21, this);
+          }, $__56, this);
         }),
-        Initializer_expr: $traceurRuntime.initGeneratorFunction(function $__48(interp, s, param) {
-          var $__49,
-              $__50,
-              $__51,
-              $__52,
-              $__53,
-              $__54;
+        Initializer_expr: $traceurRuntime.initGeneratorFunction(function $__99(interp, s, param) {
+          var $__100,
+              $__101,
+              $__102,
+              $__103,
+              $__104,
+              $__105;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -18359,52 +19104,52 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 20;
                   break;
                 case 20:
-                  $__49 = interp.visit;
-                  $__50 = s.Expression;
-                  $__51 = $__49.call(interp, interp, $__50, param);
+                  $__100 = interp.visit;
+                  $__101 = s.Expression;
+                  $__102 = $__100.call(interp, interp, $__101, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__53 = $ctx.wrapYieldStar($__51[Symbol.iterator]());
+                  $__104 = $ctx.wrapYieldStar($__102[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__54 = $__53[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__105 = $__104[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__54.done) ? 3 : 2;
+                  $ctx.state = ($__105.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__54.value;
+                  $ctx.sent = $__105.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__54.value;
+                  return $__105.value;
                 case 10:
-                  $__52 = $ctx.sentIgnoreThrow;
+                  $__103 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  $ctx.returnValue = $__52;
+                  $ctx.returnValue = $__103;
                   $ctx.state = -2;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__48, this);
+          }, $__99, this);
         }),
-        Label_case: $traceurRuntime.initGeneratorFunction(function $__55(interp, s, param) {
+        Label_case: $traceurRuntime.initGeneratorFunction(function $__106(interp, s, param) {
           var ce,
-              $__56,
-              $__57,
-              $__58,
-              $__59,
-              $__60,
-              $__61;
+              $__107,
+              $__108,
+              $__109,
+              $__110,
+              $__111,
+              $__112;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -18413,37 +19158,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 25;
                   break;
                 case 25:
-                  $__56 = interp.visit;
-                  $__57 = s.ConstantExpression;
-                  $__58 = $__56.call(interp, interp, $__57);
+                  $__107 = interp.visit;
+                  $__108 = s.ConstantExpression;
+                  $__109 = $__107.call(interp, interp, $__108);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__60 = $ctx.wrapYieldStar($__58[Symbol.iterator]());
+                  $__111 = $ctx.wrapYieldStar($__109[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__61 = $__60[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__112 = $__111[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__61.done) ? 3 : 2;
+                  $ctx.state = ($__112.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__61.value;
+                  $ctx.sent = $__112.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__61.value;
+                  return $__112.value;
                 case 10:
-                  $__59 = $ctx.sentIgnoreThrow;
+                  $__110 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ce = $__59;
+                  ce = $__110;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -18466,7 +19211,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__55, this);
+          }, $__106, this);
         }),
         Label_default: function(interp, s, param) {
           rt = interp.rt;
@@ -18479,7 +19224,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             rt.raiseException("you can only use default directly in a switch block");
           }
         },
-        CompoundStatement: $traceurRuntime.initGeneratorFunction(function $__62(interp, s, param) {
+        CompoundStatement: $traceurRuntime.initGeneratorFunction(function $__113(interp, s, param) {
           var _scope,
               i,
               k,
@@ -18488,21 +19233,21 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               stmt,
               stmts,
               switchon,
-              $__63,
-              $__64,
-              $__65,
-              $__66,
-              $__67,
-              $__68,
-              $__69,
-              $__70,
-              $__71,
-              $__72,
-              $__73,
-              $__74,
-              $__75,
-              $__76,
-              $__77;
+              $__114,
+              $__115,
+              $__116,
+              $__117,
+              $__118,
+              $__119,
+              $__120,
+              $__121,
+              $__122,
+              $__123,
+              $__124,
+              $__125,
+              $__126,
+              $__127,
+              $__128;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -18535,36 +19280,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (stmt.type === "Label_case" || stmt.type === "Label_default") ? 15 : 42;
                   break;
                 case 15:
-                  $__63 = interp.visit;
-                  $__64 = $__63.call(interp, interp, stmt, param);
+                  $__114 = interp.visit;
+                  $__115 = $__114.call(interp, interp, stmt, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__66 = $ctx.wrapYieldStar($__64[Symbol.iterator]());
+                  $__117 = $ctx.wrapYieldStar($__115[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__67 = $__66[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__118 = $__117[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__67.done) ? 3 : 2;
+                  $ctx.state = ($__118.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__67.value;
+                  $ctx.sent = $__118.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__67.value;
+                  return $__118.value;
                 case 10:
-                  $__65 = $ctx.sentIgnoreThrow;
+                  $__116 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  r = $__65;
+                  r = $__116;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -18577,36 +19322,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (switchon) ? 35 : 20;
                   break;
                 case 35:
-                  $__68 = interp.visit;
-                  $__69 = $__68.call(interp, interp, stmt, param);
+                  $__119 = interp.visit;
+                  $__120 = $__119.call(interp, interp, stmt, param);
                   $ctx.state = 36;
                   break;
                 case 36:
-                  $__71 = $ctx.wrapYieldStar($__69[Symbol.iterator]());
+                  $__122 = $ctx.wrapYieldStar($__120[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $__72 = $__71[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__123 = $__122[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 29;
                   break;
                 case 29:
-                  $ctx.state = ($__72.done) ? 23 : 22;
+                  $ctx.state = ($__123.done) ? 23 : 22;
                   break;
                 case 23:
-                  $ctx.sent = $__72.value;
+                  $ctx.sent = $__123.value;
                   $ctx.state = 30;
                   break;
                 case 22:
                   $ctx.state = 32;
-                  return $__72.value;
+                  return $__123.value;
                 case 30:
-                  $__70 = $ctx.sentIgnoreThrow;
+                  $__121 = $ctx.sentIgnoreThrow;
                   $ctx.state = 34;
                   break;
                 case 34:
-                  r = $__70;
+                  r = $__121;
                   $ctx.state = 38;
                   break;
                 case 38:
@@ -18646,36 +19391,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 75;
                   break;
                 case 75:
-                  $__73 = interp.visit;
-                  $__74 = $__73.call(interp, interp, stmt, param);
+                  $__124 = interp.visit;
+                  $__125 = $__124.call(interp, interp, stmt, param);
                   $ctx.state = 68;
                   break;
                 case 68:
-                  $__76 = $ctx.wrapYieldStar($__74[Symbol.iterator]());
+                  $__127 = $ctx.wrapYieldStar($__125[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 64;
                   break;
                 case 64:
-                  $__77 = $__76[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__128 = $__127[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 61;
                   break;
                 case 61:
-                  $ctx.state = ($__77.done) ? 55 : 54;
+                  $ctx.state = ($__128.done) ? 55 : 54;
                   break;
                 case 55:
-                  $ctx.sent = $__77.value;
+                  $ctx.sent = $__128.value;
                   $ctx.state = 62;
                   break;
                 case 54:
                   $ctx.state = 64;
-                  return $__77.value;
+                  return $__128.value;
                 case 62:
-                  $__75 = $ctx.sentIgnoreThrow;
+                  $__126 = $ctx.sentIgnoreThrow;
                   $ctx.state = 66;
                   break;
                 case 66:
-                  r = $__75;
+                  r = $__126;
                   $ctx.state = 70;
                   break;
                 case 70:
@@ -18693,15 +19438,15 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__62, this);
+          }, $__113, this);
         }),
-        ExpressionStatement: $traceurRuntime.initGeneratorFunction(function $__78(interp, s, param) {
-          var $__79,
-              $__80,
-              $__81,
-              $__82,
-              $__83,
-              $__84;
+        ExpressionStatement: $traceurRuntime.initGeneratorFunction(function $__129(interp, s, param) {
+          var $__130,
+              $__131,
+              $__132,
+              $__133,
+              $__134,
+              $__135;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -18713,62 +19458,62 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Expression != null) ? 15 : -2;
                   break;
                 case 15:
-                  $__79 = interp.visit;
-                  $__80 = s.Expression;
-                  $__81 = $__79.call(interp, interp, $__80, param);
+                  $__130 = interp.visit;
+                  $__131 = s.Expression;
+                  $__132 = $__130.call(interp, interp, $__131, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__83 = $ctx.wrapYieldStar($__81[Symbol.iterator]());
+                  $__134 = $ctx.wrapYieldStar($__132[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__84 = $__83[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__135 = $__134[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__84.done) ? 3 : 2;
+                  $ctx.state = ($__135.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__84.value;
+                  $ctx.sent = $__135.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__84.value;
+                  return $__135.value;
                 case 10:
-                  $__82 = $ctx.sentIgnoreThrow;
+                  $__133 = $ctx.sentIgnoreThrow;
                   $ctx.state = -2;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__78, this);
+          }, $__129, this);
         }),
-        SelectionStatement_if: $traceurRuntime.initGeneratorFunction(function $__85(interp, s, param) {
+        SelectionStatement_if: $traceurRuntime.initGeneratorFunction(function $__136(interp, s, param) {
           var e,
               ret,
               scope_bak,
-              $__86,
-              $__87,
-              $__88,
-              $__89,
-              $__90,
-              $__91,
-              $__92,
-              $__93,
-              $__94,
-              $__95,
-              $__96,
-              $__97,
-              $__98,
-              $__99,
-              $__100,
-              $__101,
-              $__102,
-              $__103;
+              $__137,
+              $__138,
+              $__139,
+              $__140,
+              $__141,
+              $__142,
+              $__143,
+              $__144,
+              $__145,
+              $__146,
+              $__147,
+              $__148,
+              $__149,
+              $__150,
+              $__151,
+              $__152,
+              $__153,
+              $__154;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -18780,37 +19525,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 60;
                   break;
                 case 60:
-                  $__86 = interp.visit;
-                  $__87 = s.Expression;
-                  $__88 = $__86.call(interp, interp, $__87, param);
+                  $__137 = interp.visit;
+                  $__138 = s.Expression;
+                  $__139 = $__137.call(interp, interp, $__138, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__90 = $ctx.wrapYieldStar($__88[Symbol.iterator]());
+                  $__141 = $ctx.wrapYieldStar($__139[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__91 = $__90[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__142 = $__141[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__91.done) ? 3 : 2;
+                  $ctx.state = ($__142.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__91.value;
+                  $ctx.sent = $__142.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__91.value;
+                  return $__142.value;
                 case 10:
-                  $__89 = $ctx.sentIgnoreThrow;
+                  $__140 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  e = $__89;
+                  e = $__140;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -18821,74 +19566,74 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (rt.cast(rt.boolTypeLiteral, e).v) ? 33 : 55;
                   break;
                 case 33:
-                  $__92 = interp.visit;
-                  $__93 = s.Statement;
-                  $__94 = $__92.call(interp, interp, $__93, param);
+                  $__143 = interp.visit;
+                  $__144 = s.Statement;
+                  $__145 = $__143.call(interp, interp, $__144, param);
                   $ctx.state = 34;
                   break;
                 case 34:
-                  $__96 = $ctx.wrapYieldStar($__94[Symbol.iterator]());
+                  $__147 = $ctx.wrapYieldStar($__145[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__97 = $__96[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__148 = $__147[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__97.done) ? 21 : 20;
+                  $ctx.state = ($__148.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__97.value;
+                  $ctx.sent = $__148.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__97.value;
+                  return $__148.value;
                 case 28:
-                  $__95 = $ctx.sentIgnoreThrow;
+                  $__146 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  ret = $__95;
+                  ret = $__146;
                   $ctx.state = 36;
                   break;
                 case 55:
                   $ctx.state = (s.ElseStatement) ? 51 : 36;
                   break;
                 case 51:
-                  $__98 = interp.visit;
-                  $__99 = s.ElseStatement;
-                  $__100 = $__98.call(interp, interp, $__99, param);
+                  $__149 = interp.visit;
+                  $__150 = s.ElseStatement;
+                  $__151 = $__149.call(interp, interp, $__150, param);
                   $ctx.state = 52;
                   break;
                 case 52:
-                  $__102 = $ctx.wrapYieldStar($__100[Symbol.iterator]());
+                  $__153 = $ctx.wrapYieldStar($__151[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 48;
                   break;
                 case 48:
-                  $__103 = $__102[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__154 = $__153[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 45;
                   break;
                 case 45:
-                  $ctx.state = ($__103.done) ? 39 : 38;
+                  $ctx.state = ($__154.done) ? 39 : 38;
                   break;
                 case 39:
-                  $ctx.sent = $__103.value;
+                  $ctx.sent = $__154.value;
                   $ctx.state = 46;
                   break;
                 case 38:
                   $ctx.state = 48;
-                  return $__103.value;
+                  return $__154.value;
                 case 46:
-                  $__101 = $ctx.sentIgnoreThrow;
+                  $__152 = $ctx.sentIgnoreThrow;
                   $ctx.state = 50;
                   break;
                 case 50:
-                  ret = $__101;
+                  ret = $__152;
                   $ctx.state = 36;
                   break;
                 case 36:
@@ -18903,26 +19648,26 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__85, this);
+          }, $__136, this);
         }),
-        SelectionStatement_switch: $traceurRuntime.initGeneratorFunction(function $__104(interp, s, param) {
+        SelectionStatement_switch: $traceurRuntime.initGeneratorFunction(function $__155(interp, s, param) {
           var e,
               r,
               ret,
               scope_bak,
               switch_bak,
-              $__105,
-              $__106,
-              $__107,
-              $__108,
-              $__109,
-              $__110,
-              $__111,
-              $__112,
-              $__113,
-              $__114,
-              $__115,
-              $__116;
+              $__156,
+              $__157,
+              $__158,
+              $__159,
+              $__160,
+              $__161,
+              $__162,
+              $__163,
+              $__164,
+              $__165,
+              $__166,
+              $__167;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -18934,37 +19679,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 40;
                   break;
                 case 40:
-                  $__105 = interp.visit;
-                  $__106 = s.Expression;
-                  $__107 = $__105.call(interp, interp, $__106, param);
+                  $__156 = interp.visit;
+                  $__157 = s.Expression;
+                  $__158 = $__156.call(interp, interp, $__157, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__109 = $ctx.wrapYieldStar($__107[Symbol.iterator]());
+                  $__160 = $ctx.wrapYieldStar($__158[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__110 = $__109[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__161 = $__160[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__110.done) ? 3 : 2;
+                  $ctx.state = ($__161.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__110.value;
+                  $ctx.sent = $__161.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__110.value;
+                  return $__161.value;
                 case 10:
-                  $__108 = $ctx.sentIgnoreThrow;
+                  $__159 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  e = $__108;
+                  e = $__159;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -18973,37 +19718,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 42;
                   break;
                 case 42:
-                  $__111 = interp.visit;
-                  $__112 = s.Statement;
-                  $__113 = $__111.call(interp, interp, $__112, param);
+                  $__162 = interp.visit;
+                  $__163 = s.Statement;
+                  $__164 = $__162.call(interp, interp, $__163, param);
                   $ctx.state = 34;
                   break;
                 case 34:
-                  $__115 = $ctx.wrapYieldStar($__113[Symbol.iterator]());
+                  $__166 = $ctx.wrapYieldStar($__164[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__116 = $__115[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__167 = $__166[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__116.done) ? 21 : 20;
+                  $ctx.state = ($__167.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__116.value;
+                  $ctx.sent = $__167.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__116.value;
+                  return $__167.value;
                 case 28:
-                  $__114 = $ctx.sentIgnoreThrow;
+                  $__165 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  r = $__114;
+                  r = $__165;
                   $ctx.state = 36;
                   break;
                 case 36:
@@ -19025,26 +19770,26 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__104, this);
+          }, $__155, this);
         }),
-        IterationStatement_while: $traceurRuntime.initGeneratorFunction(function $__117(interp, s, param) {
+        IterationStatement_while: $traceurRuntime.initGeneratorFunction(function $__168(interp, s, param) {
           var cond,
               end_loop,
               r,
               return_val,
               scope_bak,
-              $__118,
-              $__119,
-              $__120,
-              $__121,
-              $__122,
-              $__123,
-              $__124,
-              $__125,
-              $__126,
-              $__127,
-              $__128,
-              $__129;
+              $__169,
+              $__170,
+              $__171,
+              $__172,
+              $__173,
+              $__174,
+              $__175,
+              $__176,
+              $__177,
+              $__178,
+              $__179,
+              $__180;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19062,37 +19807,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Expression != null) ? 15 : 20;
                   break;
                 case 15:
-                  $__118 = interp.visit;
-                  $__119 = s.Expression;
-                  $__120 = $__118.call(interp, interp, $__119, param);
+                  $__169 = interp.visit;
+                  $__170 = s.Expression;
+                  $__171 = $__169.call(interp, interp, $__170, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__122 = $ctx.wrapYieldStar($__120[Symbol.iterator]());
+                  $__173 = $ctx.wrapYieldStar($__171[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__123 = $__122[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__174 = $__173[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__123.done) ? 3 : 2;
+                  $ctx.state = ($__174.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__123.value;
+                  $ctx.sent = $__174.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__123.value;
+                  return $__174.value;
                 case 10:
-                  $__121 = $ctx.sentIgnoreThrow;
+                  $__172 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  cond = $__121;
+                  cond = $__172;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -19103,37 +19848,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (!cond) ? 57 : 20;
                   break;
                 case 20:
-                  $__124 = interp.visit;
-                  $__125 = s.Statement;
-                  $__126 = $__124.call(interp, interp, $__125, param);
+                  $__175 = interp.visit;
+                  $__176 = s.Statement;
+                  $__177 = $__175.call(interp, interp, $__176, param);
                   $ctx.state = 40;
                   break;
                 case 40:
-                  $__128 = $ctx.wrapYieldStar($__126[Symbol.iterator]());
+                  $__179 = $ctx.wrapYieldStar($__177[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 36;
                   break;
                 case 36:
-                  $__129 = $__128[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__180 = $__179[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 33;
                   break;
                 case 33:
-                  $ctx.state = ($__129.done) ? 27 : 26;
+                  $ctx.state = ($__180.done) ? 27 : 26;
                   break;
                 case 27:
-                  $ctx.sent = $__129.value;
+                  $ctx.sent = $__180.value;
                   $ctx.state = 34;
                   break;
                 case 26:
                   $ctx.state = 36;
-                  return $__129.value;
+                  return $__180.value;
                 case 34:
-                  $__127 = $ctx.sentIgnoreThrow;
+                  $__178 = $ctx.sentIgnoreThrow;
                   $ctx.state = 38;
                   break;
                 case 38:
-                  r = $__127;
+                  r = $__178;
                   $ctx.state = 42;
                   break;
                 case 42:
@@ -19179,26 +19924,26 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__117, this);
+          }, $__168, this);
         }),
-        IterationStatement_do: $traceurRuntime.initGeneratorFunction(function $__130(interp, s, param) {
+        IterationStatement_do: $traceurRuntime.initGeneratorFunction(function $__181(interp, s, param) {
           var cond,
               end_loop,
               r,
               return_val,
               scope_bak,
-              $__131,
-              $__132,
-              $__133,
-              $__134,
-              $__135,
-              $__136,
-              $__137,
-              $__138,
-              $__139,
-              $__140,
-              $__141,
-              $__142;
+              $__182,
+              $__183,
+              $__184,
+              $__185,
+              $__186,
+              $__187,
+              $__188,
+              $__189,
+              $__190,
+              $__191,
+              $__192,
+              $__193;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19213,37 +19958,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (true) ? 15 : 57;
                   break;
                 case 15:
-                  $__131 = interp.visit;
-                  $__132 = s.Statement;
-                  $__133 = $__131.call(interp, interp, $__132, param);
+                  $__182 = interp.visit;
+                  $__183 = s.Statement;
+                  $__184 = $__182.call(interp, interp, $__183, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__135 = $ctx.wrapYieldStar($__133[Symbol.iterator]());
+                  $__186 = $ctx.wrapYieldStar($__184[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__136 = $__135[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__187 = $__186[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__136.done) ? 3 : 2;
+                  $ctx.state = ($__187.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__136.value;
+                  $ctx.sent = $__187.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__136.value;
+                  return $__187.value;
                 case 10:
-                  $__134 = $ctx.sentIgnoreThrow;
+                  $__185 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  r = $__134;
+                  r = $__185;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -19281,37 +20026,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Expression != null) ? 47 : 61;
                   break;
                 case 47:
-                  $__137 = interp.visit;
-                  $__138 = s.Expression;
-                  $__139 = $__137.call(interp, interp, $__138, param);
+                  $__188 = interp.visit;
+                  $__189 = s.Expression;
+                  $__190 = $__188.call(interp, interp, $__189, param);
                   $ctx.state = 48;
                   break;
                 case 48:
-                  $__141 = $ctx.wrapYieldStar($__139[Symbol.iterator]());
+                  $__192 = $ctx.wrapYieldStar($__190[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 44;
                   break;
                 case 44:
-                  $__142 = $__141[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__193 = $__192[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 41;
                   break;
                 case 41:
-                  $ctx.state = ($__142.done) ? 35 : 34;
+                  $ctx.state = ($__193.done) ? 35 : 34;
                   break;
                 case 35:
-                  $ctx.sent = $__142.value;
+                  $ctx.sent = $__193.value;
                   $ctx.state = 42;
                   break;
                 case 34:
                   $ctx.state = 44;
-                  return $__142.value;
+                  return $__193.value;
                 case 42:
-                  $__140 = $ctx.sentIgnoreThrow;
+                  $__191 = $ctx.sentIgnoreThrow;
                   $ctx.state = 46;
                   break;
                 case 46:
-                  cond = $__140;
+                  cond = $__191;
                   $ctx.state = 50;
                   break;
                 case 50:
@@ -19333,44 +20078,44 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__130, this);
+          }, $__181, this);
         }),
-        IterationStatement_for: $traceurRuntime.initGeneratorFunction(function $__143(interp, s, param) {
+        IterationStatement_for: $traceurRuntime.initGeneratorFunction(function $__194(interp, s, param) {
           var cond,
               end_loop,
               r,
               return_val,
               scope_bak,
-              $__144,
-              $__145,
-              $__146,
-              $__147,
-              $__148,
-              $__149,
-              $__150,
-              $__151,
-              $__152,
-              $__153,
-              $__154,
-              $__155,
-              $__156,
-              $__157,
-              $__158,
-              $__159,
-              $__160,
-              $__161,
-              $__162,
-              $__163,
-              $__164,
-              $__165,
-              $__166,
-              $__167,
-              $__168,
-              $__169,
-              $__170,
-              $__171,
-              $__172,
-              $__173;
+              $__195,
+              $__196,
+              $__197,
+              $__198,
+              $__199,
+              $__200,
+              $__201,
+              $__202,
+              $__203,
+              $__204,
+              $__205,
+              $__206,
+              $__207,
+              $__208,
+              $__209,
+              $__210,
+              $__211,
+              $__212,
+              $__213,
+              $__214,
+              $__215,
+              $__216,
+              $__217,
+              $__218,
+              $__219,
+              $__220,
+              $__221,
+              $__222,
+              $__223,
+              $__224;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19388,63 +20133,63 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Initializer.type === "Declaration") ? 15 : 31;
                   break;
                 case 15:
-                  $__144 = interp.visit;
-                  $__145 = s.Initializer;
-                  $__146 = $__144.call(interp, interp, $__145, param);
+                  $__195 = interp.visit;
+                  $__196 = s.Initializer;
+                  $__197 = $__195.call(interp, interp, $__196, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__148 = $ctx.wrapYieldStar($__146[Symbol.iterator]());
+                  $__199 = $ctx.wrapYieldStar($__197[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__149 = $__148[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__200 = $__199[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__149.done) ? 3 : 2;
+                  $ctx.state = ($__200.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__149.value;
+                  $ctx.sent = $__200.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__149.value;
+                  return $__200.value;
                 case 10:
-                  $__147 = $ctx.sentIgnoreThrow;
+                  $__198 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 31:
-                  $__150 = interp.visit;
-                  $__151 = s.Initializer;
-                  $__152 = $__150.call(interp, interp, $__151, param);
+                  $__201 = interp.visit;
+                  $__202 = s.Initializer;
+                  $__203 = $__201.call(interp, interp, $__202, param);
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $__154 = $ctx.wrapYieldStar($__152[Symbol.iterator]());
+                  $__205 = $ctx.wrapYieldStar($__203[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 28;
                   break;
                 case 28:
-                  $__155 = $__154[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__206 = $__205[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 25;
                   break;
                 case 25:
-                  $ctx.state = ($__155.done) ? 19 : 18;
+                  $ctx.state = ($__206.done) ? 19 : 18;
                   break;
                 case 19:
-                  $ctx.sent = $__155.value;
+                  $ctx.sent = $__206.value;
                   $ctx.state = 26;
                   break;
                 case 18:
                   $ctx.state = 28;
-                  return $__155.value;
+                  return $__206.value;
                 case 26:
-                  $__153 = $ctx.sentIgnoreThrow;
+                  $__204 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
@@ -19454,37 +20199,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Expression != null) ? 49 : 54;
                   break;
                 case 49:
-                  $__156 = interp.visit;
-                  $__157 = s.Expression;
-                  $__158 = $__156.call(interp, interp, $__157, param);
+                  $__207 = interp.visit;
+                  $__208 = s.Expression;
+                  $__209 = $__207.call(interp, interp, $__208, param);
                   $ctx.state = 50;
                   break;
                 case 50:
-                  $__160 = $ctx.wrapYieldStar($__158[Symbol.iterator]());
+                  $__211 = $ctx.wrapYieldStar($__209[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 46;
                   break;
                 case 46:
-                  $__161 = $__160[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__212 = $__211[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 43;
                   break;
                 case 43:
-                  $ctx.state = ($__161.done) ? 37 : 36;
+                  $ctx.state = ($__212.done) ? 37 : 36;
                   break;
                 case 37:
-                  $ctx.sent = $__161.value;
+                  $ctx.sent = $__212.value;
                   $ctx.state = 44;
                   break;
                 case 36:
                   $ctx.state = 46;
-                  return $__161.value;
+                  return $__212.value;
                 case 44:
-                  $__159 = $ctx.sentIgnoreThrow;
+                  $__210 = $ctx.sentIgnoreThrow;
                   $ctx.state = 48;
                   break;
                 case 48:
-                  cond = $__159;
+                  cond = $__210;
                   $ctx.state = 52;
                   break;
                 case 52:
@@ -19495,37 +20240,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (!cond) ? 108 : 54;
                   break;
                 case 54:
-                  $__162 = interp.visit;
-                  $__163 = s.Statement;
-                  $__164 = $__162.call(interp, interp, $__163, param);
+                  $__213 = interp.visit;
+                  $__214 = s.Statement;
+                  $__215 = $__213.call(interp, interp, $__214, param);
                   $ctx.state = 74;
                   break;
                 case 74:
-                  $__166 = $ctx.wrapYieldStar($__164[Symbol.iterator]());
+                  $__217 = $ctx.wrapYieldStar($__215[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 70;
                   break;
                 case 70:
-                  $__167 = $__166[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__218 = $__217[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 67;
                   break;
                 case 67:
-                  $ctx.state = ($__167.done) ? 61 : 60;
+                  $ctx.state = ($__218.done) ? 61 : 60;
                   break;
                 case 61:
-                  $ctx.sent = $__167.value;
+                  $ctx.sent = $__218.value;
                   $ctx.state = 68;
                   break;
                 case 60:
                   $ctx.state = 70;
-                  return $__167.value;
+                  return $__218.value;
                 case 68:
-                  $__165 = $ctx.sentIgnoreThrow;
+                  $__216 = $ctx.sentIgnoreThrow;
                   $ctx.state = 72;
                   break;
                 case 72:
-                  r = $__165;
+                  r = $__216;
                   $ctx.state = 76;
                   break;
                 case 76:
@@ -19563,33 +20308,33 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Loop) ? 105 : 14;
                   break;
                 case 105:
-                  $__168 = interp.visit;
-                  $__169 = s.Loop;
-                  $__170 = $__168.call(interp, interp, $__169, param);
+                  $__219 = interp.visit;
+                  $__220 = s.Loop;
+                  $__221 = $__219.call(interp, interp, $__220, param);
                   $ctx.state = 106;
                   break;
                 case 106:
-                  $__172 = $ctx.wrapYieldStar($__170[Symbol.iterator]());
+                  $__223 = $ctx.wrapYieldStar($__221[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 102;
                   break;
                 case 102:
-                  $__173 = $__172[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__224 = $__223[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 99;
                   break;
                 case 99:
-                  $ctx.state = ($__173.done) ? 93 : 92;
+                  $ctx.state = ($__224.done) ? 93 : 92;
                   break;
                 case 93:
-                  $ctx.sent = $__173.value;
+                  $ctx.sent = $__224.value;
                   $ctx.state = 100;
                   break;
                 case 92:
                   $ctx.state = 102;
-                  return $__173.value;
+                  return $__224.value;
                 case 100:
-                  $__171 = $ctx.sentIgnoreThrow;
+                  $__222 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 108:
@@ -19604,7 +20349,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__143, this);
+          }, $__194, this);
         }),
         JumpStatement_goto: function(interp, s, param) {
           rt = interp.rt;
@@ -19618,14 +20363,14 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           rt = interp.rt;
           return ["break"];
         },
-        JumpStatement_return: $traceurRuntime.initGeneratorFunction(function $__174(interp, s, param) {
+        JumpStatement_return: $traceurRuntime.initGeneratorFunction(function $__225(interp, s, param) {
           var ret,
-              $__175,
-              $__176,
-              $__177,
-              $__178,
-              $__179,
-              $__180;
+              $__226,
+              $__227,
+              $__228,
+              $__229,
+              $__230,
+              $__231;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19637,37 +20382,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (s.Expression) ? 15 : 20;
                   break;
                 case 15:
-                  $__175 = interp.visit;
-                  $__176 = s.Expression;
-                  $__177 = $__175.call(interp, interp, $__176, param);
+                  $__226 = interp.visit;
+                  $__227 = s.Expression;
+                  $__228 = $__226.call(interp, interp, $__227, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__179 = $ctx.wrapYieldStar($__177[Symbol.iterator]());
+                  $__230 = $ctx.wrapYieldStar($__228[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__180 = $__179[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__231 = $__230[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__180.done) ? 3 : 2;
+                  $ctx.state = ($__231.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__180.value;
+                  $ctx.sent = $__231.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__180.value;
+                  return $__231.value;
                 case 10:
-                  $__178 = $ctx.sentIgnoreThrow;
+                  $__229 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__178;
+                  ret = $__229;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -19681,19 +20426,19 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__174, this);
+          }, $__225, this);
         }),
         IdentifierExpression: function(interp, s, param) {
           rt = interp.rt;
           return rt.readVar(s.Identifier);
         },
-        ParenthesesExpression: $traceurRuntime.initGeneratorFunction(function $__181(interp, s, param) {
-          var $__182,
-              $__183,
-              $__184,
-              $__185,
-              $__186,
-              $__187;
+        ParenthesesExpression: $traceurRuntime.initGeneratorFunction(function $__232(interp, s, param) {
+          var $__233,
+              $__234,
+              $__235,
+              $__236,
+              $__237,
+              $__238;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19702,63 +20447,63 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 20;
                   break;
                 case 20:
-                  $__182 = interp.visit;
-                  $__183 = s.Expression;
-                  $__184 = $__182.call(interp, interp, $__183, param);
+                  $__233 = interp.visit;
+                  $__234 = s.Expression;
+                  $__235 = $__233.call(interp, interp, $__234, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__186 = $ctx.wrapYieldStar($__184[Symbol.iterator]());
+                  $__237 = $ctx.wrapYieldStar($__235[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__187 = $__186[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__238 = $__237[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__187.done) ? 3 : 2;
+                  $ctx.state = ($__238.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__187.value;
+                  $ctx.sent = $__238.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__187.value;
+                  return $__238.value;
                 case 10:
-                  $__185 = $ctx.sentIgnoreThrow;
+                  $__236 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  $ctx.returnValue = $__185;
+                  $ctx.returnValue = $__236;
                   $ctx.state = -2;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__181, this);
+          }, $__232, this);
         }),
-        PostfixExpression_ArrayAccess: $traceurRuntime.initGeneratorFunction(function $__188(interp, s, param) {
+        PostfixExpression_ArrayAccess: $traceurRuntime.initGeneratorFunction(function $__239(interp, s, param) {
           var index,
               r,
               ret,
-              $__189,
-              $__190,
-              $__191,
-              $__192,
-              $__193,
-              $__194,
-              $__195,
-              $__196,
-              $__197,
-              $__198,
-              $__199,
-              $__200,
-              $__201,
-              $__202,
-              $__203;
+              $__240,
+              $__241,
+              $__242,
+              $__243,
+              $__244,
+              $__245,
+              $__246,
+              $__247,
+              $__248,
+              $__249,
+              $__250,
+              $__251,
+              $__252,
+              $__253,
+              $__254;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19767,71 +20512,71 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 57;
                   break;
                 case 57:
-                  $__189 = interp.visit;
-                  $__190 = s.Expression;
-                  $__191 = $__189.call(interp, interp, $__190, param);
+                  $__240 = interp.visit;
+                  $__241 = s.Expression;
+                  $__242 = $__240.call(interp, interp, $__241, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__193 = $ctx.wrapYieldStar($__191[Symbol.iterator]());
+                  $__244 = $ctx.wrapYieldStar($__242[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__194 = $__193[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__245 = $__244[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__194.done) ? 3 : 2;
+                  $ctx.state = ($__245.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__194.value;
+                  $ctx.sent = $__245.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__194.value;
+                  return $__245.value;
                 case 10:
-                  $__192 = $ctx.sentIgnoreThrow;
+                  $__243 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__192;
+                  ret = $__243;
                   $ctx.state = 18;
                   break;
                 case 18:
-                  $__195 = interp.visit;
-                  $__196 = s.index;
-                  $__197 = $__195.call(interp, interp, $__196, param);
+                  $__246 = interp.visit;
+                  $__247 = s.index;
+                  $__248 = $__246.call(interp, interp, $__247, param);
                   $ctx.state = 34;
                   break;
                 case 34:
-                  $__199 = $ctx.wrapYieldStar($__197[Symbol.iterator]());
+                  $__250 = $ctx.wrapYieldStar($__248[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__200 = $__199[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__251 = $__250[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__200.done) ? 21 : 20;
+                  $ctx.state = ($__251.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__200.value;
+                  $ctx.sent = $__251.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__200.value;
+                  return $__251.value;
                 case 28:
-                  $__198 = $ctx.sentIgnoreThrow;
+                  $__249 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  index = $__198;
+                  index = $__249;
                   $ctx.state = 36;
                   break;
                 case 36:
@@ -19842,31 +20587,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 47 : 53;
                   break;
                 case 47:
-                  $__202 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__253 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 48;
                   break;
                 case 48:
-                  $__203 = $__202[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__254 = $__253[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 45;
                   break;
                 case 45:
-                  $ctx.state = ($__203.done) ? 39 : 38;
+                  $ctx.state = ($__254.done) ? 39 : 38;
                   break;
                 case 39:
-                  $ctx.sent = $__203.value;
+                  $ctx.sent = $__254.value;
                   $ctx.state = 46;
                   break;
                 case 38:
                   $ctx.state = 48;
-                  return $__203.value;
+                  return $__254.value;
                 case 46:
-                  $__201 = $ctx.sentIgnoreThrow;
+                  $__252 = $ctx.sentIgnoreThrow;
                   $ctx.state = 50;
                   break;
                 case 50:
-                  $ctx.returnValue = $__201;
+                  $ctx.returnValue = $__252;
                   $ctx.state = -2;
                   break;
                 case 53:
@@ -19876,31 +20621,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__188, this);
+          }, $__239, this);
         }),
-        PostfixExpression_MethodInvocation: $traceurRuntime.initGeneratorFunction(function $__204(interp, s, param) {
+        PostfixExpression_MethodInvocation: $traceurRuntime.initGeneratorFunction(function $__255(interp, s, param) {
           var args,
               bindThis,
               e,
               r,
               ret,
               thisArg,
-              $__211,
-              $__212,
-              $__213,
-              $__214,
-              $__215,
-              $__216,
-              $__217,
-              $__218,
-              $__219,
-              $__220,
-              $__221,
-              $__222,
-              $__223,
-              $__224,
-              $__225,
-              $__226;
+              $__262,
+              $__263,
+              $__264,
+              $__265,
+              $__266,
+              $__267,
+              $__268,
+              $__269,
+              $__270,
+              $__271,
+              $__272,
+              $__273,
+              $__274,
+              $__275,
+              $__276,
+              $__277;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -19909,51 +20654,51 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 57;
                   break;
                 case 57:
-                  $__211 = interp.visit;
-                  $__212 = s.Expression;
-                  $__213 = $__211.call(interp, interp, $__212, param);
+                  $__262 = interp.visit;
+                  $__263 = s.Expression;
+                  $__264 = $__262.call(interp, interp, $__263, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__215 = $ctx.wrapYieldStar($__213[Symbol.iterator]());
+                  $__266 = $ctx.wrapYieldStar($__264[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__216 = $__215[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__267 = $__266[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__216.done) ? 3 : 2;
+                  $ctx.state = ($__267.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__216.value;
+                  $ctx.sent = $__267.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__216.value;
+                  return $__267.value;
                 case 10:
-                  $__214 = $ctx.sentIgnoreThrow;
+                  $__265 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__214;
+                  ret = $__265;
                   $ctx.state = 18;
                   break;
                 case 18:
-                  $__217 = $traceurRuntime.initGeneratorFunction;
-                  $__218 = function $__205() {
+                  $__268 = $traceurRuntime.initGeneratorFunction;
+                  $__269 = function $__256() {
                     var k,
                         len,
                         ref,
                         results,
-                        $__206,
-                        $__207,
-                        $__208,
-                        $__209,
-                        $__210;
+                        $__257,
+                        $__258,
+                        $__259,
+                        $__260,
+                        $__261;
                     return $traceurRuntime.createGeneratorInstance(function($ctx) {
                       while (true)
                         switch ($ctx.state) {
@@ -19978,36 +20723,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                             $ctx.state = 20;
                             break;
                           case 20:
-                            $__206 = interp.visit;
-                            $__207 = $__206.call(interp, interp, e, param);
+                            $__257 = interp.visit;
+                            $__258 = $__257.call(interp, interp, e, param);
                             $ctx.state = 16;
                             break;
                           case 16:
-                            $__209 = $ctx.wrapYieldStar($__207[Symbol.iterator]());
+                            $__260 = $ctx.wrapYieldStar($__258[Symbol.iterator]());
                             $ctx.sent = void 0;
                             $ctx.action = 'next';
                             $ctx.state = 12;
                             break;
                           case 12:
-                            $__210 = $__209[$ctx.action]($ctx.sentIgnoreThrow);
+                            $__261 = $__260[$ctx.action]($ctx.sentIgnoreThrow);
                             $ctx.state = 9;
                             break;
                           case 9:
-                            $ctx.state = ($__210.done) ? 3 : 2;
+                            $ctx.state = ($__261.done) ? 3 : 2;
                             break;
                           case 3:
-                            $ctx.sent = $__210.value;
+                            $ctx.sent = $__261.value;
                             $ctx.state = 10;
                             break;
                           case 2:
                             $ctx.state = 12;
-                            return $__210.value;
+                            return $__261.value;
                           case 10:
-                            $__208 = $ctx.sentIgnoreThrow;
+                            $__259 = $ctx.sentIgnoreThrow;
                             $ctx.state = 14;
                             break;
                           case 14:
-                            thisArg = $__208;
+                            thisArg = $__259;
                             $ctx.state = 18;
                             break;
                           case 18:
@@ -20021,38 +20766,38 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                           default:
                             return $ctx.end();
                         }
-                    }, $__205, this);
+                    }, $__256, this);
                   };
-                  $__219 = $__217.call($traceurRuntime, $__218);
-                  $__220 = $__219();
+                  $__270 = $__268.call($traceurRuntime, $__269);
+                  $__271 = $__270();
                   $ctx.state = 34;
                   break;
                 case 34:
-                  $__222 = $ctx.wrapYieldStar($__220[Symbol.iterator]());
+                  $__273 = $ctx.wrapYieldStar($__271[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__223 = $__222[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__274 = $__273[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__223.done) ? 21 : 20;
+                  $ctx.state = ($__274.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__223.value;
+                  $ctx.sent = $__274.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__223.value;
+                  return $__274.value;
                 case 28:
-                  $__221 = $ctx.sentIgnoreThrow;
+                  $__272 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  args = $__221;
+                  args = $__272;
                   $ctx.state = 36;
                   break;
                 case 36:
@@ -20070,31 +20815,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 47 : 53;
                   break;
                 case 47:
-                  $__225 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__276 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 48;
                   break;
                 case 48:
-                  $__226 = $__225[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__277 = $__276[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 45;
                   break;
                 case 45:
-                  $ctx.state = ($__226.done) ? 39 : 38;
+                  $ctx.state = ($__277.done) ? 39 : 38;
                   break;
                 case 39:
-                  $ctx.sent = $__226.value;
+                  $ctx.sent = $__277.value;
                   $ctx.state = 46;
                   break;
                 case 38:
                   $ctx.state = 48;
-                  return $__226.value;
+                  return $__277.value;
                 case 46:
-                  $__224 = $ctx.sentIgnoreThrow;
+                  $__275 = $ctx.sentIgnoreThrow;
                   $ctx.state = 50;
                   break;
                 case 50:
-                  $ctx.returnValue = $__224;
+                  $ctx.returnValue = $__275;
                   $ctx.state = -2;
                   break;
                 case 53:
@@ -20104,16 +20849,16 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__204, this);
+          }, $__255, this);
         }),
-        PostfixExpression_MemberAccess: $traceurRuntime.initGeneratorFunction(function $__205(interp, s, param) {
+        PostfixExpression_MemberAccess: $traceurRuntime.initGeneratorFunction(function $__256(interp, s, param) {
           var ret,
-              $__227,
-              $__228,
-              $__229,
-              $__230,
-              $__231,
-              $__232;
+              $__278,
+              $__279,
+              $__280,
+              $__281,
+              $__282,
+              $__283;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20122,37 +20867,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 22;
                   break;
                 case 22:
-                  $__227 = interp.visit;
-                  $__228 = s.Expression;
-                  $__229 = $__227.call(interp, interp, $__228, param);
+                  $__278 = interp.visit;
+                  $__279 = s.Expression;
+                  $__280 = $__278.call(interp, interp, $__279, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__231 = $ctx.wrapYieldStar($__229[Symbol.iterator]());
+                  $__282 = $ctx.wrapYieldStar($__280[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__232 = $__231[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__283 = $__282[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__232.done) ? 3 : 2;
+                  $ctx.state = ($__283.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__232.value;
+                  $ctx.sent = $__283.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__232.value;
+                  return $__283.value;
                 case 10:
-                  $__230 = $ctx.sentIgnoreThrow;
+                  $__281 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__230;
+                  ret = $__281;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20162,31 +20907,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__205, this);
+          }, $__256, this);
         }),
-        PostfixExpression_MemberPointerAccess: $traceurRuntime.initGeneratorFunction(function $__233(interp, s, param) {
+        PostfixExpression_MemberPointerAccess: $traceurRuntime.initGeneratorFunction(function $__284(interp, s, param) {
           var member,
               r,
               ret,
-              $__234,
-              $__235,
-              $__236,
-              $__237,
-              $__238,
-              $__239,
-              $__240,
-              $__241,
-              $__242,
-              $__243,
-              $__244,
-              $__245,
-              $__246,
-              $__247,
-              $__248,
-              $__249,
-              $__250,
-              $__251,
-              $__252;
+              $__285,
+              $__286,
+              $__287,
+              $__288,
+              $__289,
+              $__290,
+              $__291,
+              $__292,
+              $__293,
+              $__294,
+              $__295,
+              $__296,
+              $__297,
+              $__298,
+              $__299,
+              $__300,
+              $__301,
+              $__302,
+              $__303;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20195,37 +20940,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 81;
                   break;
                 case 81:
-                  $__234 = interp.visit;
-                  $__235 = s.Expression;
-                  $__236 = $__234.call(interp, interp, $__235, param);
+                  $__285 = interp.visit;
+                  $__286 = s.Expression;
+                  $__287 = $__285.call(interp, interp, $__286, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__238 = $ctx.wrapYieldStar($__236[Symbol.iterator]());
+                  $__289 = $ctx.wrapYieldStar($__287[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__239 = $__238[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__290 = $__289[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__239.done) ? 3 : 2;
+                  $ctx.state = ($__290.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__239.value;
+                  $ctx.sent = $__290.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__239.value;
+                  return $__290.value;
                 case 10:
-                  $__237 = $ctx.sentIgnoreThrow;
+                  $__288 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__237;
+                  ret = $__288;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20244,31 +20989,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 29 : 35;
                   break;
                 case 29:
-                  $__241 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__292 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__242 = $__241[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__293 = $__292[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__242.done) ? 21 : 20;
+                  $ctx.state = ($__293.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__242.value;
+                  $ctx.sent = $__293.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__242.value;
+                  return $__293.value;
                 case 28:
-                  $__240 = $ctx.sentIgnoreThrow;
+                  $__291 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__240;
+                  $ctx.returnValue = $__291;
                   $ctx.state = -2;
                   break;
                 case 35:
@@ -20276,41 +21021,41 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = -2;
                   break;
                 case 54:
-                  $__243 = interp.visit;
-                  $__244 = s.member;
-                  $__245 = {
+                  $__294 = interp.visit;
+                  $__295 = s.member;
+                  $__296 = {
                     type: "IdentifierExpression",
-                    Identifier: $__244
+                    Identifier: $__295
                   };
-                  $__246 = $__243.call(interp, interp, $__245, param);
+                  $__297 = $__294.call(interp, interp, $__296, param);
                   $ctx.state = 55;
                   break;
                 case 55:
-                  $__248 = $ctx.wrapYieldStar($__246[Symbol.iterator]());
+                  $__299 = $ctx.wrapYieldStar($__297[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 51;
                   break;
                 case 51:
-                  $__249 = $__248[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__300 = $__299[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 48;
                   break;
                 case 48:
-                  $ctx.state = ($__249.done) ? 42 : 41;
+                  $ctx.state = ($__300.done) ? 42 : 41;
                   break;
                 case 42:
-                  $ctx.sent = $__249.value;
+                  $ctx.sent = $__300.value;
                   $ctx.state = 49;
                   break;
                 case 41:
                   $ctx.state = 51;
-                  return $__249.value;
+                  return $__300.value;
                 case 49:
-                  $__247 = $ctx.sentIgnoreThrow;
+                  $__298 = $ctx.sentIgnoreThrow;
                   $ctx.state = 53;
                   break;
                 case 53:
-                  member = $__247;
+                  member = $__298;
                   $ctx.state = 57;
                   break;
                 case 57:
@@ -20321,31 +21066,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 68 : 74;
                   break;
                 case 68:
-                  $__251 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__302 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 69;
                   break;
                 case 69:
-                  $__252 = $__251[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__303 = $__302[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 66;
                   break;
                 case 66:
-                  $ctx.state = ($__252.done) ? 60 : 59;
+                  $ctx.state = ($__303.done) ? 60 : 59;
                   break;
                 case 60:
-                  $ctx.sent = $__252.value;
+                  $ctx.sent = $__303.value;
                   $ctx.state = 67;
                   break;
                 case 59:
                   $ctx.state = 69;
-                  return $__252.value;
+                  return $__303.value;
                 case 67:
-                  $__250 = $ctx.sentIgnoreThrow;
+                  $__301 = $ctx.sentIgnoreThrow;
                   $ctx.state = 71;
                   break;
                 case 71:
-                  $ctx.returnValue = $__250;
+                  $ctx.returnValue = $__301;
                   $ctx.state = -2;
                   break;
                 case 74:
@@ -20355,20 +21100,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__233, this);
+          }, $__284, this);
         }),
-        PostfixExpression_PostIncrement: $traceurRuntime.initGeneratorFunction(function $__253(interp, s, param) {
+        PostfixExpression_PostIncrement: $traceurRuntime.initGeneratorFunction(function $__304(interp, s, param) {
           var r,
               ret,
-              $__254,
-              $__255,
-              $__256,
-              $__257,
-              $__258,
-              $__259,
-              $__260,
-              $__261,
-              $__262;
+              $__305,
+              $__306,
+              $__307,
+              $__308,
+              $__309,
+              $__310,
+              $__311,
+              $__312,
+              $__313;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20377,37 +21122,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 39;
                   break;
                 case 39:
-                  $__254 = interp.visit;
-                  $__255 = s.Expression;
-                  $__256 = $__254.call(interp, interp, $__255, param);
+                  $__305 = interp.visit;
+                  $__306 = s.Expression;
+                  $__307 = $__305.call(interp, interp, $__306, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__258 = $ctx.wrapYieldStar($__256[Symbol.iterator]());
+                  $__309 = $ctx.wrapYieldStar($__307[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__259 = $__258[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__310 = $__309[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__259.done) ? 3 : 2;
+                  $ctx.state = ($__310.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__259.value;
+                  $ctx.sent = $__310.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__259.value;
+                  return $__310.value;
                 case 10:
-                  $__257 = $ctx.sentIgnoreThrow;
+                  $__308 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__257;
+                  ret = $__308;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20421,31 +21166,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 29 : 35;
                   break;
                 case 29:
-                  $__261 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__312 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__262 = $__261[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__313 = $__312[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__262.done) ? 21 : 20;
+                  $ctx.state = ($__313.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__262.value;
+                  $ctx.sent = $__313.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__262.value;
+                  return $__313.value;
                 case 28:
-                  $__260 = $ctx.sentIgnoreThrow;
+                  $__311 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__260;
+                  $ctx.returnValue = $__311;
                   $ctx.state = -2;
                   break;
                 case 35:
@@ -20455,20 +21200,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__253, this);
+          }, $__304, this);
         }),
-        PostfixExpression_PostDecrement: $traceurRuntime.initGeneratorFunction(function $__263(interp, s, param) {
+        PostfixExpression_PostDecrement: $traceurRuntime.initGeneratorFunction(function $__314(interp, s, param) {
           var r,
               ret,
-              $__264,
-              $__265,
-              $__266,
-              $__267,
-              $__268,
-              $__269,
-              $__270,
-              $__271,
-              $__272;
+              $__315,
+              $__316,
+              $__317,
+              $__318,
+              $__319,
+              $__320,
+              $__321,
+              $__322,
+              $__323;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20477,37 +21222,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 39;
                   break;
                 case 39:
-                  $__264 = interp.visit;
-                  $__265 = s.Expression;
-                  $__266 = $__264.call(interp, interp, $__265, param);
+                  $__315 = interp.visit;
+                  $__316 = s.Expression;
+                  $__317 = $__315.call(interp, interp, $__316, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__268 = $ctx.wrapYieldStar($__266[Symbol.iterator]());
+                  $__319 = $ctx.wrapYieldStar($__317[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__269 = $__268[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__320 = $__319[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__269.done) ? 3 : 2;
+                  $ctx.state = ($__320.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__269.value;
+                  $ctx.sent = $__320.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__269.value;
+                  return $__320.value;
                 case 10:
-                  $__267 = $ctx.sentIgnoreThrow;
+                  $__318 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__267;
+                  ret = $__318;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20521,31 +21266,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 29 : 35;
                   break;
                 case 29:
-                  $__271 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__322 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__272 = $__271[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__323 = $__322[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__272.done) ? 21 : 20;
+                  $ctx.state = ($__323.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__272.value;
+                  $ctx.sent = $__323.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__272.value;
+                  return $__323.value;
                 case 28:
-                  $__270 = $ctx.sentIgnoreThrow;
+                  $__321 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__270;
+                  $ctx.returnValue = $__321;
                   $ctx.state = -2;
                   break;
                 case 35:
@@ -20555,20 +21300,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__263, this);
+          }, $__314, this);
         }),
-        UnaryExpression_PreIncrement: $traceurRuntime.initGeneratorFunction(function $__273(interp, s, param) {
+        UnaryExpression_PreIncrement: $traceurRuntime.initGeneratorFunction(function $__324(interp, s, param) {
           var r,
               ret,
-              $__274,
-              $__275,
-              $__276,
-              $__277,
-              $__278,
-              $__279,
-              $__280,
-              $__281,
-              $__282;
+              $__325,
+              $__326,
+              $__327,
+              $__328,
+              $__329,
+              $__330,
+              $__331,
+              $__332,
+              $__333;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20577,37 +21322,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 39;
                   break;
                 case 39:
-                  $__274 = interp.visit;
-                  $__275 = s.Expression;
-                  $__276 = $__274.call(interp, interp, $__275, param);
+                  $__325 = interp.visit;
+                  $__326 = s.Expression;
+                  $__327 = $__325.call(interp, interp, $__326, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__278 = $ctx.wrapYieldStar($__276[Symbol.iterator]());
+                  $__329 = $ctx.wrapYieldStar($__327[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__279 = $__278[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__330 = $__329[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__279.done) ? 3 : 2;
+                  $ctx.state = ($__330.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__279.value;
+                  $ctx.sent = $__330.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__279.value;
+                  return $__330.value;
                 case 10:
-                  $__277 = $ctx.sentIgnoreThrow;
+                  $__328 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__277;
+                  ret = $__328;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20618,31 +21363,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 29 : 35;
                   break;
                 case 29:
-                  $__281 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__332 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__282 = $__281[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__333 = $__332[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__282.done) ? 21 : 20;
+                  $ctx.state = ($__333.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__282.value;
+                  $ctx.sent = $__333.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__282.value;
+                  return $__333.value;
                 case 28:
-                  $__280 = $ctx.sentIgnoreThrow;
+                  $__331 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__280;
+                  $ctx.returnValue = $__331;
                   $ctx.state = -2;
                   break;
                 case 35:
@@ -20652,20 +21397,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__273, this);
+          }, $__324, this);
         }),
-        UnaryExpression_PreDecrement: $traceurRuntime.initGeneratorFunction(function $__283(interp, s, param) {
+        UnaryExpression_PreDecrement: $traceurRuntime.initGeneratorFunction(function $__334(interp, s, param) {
           var r,
               ret,
-              $__284,
-              $__285,
-              $__286,
-              $__287,
-              $__288,
-              $__289,
-              $__290,
-              $__291,
-              $__292;
+              $__335,
+              $__336,
+              $__337,
+              $__338,
+              $__339,
+              $__340,
+              $__341,
+              $__342,
+              $__343;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20674,37 +21419,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 39;
                   break;
                 case 39:
-                  $__284 = interp.visit;
-                  $__285 = s.Expression;
-                  $__286 = $__284.call(interp, interp, $__285, param);
+                  $__335 = interp.visit;
+                  $__336 = s.Expression;
+                  $__337 = $__335.call(interp, interp, $__336, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__288 = $ctx.wrapYieldStar($__286[Symbol.iterator]());
+                  $__339 = $ctx.wrapYieldStar($__337[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__289 = $__288[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__340 = $__339[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__289.done) ? 3 : 2;
+                  $ctx.state = ($__340.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__289.value;
+                  $ctx.sent = $__340.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__289.value;
+                  return $__340.value;
                 case 10:
-                  $__287 = $ctx.sentIgnoreThrow;
+                  $__338 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__287;
+                  ret = $__338;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20715,31 +21460,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 29 : 35;
                   break;
                 case 29:
-                  $__291 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__342 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__292 = $__291[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__343 = $__342[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__292.done) ? 21 : 20;
+                  $ctx.state = ($__343.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__292.value;
+                  $ctx.sent = $__343.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__292.value;
+                  return $__343.value;
                 case 28:
-                  $__290 = $ctx.sentIgnoreThrow;
+                  $__341 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__290;
+                  $ctx.returnValue = $__341;
                   $ctx.state = -2;
                   break;
                 case 35:
@@ -20749,20 +21494,20 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__283, this);
+          }, $__334, this);
         }),
-        UnaryExpression: $traceurRuntime.initGeneratorFunction(function $__293(interp, s, param) {
+        UnaryExpression: $traceurRuntime.initGeneratorFunction(function $__344(interp, s, param) {
           var r,
               ret,
-              $__294,
-              $__295,
-              $__296,
-              $__297,
-              $__298,
-              $__299,
-              $__300,
-              $__301,
-              $__302;
+              $__345,
+              $__346,
+              $__347,
+              $__348,
+              $__349,
+              $__350,
+              $__351,
+              $__352,
+              $__353;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20771,37 +21516,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 39;
                   break;
                 case 39:
-                  $__294 = interp.visit;
-                  $__295 = s.Expression;
-                  $__296 = $__294.call(interp, interp, $__295, param);
+                  $__345 = interp.visit;
+                  $__346 = s.Expression;
+                  $__347 = $__345.call(interp, interp, $__346, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__298 = $ctx.wrapYieldStar($__296[Symbol.iterator]());
+                  $__349 = $ctx.wrapYieldStar($__347[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__299 = $__298[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__350 = $__349[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__299.done) ? 3 : 2;
+                  $ctx.state = ($__350.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__299.value;
+                  $ctx.sent = $__350.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__299.value;
+                  return $__350.value;
                 case 10:
-                  $__297 = $ctx.sentIgnoreThrow;
+                  $__348 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__297;
+                  ret = $__348;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20812,31 +21557,31 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (isGenerator(r)) ? 29 : 35;
                   break;
                 case 29:
-                  $__301 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $__352 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__302 = $__301[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__353 = $__352[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__302.done) ? 21 : 20;
+                  $ctx.state = ($__353.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__302.value;
+                  $ctx.sent = $__353.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__302.value;
+                  return $__353.value;
                 case 28:
-                  $__300 = $ctx.sentIgnoreThrow;
+                  $__351 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__300;
+                  $ctx.returnValue = $__351;
                   $ctx.state = -2;
                   break;
                 case 35:
@@ -20846,16 +21591,16 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__293, this);
+          }, $__344, this);
         }),
-        UnaryExpression_Sizeof_Expr: $traceurRuntime.initGeneratorFunction(function $__303(interp, s, param) {
+        UnaryExpression_Sizeof_Expr: $traceurRuntime.initGeneratorFunction(function $__354(interp, s, param) {
           var ret,
-              $__304,
-              $__305,
-              $__306,
-              $__307,
-              $__308,
-              $__309;
+              $__355,
+              $__356,
+              $__357,
+              $__358,
+              $__359,
+              $__360;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20864,37 +21609,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 22;
                   break;
                 case 22:
-                  $__304 = interp.visit;
-                  $__305 = s.Expression;
-                  $__306 = $__304.call(interp, interp, $__305, param);
+                  $__355 = interp.visit;
+                  $__356 = s.Expression;
+                  $__357 = $__355.call(interp, interp, $__356, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__308 = $ctx.wrapYieldStar($__306[Symbol.iterator]());
+                  $__359 = $ctx.wrapYieldStar($__357[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__309 = $__308[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__360 = $__359[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__309.done) ? 3 : 2;
+                  $ctx.state = ($__360.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__309.value;
+                  $ctx.sent = $__360.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__309.value;
+                  return $__360.value;
                 case 10:
-                  $__307 = $ctx.sentIgnoreThrow;
+                  $__358 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__307;
+                  ret = $__358;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20904,16 +21649,16 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__303, this);
+          }, $__354, this);
         }),
-        UnaryExpression_Sizeof_Type: $traceurRuntime.initGeneratorFunction(function $__310(interp, s, param) {
+        UnaryExpression_Sizeof_Type: $traceurRuntime.initGeneratorFunction(function $__361(interp, s, param) {
           var type,
-              $__311,
-              $__312,
-              $__313,
-              $__314,
-              $__315,
-              $__316;
+              $__362,
+              $__363,
+              $__364,
+              $__365,
+              $__366,
+              $__367;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20922,37 +21667,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 22;
                   break;
                 case 22:
-                  $__311 = interp.visit;
-                  $__312 = s.TypeName;
-                  $__313 = $__311.call(interp, interp, $__312, param);
+                  $__362 = interp.visit;
+                  $__363 = s.TypeName;
+                  $__364 = $__362.call(interp, interp, $__363, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__315 = $ctx.wrapYieldStar($__313[Symbol.iterator]());
+                  $__366 = $ctx.wrapYieldStar($__364[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__316 = $__315[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__367 = $__366[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__316.done) ? 3 : 2;
+                  $ctx.state = ($__367.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__316.value;
+                  $ctx.sent = $__367.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__316.value;
+                  return $__367.value;
                 case 10:
-                  $__314 = $ctx.sentIgnoreThrow;
+                  $__365 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  type = $__314;
+                  type = $__365;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -20962,23 +21707,23 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__310, this);
+          }, $__361, this);
         }),
-        CastExpression: $traceurRuntime.initGeneratorFunction(function $__317(interp, s, param) {
+        CastExpression: $traceurRuntime.initGeneratorFunction(function $__368(interp, s, param) {
           var ret,
               type,
-              $__318,
-              $__319,
-              $__320,
-              $__321,
-              $__322,
-              $__323,
-              $__324,
-              $__325,
-              $__326,
-              $__327,
-              $__328,
-              $__329;
+              $__369,
+              $__370,
+              $__371,
+              $__372,
+              $__373,
+              $__374,
+              $__375,
+              $__376,
+              $__377,
+              $__378,
+              $__379,
+              $__380;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -20987,71 +21732,71 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 40;
                   break;
                 case 40:
-                  $__318 = interp.visit;
-                  $__319 = s.Expression;
-                  $__320 = $__318.call(interp, interp, $__319, param);
+                  $__369 = interp.visit;
+                  $__370 = s.Expression;
+                  $__371 = $__369.call(interp, interp, $__370, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__322 = $ctx.wrapYieldStar($__320[Symbol.iterator]());
+                  $__373 = $ctx.wrapYieldStar($__371[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__323 = $__322[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__374 = $__373[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__323.done) ? 3 : 2;
+                  $ctx.state = ($__374.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__323.value;
+                  $ctx.sent = $__374.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__323.value;
+                  return $__374.value;
                 case 10:
-                  $__321 = $ctx.sentIgnoreThrow;
+                  $__372 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__321;
+                  ret = $__372;
                   $ctx.state = 18;
                   break;
                 case 18:
-                  $__324 = interp.visit;
-                  $__325 = s.TypeName;
-                  $__326 = $__324.call(interp, interp, $__325, param);
+                  $__375 = interp.visit;
+                  $__376 = s.TypeName;
+                  $__377 = $__375.call(interp, interp, $__376, param);
                   $ctx.state = 34;
                   break;
                 case 34:
-                  $__328 = $ctx.wrapYieldStar($__326[Symbol.iterator]());
+                  $__379 = $ctx.wrapYieldStar($__377[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__329 = $__328[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__380 = $__379[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__329.done) ? 21 : 20;
+                  $ctx.state = ($__380.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__329.value;
+                  $ctx.sent = $__380.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__329.value;
+                  return $__380.value;
                 case 28:
-                  $__327 = $ctx.sentIgnoreThrow;
+                  $__378 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  type = $__327;
+                  type = $__378;
                   $ctx.state = 36;
                   break;
                 case 36:
@@ -21061,7 +21806,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__317, this);
+          }, $__368, this);
         }),
         TypeName: function(interp, s, param) {
           var baseType,
@@ -21078,439 +21823,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               typename.push(baseType);
             }
           }
-          return rt.simpleType(typename.join(" "));
+          return rt.simpleType(typename);
         },
-        BinOpExpression: $traceurRuntime.initGeneratorFunction(function $__330(interp, s, param) {
+        BinOpExpression: $traceurRuntime.initGeneratorFunction(function $__381(interp, s, param) {
           var left,
               op,
               r,
               right,
-              $__331,
-              $__332,
-              $__333,
-              $__334,
-              $__335,
-              $__336,
-              $__337,
-              $__338,
-              $__339,
-              $__340,
-              $__341,
-              $__342,
-              $__343,
-              $__344,
-              $__345,
-              $__346,
-              $__347,
-              $__348,
-              $__349,
-              $__350,
-              $__351,
-              $__352,
-              $__353,
-              $__354,
-              $__355;
-          return $traceurRuntime.createGeneratorInstance(function($ctx) {
-            while (true)
-              switch ($ctx.state) {
-                case 0:
-                  rt = interp.rt;
-                  op = s.op;
-                  $ctx.state = 101;
-                  break;
-                case 101:
-                  $ctx.state = (op === "&&") ? 19 : 98;
-                  break;
-                case 19:
-                  s.type = "LogicalANDExpression";
-                  $ctx.state = 20;
-                  break;
-                case 20:
-                  $__331 = interp.visit;
-                  $__332 = $__331.call(interp, interp, s, param);
-                  $ctx.state = 16;
-                  break;
-                case 16:
-                  $__334 = $ctx.wrapYieldStar($__332[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 12;
-                  break;
-                case 12:
-                  $__335 = $__334[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 9;
-                  break;
-                case 9:
-                  $ctx.state = ($__335.done) ? 3 : 2;
-                  break;
-                case 3:
-                  $ctx.sent = $__335.value;
-                  $ctx.state = 10;
-                  break;
-                case 2:
-                  $ctx.state = 12;
-                  return $__335.value;
-                case 10:
-                  $__333 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 14;
-                  break;
-                case 14:
-                  $ctx.returnValue = $__333;
-                  $ctx.state = -2;
-                  break;
-                case 98:
-                  $ctx.state = (op === "||") ? 39 : 55;
-                  break;
-                case 39:
-                  s.type = "LogicalORExpression";
-                  $ctx.state = 40;
-                  break;
-                case 40:
-                  $__336 = interp.visit;
-                  $__337 = $__336.call(interp, interp, s, param);
-                  $ctx.state = 36;
-                  break;
-                case 36:
-                  $__339 = $ctx.wrapYieldStar($__337[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 32;
-                  break;
-                case 32:
-                  $__340 = $__339[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 29;
-                  break;
-                case 29:
-                  $ctx.state = ($__340.done) ? 23 : 22;
-                  break;
-                case 23:
-                  $ctx.sent = $__340.value;
-                  $ctx.state = 30;
-                  break;
-                case 22:
-                  $ctx.state = 32;
-                  return $__340.value;
-                case 30:
-                  $__338 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 34;
-                  break;
-                case 34:
-                  $ctx.returnValue = $__338;
-                  $ctx.state = -2;
-                  break;
-                case 55:
-                  $__341 = interp.visit;
-                  $__342 = s.left;
-                  $__343 = $__341.call(interp, interp, $__342, param);
-                  $ctx.state = 56;
-                  break;
-                case 56:
-                  $__345 = $ctx.wrapYieldStar($__343[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 52;
-                  break;
-                case 52:
-                  $__346 = $__345[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 49;
-                  break;
-                case 49:
-                  $ctx.state = ($__346.done) ? 43 : 42;
-                  break;
-                case 43:
-                  $ctx.sent = $__346.value;
-                  $ctx.state = 50;
-                  break;
-                case 42:
-                  $ctx.state = 52;
-                  return $__346.value;
-                case 50:
-                  $__344 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 54;
-                  break;
-                case 54:
-                  left = $__344;
-                  $ctx.state = 58;
-                  break;
-                case 58:
-                  $__347 = interp.visit;
-                  $__348 = s.right;
-                  $__349 = $__347.call(interp, interp, $__348, param);
-                  $ctx.state = 74;
-                  break;
-                case 74:
-                  $__351 = $ctx.wrapYieldStar($__349[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 70;
-                  break;
-                case 70:
-                  $__352 = $__351[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 67;
-                  break;
-                case 67:
-                  $ctx.state = ($__352.done) ? 61 : 60;
-                  break;
-                case 61:
-                  $ctx.sent = $__352.value;
-                  $ctx.state = 68;
-                  break;
-                case 60:
-                  $ctx.state = 70;
-                  return $__352.value;
-                case 68:
-                  $__350 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 72;
-                  break;
-                case 72:
-                  right = $__350;
-                  $ctx.state = 76;
-                  break;
-                case 76:
-                  r = rt.getFunc(left.t, rt.makeOperatorFuncName(op), [right.t])(rt, left, right);
-                  $ctx.state = 97;
-                  break;
-                case 97:
-                  $ctx.state = (isGenerator(r)) ? 87 : 93;
-                  break;
-                case 87:
-                  $__354 = $ctx.wrapYieldStar(r[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 88;
-                  break;
-                case 88:
-                  $__355 = $__354[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 85;
-                  break;
-                case 85:
-                  $ctx.state = ($__355.done) ? 79 : 78;
-                  break;
-                case 79:
-                  $ctx.sent = $__355.value;
-                  $ctx.state = 86;
-                  break;
-                case 78:
-                  $ctx.state = 88;
-                  return $__355.value;
-                case 86:
-                  $__353 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 90;
-                  break;
-                case 90:
-                  $ctx.returnValue = $__353;
-                  $ctx.state = -2;
-                  break;
-                case 93:
-                  $ctx.returnValue = r;
-                  $ctx.state = -2;
-                  break;
-                default:
-                  return $ctx.end();
-              }
-          }, $__330, this);
-        }),
-        LogicalANDExpression: $traceurRuntime.initGeneratorFunction(function $__356(interp, s, param) {
-          var left,
-              lt,
-              r,
-              right,
-              $__357,
-              $__358,
-              $__359,
-              $__360,
-              $__361,
-              $__362,
-              $__363,
-              $__364,
-              $__365,
-              $__366,
-              $__367,
-              $__368,
-              $__369,
-              $__370,
-              $__371,
-              $__372,
-              $__373,
-              $__374,
-              $__375,
-              $__376,
-              $__377;
-          return $traceurRuntime.createGeneratorInstance(function($ctx) {
-            while (true)
-              switch ($ctx.state) {
-                case 0:
-                  rt = interp.rt;
-                  $ctx.state = 81;
-                  break;
-                case 81:
-                  $__357 = interp.visit;
-                  $__358 = s.left;
-                  $__359 = $__357.call(interp, interp, $__358, param);
-                  $ctx.state = 16;
-                  break;
-                case 16:
-                  $__361 = $ctx.wrapYieldStar($__359[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 12;
-                  break;
-                case 12:
-                  $__362 = $__361[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 9;
-                  break;
-                case 9:
-                  $ctx.state = ($__362.done) ? 3 : 2;
-                  break;
-                case 3:
-                  $ctx.sent = $__362.value;
-                  $ctx.state = 10;
-                  break;
-                case 2:
-                  $ctx.state = 12;
-                  return $__362.value;
-                case 10:
-                  $__360 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 14;
-                  break;
-                case 14:
-                  left = $__360;
-                  $ctx.state = 18;
-                  break;
-                case 18:
-                  lt = rt.types[rt.getTypeSigniture(left.t)];
-                  $ctx.state = 83;
-                  break;
-                case 83:
-                  $ctx.state = ("&&" in lt) ? 33 : 78;
-                  break;
-                case 33:
-                  $__363 = interp.visit;
-                  $__364 = s.right;
-                  $__365 = $__363.call(interp, interp, $__364, param);
-                  $ctx.state = 34;
-                  break;
-                case 34:
-                  $__367 = $ctx.wrapYieldStar($__365[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 30;
-                  break;
-                case 30:
-                  $__368 = $__367[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 27;
-                  break;
-                case 27:
-                  $ctx.state = ($__368.done) ? 21 : 20;
-                  break;
-                case 21:
-                  $ctx.sent = $__368.value;
-                  $ctx.state = 28;
-                  break;
-                case 20:
-                  $ctx.state = 30;
-                  return $__368.value;
-                case 28:
-                  $__366 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 32;
-                  break;
-                case 32:
-                  right = $__366;
-                  $ctx.state = 36;
-                  break;
-                case 36:
-                  r = rt.getFunc(left.t, rt.makeOperatorFuncName("&&"), [right.t])(rt, left, right);
-                  $ctx.state = 57;
-                  break;
-                case 57:
-                  $ctx.state = (isGenerator(r)) ? 47 : 53;
-                  break;
-                case 47:
-                  $__370 = $ctx.wrapYieldStar(r[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 48;
-                  break;
-                case 48:
-                  $__371 = $__370[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 45;
-                  break;
-                case 45:
-                  $ctx.state = ($__371.done) ? 39 : 38;
-                  break;
-                case 39:
-                  $ctx.sent = $__371.value;
-                  $ctx.state = 46;
-                  break;
-                case 38:
-                  $ctx.state = 48;
-                  return $__371.value;
-                case 46:
-                  $__369 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 50;
-                  break;
-                case 50:
-                  $ctx.returnValue = $__369;
-                  $ctx.state = -2;
-                  break;
-                case 53:
-                  $ctx.returnValue = r;
-                  $ctx.state = -2;
-                  break;
-                case 78:
-                  $ctx.state = (rt.cast(rt.boolTypeLiteral, left).v) ? 72 : 76;
-                  break;
-                case 72:
-                  $__372 = interp.visit;
-                  $__373 = s.right;
-                  $__374 = $__372.call(interp, interp, $__373, param);
-                  $ctx.state = 73;
-                  break;
-                case 73:
-                  $__376 = $ctx.wrapYieldStar($__374[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 69;
-                  break;
-                case 69:
-                  $__377 = $__376[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 66;
-                  break;
-                case 66:
-                  $ctx.state = ($__377.done) ? 60 : 59;
-                  break;
-                case 60:
-                  $ctx.sent = $__377.value;
-                  $ctx.state = 67;
-                  break;
-                case 59:
-                  $ctx.state = 69;
-                  return $__377.value;
-                case 67:
-                  $__375 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 71;
-                  break;
-                case 71:
-                  $ctx.returnValue = $__375;
-                  $ctx.state = -2;
-                  break;
-                case 76:
-                  $ctx.returnValue = left;
-                  $ctx.state = -2;
-                  break;
-                default:
-                  return $ctx.end();
-              }
-          }, $__356, this);
-        }),
-        LogicalORExpression: $traceurRuntime.initGeneratorFunction(function $__378(interp, s, param) {
-          var left,
-              lt,
-              r,
-              right,
-              $__379,
-              $__380,
-              $__381,
               $__382,
               $__383,
               $__384,
@@ -21528,183 +21847,219 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $__396,
               $__397,
               $__398,
-              $__399;
-          return $traceurRuntime.createGeneratorInstance(function($ctx) {
-            while (true)
-              switch ($ctx.state) {
-                case 0:
-                  rt = interp.rt;
-                  $ctx.state = 81;
-                  break;
-                case 81:
-                  $__379 = interp.visit;
-                  $__380 = s.left;
-                  $__381 = $__379.call(interp, interp, $__380, param);
-                  $ctx.state = 16;
-                  break;
-                case 16:
-                  $__383 = $ctx.wrapYieldStar($__381[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 12;
-                  break;
-                case 12:
-                  $__384 = $__383[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 9;
-                  break;
-                case 9:
-                  $ctx.state = ($__384.done) ? 3 : 2;
-                  break;
-                case 3:
-                  $ctx.sent = $__384.value;
-                  $ctx.state = 10;
-                  break;
-                case 2:
-                  $ctx.state = 12;
-                  return $__384.value;
-                case 10:
-                  $__382 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 14;
-                  break;
-                case 14:
-                  left = $__382;
-                  $ctx.state = 18;
-                  break;
-                case 18:
-                  lt = rt.types[rt.getTypeSigniture(left.t)];
-                  $ctx.state = 83;
-                  break;
-                case 83:
-                  $ctx.state = ("||" in lt) ? 33 : 78;
-                  break;
-                case 33:
-                  $__385 = interp.visit;
-                  $__386 = s.right;
-                  $__387 = $__385.call(interp, interp, $__386, param);
-                  $ctx.state = 34;
-                  break;
-                case 34:
-                  $__389 = $ctx.wrapYieldStar($__387[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 30;
-                  break;
-                case 30:
-                  $__390 = $__389[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 27;
-                  break;
-                case 27:
-                  $ctx.state = ($__390.done) ? 21 : 20;
-                  break;
-                case 21:
-                  $ctx.sent = $__390.value;
-                  $ctx.state = 28;
-                  break;
-                case 20:
-                  $ctx.state = 30;
-                  return $__390.value;
-                case 28:
-                  $__388 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 32;
-                  break;
-                case 32:
-                  right = $__388;
-                  $ctx.state = 36;
-                  break;
-                case 36:
-                  r = rt.getFunc(left.t, rt.makeOperatorFuncName("||"), [right.t])(rt, left, right);
-                  $ctx.state = 57;
-                  break;
-                case 57:
-                  $ctx.state = (isGenerator(r)) ? 47 : 53;
-                  break;
-                case 47:
-                  $__392 = $ctx.wrapYieldStar(r[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 48;
-                  break;
-                case 48:
-                  $__393 = $__392[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 45;
-                  break;
-                case 45:
-                  $ctx.state = ($__393.done) ? 39 : 38;
-                  break;
-                case 39:
-                  $ctx.sent = $__393.value;
-                  $ctx.state = 46;
-                  break;
-                case 38:
-                  $ctx.state = 48;
-                  return $__393.value;
-                case 46:
-                  $__391 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 50;
-                  break;
-                case 50:
-                  $ctx.returnValue = $__391;
-                  $ctx.state = -2;
-                  break;
-                case 53:
-                  $ctx.returnValue = r;
-                  $ctx.state = -2;
-                  break;
-                case 78:
-                  $ctx.state = (rt.cast(rt.boolTypeLiteral, left).v) ? 58 : 74;
-                  break;
-                case 58:
-                  $ctx.returnValue = left;
-                  $ctx.state = -2;
-                  break;
-                case 74:
-                  $__394 = interp.visit;
-                  $__395 = s.right;
-                  $__396 = $__394.call(interp, interp, $__395, param);
-                  $ctx.state = 75;
-                  break;
-                case 75:
-                  $__398 = $ctx.wrapYieldStar($__396[Symbol.iterator]());
-                  $ctx.sent = void 0;
-                  $ctx.action = 'next';
-                  $ctx.state = 71;
-                  break;
-                case 71:
-                  $__399 = $__398[$ctx.action]($ctx.sentIgnoreThrow);
-                  $ctx.state = 68;
-                  break;
-                case 68:
-                  $ctx.state = ($__399.done) ? 62 : 61;
-                  break;
-                case 62:
-                  $ctx.sent = $__399.value;
-                  $ctx.state = 69;
-                  break;
-                case 61:
-                  $ctx.state = 71;
-                  return $__399.value;
-                case 69:
-                  $__397 = $ctx.sentIgnoreThrow;
-                  $ctx.state = 73;
-                  break;
-                case 73:
-                  $ctx.returnValue = $__397;
-                  $ctx.state = -2;
-                  break;
-                default:
-                  return $ctx.end();
-              }
-          }, $__378, this);
-        }),
-        ConditionalExpression: $traceurRuntime.initGeneratorFunction(function $__400(interp, s, param) {
-          var cond,
+              $__399,
+              $__400,
               $__401,
               $__402,
               $__403,
               $__404,
               $__405,
-              $__406,
-              $__407,
+              $__406;
+          return $traceurRuntime.createGeneratorInstance(function($ctx) {
+            while (true)
+              switch ($ctx.state) {
+                case 0:
+                  rt = interp.rt;
+                  op = s.op;
+                  $ctx.state = 101;
+                  break;
+                case 101:
+                  $ctx.state = (op === "&&") ? 19 : 98;
+                  break;
+                case 19:
+                  s.type = "LogicalANDExpression";
+                  $ctx.state = 20;
+                  break;
+                case 20:
+                  $__382 = interp.visit;
+                  $__383 = $__382.call(interp, interp, s, param);
+                  $ctx.state = 16;
+                  break;
+                case 16:
+                  $__385 = $ctx.wrapYieldStar($__383[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 12;
+                  break;
+                case 12:
+                  $__386 = $__385[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 9;
+                  break;
+                case 9:
+                  $ctx.state = ($__386.done) ? 3 : 2;
+                  break;
+                case 3:
+                  $ctx.sent = $__386.value;
+                  $ctx.state = 10;
+                  break;
+                case 2:
+                  $ctx.state = 12;
+                  return $__386.value;
+                case 10:
+                  $__384 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 14;
+                  break;
+                case 14:
+                  $ctx.returnValue = $__384;
+                  $ctx.state = -2;
+                  break;
+                case 98:
+                  $ctx.state = (op === "||") ? 39 : 55;
+                  break;
+                case 39:
+                  s.type = "LogicalORExpression";
+                  $ctx.state = 40;
+                  break;
+                case 40:
+                  $__387 = interp.visit;
+                  $__388 = $__387.call(interp, interp, s, param);
+                  $ctx.state = 36;
+                  break;
+                case 36:
+                  $__390 = $ctx.wrapYieldStar($__388[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 32;
+                  break;
+                case 32:
+                  $__391 = $__390[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 29;
+                  break;
+                case 29:
+                  $ctx.state = ($__391.done) ? 23 : 22;
+                  break;
+                case 23:
+                  $ctx.sent = $__391.value;
+                  $ctx.state = 30;
+                  break;
+                case 22:
+                  $ctx.state = 32;
+                  return $__391.value;
+                case 30:
+                  $__389 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 34;
+                  break;
+                case 34:
+                  $ctx.returnValue = $__389;
+                  $ctx.state = -2;
+                  break;
+                case 55:
+                  $__392 = interp.visit;
+                  $__393 = s.left;
+                  $__394 = $__392.call(interp, interp, $__393, param);
+                  $ctx.state = 56;
+                  break;
+                case 56:
+                  $__396 = $ctx.wrapYieldStar($__394[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 52;
+                  break;
+                case 52:
+                  $__397 = $__396[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 49;
+                  break;
+                case 49:
+                  $ctx.state = ($__397.done) ? 43 : 42;
+                  break;
+                case 43:
+                  $ctx.sent = $__397.value;
+                  $ctx.state = 50;
+                  break;
+                case 42:
+                  $ctx.state = 52;
+                  return $__397.value;
+                case 50:
+                  $__395 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 54;
+                  break;
+                case 54:
+                  left = $__395;
+                  $ctx.state = 58;
+                  break;
+                case 58:
+                  $__398 = interp.visit;
+                  $__399 = s.right;
+                  $__400 = $__398.call(interp, interp, $__399, param);
+                  $ctx.state = 74;
+                  break;
+                case 74:
+                  $__402 = $ctx.wrapYieldStar($__400[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 70;
+                  break;
+                case 70:
+                  $__403 = $__402[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 67;
+                  break;
+                case 67:
+                  $ctx.state = ($__403.done) ? 61 : 60;
+                  break;
+                case 61:
+                  $ctx.sent = $__403.value;
+                  $ctx.state = 68;
+                  break;
+                case 60:
+                  $ctx.state = 70;
+                  return $__403.value;
+                case 68:
+                  $__401 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 72;
+                  break;
+                case 72:
+                  right = $__401;
+                  $ctx.state = 76;
+                  break;
+                case 76:
+                  r = rt.getFunc(left.t, rt.makeOperatorFuncName(op), [right.t])(rt, left, right);
+                  $ctx.state = 97;
+                  break;
+                case 97:
+                  $ctx.state = (isGenerator(r)) ? 87 : 93;
+                  break;
+                case 87:
+                  $__405 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 88;
+                  break;
+                case 88:
+                  $__406 = $__405[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 85;
+                  break;
+                case 85:
+                  $ctx.state = ($__406.done) ? 79 : 78;
+                  break;
+                case 79:
+                  $ctx.sent = $__406.value;
+                  $ctx.state = 86;
+                  break;
+                case 78:
+                  $ctx.state = 88;
+                  return $__406.value;
+                case 86:
+                  $__404 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 90;
+                  break;
+                case 90:
+                  $ctx.returnValue = $__404;
+                  $ctx.state = -2;
+                  break;
+                case 93:
+                  $ctx.returnValue = r;
+                  $ctx.state = -2;
+                  break;
+                default:
+                  return $ctx.end();
+              }
+          }, $__381, this);
+        }),
+        LogicalANDExpression: $traceurRuntime.initGeneratorFunction(function $__407(interp, s, param) {
+          var left,
+              lt,
+              r,
+              right,
               $__408,
               $__409,
               $__410,
@@ -21719,97 +22074,104 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $__419,
               $__420,
               $__421,
-              $__422;
+              $__422,
+              $__423,
+              $__424,
+              $__425,
+              $__426,
+              $__427,
+              $__428;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
                 case 0:
                   rt = interp.rt;
-                  $ctx.state = 57;
+                  $ctx.state = 81;
                   break;
-                case 57:
-                  $__401 = rt.cast;
-                  $__402 = rt.boolTypeLiteral;
-                  $__403 = interp.visit;
-                  $__404 = s.cond;
-                  $__405 = $__403.call(interp, interp, $__404, param);
+                case 81:
+                  $__408 = interp.visit;
+                  $__409 = s.left;
+                  $__410 = $__408.call(interp, interp, $__409, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__409 = $ctx.wrapYieldStar($__405[Symbol.iterator]());
+                  $__412 = $ctx.wrapYieldStar($__410[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__410 = $__409[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__413 = $__412[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__410.done) ? 3 : 2;
+                  $ctx.state = ($__413.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__410.value;
+                  $ctx.sent = $__413.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__410.value;
+                  return $__413.value;
                 case 10:
-                  $__406 = $ctx.sentIgnoreThrow;
+                  $__411 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  $__407 = $__401.call(rt, $__402, $__406);
-                  $__408 = $__407.v;
-                  cond = $__408;
+                  left = $__411;
                   $ctx.state = 18;
                   break;
                 case 18:
-                  $ctx.state = (cond) ? 33 : 51;
+                  lt = rt.types[rt.getTypeSignature(left.t)];
+                  $ctx.state = 83;
+                  break;
+                case 83:
+                  $ctx.state = ("&&" in lt) ? 33 : 78;
                   break;
                 case 33:
-                  $__411 = interp.visit;
-                  $__412 = s.t;
-                  $__413 = $__411.call(interp, interp, $__412, param);
+                  $__414 = interp.visit;
+                  $__415 = s.right;
+                  $__416 = $__414.call(interp, interp, $__415, param);
                   $ctx.state = 34;
                   break;
                 case 34:
-                  $__415 = $ctx.wrapYieldStar($__413[Symbol.iterator]());
+                  $__418 = $ctx.wrapYieldStar($__416[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 30;
                   break;
                 case 30:
-                  $__416 = $__415[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__419 = $__418[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 27;
                   break;
                 case 27:
-                  $ctx.state = ($__416.done) ? 21 : 20;
+                  $ctx.state = ($__419.done) ? 21 : 20;
                   break;
                 case 21:
-                  $ctx.sent = $__416.value;
+                  $ctx.sent = $__419.value;
                   $ctx.state = 28;
                   break;
                 case 20:
                   $ctx.state = 30;
-                  return $__416.value;
+                  return $__419.value;
                 case 28:
-                  $__414 = $ctx.sentIgnoreThrow;
+                  $__417 = $ctx.sentIgnoreThrow;
                   $ctx.state = 32;
                   break;
                 case 32:
-                  $ctx.returnValue = $__414;
-                  $ctx.state = -2;
+                  right = $__417;
+                  $ctx.state = 36;
                   break;
-                case 51:
-                  $__417 = interp.visit;
-                  $__418 = s.f;
-                  $__419 = $__417.call(interp, interp, $__418, param);
-                  $ctx.state = 52;
+                case 36:
+                  r = rt.getFunc(left.t, rt.makeOperatorFuncName("&&"), [right.t])(rt, left, right);
+                  $ctx.state = 57;
                   break;
-                case 52:
-                  $__421 = $ctx.wrapYieldStar($__419[Symbol.iterator]());
+                case 57:
+                  $ctx.state = (isGenerator(r)) ? 47 : 53;
+                  break;
+                case 47:
+                  $__421 = $ctx.wrapYieldStar(r[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 48;
@@ -21836,18 +22198,401 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.returnValue = $__420;
                   $ctx.state = -2;
                   break;
+                case 53:
+                  $ctx.returnValue = r;
+                  $ctx.state = -2;
+                  break;
+                case 78:
+                  $ctx.state = (rt.cast(rt.boolTypeLiteral, left).v) ? 72 : 76;
+                  break;
+                case 72:
+                  $__423 = interp.visit;
+                  $__424 = s.right;
+                  $__425 = $__423.call(interp, interp, $__424, param);
+                  $ctx.state = 73;
+                  break;
+                case 73:
+                  $__427 = $ctx.wrapYieldStar($__425[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 69;
+                  break;
+                case 69:
+                  $__428 = $__427[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 66;
+                  break;
+                case 66:
+                  $ctx.state = ($__428.done) ? 60 : 59;
+                  break;
+                case 60:
+                  $ctx.sent = $__428.value;
+                  $ctx.state = 67;
+                  break;
+                case 59:
+                  $ctx.state = 69;
+                  return $__428.value;
+                case 67:
+                  $__426 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 71;
+                  break;
+                case 71:
+                  $ctx.returnValue = $__426;
+                  $ctx.state = -2;
+                  break;
+                case 76:
+                  $ctx.returnValue = left;
+                  $ctx.state = -2;
+                  break;
                 default:
                   return $ctx.end();
               }
-          }, $__400, this);
+          }, $__407, this);
         }),
-        ConstantExpression: $traceurRuntime.initGeneratorFunction(function $__423(interp, s, param) {
-          var $__424,
-              $__425,
-              $__426,
-              $__427,
-              $__428,
-              $__429;
+        LogicalORExpression: $traceurRuntime.initGeneratorFunction(function $__429(interp, s, param) {
+          var left,
+              lt,
+              r,
+              right,
+              $__430,
+              $__431,
+              $__432,
+              $__433,
+              $__434,
+              $__435,
+              $__436,
+              $__437,
+              $__438,
+              $__439,
+              $__440,
+              $__441,
+              $__442,
+              $__443,
+              $__444,
+              $__445,
+              $__446,
+              $__447,
+              $__448,
+              $__449,
+              $__450;
+          return $traceurRuntime.createGeneratorInstance(function($ctx) {
+            while (true)
+              switch ($ctx.state) {
+                case 0:
+                  rt = interp.rt;
+                  $ctx.state = 81;
+                  break;
+                case 81:
+                  $__430 = interp.visit;
+                  $__431 = s.left;
+                  $__432 = $__430.call(interp, interp, $__431, param);
+                  $ctx.state = 16;
+                  break;
+                case 16:
+                  $__434 = $ctx.wrapYieldStar($__432[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 12;
+                  break;
+                case 12:
+                  $__435 = $__434[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 9;
+                  break;
+                case 9:
+                  $ctx.state = ($__435.done) ? 3 : 2;
+                  break;
+                case 3:
+                  $ctx.sent = $__435.value;
+                  $ctx.state = 10;
+                  break;
+                case 2:
+                  $ctx.state = 12;
+                  return $__435.value;
+                case 10:
+                  $__433 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 14;
+                  break;
+                case 14:
+                  left = $__433;
+                  $ctx.state = 18;
+                  break;
+                case 18:
+                  lt = rt.types[rt.getTypeSignature(left.t)];
+                  $ctx.state = 83;
+                  break;
+                case 83:
+                  $ctx.state = ("||" in lt) ? 33 : 78;
+                  break;
+                case 33:
+                  $__436 = interp.visit;
+                  $__437 = s.right;
+                  $__438 = $__436.call(interp, interp, $__437, param);
+                  $ctx.state = 34;
+                  break;
+                case 34:
+                  $__440 = $ctx.wrapYieldStar($__438[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 30;
+                  break;
+                case 30:
+                  $__441 = $__440[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 27;
+                  break;
+                case 27:
+                  $ctx.state = ($__441.done) ? 21 : 20;
+                  break;
+                case 21:
+                  $ctx.sent = $__441.value;
+                  $ctx.state = 28;
+                  break;
+                case 20:
+                  $ctx.state = 30;
+                  return $__441.value;
+                case 28:
+                  $__439 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 32;
+                  break;
+                case 32:
+                  right = $__439;
+                  $ctx.state = 36;
+                  break;
+                case 36:
+                  r = rt.getFunc(left.t, rt.makeOperatorFuncName("||"), [right.t])(rt, left, right);
+                  $ctx.state = 57;
+                  break;
+                case 57:
+                  $ctx.state = (isGenerator(r)) ? 47 : 53;
+                  break;
+                case 47:
+                  $__443 = $ctx.wrapYieldStar(r[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 48;
+                  break;
+                case 48:
+                  $__444 = $__443[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 45;
+                  break;
+                case 45:
+                  $ctx.state = ($__444.done) ? 39 : 38;
+                  break;
+                case 39:
+                  $ctx.sent = $__444.value;
+                  $ctx.state = 46;
+                  break;
+                case 38:
+                  $ctx.state = 48;
+                  return $__444.value;
+                case 46:
+                  $__442 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 50;
+                  break;
+                case 50:
+                  $ctx.returnValue = $__442;
+                  $ctx.state = -2;
+                  break;
+                case 53:
+                  $ctx.returnValue = r;
+                  $ctx.state = -2;
+                  break;
+                case 78:
+                  $ctx.state = (rt.cast(rt.boolTypeLiteral, left).v) ? 58 : 74;
+                  break;
+                case 58:
+                  $ctx.returnValue = left;
+                  $ctx.state = -2;
+                  break;
+                case 74:
+                  $__445 = interp.visit;
+                  $__446 = s.right;
+                  $__447 = $__445.call(interp, interp, $__446, param);
+                  $ctx.state = 75;
+                  break;
+                case 75:
+                  $__449 = $ctx.wrapYieldStar($__447[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 71;
+                  break;
+                case 71:
+                  $__450 = $__449[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 68;
+                  break;
+                case 68:
+                  $ctx.state = ($__450.done) ? 62 : 61;
+                  break;
+                case 62:
+                  $ctx.sent = $__450.value;
+                  $ctx.state = 69;
+                  break;
+                case 61:
+                  $ctx.state = 71;
+                  return $__450.value;
+                case 69:
+                  $__448 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 73;
+                  break;
+                case 73:
+                  $ctx.returnValue = $__448;
+                  $ctx.state = -2;
+                  break;
+                default:
+                  return $ctx.end();
+              }
+          }, $__429, this);
+        }),
+        ConditionalExpression: $traceurRuntime.initGeneratorFunction(function $__451(interp, s, param) {
+          var cond,
+              $__452,
+              $__453,
+              $__454,
+              $__455,
+              $__456,
+              $__457,
+              $__458,
+              $__459,
+              $__460,
+              $__461,
+              $__462,
+              $__463,
+              $__464,
+              $__465,
+              $__466,
+              $__467,
+              $__468,
+              $__469,
+              $__470,
+              $__471,
+              $__472,
+              $__473;
+          return $traceurRuntime.createGeneratorInstance(function($ctx) {
+            while (true)
+              switch ($ctx.state) {
+                case 0:
+                  rt = interp.rt;
+                  $ctx.state = 57;
+                  break;
+                case 57:
+                  $__452 = rt.cast;
+                  $__453 = rt.boolTypeLiteral;
+                  $__454 = interp.visit;
+                  $__455 = s.cond;
+                  $__456 = $__454.call(interp, interp, $__455, param);
+                  $ctx.state = 16;
+                  break;
+                case 16:
+                  $__460 = $ctx.wrapYieldStar($__456[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 12;
+                  break;
+                case 12:
+                  $__461 = $__460[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 9;
+                  break;
+                case 9:
+                  $ctx.state = ($__461.done) ? 3 : 2;
+                  break;
+                case 3:
+                  $ctx.sent = $__461.value;
+                  $ctx.state = 10;
+                  break;
+                case 2:
+                  $ctx.state = 12;
+                  return $__461.value;
+                case 10:
+                  $__457 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 14;
+                  break;
+                case 14:
+                  $__458 = $__452.call(rt, $__453, $__457);
+                  $__459 = $__458.v;
+                  cond = $__459;
+                  $ctx.state = 18;
+                  break;
+                case 18:
+                  $ctx.state = (cond) ? 33 : 51;
+                  break;
+                case 33:
+                  $__462 = interp.visit;
+                  $__463 = s.t;
+                  $__464 = $__462.call(interp, interp, $__463, param);
+                  $ctx.state = 34;
+                  break;
+                case 34:
+                  $__466 = $ctx.wrapYieldStar($__464[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 30;
+                  break;
+                case 30:
+                  $__467 = $__466[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 27;
+                  break;
+                case 27:
+                  $ctx.state = ($__467.done) ? 21 : 20;
+                  break;
+                case 21:
+                  $ctx.sent = $__467.value;
+                  $ctx.state = 28;
+                  break;
+                case 20:
+                  $ctx.state = 30;
+                  return $__467.value;
+                case 28:
+                  $__465 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 32;
+                  break;
+                case 32:
+                  $ctx.returnValue = $__465;
+                  $ctx.state = -2;
+                  break;
+                case 51:
+                  $__468 = interp.visit;
+                  $__469 = s.f;
+                  $__470 = $__468.call(interp, interp, $__469, param);
+                  $ctx.state = 52;
+                  break;
+                case 52:
+                  $__472 = $ctx.wrapYieldStar($__470[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 48;
+                  break;
+                case 48:
+                  $__473 = $__472[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 45;
+                  break;
+                case 45:
+                  $ctx.state = ($__473.done) ? 39 : 38;
+                  break;
+                case 39:
+                  $ctx.sent = $__473.value;
+                  $ctx.state = 46;
+                  break;
+                case 38:
+                  $ctx.state = 48;
+                  return $__473.value;
+                case 46:
+                  $__471 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 50;
+                  break;
+                case 50:
+                  $ctx.returnValue = $__471;
+                  $ctx.state = -2;
+                  break;
+                default:
+                  return $ctx.end();
+              }
+          }, $__451, this);
+        }),
+        ConstantExpression: $traceurRuntime.initGeneratorFunction(function $__474(interp, s, param) {
+          var $__475,
+              $__476,
+              $__477,
+              $__478,
+              $__479,
+              $__480;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -21856,92 +22601,92 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 20;
                   break;
                 case 20:
-                  $__424 = interp.visit;
-                  $__425 = s.Expression;
-                  $__426 = $__424.call(interp, interp, $__425, param);
+                  $__475 = interp.visit;
+                  $__476 = s.Expression;
+                  $__477 = $__475.call(interp, interp, $__476, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__428 = $ctx.wrapYieldStar($__426[Symbol.iterator]());
+                  $__479 = $ctx.wrapYieldStar($__477[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__429 = $__428[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__480 = $__479[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__429.done) ? 3 : 2;
+                  $ctx.state = ($__480.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__429.value;
+                  $ctx.sent = $__480.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__429.value;
+                  return $__480.value;
                 case 10:
-                  $__427 = $ctx.sentIgnoreThrow;
+                  $__478 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  $ctx.returnValue = $__427;
+                  $ctx.returnValue = $__478;
                   $ctx.state = -2;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__423, this);
+          }, $__474, this);
         }),
-        StringLiteralExpression: $traceurRuntime.initGeneratorFunction(function $__430(interp, s, param) {
-          var $__431,
-              $__432,
-              $__433,
-              $__434,
-              $__435,
-              $__436;
+        StringLiteralExpression: $traceurRuntime.initGeneratorFunction(function $__481(interp, s, param) {
+          var $__482,
+              $__483,
+              $__484,
+              $__485,
+              $__486,
+              $__487;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
                 case 0:
-                  $__431 = interp.visit;
-                  $__432 = s.value;
-                  $__433 = $__431.call(interp, interp, $__432, param);
+                  $__482 = interp.visit;
+                  $__483 = s.value;
+                  $__484 = $__482.call(interp, interp, $__483, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__435 = $ctx.wrapYieldStar($__433[Symbol.iterator]());
+                  $__486 = $ctx.wrapYieldStar($__484[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__436 = $__435[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__487 = $__486[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__436.done) ? 3 : 2;
+                  $ctx.state = ($__487.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__436.value;
+                  $ctx.sent = $__487.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__436.value;
+                  return $__487.value;
                 case 10:
-                  $__434 = $ctx.sentIgnoreThrow;
+                  $__485 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  $ctx.returnValue = $__434;
+                  $ctx.returnValue = $__485;
                   $ctx.state = -2;
                   break;
                 default:
                   return $ctx.end();
               }
-          }, $__430, this);
+          }, $__481, this);
         }),
         StringLiteral: function(interp, s, param) {
           var code,
@@ -21995,14 +22740,14 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
           return rt.val(rt.charTypeLiteral, a[0].charCodeAt(0));
         },
-        FloatConstant: $traceurRuntime.initGeneratorFunction(function $__437(interp, s, param) {
+        FloatConstant: $traceurRuntime.initGeneratorFunction(function $__488(interp, s, param) {
           var val,
-              $__438,
-              $__439,
-              $__440,
-              $__441,
-              $__442,
-              $__443;
+              $__489,
+              $__490,
+              $__491,
+              $__492,
+              $__493,
+              $__494;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
               switch ($ctx.state) {
@@ -22011,37 +22756,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 22;
                   break;
                 case 22:
-                  $__438 = interp.visit;
-                  $__439 = s.Expression;
-                  $__440 = $__438.call(interp, interp, $__439, param);
+                  $__489 = interp.visit;
+                  $__490 = s.Expression;
+                  $__491 = $__489.call(interp, interp, $__490, param);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__442 = $ctx.wrapYieldStar($__440[Symbol.iterator]());
+                  $__493 = $ctx.wrapYieldStar($__491[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__443 = $__442[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__494 = $__493[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__443.done) ? 3 : 2;
+                  $ctx.state = ($__494.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__443.value;
+                  $ctx.sent = $__494.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__443.value;
+                  return $__494.value;
                 case 10:
-                  $__441 = $ctx.sentIgnoreThrow;
+                  $__492 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  val = $__441;
+                  val = $__492;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -22051,7 +22796,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 default:
                   return $ctx.end();
               }
-          }, $__437, this);
+          }, $__488, this);
         }),
         DecimalConstant: function(interp, s, param) {
           rt = interp.rt;
@@ -22105,12 +22850,12 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           f,
           ret,
           rt,
-          $__444,
-          $__445,
-          $__446,
-          $__447,
-          $__448,
-          $__449;
+          $__495,
+          $__496,
+          $__497,
+          $__498,
+          $__499,
+          $__500;
       return $traceurRuntime.createGeneratorInstance(function($ctx) {
         while (true)
           switch ($ctx.state) {
@@ -22140,47 +22885,47 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = (isGeneratorFunction(f)) ? 15 : 23;
               break;
             case 15:
-              $__444 = f(interp, s, param);
+              $__495 = f(interp, s, param);
               $ctx.state = 16;
               break;
             case 16:
-              $__446 = $ctx.wrapYieldStar($__444[Symbol.iterator]());
+              $__497 = $ctx.wrapYieldStar($__495[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 12;
               break;
             case 12:
-              $__447 = $__446[$ctx.action]($ctx.sentIgnoreThrow);
+              $__498 = $__497[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 9;
               break;
             case 9:
-              $ctx.state = ($__447.done) ? 3 : 2;
+              $ctx.state = ($__498.done) ? 3 : 2;
               break;
             case 3:
-              $ctx.sent = $__447.value;
+              $ctx.sent = $__498.value;
               $ctx.state = 10;
               break;
             case 2:
               $ctx.state = 12;
-              return $__447.value;
+              return $__498.value;
             case 10:
-              $__445 = $ctx.sentIgnoreThrow;
+              $__496 = $ctx.sentIgnoreThrow;
               $ctx.state = 14;
               break;
             case 14:
-              ret = $__445;
+              ret = $__496;
               $ctx.state = 18;
               break;
             case 23:
-              $__448 = f(interp, s, param);
-              ret = $__448;
+              $__499 = f(interp, s, param);
+              ret = $__499;
               $ctx.state = 24;
               break;
             case 24:
               $ctx.state = 20;
-              return $__448;
+              return $__499;
             case 20:
-              $__449 = $ctx.sent;
+              $__500 = $ctx.sent;
               $ctx.state = 18;
               break;
             case 28:
@@ -22206,11 +22951,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       }, $__4, this);
     });
     Interpreter.prototype.run = $traceurRuntime.initGeneratorFunction(function $__10(tree) {
-      var $__450,
-          $__451,
-          $__452,
-          $__453,
-          $__454;
+      var $__501,
+          $__502,
+          $__503,
+          $__504,
+          $__505;
       return $traceurRuntime.createGeneratorInstance(function($ctx) {
         while (true)
           switch ($ctx.state) {
@@ -22219,36 +22964,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = 20;
               break;
             case 20:
-              $__450 = this.visit;
-              $__451 = $__450.call(this, this, tree);
+              $__501 = this.visit;
+              $__502 = $__501.call(this, this, tree);
               $ctx.state = 16;
               break;
             case 16:
-              $__453 = $ctx.wrapYieldStar($__451[Symbol.iterator]());
+              $__504 = $ctx.wrapYieldStar($__502[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 12;
               break;
             case 12:
-              $__454 = $__453[$ctx.action]($ctx.sentIgnoreThrow);
+              $__505 = $__504[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 9;
               break;
             case 9:
-              $ctx.state = ($__454.done) ? 3 : 2;
+              $ctx.state = ($__505.done) ? 3 : 2;
               break;
             case 3:
-              $ctx.sent = $__454.value;
+              $ctx.sent = $__505.value;
               $ctx.state = 10;
               break;
             case 2:
               $ctx.state = 12;
-              return $__454.value;
+              return $__505.value;
             case 10:
-              $__452 = $ctx.sentIgnoreThrow;
+              $__503 = $ctx.sentIgnoreThrow;
               $ctx.state = 14;
               break;
             case 14:
-              $ctx.returnValue = $__452;
+              $ctx.returnValue = $__503;
               $ctx.state = -2;
               break;
             default:
@@ -22256,7 +23001,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
       }, $__10, this);
     });
-    Interpreter.prototype.arrayInit = $traceurRuntime.initGeneratorFunction(function $__21(dimensions, init, level, type, param) {
+    Interpreter.prototype.arrayInit = $traceurRuntime.initGeneratorFunction(function $__37(dimensions, init, level, type, param) {
       var _init,
           arr,
           curDim,
@@ -22265,47 +23010,47 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           initval,
           ret,
           val,
-          $__455,
-          $__456,
-          $__457,
-          $__458,
-          $__459,
-          $__460,
-          $__461,
-          $__462,
-          $__463,
-          $__464,
-          $__465,
-          $__466,
-          $__467,
-          $__468,
-          $__469,
-          $__470,
-          $__471,
-          $__472,
-          $__473,
-          $__474,
-          $__475,
-          $__476,
-          $__477,
-          $__478,
-          $__479,
-          $__480,
-          $__481,
-          $__482,
-          $__483,
-          $__484,
-          $__485,
-          $__486,
-          $__487,
-          $__488,
-          $__489,
-          $__490,
-          $__491,
-          $__492,
-          $__493,
-          $__494,
-          $__495;
+          $__506,
+          $__507,
+          $__508,
+          $__509,
+          $__510,
+          $__511,
+          $__512,
+          $__513,
+          $__514,
+          $__515,
+          $__516,
+          $__517,
+          $__518,
+          $__519,
+          $__520,
+          $__521,
+          $__522,
+          $__523,
+          $__524,
+          $__525,
+          $__526,
+          $__527,
+          $__528,
+          $__529,
+          $__530,
+          $__531,
+          $__532,
+          $__533,
+          $__534,
+          $__535,
+          $__536,
+          $__537,
+          $__538,
+          $__539,
+          $__540,
+          $__541,
+          $__542,
+          $__543,
+          $__544,
+          $__545,
+          $__546;
       return $traceurRuntime.createGeneratorInstance(function($ctx) {
         while (true)
           switch ($ctx.state) {
@@ -22349,42 +23094,42 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = (init.Initializers.length === 1 && this.rt.isIntegerType(type)) ? 15 : 47;
               break;
             case 15:
-              $__455 = this.rt;
-              $__456 = $__455.cast;
-              $__457 = this.visit;
-              $__458 = init.Initializers;
-              $__459 = $__458[0];
-              $__460 = $__459.Expression;
-              $__461 = $__457.call(this, this, $__460, param);
+              $__506 = this.rt;
+              $__507 = $__506.cast;
+              $__508 = this.visit;
+              $__509 = init.Initializers;
+              $__510 = $__509[0];
+              $__511 = $__510.Expression;
+              $__512 = $__508.call(this, this, $__511, param);
               $ctx.state = 16;
               break;
             case 16:
-              $__464 = $ctx.wrapYieldStar($__461[Symbol.iterator]());
+              $__515 = $ctx.wrapYieldStar($__512[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 12;
               break;
             case 12:
-              $__465 = $__464[$ctx.action]($ctx.sentIgnoreThrow);
+              $__516 = $__515[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 9;
               break;
             case 9:
-              $ctx.state = ($__465.done) ? 3 : 2;
+              $ctx.state = ($__516.done) ? 3 : 2;
               break;
             case 3:
-              $ctx.sent = $__465.value;
+              $ctx.sent = $__516.value;
               $ctx.state = 10;
               break;
             case 2:
               $ctx.state = 12;
-              return $__465.value;
+              return $__516.value;
             case 10:
-              $__462 = $ctx.sentIgnoreThrow;
+              $__513 = $ctx.sentIgnoreThrow;
               $ctx.state = 14;
               break;
             case 14:
-              $__463 = $__456.call($__455, type, $__462);
-              val = $__463;
+              $__514 = $__507.call($__506, type, $__513);
+              val = $__514;
               $ctx.state = 18;
               break;
             case 18:
@@ -22434,41 +23179,41 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = 40;
               break;
             case 35:
-              $__466 = this.visit;
-              $__467 = _init.Expression;
-              $__468 = $__466.call(this, this, $__467, param);
+              $__517 = this.visit;
+              $__518 = _init.Expression;
+              $__519 = $__517.call(this, this, $__518, param);
               $ctx.state = 36;
               break;
             case 36:
-              $__471 = $ctx.wrapYieldStar($__468[Symbol.iterator]());
+              $__522 = $ctx.wrapYieldStar($__519[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 32;
               break;
             case 32:
-              $__472 = $__471[$ctx.action]($ctx.sentIgnoreThrow);
+              $__523 = $__522[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 29;
               break;
             case 29:
-              $ctx.state = ($__472.done) ? 23 : 22;
+              $ctx.state = ($__523.done) ? 23 : 22;
               break;
             case 23:
-              $ctx.sent = $__472.value;
+              $ctx.sent = $__523.value;
               $ctx.state = 30;
               break;
             case 22:
               $ctx.state = 32;
-              return $__472.value;
+              return $__523.value;
             case 30:
-              $__469 = $ctx.sentIgnoreThrow;
+              $__520 = $ctx.sentIgnoreThrow;
               $ctx.state = 34;
               break;
             case 34:
-              $__470 = {
+              $__521 = {
                 type: "Initializer_expr",
-                shorthand: $__469
+                shorthand: $__520
               };
-              initval = $__470;
+              initval = $__521;
               $ctx.state = 40;
               break;
             case 40:
@@ -22503,36 +23248,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = 74;
               break;
             case 69:
-              $__473 = this.visit;
-              $__474 = $__473.call(this, this, init, param);
+              $__524 = this.visit;
+              $__525 = $__524.call(this, this, init, param);
               $ctx.state = 70;
               break;
             case 70:
-              $__476 = $ctx.wrapYieldStar($__474[Symbol.iterator]());
+              $__527 = $ctx.wrapYieldStar($__525[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 66;
               break;
             case 66:
-              $__477 = $__476[$ctx.action]($ctx.sentIgnoreThrow);
+              $__528 = $__527[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 63;
               break;
             case 63:
-              $ctx.state = ($__477.done) ? 57 : 56;
+              $ctx.state = ($__528.done) ? 57 : 56;
               break;
             case 57:
-              $ctx.sent = $__477.value;
+              $ctx.sent = $__528.value;
               $ctx.state = 64;
               break;
             case 56:
               $ctx.state = 66;
-              return $__477.value;
+              return $__528.value;
             case 64:
-              $__475 = $ctx.sentIgnoreThrow;
+              $__526 = $ctx.sentIgnoreThrow;
               $ctx.state = 68;
               break;
             case 68:
-              initializer = $__475;
+              initializer = $__526;
               $ctx.state = 74;
               break;
             case 74:
@@ -22568,71 +23313,71 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = (init && i < init.Initializers.length) ? 99 : 117;
               break;
             case 99:
-              $__478 = this.arrayInit;
-              $__479 = init.Initializers;
-              $__480 = $__479[i];
-              $__481 = $__478.call(this, dimensions, $__480, level + 1, type, param);
+              $__529 = this.arrayInit;
+              $__530 = init.Initializers;
+              $__531 = $__530[i];
+              $__532 = $__529.call(this, dimensions, $__531, level + 1, type, param);
               $ctx.state = 100;
               break;
             case 100:
-              $__483 = $ctx.wrapYieldStar($__481[Symbol.iterator]());
+              $__534 = $ctx.wrapYieldStar($__532[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 96;
               break;
             case 96:
-              $__484 = $__483[$ctx.action]($ctx.sentIgnoreThrow);
+              $__535 = $__534[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 93;
               break;
             case 93:
-              $ctx.state = ($__484.done) ? 87 : 86;
+              $ctx.state = ($__535.done) ? 87 : 86;
               break;
             case 87:
-              $ctx.sent = $__484.value;
+              $ctx.sent = $__535.value;
               $ctx.state = 94;
               break;
             case 86:
               $ctx.state = 96;
-              return $__484.value;
+              return $__535.value;
             case 94:
-              $__482 = $ctx.sentIgnoreThrow;
+              $__533 = $ctx.sentIgnoreThrow;
               $ctx.state = 98;
               break;
             case 98:
-              arr[i] = $__482;
+              arr[i] = $__533;
               $ctx.state = 102;
               break;
             case 117:
-              $__485 = this.arrayInit;
-              $__486 = $__485.call(this, dimensions, null, level + 1, type, param);
+              $__536 = this.arrayInit;
+              $__537 = $__536.call(this, dimensions, null, level + 1, type, param);
               $ctx.state = 118;
               break;
             case 118:
-              $__488 = $ctx.wrapYieldStar($__486[Symbol.iterator]());
+              $__539 = $ctx.wrapYieldStar($__537[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 114;
               break;
             case 114:
-              $__489 = $__488[$ctx.action]($ctx.sentIgnoreThrow);
+              $__540 = $__539[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 111;
               break;
             case 111:
-              $ctx.state = ($__489.done) ? 105 : 104;
+              $ctx.state = ($__540.done) ? 105 : 104;
               break;
             case 105:
-              $ctx.sent = $__489.value;
+              $ctx.sent = $__540.value;
               $ctx.state = 112;
               break;
             case 104:
               $ctx.state = 114;
-              return $__489.value;
+              return $__540.value;
             case 112:
-              $__487 = $ctx.sentIgnoreThrow;
+              $__538 = $ctx.sentIgnoreThrow;
               $ctx.state = 116;
               break;
             case 116:
-              arr[i] = $__487;
+              arr[i] = $__538;
               $ctx.state = 102;
               break;
             case 102:
@@ -22660,37 +23405,37 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               $ctx.state = 150;
               break;
             case 145:
-              $__490 = this.visit;
-              $__491 = init.Expression;
-              $__492 = $__490.call(this, this, $__491, param);
+              $__541 = this.visit;
+              $__542 = init.Expression;
+              $__543 = $__541.call(this, this, $__542, param);
               $ctx.state = 146;
               break;
             case 146:
-              $__494 = $ctx.wrapYieldStar($__492[Symbol.iterator]());
+              $__545 = $ctx.wrapYieldStar($__543[Symbol.iterator]());
               $ctx.sent = void 0;
               $ctx.action = 'next';
               $ctx.state = 142;
               break;
             case 142:
-              $__495 = $__494[$ctx.action]($ctx.sentIgnoreThrow);
+              $__546 = $__545[$ctx.action]($ctx.sentIgnoreThrow);
               $ctx.state = 139;
               break;
             case 139:
-              $ctx.state = ($__495.done) ? 133 : 132;
+              $ctx.state = ($__546.done) ? 133 : 132;
               break;
             case 133:
-              $ctx.sent = $__495.value;
+              $ctx.sent = $__546.value;
               $ctx.state = 140;
               break;
             case 132:
               $ctx.state = 142;
-              return $__495.value;
+              return $__546.value;
             case 140:
-              $__493 = $ctx.sentIgnoreThrow;
+              $__544 = $ctx.sentIgnoreThrow;
               $ctx.state = 144;
               break;
             case 144:
-              initval = $__493;
+              initval = $__544;
               $ctx.state = 150;
               break;
             case 152:
@@ -22709,7 +23454,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
             default:
               return $ctx.end();
           }
-      }, $__21, this);
+      }, $__37, this);
     });
     Interpreter.prototype.arrayType = function(dimensions, level, type) {
       if (dimensions.length > level) {
@@ -22734,6 +23479,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       var CRuntime,
           Debugger,
           Interpreter,
+          PEGUtil,
           alias,
           ast,
           headerAlias,
@@ -22746,6 +23492,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       ast = require("./ast");
       preprocessor = require("./preprocessor");
       Debugger = require("./debugger");
+      PEGUtil = require("pegjs-util");
       mergeConfig = function(a, b) {
         var o;
         for (o in b) {
@@ -22785,10 +23532,10 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               interpreter,
               mainGen,
               mydebugger,
+              result,
               rt,
               self,
-              step,
-              tree;
+              step;
           inputbuffer = input.toString();
           self = this;
           _config = {
@@ -22813,9 +23560,12 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           if (_config.debug) {
             mydebugger.src = code;
           }
-          tree = ast.parse(code);
+          result = PEGUtil.parse(ast, code);
+          if (result.error != null) {
+            throw "ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true);
+          }
           interpreter = new Interpreter(rt);
-          defGen = interpreter.run(tree);
+          defGen = interpreter.run(result.ast);
           while (true) {
             step = defGen.next();
             if (step.done) {
@@ -22851,7 +23601,8 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
     "./interpreter": 12,
     "./preprocessor": 16,
     "./rt": 17,
-    "_process": 26
+    "_process": 26,
+    "pegjs-util": 44
   }],
   14: [function(require, module, exports) {
     module.exports = require("./launcher");
@@ -27951,9 +28702,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
     })();
   }, {}],
   16: [function(require, module, exports) {
-    var Preprocessor,
+    var PEGUtil,
+        Preprocessor,
         prepast;
     prepast = require("./prepast");
+    PEGUtil = require("pegjs-util");
     Preprocessor = function(rt) {
       var pushInc,
           self;
@@ -28194,15 +28947,21 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       }
     };
     Preprocessor.prototype.parse = function(code) {
-      var tree;
-      tree = prepast.parse(code);
+      var result;
+      result = PEGUtil.parse(prepast, code);
+      if (result.error != null) {
+        throw "ERROR: Preprocessing Failure:\n" + PEGUtil.errorMessage(result.error, true);
+      }
       this.rt.interp = this;
-      return this.visit(tree, code);
+      return this.visit(result.ast, code);
     };
     module.exports = {parse: function(rt, code) {
         return new Preprocessor(rt).parse(code);
       }};
-  }, {"./prepast": 15}],
+  }, {
+    "./prepast": 15,
+    "pegjs-util": 44
+  }],
   17: [function(require, module, exports) {
     var CRuntime,
         Defaults,
@@ -28247,6 +29006,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       this.voidPointerType = this.normalPointerType(this.voidTypeLiteral);
       this.nullPointer = this.val(this.voidPointerType, this.nullPointerValue);
       this.scope = [{"$name": "global"}];
+      this.typedefs = {};
       return this;
     };
     CRuntime.prototype.include = function(name) {
@@ -28294,15 +29054,12 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           t;
       lt = l.t;
       if (this.isClassType(lt)) {
-        ltsig = this.getTypeSigniture(lt);
+        ltsig = this.getTypeSignature(lt);
         if (ltsig in this.types) {
           t = this.types[ltsig];
           if (r in t) {
             return {
-              t: {
-                type: "pointer",
-                ptrType: "function"
-              },
+              t: {type: "function"},
               v: {
                 defineType: lt,
                 name: r,
@@ -28329,11 +29086,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
               args,
               ret,
               rt,
-              $__496,
-              $__497,
-              $__498,
-              $__499,
-              $__500;
+              $__547,
+              $__548,
+              $__549,
+              $__550,
+              $__551;
           var $arguments = arguments;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
@@ -28347,36 +29104,36 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 22;
                   break;
                 case 22:
-                  $__496 = interp.run;
-                  $__497 = $__496.call(interp, stmts, {scope: "function"});
+                  $__547 = interp.run;
+                  $__548 = $__547.call(interp, stmts, {scope: "function"});
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__499 = $ctx.wrapYieldStar($__497[Symbol.iterator]());
+                  $__550 = $ctx.wrapYieldStar($__548[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__500 = $__499[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__551 = $__550[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__500.done) ? 3 : 2;
+                  $ctx.state = ($__551.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__500.value;
+                  $ctx.sent = $__551.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__500.value;
+                  return $__551.value;
                 case 10:
-                  $__498 = $ctx.sentIgnoreThrow;
+                  $__549 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__498;
+                  ret = $__549;
                   $ctx.state = 18;
                   break;
                 case 18:
@@ -28411,13 +29168,13 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         this.regFuncPrototype(lt, name, argTypes, retType);
       }
     };
-    CRuntime.prototype.makeParametersSigniture = function(args) {
+    CRuntime.prototype.makeParametersSignature = function(args) {
       var i,
           ret;
       ret = new Array(args.length);
       i = 0;
       while (i < args.length) {
-        ret[i] = this.getTypeSigniture(args[i]);
+        ret[i] = this.getTypeSignature(args[i]);
         i++;
       }
       return ret.join(",");
@@ -28431,14 +29188,14 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           sig,
           t,
           ts;
-      ltsig = this.getTypeSigniture(lt);
+      ltsig = this.getTypeSignature(lt);
       if (ltsig in this.types) {
         t = this.types[ltsig];
         if (name in t) {
           ts = args.map(function(v) {
             return v.t;
           });
-          sig = this.makeParametersSigniture(ts);
+          sig = this.makeParametersSignature(ts);
           if (sig in t[name]) {
             ret = t[name][sig];
           } else {
@@ -28462,7 +29219,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                   i++;
                 }
                 if (ok) {
-                  compatibles.push(t[name][rt.makeParametersSigniture(dts)]);
+                  compatibles.push(t[name][rt.makeParametersSignature(dts)]);
                 }
               }
             });
@@ -28512,12 +29269,12 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           sig,
           t;
       method = void 0;
-      if (this.isPointerType(lt)) {
+      if (this.isPointerType(lt) || this.isFunctionType(lt)) {
         f = void 0;
         if (this.isArrayType(lt)) {
           f = "pointer_array";
         } else if (this.isFunctionType(lt)) {
-          f = "pointer_function";
+          f = "function";
         } else {
           f = "pointer_normal";
         }
@@ -28528,7 +29285,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           t = this.types["pointer"];
         }
         if (t) {
-          sig = this.makeParametersSigniture(args);
+          sig = this.makeParametersSignature(args);
           if (sig in t[name]) {
             return t[name][sig];
           } else if ((method = this.matchVarArg(t[name], sig)) !== null) {
@@ -28540,11 +29297,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           }
         }
       }
-      ltsig = this.getTypeSigniture(lt);
+      ltsig = this.getTypeSignature(lt);
       if (ltsig in this.types) {
         t = this.types[ltsig];
         if (name in t) {
-          sig = this.makeParametersSigniture(args);
+          sig = this.makeParametersSignature(args);
           if (sig in t[name]) {
             return t[name][sig];
           } else if ((method = this.matchVarArg(t[name], sig)) !== null) {
@@ -28576,7 +29333,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           sig,
           t,
           type;
-      ltsig = this.getTypeSigniture(lt);
+      ltsig = this.getTypeSignature(lt);
       if (ltsig in this.types) {
         t = this.types[ltsig];
         if (!(name in t)) {
@@ -28585,11 +29342,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         if (!("reg" in t[name])) {
           t[name]["reg"] = [];
         }
-        sig = this.makeParametersSigniture(args);
+        sig = this.makeParametersSignature(args);
         if (sig in t[name]) {
           this.raiseException("method " + name + " with parameters (" + sig + ") is already defined");
         }
-        type = this.functionPointerType(retType, args);
+        type = this.functionType(retType, args);
         if (lt === "global") {
           this.defVar(name, type, this.val(type, this.makeFunctionPointerValue(null, name, lt, args, retType)));
         }
@@ -28605,7 +29362,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
           sig,
           t,
           type;
-      ltsig = this.getTypeSigniture(lt);
+      ltsig = this.getTypeSignature(lt);
       if (ltsig in this.types) {
         t = this.types[ltsig];
         if (!(name in t)) {
@@ -28614,11 +29371,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         if (!("reg" in t[name])) {
           t[name]["reg"] = [];
         }
-        sig = this.makeParametersSigniture(args);
+        sig = this.makeParametersSignature(args);
         if (sig in t[name] && (t[name][sig] != null)) {
           this.raiseException("method " + name + " with parameters (" + sig + ") is already defined");
         }
-        type = this.functionPointerType(retType, args);
+        type = this.functionType(retType, args);
         if (lt === "global") {
           if (this.varAlreadyDefined(name)) {
             func = this.scope[0][name];
@@ -28636,6 +29393,9 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       } else {
         this.raiseException("type " + this.makeTypeString(lt) + " is unknown");
       }
+    };
+    CRuntime.prototype.registerTypedef = function(basttype, name) {
+      return this.typedefs[name] = basttype;
     };
     CRuntime.prototype.promoteNumeric = function(l, r) {
       var rett,
@@ -28697,11 +29457,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         vc = this.scope[i];
         if (vc[varname]) {
           ret = vc[varname];
-          if (this.isFunctionType(ret.t) && ret.v.target === null) {
-            this.raiseException("function " + ret.v.name + " does not seem to be implemented");
-          } else {
-            return ret;
-          }
+          return ret;
         }
         i--;
       }
@@ -28947,16 +29703,18 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
                 case "array":
                   return this.isTypeEqualTo(type1.eleType, type2.eleType || type2.targetType);
                 case "function":
-                  if (this.isTypeEqualTo(type1.retType, type2.retType) && type1.signature.length === type2.signature.length) {
-                    _this = this;
-                    return type1.signature.every(function(type, index, arr) {
-                      return _this.isTypeEqualTo(type, type2.signature[index]);
-                    });
-                  }
-                  break;
+                  return this.isTypeEqualTo(type1.funcType, type2.funcType);
                 case "normal":
                   return this.isTypeEqualTo(type1.targetType, type2.eleType || type2.targetType);
               }
+            }
+            break;
+          case "function":
+            if (this.isTypeEqualTo(type1.retType, type2.retType) && type1.signature.length === type2.signature.length) {
+              _this = this;
+              return type1.signature.every(function(type, index, arr) {
+                return _this.isTypeEqualTo(type, type2.signature[index]);
+              });
             }
         }
       }
@@ -28983,7 +29741,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       return this.isPointerType(type) && type.ptrType === "array";
     };
     CRuntime.prototype.isFunctionType = function(type) {
-      return this.isPointerType(type) && type.ptrType === "function";
+      return type.type === "function" || this.isNormalPointerType(type) && this.isFunctionType(type.targetType);
     };
     CRuntime.prototype.isNormalPointerType = function(type) {
       return this.isPointerType(type) && type.ptrType === "normal";
@@ -29009,9 +29767,11 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       };
     };
     CRuntime.prototype.functionPointerType = function(retType, signature) {
+      return this.normalPointerType(this.functionType(retType, signature));
+    };
+    CRuntime.prototype.functionType = function(retType, signature) {
       return {
-        type: "pointer",
-        ptrType: "function",
+        type: "function",
         retType: retType,
         signature: signature
       };
@@ -29036,18 +29796,32 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       return {target: target};
     };
     CRuntime.prototype.simpleType = function(type) {
-      var clsType;
-      if (this.isPrimitiveType(type)) {
-        return this.primitiveType(type);
-      } else {
-        clsType = {
-          type: "class",
-          name: type
-        };
-        if (this.getTypeSigniture(clsType) in this.types) {
-          return clsType;
+      var clsType,
+          typeStr;
+      if (Array.isArray(type)) {
+        if (type.length > 1) {
+          typeStr = type.filter((function(_this) {
+            return function(t) {
+              return indexOf.call(_this.config.specifiers, t) < 0;
+            };
+          })(this)).join(" ");
+          return this.simpleType(typeStr);
         } else {
-          this.raiseException("type " + this.makeTypeString(type) + " is not defined");
+          return this.typedefs[type[0]] || this.simpleType(type[0]);
+        }
+      } else {
+        if (this.isPrimitiveType(type)) {
+          return this.primitiveType(type);
+        } else {
+          clsType = {
+            type: "class",
+            name: type
+          };
+          if (this.getTypeSignature(clsType) in this.types) {
+            return clsType;
+          } else {
+            this.raiseException("type " + this.makeTypeString(type) + " is not defined");
+          }
         }
       }
     };
@@ -29058,7 +29832,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         type: "class",
         name: classname
       };
-      sig = this.getTypeSigniture(clsType);
+      sig = this.getTypeSignature(clsType);
       if (sig in this.types) {
         this.raiseException(this.makeTypeString(clsType) + " is already defined");
       }
@@ -29126,7 +29900,7 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
         position: 0
       });
     };
-    CRuntime.prototype.getTypeSigniture = function(type) {
+    CRuntime.prototype.getTypeSignature = function(type) {
       var ret,
           self;
       ret = type;
@@ -29138,17 +29912,17 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
       } else if (type.type === "pointer") {
         ret = "{";
         if (type.ptrType === "normal") {
-          ret += "!" + this.getTypeSigniture(type.targetType);
+          ret += "!" + this.getTypeSignature(type.targetType);
         } else if (type.ptrType === "array") {
-          ret += "!" + this.getTypeSigniture(type.eleType);
-        } else if (type.ptrType === "function") {
-          ret += "#" + this.getTypeSigniture(type.retType) + "!" + type.signature.map((function(_this) {
-            return function(e) {
-              return _this.getTypeSigniture(e);
-            };
-          })(this)).join(",");
+          ret += "!" + this.getTypeSignature(type.eleType);
         }
         ret += "}";
+      } else if (type.type === "function") {
+        ret = "#" + this.getTypeSignature(type.retType) + "!" + type.signature.map((function(_this) {
+          return function(e) {
+            return _this.getTypeSignature(e);
+          };
+        })(this)).join(",");
       }
       return ret;
     };
@@ -29224,20 +29998,26 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
     CRuntime.prototype.makeValString = function(l) {
       return this.makeValueString(l) + "(" + this.makeTypeString(l.t) + ")";
     };
-    CRuntime.prototype.defaultValue = function(type) {
+    CRuntime.prototype.defaultValue = function(type, left) {
+      var i,
+          init,
+          j,
+          ref;
       if (type.type === "primitive") {
         if (this.isNumericType(type)) {
-          return this.val(type, 0);
+          return this.val(type, 0, left);
         }
       } else if (type.type === "class") {
         this.raiseException("no default value for object");
       } else if (type.type === "pointer") {
         if (type.ptrType === "normal") {
-          return this.val(type, this.nullPointerValue);
+          return this.val(type, this.nullPointerValue, left);
         } else if (type.ptrType === "array") {
-          return this.val(type, this.makeArrayPointerValue(null, 0));
-        } else if (type.ptrType === "function") {
-          return this.val(type, this.makeFunctionPointerValue(null, null, null, null, null));
+          init = [];
+          for (i = j = 0, ref = type.size; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
+            init[i] = this.defaultValue(type.eleType, true);
+          }
+          return this.val(type, this.makeArrayPointerValue(init, 0), left);
         }
       }
     };
@@ -32962,6 +33742,141 @@ System.get("traceur-runtime@0.0.91/src/runtime/polyfills/polyfills.js" + '');
     "inherits": 24
   }],
   44: [function(require, module, exports) {
+    (function(global) {
+      (function(root, name, factory) {
+        if (typeof define === "function" && typeof define.amd !== "undefined")
+          define(name, function() {
+            return factory(root);
+          });
+        else if (typeof module === "object" && typeof module.exports === "object")
+          module.exports = factory(root);
+        else
+          root[name] = factory(root);
+      }((typeof global !== "undefined" ? global : (typeof window !== "undefined" ? window : this)), "PEGUtil", function() {
+        var PEGUtil = {};
+        PEGUtil.makeAST = function makeAST(line, column, offset, options) {
+          return function() {
+            return options.util.__makeAST.call(null, line(), column(), offset(), arguments);
+          };
+        };
+        PEGUtil.makeUnroll = function(line, column, offset, SyntaxError) {
+          return function(first, list, take) {
+            if (typeof list !== "object" || !(list instanceof Array))
+              throw new SyntaxError("unroll: invalid list argument for unrolling", (typeof list), "Array", offset(), line(), column());
+            if (typeof take !== "undefined") {
+              if (typeof take === "number")
+                take = [take];
+              var result = [];
+              if (first !== null)
+                result.push(first);
+              for (var i = 0; i < list.length; i++) {
+                for (var j = 0; j < take.length; j++)
+                  result.push(list[i][take[j]]);
+              }
+              return result;
+            } else {
+              if (first !== null)
+                list.unshift(first);
+              return list;
+            }
+          };
+        };
+        var excerpt = function(txt, o) {
+          var l = txt.length;
+          var b = o - 20;
+          if (b < 0)
+            b = 0;
+          var e = o + 20;
+          if (e > l)
+            e = l;
+          var hex = function(ch) {
+            return ch.charCodeAt(0).toString(16).toUpperCase();
+          };
+          var extract = function(txt, pos, len) {
+            return txt.substr(pos, len).replace(/\\/g, "\\\\").replace(/\x08/g, "\\b").replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/\f/g, "\\f").replace(/\r/g, "\\r").replace(/[\x00-\x07\x0B\x0E\x0F]/g, function(ch) {
+              return "\\x0" + hex(ch);
+            }).replace(/[\x10-\x1F\x80-\xFF]/g, function(ch) {
+              return "\\x" + hex(ch);
+            }).replace(/[\u0100-\u0FFF]/g, function(ch) {
+              return "\\u0" + hex(ch);
+            }).replace(/[\u1000-\uFFFF]/g, function(ch) {
+              return "\\u" + hex(ch);
+            });
+          };
+          return {
+            prolog: extract(txt, b, o - b),
+            token: extract(txt, o, 1),
+            epilog: extract(txt, o + 1, e - (o + 1))
+          };
+        };
+        PEGUtil.parse = function(parser, txt, options) {
+          if (typeof parser !== "object")
+            throw new Error("invalid parser object (not an object)");
+          if (typeof parser.parse !== "function")
+            throw new Error("invalid parser object (no \"parse\" function)");
+          if (typeof txt !== "string")
+            throw new Error("invalid input text (not a string)");
+          if (typeof options !== "undefined" && typeof options !== "object")
+            throw new Error("invalid options (not an object)");
+          if (typeof options === "undefined")
+            options = {};
+          var result = {
+            ast: null,
+            error: null
+          };
+          try {
+            var makeAST;
+            if (typeof options.makeAST === "function")
+              makeAST = options.makeAST;
+            else {
+              makeAST = function(line, column, offset, args) {
+                return {
+                  line: line,
+                  column: column,
+                  offset: offset,
+                  args: args
+                };
+              };
+            }
+            var opts = {util: {
+                makeUnroll: PEGUtil.makeUnroll,
+                makeAST: PEGUtil.makeAST,
+                __makeAST: makeAST
+              }};
+            if (typeof options.startRule === "string")
+              opts.startRule = options.startRule;
+            result.ast = parser.parse(txt, opts);
+            result.error = null;
+          } catch (e) {
+            result.ast = null;
+            var definedOrElse = function(value, fallback) {
+              return (typeof value !== "undefined" ? value : fallback);
+            };
+            result.error = {
+              line: definedOrElse(e.line, 0),
+              column: definedOrElse(e.column, 0),
+              message: e.message,
+              found: definedOrElse(e.found, ""),
+              expected: definedOrElse(e.expected, ""),
+              location: excerpt(txt, definedOrElse(e.offset, 0))
+            };
+          }
+          return result;
+        };
+        PEGUtil.errorMessage = function(e, noFinalNewline) {
+          var l = e.location;
+          var prefix1 = "line " + e.line + " (column " + e.column + "): ";
+          var prefix2 = "";
+          for (var i = 0; i < prefix1.length + l.prolog.length; i++)
+            prefix2 += "-";
+          var msg = prefix1 + l.prolog + l.token + l.epilog + "\n" + prefix2 + "^" + "\n" + e.message + (noFinalNewline ? "" : "\n");
+          return msg;
+        };
+        return PEGUtil;
+      }));
+    }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
+  }, {}],
+  45: [function(require, module, exports) {
     var util = require('util');
     var tokenize = function(str, re, parseDelim, instance) {
       var tokens = [];

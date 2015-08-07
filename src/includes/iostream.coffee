@@ -26,7 +26,7 @@ module.exports = load: (rt) ->
   rt.scope[0]["cin"] = cin
   pchar = rt.normalPointerType(rt.charTypeLiteral)
    
-  rt.types[rt.getTypeSigniture(type)] =
+  rt.types[rt.getTypeSignature(type)] =
     "#father": "object"
     "o(>>)":
       "#default": (rt, _cin, t) ->
@@ -144,7 +144,7 @@ module.exports = load: (rt) ->
     left: false
   rt.scope[0]["cout"] = cout
 
-  rt.types[rt.getTypeSigniture(cout.t)] =
+  rt.types[rt.getTypeSignature(cout.t)] =
     "#father": "object"
     "o(<<)":
       "#default": (rt, _cout, t) ->

@@ -290,6 +290,9 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ A few dependencies have been updated
 		+ Added linux helper for running and debugging (bin/run & bin/debug)
 * v2.0.3 (-)
+	- New
+		+ Function pointer support
+		+ typedef support
 	- Dev
 		+ Testing now uses `npm test` instead of `grunt test` to bypass traceur compiler
 		+ Testing now uses `test/test.coffee` directly

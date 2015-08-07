@@ -1,6 +1,7 @@
 module.exports = ->
   defaults = this
   @config =  
+    specifiers: ["const", "inline", "_stdcall", "extern", "static", "auto", "register"]
     charTypes: ["char", "signed char", "unsigned char", "wchar_t",
           "unsigned wchar_t", "char16_t", "unsigned char16_t",
           "char32_t", "unsigned char32_t"]
@@ -402,11 +403,24 @@ module.exports = ->
       else
         rt.raiseException "you cannot cast bitwise and on pointer"
       return
-  @types["pointer_function"] =
     "o(())": "#default": (rt, l, bindThis, args) ->
-      if l.t.type isnt "pointer" or l.t.ptrType isnt "function"
-        rt.raiseException rt.makeTypeString(l.t.type) + " is not function"
+      if not rt.isFunctionType(l.v.target)
+        rt.raiseException "pointer target(#{rt.makeValueString(l.v.target)}) is not a function"
+      rt.types["function"]["o(())"]["default"](rt, l.v.target, bindThis, args)
+  @types["function"] =
+    "o(())": "#default": (rt, l, bindThis, args) ->
+      if l.t.type is "pointer" and l.t.targetType.type is "function"
+        l = l.v.target
+      if l.v.target is null
+        rt.raiseException "function #{l.v.name} does not seem to be implemented"
       rt.getCompatibleFunc(l.v.defineType, l.v.name, args) rt, bindThis, args...
+    "o(&)": "#default": (rt, l, r) ->
+      if r == undefined
+        t = rt.normalPointerType(l.t)
+        return rt.val(t, rt.makeNormalPointerValue(l))
+      else
+        rt.raiseException "you cannot cast bitwise and on function"
+      return
   @types["pointer_normal"] =
     "o(*)": "#default": (rt, l, r) ->
       if r == undefined

@@ -29,7 +29,7 @@ TranslationUnit
     ;
 
 ExternalDeclaration
-    = Namespace / FunctionDefinition / Declaration
+    = Namespace / TypedefDeclaration / FunctionDefinition / Declaration
     ;
 
 Namespace
@@ -60,9 +60,15 @@ NamespaceAliasDefinition
     }
     ;
 
+TypedefDeclaration
+    = TYPEDEF a:DeclarationSpecifiers b:Declarator c:(COMMA a:Declarator {return a;})* SEMI {
+      return addPositionInfo({type:'TypedefDeclaration', DeclarationSpecifiers:a, Declarators:[b].concat(c)});
+    }
+    ;
+
 FunctionDefinition
-    = a:DeclarationSpecifiers b:Declarator c:DeclarationList? d:(SEMI {return null;} / CompoundStatement) {
-      return addPositionInfo({type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, DeclarationList:c, CompoundStatement:d});
+    = a:DeclarationSpecifiers b:FunctionDirectDeclarator c:(SEMI {return null;} / CompoundStatement) {
+      return addPositionInfo({type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, CompoundStatement:c});
     }
     ;
 
@@ -180,8 +186,7 @@ InitDeclarator
     ;
 
 StorageClassSpecifier
-    = a:(TYPEDEF
-    / EXTERN
+    = a:(EXTERN
     / STATIC
     / AUTO
     / REGISTER
@@ -273,6 +278,17 @@ FunctionSpecifier
     }
     ;
 
+FunctionDirectDeclarator
+    = a:( a:Identifier {return addPositionInfo({type:'Identifier', Identifier:a});}
+      / LPAR a:Declarator RPAR {return a;}
+      )
+      b:( LPAR a:ParameterTypeList RPAR {
+        return addPositionInfo({type:'DirectDeclarator_modifier_ParameterTypeList', ParameterTypeList:a});
+      }) {
+        return addPositionInfo({type:'DirectDeclarator', left:a, right:b});
+      }
+    ;
+
 Declarator
     = a:Pointer? b:DirectDeclarator {
       b.Pointer = a;
@@ -318,8 +334,11 @@ ParameterTypeList
     ;
 
 ParameterList
-    = a:ParameterDeclaration b:(COMMA a:ParameterDeclaration {return a;})* {
-      return [a].concat(b);
+    = a:ParameterDeclaration? b:(COMMA a:ParameterDeclaration {return a;})* {
+      if (a)
+        return [a].concat(b);
+      else
+        return b;
     }
     ;
 
@@ -345,8 +364,13 @@ TypeName
     ;
 
 AbstractDeclarator
-    = Pointer? DirectAbstractDeclarator
-    / Pointer
+    = a:Pointer? b:DirectAbstractDeclarator {
+      b.Pointer = a;
+      return b;
+    }
+    / a:Pointer {
+      return addPositionInfo({type:'AbstractDeclarator', Pointer: a});
+    }
     ;
 
 DirectAbstractDeclarator

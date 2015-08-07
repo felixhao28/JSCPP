@@ -20,23 +20,93 @@ Interpreter = (rt) ->
         yield from interp.visit interp, dec
         i++
       return
+    DirectDeclarator: (interp, s, param) ->
+      rt = interp.rt
+      basetype = param.basetype
+      basetype = interp.buildRecursivePointerType(s.Pointer, basetype, 0)
+      if s.right.length is 1
+        right = s.right[0]
+        ptl = null
+        if right.type is "DirectDeclarator_modifier_ParameterTypeList"
+          ptl = right.ParameterTypeList
+          varargs = ptl.varargs
+        else if right.type is "DirectDeclarator_modifier_IdentifierList" and right.IdentifierList is null
+          ptl = right.ParameterTypeList
+          varargs = false
+        if ptl?
+          argTypes = []
+          for _param in ptl.ParameterList
+            _basetype = rt.simpleType(_param.DeclarationSpecifiers)
+            if _param.Declarator?
+              _pointer = _param.Declarator.Pointer
+              _type = interp.buildRecursivePointerType(_pointer, _basetype, 0)
+              if _param.Declarator.right? and _param.Declarator.right.length > 0
+                dimensions = []
+                for dim, j in _param.Declarator.right
+                  dim = _param.Declarator.right[j]
+                  if dim.type isnt "DirectDeclarator_modifier_array"
+                    rt.raiseException "unacceptable array initialization"
+                  if dim.Expression isnt null
+                    dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
+                  else if j > 0
+                    rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+                  else
+                    dim = -1
+                  dimensions.push dim
+                _type = interp.arrayType(dimensions, 0, _type)
+            else
+              _type = _basetype
+            argTypes.push _type
+          basetype = rt.functionType(basetype, argTypes)
+      if s.right.length > 0 and s.right[0].type is "DirectDeclarator_modifier_array"
+        dimensions = []
+        for dim, j in s.right
+          if dim.type isnt "DirectDeclarator_modifier_array"
+            rt.raiseException "unacceptable array initialization"
+          if dim.type isnt "DirectDeclarator_modifier_array"
+            rt.raiseException "unacceptable array initialization"
+          if dim.Expression isnt null
+            dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
+          else if j > 0
+            rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+          else
+            dim = -1
+          dimensions.push dim
+        basetype = interp.arrayType(dimensions, 0, basetype)
+
+      if s.left.type is "Identifier"
+        return {type: basetype, name: s.left.Identifier}
+      else
+        _basetype = param.basetype
+        param.basetype = basetype
+        ret = yield from interp.visit(interp, s.left, param)
+        param.basetype = _basetype
+        return ret
+    TypedefDeclaration: (interp, s, param) ->
+      rt = interp.rt
+      basetype = rt.simpleType(s.DeclarationSpecifiers)
+      _basetype = param.basetype
+      param.basetype = basetype
+      for declarator in s.Declarators
+        {type, name} = yield from interp.visit(interp, declarator, param)
+        rt.registerTypedef(type, name)
+      param.basetype = _basetype
+      return
     FunctionDefinition: (interp, s, param) ->
       rt = interp.rt
       scope = param.scope
       name = s.Declarator.left.Identifier
-      basetype = rt.simpleType(s.DeclarationSpecifiers.join(" "))
+      basetype = rt.simpleType(s.DeclarationSpecifiers)
       pointer = s.Declarator.Pointer
-      retType = interp.buildRecursivePointerType(pointer, basetype, 0)
+      basetype = interp.buildRecursivePointerType(pointer, basetype, 0)
       argTypes = []
       argNames = []
-      if s.Declarator.right.length isnt 1
-        rt.raiseException "you cannot have " + s.Declarator.right.length + " parameter lists (1 expected)"
       ptl = undefined
       varargs = undefined
-      if s.Declarator.right[0].type is "DirectDeclarator_modifier_ParameterTypeList"
-        ptl = s.Declarator.right[0].ParameterTypeList
+      if s.Declarator.right.type is "DirectDeclarator_modifier_ParameterTypeList"
+        ptl = s.Declarator.right.ParameterTypeList
         varargs = ptl.varargs
-      else if s.Declarator.right[0].type is "DirectDeclarator_modifier_IdentifierList" and s.Declarator.right[0].IdentifierList is null
+      else if s.Declarator.right.type is "DirectDeclarator_modifier_IdentifierList" and s.Declarator.right.IdentifierList is null
         ptl = ParameterList: []
         varargs = false
       else
@@ -45,7 +115,7 @@ Interpreter = (rt) ->
       while i < ptl.ParameterList.length
         _param = ptl.ParameterList[i]
         _pointer = _param.Declarator.Pointer
-        _basetype = rt.simpleType(_param.DeclarationSpecifiers.join(" "))
+        _basetype = rt.simpleType(_param.DeclarationSpecifiers)
         _type = interp.buildRecursivePointerType(_pointer, _basetype, 0)
         _name = _param.Declarator.left.Identifier
         if _param.Declarator.right.length > 0
@@ -60,6 +130,7 @@ Interpreter = (rt) ->
             else if j > 0
               rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
             else
+              dim = -1
             dimensions.push dim
             j++
           _type = interp.arrayType(dimensions, 0, _type)
@@ -67,58 +138,55 @@ Interpreter = (rt) ->
         argNames.push _name
         i++
       stat = s.CompoundStatement
-      rt.defFunc scope, name, retType, argTypes, argNames, stat, interp
+      rt.defFunc scope, name, basetype, argTypes, argNames, stat, interp
       return
     Declaration: (interp, s, param) ->
       rt = interp.rt
-      basetype = rt.simpleType(s.DeclarationSpecifiers.join(" "))
-      i = 0
-      while i < s.InitDeclaratorList.length
-        dec = s.InitDeclaratorList[i]
-        pointer = dec.Declarator.Pointer
-        type = interp.buildRecursivePointerType(pointer, basetype, 0)
-        name = dec.Declarator.left.Identifier
+      basetype = rt.simpleType(s.DeclarationSpecifiers)
+      for dec, i in s.InitDeclaratorList
         init = dec.Initializers
-        if dec.Declarator.right.length > 0
+        if dec.Declarator.right.length > 0 and dec.Declarator.right[0].type is "DirectDeclarator_modifier_array"
           dimensions = []
-          j = 0
-          while j < dec.Declarator.right.length
-            dim = dec.Declarator.right[j]
-            switch dim.type
-              when "DirectDeclarator_modifier_array"
-                if dim.Expression isnt null
-                  dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
-                else if j > 0
-                  rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+          for dim, j in dec.Declarator.right
+            if dim.Expression isnt null
+              dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
+            else if j > 0
+              rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+            else
+              if init.type is "Initializer_expr"
+                initializer = yield from interp.visit(interp, init, param)
+                if rt.isCharType(basetype) and rt.isArrayType(initializer.t) and rt.isCharType(initializer.t.eleType)
+                  # string init
+                  dim = initializer.v.target.length
+                  init =
+                    type: "Initializer_array"
+                    Initializers: initializer.v.target.map((e) ->
+                      {
+                        type: "Initializer_expr"
+                        shorthand: e
+                      }
+                    )
                 else
-                  if init.type is "Initializer_expr"
-                    initializer = yield from interp.visit(interp, init, param)
-                    if rt.isCharType(type) and rt.isArrayType(initializer.t) and rt.isCharType(initializer.t.eleType)
-                      # string init
-                      dim = initializer.v.target.length
-                      init =
-                        type: "Initializer_array"
-                        Initializers: initializer.v.target.map((e) ->
-                          {
-                            type: "Initializer_expr"
-                            shorthand: e
-                          }
-                        )
-                    else
-                      rt.raiseException "cannot initialize an array to " + rt.makeValString(initializer)
-                  else
-                    dim = init.Initializers.length
-                dimensions.push dim
-            j++
-          init = yield from interp.arrayInit(dimensions, init, 0, type, param)
+                  rt.raiseException "cannot initialize an array to " + rt.makeValString(initializer)
+              else
+                dim = init.Initializers.length
+            dimensions.push dim
+          init = yield from interp.arrayInit(dimensions, init, 0, basetype, param)
+          _basetype = param.basetype
+          param.basetype = basetype
+          {name, type} = yield from interp.visit(interp, dec.Declarator, param)
+          param.basetype = _basetype
           rt.defVar name, init.t, init
         else
-          if init is null
-            init = rt.defaultValue(type)
+          _basetype = param.basetype
+          param.basetype = basetype
+          {name, type} = yield from interp.visit(interp, dec.Declarator, param)
+          param.basetype = _basetype
+          if not init?
+            init = rt.defaultValue(type, true)
           else
             init = yield from interp.visit(interp, init.Expression)
           rt.defVar name, type, init
-        i++
       return
     Initializer_expr: (interp, s, param) ->
       rt = interp.rt
@@ -368,7 +436,7 @@ Interpreter = (rt) ->
       rt = interp.rt
       ret = yield from interp.visit(interp, s.Expression, param)
       member = undefined
-      if rt.isPointerType(ret.t) and !rt.isFunctionType(ret.t)
+      if rt.isPointerType(ret.t) and not rt.isFunctionType(ret.t)
         member = s.member
         r = rt.getFunc(ret.t, rt.makeOperatorFuncName("->"), []) rt, ret, member
         if isGenerator(r)
@@ -448,7 +516,7 @@ Interpreter = (rt) ->
       for baseType in s.base
         if baseType isnt "const"
           typename.push baseType
-      rt.simpleType typename.join(" ")
+      rt.simpleType typename
     BinOpExpression: (interp, s, param) ->
       rt = interp.rt
       op = s.op
@@ -477,7 +545,7 @@ Interpreter = (rt) ->
     LogicalANDExpression: (interp, s, param) ->
       rt = interp.rt
       left = yield from interp.visit(interp, s.left, param)
-      lt = rt.types[rt.getTypeSigniture(left.t)]
+      lt = rt.types[rt.getTypeSignature(left.t)]
       if "&&" of lt
         right = yield from interp.visit(interp, s.right, param)
         r = rt.getFunc(left.t, rt.makeOperatorFuncName("&&"), [ right.t ]) rt, left, right
@@ -493,7 +561,7 @@ Interpreter = (rt) ->
     LogicalORExpression: (interp, s, param) ->
       rt = interp.rt
       left = yield from interp.visit(interp, s.left, param)
-      lt = rt.types[rt.getTypeSigniture(left.t)]
+      lt = rt.types[rt.getTypeSignature(left.t)]
       if "||" of lt
         right = yield from interp.visit(interp, s.right, param)
         r = rt.getFunc(left.t, rt.makeOperatorFuncName("||"), [ right.t ]) rt, left, right

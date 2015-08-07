@@ -96,9 +96,11 @@ if process.argv.length > 2
       
 else
   console.log """
-  Usage: node -harmony demo/debug <testName> <options>
+  Usage: node -harmony demo/debug [<testName>] <options>
   Parameters:
-  <testName>: Name of the test. Defined in test/test.json
+  <testName>: Name of the test. Defined in test/test.yaml
   <options>:
-    -debug: use debug mode
+    -d --debug: use debug mode
+    -i --in: specify stdio input
+    -f --file: specify a cpp file
   """

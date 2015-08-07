@@ -33,6 +33,27 @@ The project is written in CoffeeScript. And you are encouraged to use it as well
 
 Any PR is welcome.
 
+To make it easier to run cpp files and tests, you can use
+
+```
+bin\run <test name>
+bin\debug <test name>
+bin\run -f <file path> -i <stdio input>
+bin\debug -f <file path> -i <stdio input>
+```
+
+for example
+
+```
+# run "function_pointer" test case with input described in test/test.yaml
+bin\run function_pointer
+# debug JSCPP with node-inspector on "function_pointer" test case
+bin\debug function_pointer
+# run/debug "test\function_pointer.cpp" with customized input
+bin\run -f test\function_pointer.cpp -i "10 20"
+bin\debug -f test\function_pointer.cpp -i "10 20"
+```
+
 ## Using node-inspector
 
 We need to enable harmony flag to run node-debug. For example, use the following command to debug JSCPP with `test/8.bit.cpp` as input.
@@ -154,8 +175,7 @@ _Array pointer_
 _Function_
 
 * t:
-    - type: "pointer"
-    - ptrType: "function"
+    - type: "function"
     - retType: {return type}
     - signature: {signature(rt.makeParametersSigniture)}
 * v:

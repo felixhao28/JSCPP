@@ -29,6 +29,7 @@ CRuntime = (config) ->
   @voidPointerType = @normalPointerType(@voidTypeLiteral)
   @nullPointer = @val(@voidPointerType, @nullPointerValue)
   @scope = [ { "$name": "global" } ]
+  @typedefs = {}
   return this
 
 CRuntime::include = (name) ->
@@ -66,19 +67,18 @@ CRuntime::getSizeByType = (type) ->
 CRuntime::getMember = (l, r) ->
   lt = l.t
   if @isClassType(lt)
-    ltsig = @getTypeSigniture(lt)
+    ltsig = @getTypeSignature(lt)
     if ltsig of @types
       t = @types[ltsig]
       if r of t
         return {
-          t:
-            type: "pointer"
-            ptrType: "function"
-          v:
-            defineType: lt
-            name: r
-            bindThis: l
-        }
+                t:
+                  type: "function"
+                v:
+                  defineType: lt
+                  name: r
+                  bindThis: l
+                }
       else if r of l.v.members
         return l.v.members[r]
     else
@@ -116,16 +116,16 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
     @regFuncPrototype lt, name, argTypes, retType
   return
 
-CRuntime::makeParametersSigniture = (args) ->
+CRuntime::makeParametersSignature = (args) ->
   ret = new Array(args.length)
   i = 0
   while i < args.length
-    ret[i] = @getTypeSigniture(args[i])
+    ret[i] = @getTypeSignature(args[i])
     i++
   ret.join ","
 
 CRuntime::getCompatibleFunc = (lt, name, args) ->
-  ltsig = @getTypeSigniture(lt)
+  ltsig = @getTypeSignature(lt)
   if ltsig of @types
     t = @types[ltsig]
     if name of t
@@ -133,7 +133,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
       ts = args.map((v) ->
         v.t
       )
-      sig = @makeParametersSigniture(ts)
+      sig = @makeParametersSignature(ts)
       if sig of t[name]
         ret = t[name][sig]
       else
@@ -152,7 +152,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
               ok = rt.castable(newTs[i], dts[i])
               i++
             if ok
-              compatibles.push t[name][rt.makeParametersSigniture(dts)]
+              compatibles.push t[name][rt.makeParametersSignature(dts)]
           return
         if compatibles.length is 0
           if "#default" of t[name]
@@ -185,12 +185,12 @@ CRuntime::matchVarArg = (methods, sig) ->
 
 CRuntime::getFunc = (lt, name, args) ->
   method = undefined
-  if @isPointerType(lt)
+  if @isPointerType(lt) or @isFunctionType(lt)
     f = undefined
     if @isArrayType(lt)
       f = "pointer_array"
     else if @isFunctionType(lt)
-      f = "pointer_function"
+      f = "function"
     else
       f = "pointer_normal"
     t = null
@@ -199,7 +199,7 @@ CRuntime::getFunc = (lt, name, args) ->
     else if name of @types["pointer"]
       t = @types["pointer"]
     if t
-      sig = @makeParametersSigniture(args)
+      sig = @makeParametersSignature(args)
       if sig of t[name]
         return t[name][sig]
       else if (method = @matchVarArg(t[name], sig)) isnt null
@@ -208,11 +208,11 @@ CRuntime::getFunc = (lt, name, args) ->
         return t[name]["#default"]
       else
         @raiseException "no method " + name + " in " + @makeTypeString(lt) + " accepts (" + sig + ")"
-  ltsig = @getTypeSigniture(lt)
+  ltsig = @getTypeSignature(lt)
   if ltsig of @types
     t = @types[ltsig]
     if name of t
-      sig = @makeParametersSigniture(args)
+      sig = @makeParametersSignature(args)
       if sig of t[name]
         return t[name][sig]
       else if (method = @matchVarArg(t[name], sig)) isnt null
@@ -237,17 +237,17 @@ CRuntime::regOperator = (f, lt, name, args, retType) ->
   @regFunc(f, lt, @makeOperatorFuncName(name), args, retType)
 
 CRuntime::regFuncPrototype = (lt, name, args, retType) ->
-  ltsig = @getTypeSigniture(lt)
+  ltsig = @getTypeSignature(lt)
   if ltsig of @types
     t = @types[ltsig]
     if name not of t
       t[name] = {}
     if "reg" not of t[name]
       t[name]["reg"] = []
-    sig = @makeParametersSigniture(args)
+    sig = @makeParametersSignature(args)
     if sig of t[name]
       @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
-    type = @functionPointerType(retType, args)
+    type = @functionType(retType, args)
     if lt is "global"
       @defVar name, type, @val(type, @makeFunctionPointerValue(null, name, lt, args, retType))
     t[name][sig] = null
@@ -257,17 +257,17 @@ CRuntime::regFuncPrototype = (lt, name, args, retType) ->
   return
 
 CRuntime::regFunc = (f, lt, name, args, retType) ->
-  ltsig = @getTypeSigniture(lt)
+  ltsig = @getTypeSignature(lt)
   if ltsig of @types
     t = @types[ltsig]
     if name not of t
       t[name] = {}
     if "reg" not of t[name]
       t[name]["reg"] = []
-    sig = @makeParametersSigniture(args)
+    sig = @makeParametersSignature(args)
     if sig of t[name] and t[name][sig]?
       @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
-    type = @functionPointerType(retType, args)
+    type = @functionType(retType, args)
     if lt is "global"
       if @varAlreadyDefined(name)
         func = @scope[0][name]
@@ -282,6 +282,9 @@ CRuntime::regFunc = (f, lt, name, args, retType) ->
   else
     @raiseException "type " + @makeTypeString(lt) + " is unknown"
   return
+
+CRuntime::registerTypedef = (basttype, name) ->
+  @typedefs[name] = basttype
 
 CRuntime::promoteNumeric = (l, r) ->
   if not @isNumericType(l) or not @isNumericType(r)
@@ -327,10 +330,7 @@ CRuntime::readVar = (varname) ->
     vc = @scope[i]
     if vc[varname]
       ret = vc[varname]
-      if @isFunctionType(ret.t) and ret.v.target is null
-        @raiseException "function #{ret.v.name} does not seem to be implemented"
-      else
-        return ret
+      return ret
     i--
   @raiseException "variable " + varname + " does not exist"
   return
@@ -525,13 +525,15 @@ CRuntime::isTypeEqualTo = (type1, type2) ->
             when "array"
               return @isTypeEqualTo(type1.eleType, type2.eleType or type2.targetType)
             when "function"
-              if @isTypeEqualTo(type1.retType, type2.retType) and type1.signature.length is type2.signature.length
-                _this = this
-                return type1.signature.every((type, index, arr) ->
-                  _this.isTypeEqualTo type, type2.signature[index]
-                )
+              return @isTypeEqualTo(type1.funcType, type2.funcType)
             when "normal"
               return @isTypeEqualTo(type1.targetType, type2.eleType or type2.targetType)
+      when "function"
+        if @isTypeEqualTo(type1.retType, type2.retType) and type1.signature.length is type2.signature.length
+          _this = this
+          return type1.signature.every((type, index, arr) ->
+            _this.isTypeEqualTo type, type2.signature[index]
+          )
   return false
 
 CRuntime::isBoolType = (type) ->
@@ -553,7 +555,7 @@ CRuntime::isArrayType = (type) ->
   @isPointerType(type) and type.ptrType is "array"
 
 CRuntime::isFunctionType = (type) ->
-  @isPointerType(type) and type.ptrType is "function"
+  type.type is "function" or @isNormalPointerType(type) and @isFunctionType(type.targetType)
 
 CRuntime::isNormalPointerType = (type) ->
   @isPointerType(type) and type.ptrType is "normal"
@@ -575,8 +577,10 @@ CRuntime::makeArrayPointerValue = (arr, position) ->
   position: position
 
 CRuntime::functionPointerType = (retType, signature) ->
-  type: "pointer"
-  ptrType: "function"
+  @normalPointerType(@functionType(retType, signature))
+
+CRuntime::functionType = (retType, signature) ->
+  type: "function"
   retType: retType
   signature: signature
 
@@ -596,23 +600,32 @@ CRuntime::makeNormalPointerValue = (target) ->
   target: target
 
 CRuntime::simpleType = (type) ->
-  if @isPrimitiveType(type)
-    return @primitiveType(type)
-  else
-    clsType = 
-      type: "class"
-      name: type
-    if @getTypeSigniture(clsType) of @types
-      return clsType
+  if Array.isArray(type)
+    if type.length > 1
+      typeStr = type.filter (t) =>
+        t not in @config.specifiers
+      .join " "
+      return @simpleType typeStr
     else
-      @raiseException "type " + @makeTypeString(type) + " is not defined"
+      return @typedefs[type[0]] or @simpleType type[0]
+  else
+    if @isPrimitiveType(type)
+      return @primitiveType(type)
+    else
+      clsType = 
+        type: "class"
+        name: type
+      if @getTypeSignature(clsType) of @types
+        return clsType
+      else
+        @raiseException "type " + @makeTypeString(type) + " is not defined"
   return
 
 CRuntime::newClass = (classname, members) ->
   clsType = 
     type: "class"
     name: classname
-  sig = @getTypeSigniture(clsType)
+  sig = @getTypeSignature(clsType)
   if sig of @types
     @raiseException @makeTypeString(clsType) + " is already defined"
   @types[sig] = "#constructor": (rt, _this, initMembers) ->
@@ -663,7 +676,7 @@ CRuntime::makeCharArrayFromString = (str, typename) ->
     ).concat([ trailingZero ])
     position: 0
 
-CRuntime::getTypeSigniture = (type) ->
+CRuntime::getTypeSignature = (type) ->
   # (primitive), [class], {pointer}
   ret = type
   self = this
@@ -672,17 +685,18 @@ CRuntime::getTypeSigniture = (type) ->
   else if type.type is "class"
     ret = "[" + type.name + "]"
   else if type.type is "pointer"
-    # !targetType, @size!eleType, #retType!param1,param2,...
+    # !targetType, @size!eleType, !#retType!param1,param2,...
     ret = "{"
     if type.ptrType is "normal"
-      ret += "!" + @getTypeSigniture(type.targetType)
+      ret += "!" + @getTypeSignature(type.targetType)
     else if type.ptrType is "array"
-      ret += "!" + @getTypeSigniture(type.eleType)
-    else if type.ptrType is "function"
-      ret += "#" + @getTypeSigniture(type.retType) + "!" + type.signature.map((e) =>
-        @getTypeSigniture e
-      ).join(",")
+      ret += "!" + @getTypeSignature(type.eleType)
     ret += "}"
+  else if type.type is "function"
+    # #retType!param1,param2,...
+    ret = "#" + @getTypeSignature(type.retType) + "!" + type.signature.map((e) =>
+        @getTypeSignature e
+      ).join(",")
   ret
 
 CRuntime::makeTypeString = (type) ->
@@ -744,19 +758,20 @@ CRuntime::makeValueString = (l, options) ->
 CRuntime::makeValString = (l) ->
   @makeValueString(l) + "(" + @makeTypeString(l.t) + ")"
 
-CRuntime::defaultValue = (type) ->
+CRuntime::defaultValue = (type, left) ->
   if type.type is "primitive"
     if @isNumericType(type)
-      return @val(type, 0)
+      return @val(type, 0, left)
   else if type.type is "class"
     @raiseException "no default value for object"
   else if type.type is "pointer"
     if type.ptrType is "normal"
-      return @val(type, @nullPointerValue)
+      return @val(type, @nullPointerValue, left)
     else if type.ptrType is "array"
-      return @val(type, @makeArrayPointerValue(null, 0))
-    else if type.ptrType is "function"
-      return @val(type, @makeFunctionPointerValue(null, null, null, null, null))
+      init = []
+      for i in [0...type.size]
+        init[i] = @defaultValue(type.eleType, true)
+      return @val(type, @makeArrayPointerValue(init, 0), left)
   return
 
 CRuntime::raiseException = (message) ->

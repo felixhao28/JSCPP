@@ -4,6 +4,7 @@ Interpreter = require("./interpreter")
 ast = require("./ast")
 preprocessor = require("./preprocessor")
 Debugger = require("./debugger")
+PEGUtil = require("pegjs-util")
 
 mergeConfig = (a, b) ->
   for o of b
@@ -56,9 +57,11 @@ module.exports =
     if _config.debug
       mydebugger.src = code
 
-    tree = ast.parse(code)
+    result = PEGUtil.parse(ast, code)
+    if result.error?
+      throw "ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true)
     interpreter = new Interpreter(rt)
-    defGen = interpreter.run tree
+    defGen = interpreter.run result.ast
     loop
       step = defGen.next()
       break if step.done

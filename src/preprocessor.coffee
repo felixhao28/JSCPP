@@ -1,4 +1,5 @@
 prepast = require("./prepast")
+PEGUtil = require("pegjs-util")
 
 Preprocessor = (rt) ->
 
@@ -194,9 +195,11 @@ Preprocessor::replaceMacroFunction = (node) ->
   return
 
 Preprocessor::parse = (code) ->
-  tree = prepast.parse(code)
+  result = PEGUtil.parse(prepast, code)
+  if result.error?
+    throw "ERROR: Preprocessing Failure:\n" + PEGUtil.errorMessage(result.error, true)
   @rt.interp = this
-  @visit tree, code
+  @visit result.ast, code
 
 module.exports = parse: (rt, code) ->
   new Preprocessor(rt).parse code
