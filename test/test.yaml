@@ -196,3 +196,15 @@
         cpp: "function_pointer.cpp"
         in: "20 33"
         out: "53\n53"
+    random:
+      after:
+        - "cincout"
+      cases:
+        -
+          cpp: "random.cpp"
+          in: "10"
+          out: "498917264\n1638776065\n972288143"
+        -
+          cpp: "random.cpp"
+          in: "5"
+          out: "498872264\n1418600064\n831731783"

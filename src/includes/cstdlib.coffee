@@ -1,5 +1,21 @@
 module.exports =
   load: (rt) ->
+    m_w = 123456789
+    m_z = 987654321
+    mask = 0xffffffff
+
+    # Takes any integer
+    seed = (i) ->
+      m_w = i
+
+    # Returns number between 0 (inclusive) and 1.0 (exclusive),
+    # just like Math.random().
+    random = ->
+      m_z = (36969 * (m_z & 65535) + (m_z >> 16)) & mask
+      m_w = (18000 * (m_w & 65535) + (m_w >> 16)) & mask
+      result = ((m_z << 16) + m_w) & mask
+      result / 4294967296 + 0.5
+    
     pchar = rt.normalPointerType(rt.charTypeLiteral)
 
     _atof = (rt, _this, str) ->
@@ -36,10 +52,15 @@ module.exports =
       rt.scope[0]["RAND_MAX"] = 0x7fffffff
 
     _rand = (rt, _this) ->
-      val = Math.floor(Math.random() * (rt.scope[0]["RAND_MAX"] + 1))
+      val = Math.floor(random() * (rt.scope[0]["RAND_MAX"] + 1))
       rt.val(rt.intTypeLiteral, val)
 
     rt.regFunc(_rand, "global", "rand", [], rt.intTypeLiteral)
+
+    _srand = (rt, _this, i) ->
+      seed(i.v)
+
+    rt.regFunc(_srand, "global", "srand", [rt.unsignedintTypeLiteral], rt.voidTypeLiteral)
 
     _system = (rt, _this, command) ->
       if command is rt.nullPointer

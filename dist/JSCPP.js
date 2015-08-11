@@ -12377,7 +12377,20 @@ module.exports = {
 },{"printf":45}],7:[function(require,module,exports){
 module.exports = {
   load: function(rt) {
-    var _abs, _atof, _atoi, _atol, _bsearch, _div, _labs, _ldiv, _qsort, _rand, _system, binary_search, cmpType, div_t_t, ldiv_t_t, pchar;
+    var _abs, _atof, _atoi, _atol, _bsearch, _div, _labs, _ldiv, _qsort, _rand, _srand, _system, binary_search, cmpType, div_t_t, ldiv_t_t, m_w, m_z, mask, pchar, random, seed;
+    m_w = 123456789;
+    m_z = 987654321;
+    mask = 0xffffffff;
+    seed = function(i) {
+      return m_w = i;
+    };
+    random = function() {
+      var result;
+      m_z = (36969 * (m_z & 65535) + (m_z >> 16)) & mask;
+      m_w = (18000 * (m_w & 65535) + (m_w >> 16)) & mask;
+      result = ((m_z << 16) + m_w) & mask;
+      return result / 4294967296 + 0.5;
+    };
     pchar = rt.normalPointerType(rt.charTypeLiteral);
     _atof = function(rt, _this, str) {
       var val;
@@ -12417,10 +12430,14 @@ module.exports = {
     }
     _rand = function(rt, _this) {
       var val;
-      val = Math.floor(Math.random() * (rt.scope[0]["RAND_MAX"] + 1));
+      val = Math.floor(random() * (rt.scope[0]["RAND_MAX"] + 1));
       return rt.val(rt.intTypeLiteral, val);
     };
     rt.regFunc(_rand, "global", "rand", [], rt.intTypeLiteral);
+    _srand = function(rt, _this, i) {
+      return seed(i.v);
+    };
+    rt.regFunc(_srand, "global", "srand", [rt.unsignedintTypeLiteral], rt.voidTypeLiteral);
     _system = function(rt, _this, command) {
       var e, ret, str;
       if (command === rt.nullPointer) {
