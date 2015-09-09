@@ -12,10 +12,10 @@ function addPositionInfo(r){
     r.eLine = posDetails.line;
     r.eColumn = posDetails.column;
     r.eOffset = peg$currPos;
-    posDetails = peg$computePosDetails(peg$reportedPos);
+    posDetails = peg$computePosDetails(peg$savedPos);
     r.sLine = posDetails.line;
     r.sColumn = posDetails.column;
-    r.sOffset = peg$reportedPos;
+    r.sOffset = peg$savedPos;
     return r;
 }
 }

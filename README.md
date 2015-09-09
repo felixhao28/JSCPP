@@ -6,8 +6,8 @@ Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
 
 [![Travis Build Status][build-badge]][build]
 [![npm version](https://badge.fury.io/js/JSCPP.svg)](http://badge.fury.io/js/JSCPP)
-[![Dependency Status](https://david-dm.org/felixhao28/JSCPP.svg)](https://david-dm.org/alanshaw/david-www)
-[![devDependency Status](https://david-dm.org/felixhao28/JSCPP/dev-status.svg)](https://david-dm.org/alanshaw/david-www#info=devDependencies)
+[![Dependency Status](https://david-dm.org/felixhao28/JSCPP.svg)](https://david-dm.org/felixhao28/JSCPP)
+[![devDependency Status](https://david-dm.org/felixhao28/JSCPP/dev-status.svg)](https://david-dm.org/felixhao28/JSCPP#info=devDependencies)
 ## Purpose of the project
 
 As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
@@ -296,6 +296,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- Dev
 		+ Testing now uses `npm test` instead of `grunt test` to bypass traceur compiler
 		+ Testing now uses `test/test.coffee` directly
+		+ Update PEG.js from 0.8.0 to 0.9.0
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

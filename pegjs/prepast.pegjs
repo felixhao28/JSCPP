@@ -3,7 +3,7 @@ function addPositionInfo(r){
     var posDetails = peg$computePosDetails(peg$currPos);
     r.line = posDetails.line;
     r.column = posDetails.column;
-    r.begin = peg$reportedPos;
+    r.begin = peg$savedPos;
     r.end = peg$currPos;
     return r;
 }
