@@ -289,14 +289,14 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Online site uses minified es5 version now
 		+ A few dependencies have been updated
 		+ Added linux helper for running and debugging (bin/run & bin/debug)
-* v2.0.3 (-)
+* v2.0.3 (10.15)
 	- New
 		+ Function pointer support
 		+ typedef support
 	- Dev
-		+ Testing now uses `npm test` instead of `grunt test` to bypass traceur compiler
 		+ Testing now uses `test/test.coffee` directly
 		+ Update PEG.js from 0.8.0 to 0.9.0
+		+ Please use NodeJS v4.0.0+
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
