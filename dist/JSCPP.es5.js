@@ -7583,7 +7583,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
           s0 = peg$currPos;
           s1 = peg$parseDeclarationSpecifiers();
           if (s1 !== peg$FAILED) {
-            s2 = peg$parseDeclarator();
+            s2 = peg$parseInitDeclarator();
             if (s2 === peg$FAILED) {
               s2 = peg$parseAbstractDeclarator();
             }
@@ -18193,7 +18193,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   dim = ref1[j];
                   dim = _param.Declarator.right[j];
                   if (dim.type !== "DirectDeclarator_modifier_array") {
-                    rt.raiseException("unacceptable array initialization");
+                    rt.raiseException("unacceptable array initialization", dim);
                   }
                   $ctx.state = 23;
                   break;
@@ -18240,7 +18240,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   break;
                 case 19:
                   if (j > 0) {
-                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
                   } else {
                     dim = -1;
                   }
@@ -18288,10 +18288,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                 case 75:
                   dim = ref2[j];
                   if (dim.type !== "DirectDeclarator_modifier_array") {
-                    rt.raiseException("unacceptable array initialization");
-                  }
-                  if (dim.type !== "DirectDeclarator_modifier_array") {
-                    rt.raiseException("unacceptable array initialization");
+                    rt.raiseException("unacceptable array initialization", dim);
                   }
                   $ctx.state = 76;
                   break;
@@ -18338,7 +18335,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   break;
                 case 72:
                   if (j > 0) {
-                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
                   } else {
                     dim = -1;
                   }
@@ -18509,6 +18506,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
         }),
         FunctionDefinition: $traceurRuntime.initGeneratorFunction(function $__45(interp, s, param) {
           var _basetype,
+              _init,
               _name,
               _param,
               _pointer,
@@ -18521,6 +18519,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
               i,
               j,
               name,
+              optionalArgs,
               pointer,
               ptl,
               scope,
@@ -18548,6 +18547,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   basetype = interp.buildRecursivePointerType(pointer, basetype, 0);
                   argTypes = [];
                   argNames = [];
+                  optionalArgs = [];
                   ptl = void 0;
                   varargs = void 0;
                   if (s.Declarator.right.type === "DirectDeclarator_modifier_ParameterTypeList") {
@@ -18557,7 +18557,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                     ptl = {ParameterList: []};
                     varargs = false;
                   } else {
-                    rt.raiseException("unacceptable argument list");
+                    rt.raiseException("unacceptable argument list", s.Declarator.right);
                   }
                   i = 0;
                   $ctx.state = 38;
@@ -18567,14 +18567,18 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   break;
                 case 32:
                   _param = ptl.ParameterList[i];
-                  _pointer = _param.Declarator.Pointer;
+                  if (_param.Declarator == null) {
+                    rt.raiseException("missing declarator for argument", _param);
+                  }
+                  _init = _param.Declarator.Initializers;
+                  _pointer = _param.Declarator.Declarator.Pointer;
                   _basetype = rt.simpleType(_param.DeclarationSpecifiers);
                   _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
-                  _name = _param.Declarator.left.Identifier;
+                  _name = _param.Declarator.Declarator.left.Identifier;
                   $ctx.state = 33;
                   break;
                 case 33:
-                  $ctx.state = (_param.Declarator.right.length > 0) ? 27 : 30;
+                  $ctx.state = (_param.Declarator.Declarator.right.length > 0) ? 27 : 30;
                   break;
                 case 27:
                   dimensions = [];
@@ -18582,12 +18586,12 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 28;
                   break;
                 case 28:
-                  $ctx.state = (j < _param.Declarator.right.length) ? 22 : 26;
+                  $ctx.state = (j < _param.Declarator.Declarator.right.length) ? 22 : 26;
                   break;
                 case 22:
-                  dim = _param.Declarator.right[j];
+                  dim = _param.Declarator.Declarator.right[j];
                   if (dim.type !== "DirectDeclarator_modifier_array") {
-                    rt.raiseException("unacceptable array initialization");
+                    rt.raiseException("unacceptable array initialization", dim);
                   }
                   $ctx.state = 23;
                   break;
@@ -18634,7 +18638,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   break;
                 case 19:
                   if (j > 0) {
-                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
                   } else {
                     dim = -1;
                   }
@@ -18650,14 +18654,25 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = 30;
                   break;
                 case 30:
-                  argTypes.push(_type);
-                  argNames.push(_name);
+                  if (_init != null) {
+                    optionalArgs.push({
+                      type: _type,
+                      name: _name,
+                      expression: _init.Expression
+                    });
+                  } else {
+                    if (optionalArgs.length > 0) {
+                      rt.raiseException("all default arguments must be at the end of arguments list", _param);
+                    }
+                    argTypes.push(_type);
+                    argNames.push(_name);
+                  }
                   i++;
                   $ctx.state = 38;
                   break;
                 case 36:
                   stat = s.CompoundStatement;
-                  rt.defFunc(scope, name, basetype, argTypes, argNames, stat, interp);
+                  rt.defFunc(scope, name, basetype, argTypes, argNames, stat, interp, optionalArgs);
                   $ctx.state = -2;
                   break;
                 default:
@@ -18820,7 +18835,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   $ctx.state = (j > 0) ? 42 : 41;
                   break;
                 case 42:
-                  rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                  rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
                   $ctx.state = 18;
                   break;
                 case 41:
@@ -18872,7 +18887,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                       })
                     };
                   } else {
-                    rt.raiseException("cannot initialize an array to " + rt.makeValString(initializer));
+                    rt.raiseException("cannot initialize an array to " + rt.makeValString(initializer), init);
                   }
                   $ctx.state = 18;
                   break;
@@ -23265,7 +23280,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   })
                 };
               } else {
-                this.rt.raiseException("cannot initialize an array to " + this.rt.makeValString(initializer));
+                this.rt.raiseException("cannot initialize an array to " + this.rt.makeValString(initializer), init);
               }
               $ctx.state = 53;
               break;
@@ -23363,7 +23378,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
               break;
             case 157:
               if (init && init.type !== "Initializer_expr") {
-                this.rt.raiseException("dimensions do not agree, too few initializers");
+                this.rt.raiseException("dimensions do not agree, too few initializers", init);
               }
               $ctx.state = 158;
               break;
@@ -29058,21 +29073,32 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
         this.raiseException("only a class can have members");
       }
     };
-    CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stmts, interp) {
+    CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stmts, interp, optionalArgs) {
       var f,
           rt;
       rt = this;
       if (stmts != null) {
         f = $traceurRuntime.initGeneratorFunction(function $__2() {
           var _this,
+              argValue,
               args,
+              i,
+              j,
+              optionalArg,
+              ref,
               ret,
               rt,
               $__547,
               $__548,
               $__549,
               $__550,
-              $__551;
+              $__551,
+              $__552,
+              $__553,
+              $__554,
+              $__555,
+              $__556,
+              $__557;
           var $arguments = arguments;
           return $traceurRuntime.createGeneratorInstance(function($ctx) {
             while (true)
@@ -29080,45 +29106,105 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                 case 0:
                   rt = $arguments[0], _this = $arguments[1], args = 3 <= $arguments.length ? slice.call($arguments, 2) : [];
                   rt.enterScope("function " + name);
-                  argNames.forEach(function(v, i) {
-                    rt.defVar(v, argTypes[i], args[i]);
+                  argNames.forEach(function(argName, i) {
+                    rt.defVar(argName, argTypes[i], args[i]);
                   });
-                  $ctx.state = 22;
+                  $ctx.state = 50;
+                  break;
+                case 50:
+                  i = j = 0, ref = optionalArgs.length;
+                  $ctx.state = 28;
+                  break;
+                case 28:
+                  $ctx.state = (j < ref) ? 24 : 26;
                   break;
                 case 22:
-                  $__547 = interp.run;
-                  $__548 = $__547.call(interp, stmts, {scope: "function"});
+                  i = j += 1;
+                  $ctx.state = 28;
+                  break;
+                case 24:
+                  optionalArg = optionalArgs[i];
+                  $ctx.state = 25;
+                  break;
+                case 25:
+                  $ctx.state = (args[argNames.length + i] != null) ? 21 : 15;
+                  break;
+                case 21:
+                  rt.defVar(optionalArg.name, optionalArg.type, args[argNames.length + i]);
+                  $ctx.state = 22;
+                  break;
+                case 15:
+                  $__547 = interp.visit;
+                  $__548 = optionalArg.expression;
+                  $__549 = $__547.call(interp, interp, $__548);
                   $ctx.state = 16;
                   break;
                 case 16:
-                  $__550 = $ctx.wrapYieldStar($__548[Symbol.iterator]());
+                  $__551 = $ctx.wrapYieldStar($__549[Symbol.iterator]());
                   $ctx.sent = void 0;
                   $ctx.action = 'next';
                   $ctx.state = 12;
                   break;
                 case 12:
-                  $__551 = $__550[$ctx.action]($ctx.sentIgnoreThrow);
+                  $__552 = $__551[$ctx.action]($ctx.sentIgnoreThrow);
                   $ctx.state = 9;
                   break;
                 case 9:
-                  $ctx.state = ($__551.done) ? 3 : 2;
+                  $ctx.state = ($__552.done) ? 3 : 2;
                   break;
                 case 3:
-                  $ctx.sent = $__551.value;
+                  $ctx.sent = $__552.value;
                   $ctx.state = 10;
                   break;
                 case 2:
                   $ctx.state = 12;
-                  return $__551.value;
+                  return $__552.value;
                 case 10:
-                  $__549 = $ctx.sentIgnoreThrow;
+                  $__550 = $ctx.sentIgnoreThrow;
                   $ctx.state = 14;
                   break;
                 case 14:
-                  ret = $__549;
+                  argValue = $__550;
                   $ctx.state = 18;
                   break;
                 case 18:
+                  rt.defVar(optionalArg.name, optionalArg.type, rt.cast(optionalArg.type, argValue));
+                  $ctx.state = 22;
+                  break;
+                case 26:
+                  $__553 = interp.run;
+                  $__554 = $__553.call(interp, stmts, {scope: "function"});
+                  $ctx.state = 44;
+                  break;
+                case 44:
+                  $__556 = $ctx.wrapYieldStar($__554[Symbol.iterator]());
+                  $ctx.sent = void 0;
+                  $ctx.action = 'next';
+                  $ctx.state = 40;
+                  break;
+                case 40:
+                  $__557 = $__556[$ctx.action]($ctx.sentIgnoreThrow);
+                  $ctx.state = 37;
+                  break;
+                case 37:
+                  $ctx.state = ($__557.done) ? 31 : 30;
+                  break;
+                case 31:
+                  $ctx.sent = $__557.value;
+                  $ctx.state = 38;
+                  break;
+                case 30:
+                  $ctx.state = 40;
+                  return $__557.value;
+                case 38:
+                  $__555 = $ctx.sentIgnoreThrow;
+                  $ctx.state = 42;
+                  break;
+                case 42:
+                  ret = $__555;
+                  $ctx.state = 46;
+                  break;
+                case 46:
                   if (!rt.isTypeEqualTo(retType, rt.voidTypeLiteral)) {
                     if (ret instanceof Array && ret[0] === "return") {
                       ret = rt.cast(retType, ret[1]);
@@ -29128,15 +29214,15 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
                   } else {
                     if (typeof ret === "Array") {
                       if (ret[0] === "return" && ret[1]) {
-                        rt.raiseException("you cannot return a value of a void function");
+                        rt.raiseException("you cannot return a value from a void function");
                       }
                     }
                     ret = void 0;
                   }
                   rt.exitScope("function " + name);
-                  $ctx.state = 24;
+                  $ctx.state = 52;
                   break;
-                case 24:
+                case 52:
                   $ctx.returnValue = ret;
                   $ctx.state = -2;
                   break;
@@ -29145,9 +29231,9 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
               }
           }, $__2, this);
         });
-        this.regFunc(f, lt, name, argTypes, retType);
+        this.regFunc(f, lt, name, argTypes, retType, optionalArgs);
       } else {
-        this.regFuncPrototype(lt, name, argTypes, retType);
+        this.regFuncPrototype(lt, name, argTypes, retType, optionalArgs);
       }
     };
     CRuntime.prototype.makeParametersSignature = function(args) {
@@ -29166,7 +29252,6 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
           compatibles,
           ltsig,
           ret,
-          rt,
           sig,
           t,
           ts;
@@ -29182,37 +29267,47 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
             ret = t[name][sig];
           } else {
             compatibles = [];
-            rt = this;
-            t[name]["reg"].forEach(function(dts) {
-              var i,
-                  newTs,
-                  ok;
-              if (dts[dts.length - 1] === "?" && dts.length < ts.length) {
-                newTs = ts.slice(0, dts.length - 1);
-                dts = dts.slice(0, -1);
-              } else {
-                newTs = ts;
-              }
-              if (dts.length === newTs.length) {
-                ok = true;
-                i = 0;
-                while (ok && i < newTs.length) {
-                  ok = rt.castable(newTs[i], dts[i]);
-                  i++;
+            t[name]["reg"].forEach((function(_this) {
+              return function(regArgInfo) {
+                var dts,
+                    i,
+                    newTs,
+                    ok,
+                    optionalArgs;
+                dts = regArgInfo.args;
+                optionalArgs = regArgInfo.optionalArgs;
+                if (dts[dts.length - 1] === "?" && dts.length < ts.length) {
+                  newTs = ts.slice(0, dts.length - 1);
+                  dts = dts.slice(0, -1);
+                } else {
+                  newTs = ts;
                 }
-                if (ok) {
-                  compatibles.push(t[name][rt.makeParametersSignature(dts)]);
+                if (dts.length <= newTs.length) {
+                  ok = true;
+                  i = 0;
+                  while (ok && i < dts.length) {
+                    ok = _this.castable(newTs[i], dts[i]);
+                    i++;
+                  }
+                  while (ok && i < newTs.length) {
+                    ok = _this.castable(newTs[i], optionalArgs[i - dts.length].type);
+                    i++;
+                  }
+                  if (ok) {
+                    compatibles.push(t[name][_this.makeParametersSignature(dts)]);
+                  }
                 }
-              }
-            });
+              };
+            })(this));
             if (compatibles.length === 0) {
               if ("#default" in t[name]) {
                 ret = t[name]["#default"];
               } else {
-                rt = this;
-                argsStr = ts.map(function(v) {
-                  return rt.makeTypeString(v);
-                }).join(",");
+                argsStr = ts.map((function(_this) {
+                  return function(v) {
+                    return _this.makeTypeString(v);
+                  };
+                })(this)).join(",");
                 this.raiseException("no method " + name + " in " + lt + " accepts " + argsStr);
               }
             } else if (compatibles.length > 1) {
@@ -29310,7 +29405,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
     CRuntime.prototype.regOperator = function(f, lt, name, args, retType) {
       return this.regFunc(f, lt, this.makeOperatorFuncName(name), args, retType);
     };
-    CRuntime.prototype.regFuncPrototype = function(lt, name, args, retType) {
+    CRuntime.prototype.regFuncPrototype = function(lt, name, args, retType, optionalArgs) {
       var ltsig,
           sig,
           t,
@@ -29333,12 +29428,15 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
           this.defVar(name, type, this.val(type, this.makeFunctionPointerValue(null, name, lt, args, retType)));
         }
         t[name][sig] = null;
-        t[name]["reg"].push(args);
+        t[name]["reg"].push({
+          args: args,
+          optionalArgs: optionalArgs
+        });
       } else {
         this.raiseException("type " + this.makeTypeString(lt) + " is unknown");
       }
     };
-    CRuntime.prototype.regFunc = function(f, lt, name, args, retType) {
+    CRuntime.prototype.regFunc = function(f, lt, name, args, retType, optionalArgs) {
       var func,
           ltsig,
           sig,
@@ -29346,6 +29444,7 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
           type;
       ltsig = this.getTypeSignature(lt);
       if (ltsig in this.types) {
+        optionalArgs || (optionalArgs = []);
         t = this.types[ltsig];
         if (!(name in t)) {
           t[name] = {};
@@ -29371,7 +29470,10 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
           }
         }
         t[name][sig] = f;
-        t[name]["reg"].push(args);
+        t[name]["reg"].push({
+          args: args,
+          optionalArgs: optionalArgs
+        });
       } else {
         this.raiseException("type " + this.makeTypeString(lt) + " is unknown");
       }
@@ -30003,14 +30105,15 @@ System.get("traceur-runtime@0.0.92/src/runtime/polyfills/polyfills.js" + '');
         }
       }
     };
-    CRuntime.prototype.raiseException = function(message) {
+    CRuntime.prototype.raiseException = function(message, currentNode) {
       var col,
-          interp,
           ln,
           posInfo;
-      interp = this.interp;
-      if (interp) {
-        posInfo = interp.currentNode != null ? (ln = interp.currentNode.sLine, col = interp.currentNode.sColumn, ln + ":" + col) : "<position unavailable>";
+      if (this.interp) {
+        if (currentNode == null) {
+          currentNode = this.interp.currentNode;
+        }
+        posInfo = currentNode != null ? (ln = currentNode.sLine, col = currentNode.sColumn, ln + ":" + col) : "<position unavailable>";
         throw posInfo + " " + message;
       } else {
         throw message;

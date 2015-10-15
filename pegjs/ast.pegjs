@@ -344,7 +344,7 @@ ParameterList
 
 ParameterDeclaration
     = a:DeclarationSpecifiers
-      b:( Declarator
+      b:( InitDeclarator
       / AbstractDeclarator
       )? {
         return addPositionInfo({type:'ParameterDeclaration', DeclarationSpecifiers:a, Declarator:b});

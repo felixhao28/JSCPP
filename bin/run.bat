@@ -1,2 +1,2 @@
 @echo off
-node --harmony demo/debug %*
+node demo/debug %*

@@ -45,11 +45,11 @@ Interpreter = (rt) ->
                 for dim, j in _param.Declarator.right
                   dim = _param.Declarator.right[j]
                   if dim.type isnt "DirectDeclarator_modifier_array"
-                    rt.raiseException "unacceptable array initialization"
+                    rt.raiseException "unacceptable array initialization", dim
                   if dim.Expression isnt null
                     dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
                   else if j > 0
-                    rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+                    rt.raiseException "multidimensional array must have bounds for all dimensions except the first", dim
                   else
                     dim = -1
                   dimensions.push dim
@@ -62,13 +62,11 @@ Interpreter = (rt) ->
         dimensions = []
         for dim, j in s.right
           if dim.type isnt "DirectDeclarator_modifier_array"
-            rt.raiseException "unacceptable array initialization"
-          if dim.type isnt "DirectDeclarator_modifier_array"
-            rt.raiseException "unacceptable array initialization"
+            rt.raiseException "unacceptable array initialization", dim
           if dim.Expression isnt null
             dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
           else if j > 0
-            rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+            rt.raiseException "multidimensional array must have bounds for all dimensions except the first", dim
           else
             dim = -1
           dimensions.push dim
@@ -101,6 +99,7 @@ Interpreter = (rt) ->
       basetype = interp.buildRecursivePointerType(pointer, basetype, 0)
       argTypes = []
       argNames = []
+      optionalArgs = []
       ptl = undefined
       varargs = undefined
       if s.Declarator.right.type is "DirectDeclarator_modifier_ParameterTypeList"
@@ -110,35 +109,46 @@ Interpreter = (rt) ->
         ptl = ParameterList: []
         varargs = false
       else
-        rt.raiseException "unacceptable argument list"
+        rt.raiseException "unacceptable argument list", s.Declarator.right
       i = 0
       while i < ptl.ParameterList.length
         _param = ptl.ParameterList[i]
-        _pointer = _param.Declarator.Pointer
+        if not _param.Declarator?
+          rt.raiseException "missing declarator for argument", _param
+        _init = _param.Declarator.Initializers
+        _pointer = _param.Declarator.Declarator.Pointer
         _basetype = rt.simpleType(_param.DeclarationSpecifiers)
         _type = interp.buildRecursivePointerType(_pointer, _basetype, 0)
-        _name = _param.Declarator.left.Identifier
-        if _param.Declarator.right.length > 0
+        _name = _param.Declarator.Declarator.left.Identifier
+        if _param.Declarator.Declarator.right.length > 0
           dimensions = []
           j = 0
-          while j < _param.Declarator.right.length
-            dim = _param.Declarator.right[j]
+          while j < _param.Declarator.Declarator.right.length
+            dim = _param.Declarator.Declarator.right[j]
             if dim.type isnt "DirectDeclarator_modifier_array"
-              rt.raiseException "unacceptable array initialization"
+              rt.raiseException "unacceptable array initialization", dim
             if dim.Expression isnt null
               dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
             else if j > 0
-              rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+              rt.raiseException "multidimensional array must have bounds for all dimensions except the first", dim
             else
               dim = -1
             dimensions.push dim
             j++
           _type = interp.arrayType(dimensions, 0, _type)
-        argTypes.push _type
-        argNames.push _name
+        if _init?
+          optionalArgs.push
+            type: _type
+            name: _name
+            expression: _init.Expression
+        else
+          if optionalArgs.length > 0
+            rt.raiseException "all default arguments must be at the end of arguments list" , _param
+          argTypes.push _type
+          argNames.push _name
         i++
       stat = s.CompoundStatement
-      rt.defFunc scope, name, basetype, argTypes, argNames, stat, interp
+      rt.defFunc scope, name, basetype, argTypes, argNames, stat, interp, optionalArgs
       return
     Declaration: (interp, s, param) ->
       rt = interp.rt
@@ -151,7 +161,7 @@ Interpreter = (rt) ->
             if dim.Expression isnt null
               dim = rt.cast(rt.intTypeLiteral, yield from interp.visit(interp, dim.Expression, param)).v
             else if j > 0
-              rt.raiseException "multidimensional array must have bounds for all dimensions except the first"
+              rt.raiseException "multidimensional array must have bounds for all dimensions except the first", dim
             else
               if init.type is "Initializer_expr"
                 initializer = yield from interp.visit(interp, init, param)
@@ -167,7 +177,7 @@ Interpreter = (rt) ->
                       }
                     )
                 else
-                  rt.raiseException "cannot initialize an array to " + rt.makeValString(initializer)
+                  rt.raiseException "cannot initialize an array to " + rt.makeValString(initializer), init
               else
                 dim = init.Initializers.length
             dimensions.push dim
@@ -765,7 +775,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
               }
             )
         else
-          @rt.raiseException "cannot initialize an array to " + @rt.makeValString(initializer)
+          @rt.raiseException "cannot initialize an array to " + @rt.makeValString(initializer), init
       else
         @rt.raiseException "dimensions do not agree, " + curDim + " != " + init.Initializers.length
     arr = []
@@ -780,7 +790,7 @@ Interpreter::arrayInit = (dimensions, init, level, type, param) ->
     ret
   else
     if init and init.type isnt "Initializer_expr"
-      @rt.raiseException "dimensions do not agree, too few initializers"
+      @rt.raiseException "dimensions do not agree, too few initializers", init
     if init
       if "shorthand" of init
         initval = init.shorthand

@@ -79,6 +79,9 @@
         -
           cpp: "function_prototypes_fail.cpp"
           exception: "8:9 function func does not seem to be implemented"
+        -
+          cpp: "function_default_arguments.cpp"
+          out: "3\n2\n10\n8\n6"
     8bit: 
       after: 
         - "A+B"

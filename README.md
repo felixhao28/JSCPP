@@ -297,6 +297,9 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Testing now uses `test/test.coffee` directly
 		+ Update PEG.js from 0.8.0 to 0.9.0
 		+ Please use NodeJS v4.0.0+
+* v2.0.4 (-)
+	- New
+		+ Function default arguments support
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

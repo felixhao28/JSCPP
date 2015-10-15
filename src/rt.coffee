@@ -87,15 +87,22 @@ CRuntime::getMember = (l, r) ->
     @raiseException "only a class can have members"
   return
 
-CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
+CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp, optionalArgs) ->
   rt = this
   if stmts?
     f = (rt, _this, args...) ->
       # logger.warn("calling function: %j", name);
       rt.enterScope "function " + name
-      argNames.forEach (v, i) ->
-        rt.defVar v, argTypes[i], args[i]
+      argNames.forEach (argName, i) ->
+        rt.defVar argName, argTypes[i], args[i]
         return
+      for i in [0...optionalArgs.length] by 1
+        optionalArg = optionalArgs[i]
+        if args[argNames.length+i]?
+          rt.defVar optionalArg.name, optionalArg.type, args[argNames.length+i]
+        else
+          argValue = yield from interp.visit(interp, optionalArg.expression)
+          rt.defVar optionalArg.name, optionalArg.type, rt.cast(optionalArg.type, argValue)
       ret = yield from interp.run(stmts, scope: "function")
       if not rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
         if ret instanceof Array and ret[0] is "return"
@@ -105,15 +112,15 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp) ->
       else
         if typeof ret is "Array"
           if ret[0] is "return" and ret[1]
-            rt.raiseException "you cannot return a value of a void function"
+            rt.raiseException "you cannot return a value from a void function"
         ret = undefined
       rt.exitScope "function " + name
       # logger.warn("function: returing %j", ret);
       ret
 
-    @regFunc f, lt, name, argTypes, retType
+    @regFunc f, lt, name, argTypes, retType, optionalArgs
   else
-    @regFuncPrototype lt, name, argTypes, retType
+    @regFuncPrototype lt, name, argTypes, retType, optionalArgs
   return
 
 CRuntime::makeParametersSignature = (args) ->
@@ -138,29 +145,32 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
         ret = t[name][sig]
       else
         compatibles = []
-        rt = this
-        t[name]["reg"].forEach (dts) ->
+        t[name]["reg"].forEach (regArgInfo) =>
+          dts = regArgInfo.args
+          optionalArgs = regArgInfo.optionalArgs
           if dts[dts.length - 1] is "?" and dts.length < ts.length
             newTs = ts.slice(0, dts.length - 1)
             dts = dts.slice(0, -1)
           else
             newTs = ts
-          if dts.length is newTs.length
+          if dts.length <= newTs.length
             ok = true
             i = 0
+            while ok and i < dts.length
+              ok = @castable(newTs[i], dts[i])
+              i++
             while ok and i < newTs.length
-              ok = rt.castable(newTs[i], dts[i])
+              ok = @castable(newTs[i], optionalArgs[i - dts.length].type)
               i++
             if ok
-              compatibles.push t[name][rt.makeParametersSignature(dts)]
+              compatibles.push t[name][@makeParametersSignature(dts)]
           return
         if compatibles.length is 0
           if "#default" of t[name]
             ret = t[name]["#default"]
           else
-            rt = this
-            argsStr = ts.map((v) ->
-              rt.makeTypeString v
+            argsStr = ts.map((v) =>
+              @makeTypeString v
             ).join(",")
             @raiseException "no method " + name + " in " + lt + " accepts " + argsStr
         else if compatibles.length > 1
@@ -236,7 +246,7 @@ CRuntime::makeOperatorFuncName = (name) ->
 CRuntime::regOperator = (f, lt, name, args, retType) ->
   @regFunc(f, lt, @makeOperatorFuncName(name), args, retType)
 
-CRuntime::regFuncPrototype = (lt, name, args, retType) ->
+CRuntime::regFuncPrototype = (lt, name, args, retType, optionalArgs) ->
   ltsig = @getTypeSignature(lt)
   if ltsig of @types
     t = @types[ltsig]
@@ -251,14 +261,17 @@ CRuntime::regFuncPrototype = (lt, name, args, retType) ->
     if lt is "global"
       @defVar name, type, @val(type, @makeFunctionPointerValue(null, name, lt, args, retType))
     t[name][sig] = null
-    t[name]["reg"].push args
+    t[name]["reg"].push
+      args: args
+      optionalArgs: optionalArgs
   else
     @raiseException "type " + @makeTypeString(lt) + " is unknown"
   return
 
-CRuntime::regFunc = (f, lt, name, args, retType) ->
+CRuntime::regFunc = (f, lt, name, args, retType, optionalArgs) ->
   ltsig = @getTypeSignature(lt)
   if ltsig of @types
+    optionalArgs or= []
     t = @types[ltsig]
     if name not of t
       t[name] = {}
@@ -278,7 +291,9 @@ CRuntime::regFunc = (f, lt, name, args, retType) ->
       else
         @defVar name, type, @val(type, @makeFunctionPointerValue(f, name, lt, args, retType))
     t[name][sig] = f
-    t[name]["reg"].push args
+    t[name]["reg"].push
+      args: args
+      optionalArgs: optionalArgs
   else
     @raiseException "type " + @makeTypeString(lt) + " is unknown"
   return
@@ -774,13 +789,13 @@ CRuntime::defaultValue = (type, left) ->
       return @val(type, @makeArrayPointerValue(init, 0), left)
   return
 
-CRuntime::raiseException = (message) ->
-  interp = @interp
-  if interp
+CRuntime::raiseException = (message, currentNode) ->
+  if @interp
+    currentNode ?= @interp.currentNode
     posInfo =
-      if interp.currentNode?
-        ln = interp.currentNode.sLine
-        col = interp.currentNode.sColumn
+      if currentNode?
+        ln = currentNode.sLine
+        col = currentNode.sColumn
         ln + ":" + col
       else
         "<position unavailable>"

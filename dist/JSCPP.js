@@ -3254,7 +3254,7 @@ module.exports = (function() {
       s0 = peg$currPos;
       s1 = peg$parseDeclarationSpecifiers();
       if (s1 !== peg$FAILED) {
-        s2 = peg$parseDeclarator();
+        s2 = peg$parseInitDeclarator();
         if (s2 === peg$FAILED) {
           s2 = peg$parseAbstractDeclarator();
         }
@@ -13251,12 +13251,12 @@ Interpreter = function(rt) {
                   dim = ref1[j];
                   dim = _param.Declarator.right[j];
                   if (dim.type !== "DirectDeclarator_modifier_array") {
-                    rt.raiseException("unacceptable array initialization");
+                    rt.raiseException("unacceptable array initialization", dim);
                   }
                   if (dim.Expression !== null) {
                     dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
                   } else if (j > 0) {
-                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+                    rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
                   } else {
                     dim = -1;
                   }
@@ -13278,15 +13278,12 @@ Interpreter = function(rt) {
         for (j = m = 0, len2 = ref2.length; m < len2; j = ++m) {
           dim = ref2[j];
           if (dim.type !== "DirectDeclarator_modifier_array") {
-            rt.raiseException("unacceptable array initialization");
-          }
-          if (dim.type !== "DirectDeclarator_modifier_array") {
-            rt.raiseException("unacceptable array initialization");
+            rt.raiseException("unacceptable array initialization", dim);
           }
           if (dim.Expression !== null) {
             dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
           } else if (j > 0) {
-            rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+            rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
           } else {
             dim = -1;
           }
@@ -13322,7 +13319,7 @@ Interpreter = function(rt) {
       param.basetype = _basetype;
     },
     FunctionDefinition: function*(interp, s, param) {
-      var _basetype, _name, _param, _pointer, _type, argNames, argTypes, basetype, dim, dimensions, i, j, name, pointer, ptl, scope, stat, varargs;
+      var _basetype, _init, _name, _param, _pointer, _type, argNames, argTypes, basetype, dim, dimensions, i, j, name, optionalArgs, pointer, ptl, scope, stat, varargs;
       rt = interp.rt;
       scope = param.scope;
       name = s.Declarator.left.Identifier;
@@ -13331,6 +13328,7 @@ Interpreter = function(rt) {
       basetype = interp.buildRecursivePointerType(pointer, basetype, 0);
       argTypes = [];
       argNames = [];
+      optionalArgs = [];
       ptl = void 0;
       varargs = void 0;
       if (s.Declarator.right.type === "DirectDeclarator_modifier_ParameterTypeList") {
@@ -13342,27 +13340,31 @@ Interpreter = function(rt) {
         };
         varargs = false;
       } else {
-        rt.raiseException("unacceptable argument list");
+        rt.raiseException("unacceptable argument list", s.Declarator.right);
       }
       i = 0;
       while (i < ptl.ParameterList.length) {
         _param = ptl.ParameterList[i];
-        _pointer = _param.Declarator.Pointer;
+        if (_param.Declarator == null) {
+          rt.raiseException("missing declarator for argument", _param);
+        }
+        _init = _param.Declarator.Initializers;
+        _pointer = _param.Declarator.Declarator.Pointer;
         _basetype = rt.simpleType(_param.DeclarationSpecifiers);
         _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
-        _name = _param.Declarator.left.Identifier;
-        if (_param.Declarator.right.length > 0) {
+        _name = _param.Declarator.Declarator.left.Identifier;
+        if (_param.Declarator.Declarator.right.length > 0) {
           dimensions = [];
           j = 0;
-          while (j < _param.Declarator.right.length) {
-            dim = _param.Declarator.right[j];
+          while (j < _param.Declarator.Declarator.right.length) {
+            dim = _param.Declarator.Declarator.right[j];
             if (dim.type !== "DirectDeclarator_modifier_array") {
-              rt.raiseException("unacceptable array initialization");
+              rt.raiseException("unacceptable array initialization", dim);
             }
             if (dim.Expression !== null) {
               dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
             } else if (j > 0) {
-              rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+              rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
             } else {
               dim = -1;
             }
@@ -13371,12 +13373,23 @@ Interpreter = function(rt) {
           }
           _type = interp.arrayType(dimensions, 0, _type);
         }
-        argTypes.push(_type);
-        argNames.push(_name);
+        if (_init != null) {
+          optionalArgs.push({
+            type: _type,
+            name: _name,
+            expression: _init.Expression
+          });
+        } else {
+          if (optionalArgs.length > 0) {
+            rt.raiseException("all default arguments must be at the end of arguments list", _param);
+          }
+          argTypes.push(_type);
+          argNames.push(_name);
+        }
         i++;
       }
       stat = s.CompoundStatement;
-      rt.defFunc(scope, name, basetype, argTypes, argNames, stat, interp);
+      rt.defFunc(scope, name, basetype, argTypes, argNames, stat, interp, optionalArgs);
     },
     Declaration: function*(interp, s, param) {
       var _basetype, basetype, dec, dim, dimensions, i, init, initializer, j, k, l, len, len1, name, ref, ref1, ref2, ref3, type;
@@ -13394,7 +13407,7 @@ Interpreter = function(rt) {
             if (dim.Expression !== null) {
               dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
             } else if (j > 0) {
-              rt.raiseException("multidimensional array must have bounds for all dimensions except the first");
+              rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
             } else {
               if (init.type === "Initializer_expr") {
                 initializer = (yield* interp.visit(interp, init, param));
@@ -13410,7 +13423,7 @@ Interpreter = function(rt) {
                     })
                   };
                 } else {
-                  rt.raiseException("cannot initialize an array to " + rt.makeValString(initializer));
+                  rt.raiseException("cannot initialize an array to " + rt.makeValString(initializer), init);
                 }
               } else {
                 dim = init.Initializers.length;
@@ -14167,7 +14180,7 @@ Interpreter.prototype.arrayInit = function*(dimensions, init, level, type, param
             })
           };
         } else {
-          this.rt.raiseException("cannot initialize an array to " + this.rt.makeValString(initializer));
+          this.rt.raiseException("cannot initialize an array to " + this.rt.makeValString(initializer), init);
         }
       } else {
         this.rt.raiseException("dimensions do not agree, " + curDim + " != " + init.Initializers.length);
@@ -14187,7 +14200,7 @@ Interpreter.prototype.arrayInit = function*(dimensions, init, level, type, param
     return ret;
   } else {
     if (init && init.type !== "Initializer_expr") {
-      this.rt.raiseException("dimensions do not agree, too few initializers");
+      this.rt.raiseException("dimensions do not agree, too few initializers", init);
     }
     if (init) {
       if ("shorthand" in init) {
@@ -19285,17 +19298,26 @@ CRuntime.prototype.getMember = function(l, r) {
   }
 };
 
-CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stmts, interp) {
+CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stmts, interp, optionalArgs) {
   var f, rt;
   rt = this;
   if (stmts != null) {
     f = function*() {
-      var _this, args, ret, rt;
+      var _this, argValue, args, i, j, optionalArg, ref, ret, rt;
       rt = arguments[0], _this = arguments[1], args = 3 <= arguments.length ? slice.call(arguments, 2) : [];
       rt.enterScope("function " + name);
-      argNames.forEach(function(v, i) {
-        rt.defVar(v, argTypes[i], args[i]);
+      argNames.forEach(function(argName, i) {
+        rt.defVar(argName, argTypes[i], args[i]);
       });
+      for (i = j = 0, ref = optionalArgs.length; j < ref; i = j += 1) {
+        optionalArg = optionalArgs[i];
+        if (args[argNames.length + i] != null) {
+          rt.defVar(optionalArg.name, optionalArg.type, args[argNames.length + i]);
+        } else {
+          argValue = (yield* interp.visit(interp, optionalArg.expression));
+          rt.defVar(optionalArg.name, optionalArg.type, rt.cast(optionalArg.type, argValue));
+        }
+      }
       ret = (yield* interp.run(stmts, {
         scope: "function"
       }));
@@ -19308,7 +19330,7 @@ CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stm
       } else {
         if (typeof ret === "Array") {
           if (ret[0] === "return" && ret[1]) {
-            rt.raiseException("you cannot return a value of a void function");
+            rt.raiseException("you cannot return a value from a void function");
           }
         }
         ret = void 0;
@@ -19316,9 +19338,9 @@ CRuntime.prototype.defFunc = function(lt, name, retType, argTypes, argNames, stm
       rt.exitScope("function " + name);
       return ret;
     };
-    this.regFunc(f, lt, name, argTypes, retType);
+    this.regFunc(f, lt, name, argTypes, retType, optionalArgs);
   } else {
-    this.regFuncPrototype(lt, name, argTypes, retType);
+    this.regFuncPrototype(lt, name, argTypes, retType, optionalArgs);
   }
 };
 
@@ -19334,7 +19356,7 @@ CRuntime.prototype.makeParametersSignature = function(args) {
 };
 
 CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
-  var argsStr, compatibles, ltsig, ret, rt, sig, t, ts;
+  var argsStr, compatibles, ltsig, ret, sig, t, ts;
   ltsig = this.getTypeSignature(lt);
   if (ltsig in this.types) {
     t = this.types[ltsig];
@@ -19347,35 +19369,43 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
         ret = t[name][sig];
       } else {
         compatibles = [];
-        rt = this;
-        t[name]["reg"].forEach(function(dts) {
-          var i, newTs, ok;
-          if (dts[dts.length - 1] === "?" && dts.length < ts.length) {
-            newTs = ts.slice(0, dts.length - 1);
-            dts = dts.slice(0, -1);
-          } else {
-            newTs = ts;
-          }
-          if (dts.length === newTs.length) {
-            ok = true;
-            i = 0;
-            while (ok && i < newTs.length) {
-              ok = rt.castable(newTs[i], dts[i]);
-              i++;
+        t[name]["reg"].forEach((function(_this) {
+          return function(regArgInfo) {
+            var dts, i, newTs, ok, optionalArgs;
+            dts = regArgInfo.args;
+            optionalArgs = regArgInfo.optionalArgs;
+            if (dts[dts.length - 1] === "?" && dts.length < ts.length) {
+              newTs = ts.slice(0, dts.length - 1);
+              dts = dts.slice(0, -1);
+            } else {
+              newTs = ts;
             }
-            if (ok) {
-              compatibles.push(t[name][rt.makeParametersSignature(dts)]);
+            if (dts.length <= newTs.length) {
+              ok = true;
+              i = 0;
+              while (ok && i < dts.length) {
+                ok = _this.castable(newTs[i], dts[i]);
+                i++;
+              }
+              while (ok && i < newTs.length) {
+                ok = _this.castable(newTs[i], optionalArgs[i - dts.length].type);
+                i++;
+              }
+              if (ok) {
+                compatibles.push(t[name][_this.makeParametersSignature(dts)]);
+              }
             }
-          }
-        });
+          };
+        })(this));
         if (compatibles.length === 0) {
           if ("#default" in t[name]) {
             ret = t[name]["#default"];
           } else {
-            rt = this;
-            argsStr = ts.map(function(v) {
-              return rt.makeTypeString(v);
-            }).join(",");
+            argsStr = ts.map((function(_this) {
+              return function(v) {
+                return _this.makeTypeString(v);
+              };
+            })(this)).join(",");
             this.raiseException("no method " + name + " in " + lt + " accepts " + argsStr);
           }
         } else if (compatibles.length > 1) {
@@ -19474,7 +19504,7 @@ CRuntime.prototype.regOperator = function(f, lt, name, args, retType) {
   return this.regFunc(f, lt, this.makeOperatorFuncName(name), args, retType);
 };
 
-CRuntime.prototype.regFuncPrototype = function(lt, name, args, retType) {
+CRuntime.prototype.regFuncPrototype = function(lt, name, args, retType, optionalArgs) {
   var ltsig, sig, t, type;
   ltsig = this.getTypeSignature(lt);
   if (ltsig in this.types) {
@@ -19494,16 +19524,20 @@ CRuntime.prototype.regFuncPrototype = function(lt, name, args, retType) {
       this.defVar(name, type, this.val(type, this.makeFunctionPointerValue(null, name, lt, args, retType)));
     }
     t[name][sig] = null;
-    t[name]["reg"].push(args);
+    t[name]["reg"].push({
+      args: args,
+      optionalArgs: optionalArgs
+    });
   } else {
     this.raiseException("type " + this.makeTypeString(lt) + " is unknown");
   }
 };
 
-CRuntime.prototype.regFunc = function(f, lt, name, args, retType) {
+CRuntime.prototype.regFunc = function(f, lt, name, args, retType, optionalArgs) {
   var func, ltsig, sig, t, type;
   ltsig = this.getTypeSignature(lt);
   if (ltsig in this.types) {
+    optionalArgs || (optionalArgs = []);
     t = this.types[ltsig];
     if (!(name in t)) {
       t[name] = {};
@@ -19529,7 +19563,10 @@ CRuntime.prototype.regFunc = function(f, lt, name, args, retType) {
       }
     }
     t[name][sig] = f;
-    t[name]["reg"].push(args);
+    t[name]["reg"].push({
+      args: args,
+      optionalArgs: optionalArgs
+    });
   } else {
     this.raiseException("type " + this.makeTypeString(lt) + " is unknown");
   }
@@ -20187,11 +20224,13 @@ CRuntime.prototype.defaultValue = function(type, left) {
   }
 };
 
-CRuntime.prototype.raiseException = function(message) {
-  var col, interp, ln, posInfo;
-  interp = this.interp;
-  if (interp) {
-    posInfo = interp.currentNode != null ? (ln = interp.currentNode.sLine, col = interp.currentNode.sColumn, ln + ":" + col) : "<position unavailable>";
+CRuntime.prototype.raiseException = function(message, currentNode) {
+  var col, ln, posInfo;
+  if (this.interp) {
+    if (currentNode == null) {
+      currentNode = this.interp.currentNode;
+    }
+    posInfo = currentNode != null ? (ln = currentNode.sLine, col = currentNode.sColumn, ln + ":" + col) : "<position unavailable>";
     throw posInfo + " " + message;
   } else {
     throw message;
