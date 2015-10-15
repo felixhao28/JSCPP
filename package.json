@@ -21,7 +21,7 @@
     "Felix Hao <felixhao28@gmail.com>"
   ],
   "scripts": {
-    "test": "node --harmony ./node_modules/grunt-cli/bin/grunt test",
+    "test": "grunt test",
     "prepublish": "grunt build"
   },
   "main": "main.js",
@@ -42,7 +42,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-test": "^0.12.7",
     "grunt-newer": "^1.1.1",
-    "grunt-peg": "^1.5.0",
+    "grunt-peg": "^2.0.0",
     "grunt-rename": "^0.1.4",
     "grunt-shell": "^1.1.2",
     "js-yaml": "^3.4.2",
@@ -51,7 +51,7 @@
     "mocha": "^2.3.2",
     "pegjs": "^0.9.0",
     "pegjs-util": "^1.0.6",
-    "traceur": "0.0.91"
+    "traceur": "0.0.92"
   },
   "repository": {
     "type": "git",

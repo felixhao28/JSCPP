@@ -12401,7 +12401,7 @@ module.exports = {
   }
 };
 
-},{"printf":45}],7:[function(require,module,exports){
+},{"printf":46}],7:[function(require,module,exports){
 module.exports = {
   load: function(rt) {
     var _abs, _atof, _atoi, _atol, _bsearch, _div, _labs, _ldiv, _qsort, _rand, _srand, _system, binary_search, cmpType, div_t_t, ldiv_t_t, m_w, m_z, mask, pchar, random, seed;
@@ -12466,7 +12466,7 @@ module.exports = {
     };
     rt.regFunc(_srand, "global", "srand", [rt.unsignedintTypeLiteral], rt.voidTypeLiteral);
     _system = function(rt, _this, command) {
-      var e, error, ret, str;
+      var e, ret, str;
       if (command === rt.nullPointer) {
         return rt.val(rt.intTypeLiteral, 1);
       } else if (rt.isStringType(command.t)) {
@@ -12477,8 +12477,8 @@ module.exports = {
             console.log(ret);
           }
           return rt.val(rt.intTypeLiteral, 1);
-        } catch (error) {
-          e = error;
+        } catch (_error) {
+          e = _error;
           return rt.val(rt.intTypeLiteral, 0);
         }
       } else {
@@ -14331,7 +14331,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./ast":1,"./debugger":2,"./includes/cctype":4,"./includes/cmath":5,"./includes/cstdio":6,"./includes/cstdlib":7,"./includes/cstring":8,"./includes/iomanip":9,"./includes/iostream":10,"./interpreter":12,"./preprocessor":16,"./rt":17,"_process":26,"pegjs-util":44}],14:[function(require,module,exports){
+},{"./ast":1,"./debugger":2,"./includes/cctype":4,"./includes/cmath":5,"./includes/cstdio":6,"./includes/cstdlib":7,"./includes/cstring":8,"./includes/iomanip":9,"./includes/iostream":10,"./interpreter":12,"./preprocessor":16,"./rt":17,"_process":27,"pegjs-util":45}],14:[function(require,module,exports){
 module.exports = require("./launcher");
 
 },{"./launcher":13}],15:[function(require,module,exports){
@@ -19171,7 +19171,7 @@ module.exports = {
   }
 };
 
-},{"./prepast":15,"pegjs-util":44}],17:[function(require,module,exports){
+},{"./prepast":15,"pegjs-util":45}],17:[function(require,module,exports){
 var CRuntime, Defaults,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
   slice = [].slice;
@@ -20203,12 +20203,14 @@ module.exports = CRuntime;
 },{"./defaults":3}],18:[function(require,module,exports){
 
 },{}],19:[function(require,module,exports){
+(function (global){
 /*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
  * @license  MIT
  */
+/* eslint-disable no-proto */
 
 var base64 = require('base64-js')
 var ieee754 = require('ieee754')
@@ -20248,7 +20250,11 @@ var rootParent = {}
  * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
  * get the Object implementation, which is slower but behaves correctly.
  */
-Buffer.TYPED_ARRAY_SUPPORT = (function () {
+Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+  ? global.TYPED_ARRAY_SUPPORT
+  : typedArraySupport()
+
+function typedArraySupport () {
   function Bar () {}
   try {
     var arr = new Uint8Array(1)
@@ -20261,7 +20267,7 @@ Buffer.TYPED_ARRAY_SUPPORT = (function () {
   } catch (e) {
     return false
   }
-})()
+}
 
 function kMaxLength () {
   return Buffer.TYPED_ARRAY_SUPPORT
@@ -20417,10 +20423,16 @@ function fromJsonObject (that, object) {
   return that
 }
 
+if (Buffer.TYPED_ARRAY_SUPPORT) {
+  Buffer.prototype.__proto__ = Uint8Array.prototype
+  Buffer.__proto__ = Uint8Array
+}
+
 function allocate (that, length) {
   if (Buffer.TYPED_ARRAY_SUPPORT) {
     // Return an augmented `Uint8Array` instance, for best performance
     that = Buffer._augment(new Uint8Array(length))
+    that.__proto__ = Buffer.prototype
   } else {
     // Fallback: Return an object instance of the Buffer class
     that.length = length
@@ -21209,7 +21221,7 @@ Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
   offset = offset | 0
   if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
   if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-  this[offset] = value
+  this[offset] = (value & 0xff)
   return offset + 1
 }
 
@@ -21226,7 +21238,7 @@ Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert
   offset = offset | 0
   if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
   if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = value
+    this[offset] = (value & 0xff)
     this[offset + 1] = (value >>> 8)
   } else {
     objectWriteUInt16(this, value, offset, true)
@@ -21240,7 +21252,7 @@ Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert
   if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
   if (Buffer.TYPED_ARRAY_SUPPORT) {
     this[offset] = (value >>> 8)
-    this[offset + 1] = value
+    this[offset + 1] = (value & 0xff)
   } else {
     objectWriteUInt16(this, value, offset, false)
   }
@@ -21262,7 +21274,7 @@ Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert
     this[offset + 3] = (value >>> 24)
     this[offset + 2] = (value >>> 16)
     this[offset + 1] = (value >>> 8)
-    this[offset] = value
+    this[offset] = (value & 0xff)
   } else {
     objectWriteUInt32(this, value, offset, true)
   }
@@ -21277,7 +21289,7 @@ Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert
     this[offset] = (value >>> 24)
     this[offset + 1] = (value >>> 16)
     this[offset + 2] = (value >>> 8)
-    this[offset + 3] = value
+    this[offset + 3] = (value & 0xff)
   } else {
     objectWriteUInt32(this, value, offset, false)
   }
@@ -21330,7 +21342,7 @@ Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
   if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
   if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
   if (value < 0) value = 0xff + value + 1
-  this[offset] = value
+  this[offset] = (value & 0xff)
   return offset + 1
 }
 
@@ -21339,7 +21351,7 @@ Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) 
   offset = offset | 0
   if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
   if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = value
+    this[offset] = (value & 0xff)
     this[offset + 1] = (value >>> 8)
   } else {
     objectWriteUInt16(this, value, offset, true)
@@ -21353,7 +21365,7 @@ Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) 
   if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
   if (Buffer.TYPED_ARRAY_SUPPORT) {
     this[offset] = (value >>> 8)
-    this[offset + 1] = value
+    this[offset + 1] = (value & 0xff)
   } else {
     objectWriteUInt16(this, value, offset, false)
   }
@@ -21365,7 +21377,7 @@ Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) 
   offset = offset | 0
   if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
   if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = value
+    this[offset] = (value & 0xff)
     this[offset + 1] = (value >>> 8)
     this[offset + 2] = (value >>> 16)
     this[offset + 3] = (value >>> 24)
@@ -21384,7 +21396,7 @@ Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) 
     this[offset] = (value >>> 24)
     this[offset + 1] = (value >>> 16)
     this[offset + 2] = (value >>> 8)
-    this[offset + 3] = value
+    this[offset + 3] = (value & 0xff)
   } else {
     objectWriteUInt32(this, value, offset, false)
   }
@@ -21737,6 +21749,7 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"base64-js":20,"ieee754":21,"is-array":22}],20:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
@@ -22313,11 +22326,30 @@ if (typeof Object.create === 'function') {
 }
 
 },{}],25:[function(require,module,exports){
+/**
+ * Determine if an object is Buffer
+ *
+ * Author:   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * License:  MIT
+ *
+ * `npm install is-buffer`
+ */
+
+module.exports = function (obj) {
+  return !!(obj != null &&
+    (obj._isBuffer || // For Safari 5-7 (missing Object.prototype.constructor)
+      (obj.constructor &&
+      typeof obj.constructor.isBuffer === 'function' &&
+      obj.constructor.isBuffer(obj))
+    ))
+}
+
+},{}],26:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -22410,10 +22442,10 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":28}],28:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":29}],29:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -22497,7 +22529,7 @@ function forEach (xs, f) {
   }
 }
 
-},{"./_stream_readable":30,"./_stream_writable":32,"core-util-is":33,"inherits":24,"process-nextick-args":34}],29:[function(require,module,exports){
+},{"./_stream_readable":31,"./_stream_writable":33,"core-util-is":34,"inherits":24,"process-nextick-args":35}],30:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -22526,7 +22558,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":31,"core-util-is":33,"inherits":24}],30:[function(require,module,exports){
+},{"./_stream_transform":32,"core-util-is":34,"inherits":24}],31:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23489,7 +23521,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":28,"_process":26,"buffer":19,"core-util-is":33,"events":23,"inherits":24,"isarray":25,"process-nextick-args":34,"string_decoder/":41,"util":18}],31:[function(require,module,exports){
+},{"./_stream_duplex":29,"_process":27,"buffer":19,"core-util-is":34,"events":23,"inherits":24,"isarray":26,"process-nextick-args":35,"string_decoder/":42,"util":18}],32:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -23688,7 +23720,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":28,"core-util-is":33,"inherits":24}],32:[function(require,module,exports){
+},{"./_stream_duplex":29,"core-util-is":34,"inherits":24}],33:[function(require,module,exports){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, cb), and it'll handle all
 // the drain event emission and buffering.
@@ -24210,7 +24242,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./_stream_duplex":28,"buffer":19,"core-util-is":33,"events":23,"inherits":24,"process-nextick-args":34,"util-deprecate":35}],33:[function(require,module,exports){
+},{"./_stream_duplex":29,"buffer":19,"core-util-is":34,"events":23,"inherits":24,"process-nextick-args":35,"util-deprecate":36}],34:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -24319,8 +24351,8 @@ exports.isBuffer = isBuffer;
 function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
-}).call(this,require("buffer").Buffer)
-},{"buffer":19}],34:[function(require,module,exports){
+}).call(this,{"isBuffer":require("D:\\projects\\nodejs\\JSCPP\\node_modules\\grunt-browserify\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\is-buffer\\index.js")})
+},{"D:\\projects\\nodejs\\JSCPP\\node_modules\\grunt-browserify\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\is-buffer\\index.js":25}],35:[function(require,module,exports){
 (function (process){
 'use strict';
 module.exports = nextTick;
@@ -24328,7 +24360,7 @@ module.exports = nextTick;
 function nextTick(fn) {
   var args = new Array(arguments.length - 1);
   var i = 0;
-  while (i < arguments.length) {
+  while (i < args.length) {
     args[i++] = arguments[i];
   }
   process.nextTick(function afterTick() {
@@ -24337,7 +24369,7 @@ function nextTick(fn) {
 }
 
 }).call(this,require('_process'))
-},{"_process":26}],35:[function(require,module,exports){
+},{"_process":27}],36:[function(require,module,exports){
 (function (global){
 
 /**
@@ -24396,17 +24428,22 @@ function deprecate (fn, msg) {
  */
 
 function config (name) {
-  if (!global.localStorage) return false;
+  // accessing global.localStorage can trigger a DOMException in sandboxed iframes
+  try {
+    if (!global.localStorage) return false;
+  } catch (_) {
+    return false;
+  }
   var val = global.localStorage[name];
   if (null == val) return false;
   return String(val).toLowerCase() === 'true';
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":29}],37:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":30}],38:[function(require,module,exports){
 var Stream = (function (){
   try {
     return require('st' + 'ream'); // hack to fix a circular dependency issue when used with browserify
@@ -24420,13 +24457,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":28,"./lib/_stream_passthrough.js":29,"./lib/_stream_readable.js":30,"./lib/_stream_transform.js":31,"./lib/_stream_writable.js":32}],38:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":29,"./lib/_stream_passthrough.js":30,"./lib/_stream_readable.js":31,"./lib/_stream_transform.js":32,"./lib/_stream_writable.js":33}],39:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":31}],39:[function(require,module,exports){
+},{"./lib/_stream_transform.js":32}],40:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":32}],40:[function(require,module,exports){
+},{"./lib/_stream_writable.js":33}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -24555,7 +24592,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":23,"inherits":24,"readable-stream/duplex.js":27,"readable-stream/passthrough.js":36,"readable-stream/readable.js":37,"readable-stream/transform.js":38,"readable-stream/writable.js":39}],41:[function(require,module,exports){
+},{"events":23,"inherits":24,"readable-stream/duplex.js":28,"readable-stream/passthrough.js":37,"readable-stream/readable.js":38,"readable-stream/transform.js":39,"readable-stream/writable.js":40}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -24778,14 +24815,14 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":19}],42:[function(require,module,exports){
+},{"buffer":19}],43:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -25375,7 +25412,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":42,"_process":26,"inherits":24}],44:[function(require,module,exports){
+},{"./support/isBuffer":43,"_process":27,"inherits":24}],45:[function(require,module,exports){
 (function (global){
 /*
 **  pegjs-util -- Utility Class for PEG.js
@@ -25552,7 +25589,7 @@ function hasOwnProperty(obj, prop) {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 
 var util = require('util');
 
@@ -26015,4 +26052,4 @@ module.exports = function(){
 module.exports.Formatter = Formatter;
 
 
-},{"stream":40,"util":43}]},{},[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]);
+},{"stream":41,"util":44}]},{},[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]);

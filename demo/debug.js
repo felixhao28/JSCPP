@@ -67,7 +67,7 @@ if (process.argv.length > 2) {
     };
     lastOutputPos = 0;
     rl.on("line", function(line) {
-      var cmds, done, e, error, s;
+      var cmds, done, e, s;
       try {
         done = false;
         cmds = line.trim().split(" ");
@@ -91,8 +91,8 @@ if (process.argv.length > 2) {
             s = mydebugger.nextNode();
             console.log(s.sLine + ":" + s.sColumn + "(" + s.sOffset + ") - " + s.eLine + ":" + s.eColumn + "(" + s.eOffset + ")");
         }
-      } catch (error) {
-        e = error;
+      } catch (_error) {
+        e = _error;
         console.log("command failed: " + e.stack);
       }
       if (done === false) {
