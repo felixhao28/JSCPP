@@ -300,6 +300,8 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 * v2.0.4 (-)
 	- New
 		+ Function default arguments support
+	- Fix
+		+ cin.get now works as expected
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

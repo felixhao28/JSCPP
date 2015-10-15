@@ -122,12 +122,17 @@ module.exports = load: (rt) ->
 
   _get = (rt, _cin) ->
     b = _cin.v.buf
-    r = _read(rt, /^.|[\r\n]/, b, rt.charTypeLiteral)
-    _cin.v.buf = b.substring(r.length)
-    v = r[0].charCodeAt(0)
-    rt.val(rt.charTypeLiteral, v)
+    _cin.v.eofbit = b.length is 0
 
-  rt.regFunc(_get, cin.t, "get", [], cin.t)
+    if _cin.v.eofbit
+      rt.val(rt.intTypeLiteral, -1)
+    else
+      r = _read(rt, /^.|[\r\n]/, b, rt.charTypeLiteral)
+      _cin.v.buf = b.substring(r.length)
+      v = r[0].charCodeAt(0)
+      rt.val(rt.intTypeLiteral, v)
+
+  rt.regFunc(_get, cin.t, "get", [], rt.intTypeLiteral)
 
   _bool = (rt, _cin) ->
     rt.val(rt.boolTypeLiteral, not _cin.v.failbit)

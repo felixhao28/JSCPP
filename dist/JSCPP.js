@@ -11375,7 +11375,7 @@ module.exports = function() {
     limits: {
       "char": {
         max: 0x7f,
-        min: 0x00,
+        min: -0x80,
         bytes: 1
       },
       "signed char": {
@@ -13137,12 +13137,17 @@ module.exports = {
     _get = function(rt, _cin) {
       var b, r, v;
       b = _cin.v.buf;
-      r = _read(rt, /^.|[\r\n]/, b, rt.charTypeLiteral);
-      _cin.v.buf = b.substring(r.length);
-      v = r[0].charCodeAt(0);
-      return rt.val(rt.charTypeLiteral, v);
+      _cin.v.eofbit = b.length === 0;
+      if (_cin.v.eofbit) {
+        return rt.val(rt.intTypeLiteral, -1);
+      } else {
+        r = _read(rt, /^.|[\r\n]/, b, rt.charTypeLiteral);
+        _cin.v.buf = b.substring(r.length);
+        v = r[0].charCodeAt(0);
+        return rt.val(rt.intTypeLiteral, v);
+      }
     };
-    rt.regFunc(_get, cin.t, "get", [], cin.t);
+    rt.regFunc(_get, cin.t, "get", [], rt.intTypeLiteral);
     _bool = function(rt, _cin) {
       return rt.val(rt.boolTypeLiteral, !_cin.v.failbit);
     };
