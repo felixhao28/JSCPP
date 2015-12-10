@@ -297,11 +297,14 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Testing now uses `test/test.coffee` directly
 		+ Update PEG.js from 0.8.0 to 0.9.0
 		+ Please use NodeJS v4.0.0+
-* v2.0.4 (-)
+* v2.0.4 (12.10)
 	- New
 		+ Function default arguments support
 	- Fix
 		+ cin.get now works as expected
+	- Dev
+		+ Update dev dependencies
+* v2.0.5 (-)
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
