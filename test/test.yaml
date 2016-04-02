@@ -199,6 +199,21 @@
         cpp: "function_pointer.cpp"
         in: "20 33"
         out: "53\n53"
+    function_returning_pointer_typedef:
+      after:
+        - "function_pointer"
+      cases:
+        cpp: "function_returning_pointer_typedef.cpp"
+        in: "20 33"
+        out: "33"
+    function_returning_pointer:
+      after:
+        - "function_pointer"
+        - "function_returning_pointer_typedef"
+      cases:
+        cpp: "function_returning_pointer.cpp"
+        in: "20 33"
+        out: "33"
     random:
       after:
         - "cincout"
