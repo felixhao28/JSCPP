@@ -7,7 +7,7 @@ argv = require("minimist") process.argv.slice(2)
 config = {}
 
 if process.argv.length > 2
-  testName = argv._[0];
+  testName = argv._[0]
   if argv.d or argv.debug
     config.debug = true
 
