@@ -21,6 +21,7 @@ includes =
   cmath: require("./includes/cmath")
   cstdio: require("./includes/cstdio")
   cstdlib: require("./includes/cstdlib")
+  ctime: require("./includes/ctime")
   iomanip: require("./includes/iomanip")
 
 headerAlias =
@@ -29,6 +30,7 @@ headerAlias =
   "math.h": "cmath"
   "stdio.h": "cstdio"
   "stdlib.h": "cstdlib"
+  "time.h": "ctime"
 
 for alias, realName of headerAlias
   includes[alias] = includes[realName]
@@ -38,7 +40,7 @@ module.exports =
   run: (code, input, config) ->
     inputbuffer = input.toString()
     self = this
-    _config = 
+    _config =
       stdio:
         drain: ->
           x = inputbuffer

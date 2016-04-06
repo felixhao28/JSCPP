@@ -116,6 +116,12 @@
       cases: 
         cpp: "io.cpp"
         out: "3.1416\n3.14159\n3.14159\n3.141590000\n    3.141590000"
+    ctime_basics: 
+      after: 
+        - "cincout"
+      cases: 
+        cpp: "ctime_basics.cpp"
+        out: "1"
     loop_control: 
       after: 
         - "loop"
