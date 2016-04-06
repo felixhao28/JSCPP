@@ -67,7 +67,8 @@ TypedefDeclaration
     ;
 
 FunctionDefinition
-    = a:DeclarationSpecifiers b:FunctionDirectDeclarator c:(SEMI {return null;} / CompoundStatement) {
+    = a:DeclarationSpecifiers b_pointer:STAR? b:FunctionDirectDeclarator c:(SEMI {return null;} / CompoundStatement) {
+      b.Pointer = b_pointer;
       return addPositionInfo({type:'FunctionDefinition', DeclarationSpecifiers:a, Declarator:b, CompoundStatement:c});
     }
     ;
