@@ -3813,10 +3813,11 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
                 Declarators: [b].concat(c)
               });
             },
-            peg$c7 = function(a, b) {
+            peg$c7 = function(a, b_pointer, b) {
               return null;
             },
-            peg$c8 = function(a, b, c) {
+            peg$c8 = function(a, b_pointer, b, c) {
+              b.Pointer = b_pointer;
               return addPositionInfo({
                 type: 'FunctionDefinition',
                 DeclarationSpecifiers: a,
@@ -5632,26 +5633,36 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
               s1,
               s2,
               s3,
-              s4;
+              s4,
+              s5;
           s0 = peg$currPos;
           s1 = peg$parseDeclarationSpecifiers();
           if (s1 !== peg$FAILED) {
-            s2 = peg$parseFunctionDirectDeclarator();
+            s2 = peg$parseSTAR();
+            if (s2 === peg$FAILED) {
+              s2 = null;
+            }
             if (s2 !== peg$FAILED) {
-              s3 = peg$currPos;
-              s4 = peg$parseSEMI();
-              if (s4 !== peg$FAILED) {
-                peg$savedPos = s3;
-                s4 = peg$c7(s1, s2);
-              }
-              s3 = s4;
-              if (s3 === peg$FAILED) {
-                s3 = peg$parseCompoundStatement();
-              }
+              s3 = peg$parseFunctionDirectDeclarator();
               if (s3 !== peg$FAILED) {
-                peg$savedPos = s0;
-                s1 = peg$c8(s1, s2, s3);
-                s0 = s1;
+                s4 = peg$currPos;
+                s5 = peg$parseSEMI();
+                if (s5 !== peg$FAILED) {
+                  peg$savedPos = s4;
+                  s5 = peg$c7(s1, s2, s3);
+                }
+                s4 = s5;
+                if (s4 === peg$FAILED) {
+                  s4 = peg$parseCompoundStatement();
+                }
+                if (s4 !== peg$FAILED) {
+                  peg$savedPos = s0;
+                  s1 = peg$c8(s1, s2, s3, s4);
+                  s0 = s1;
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$FAILED;
+                }
               } else {
                 peg$currPos = s0;
                 s0 = peg$FAILED;
@@ -30497,7 +30508,6 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
   20: [function(require, module, exports) {}, {}],
   21: [function(require, module, exports) {
     (function(global) {
-      'use strict';
       var base64 = require('base64-js');
       var ieee754 = require('ieee754');
       var isArray = require('isarray');
@@ -30529,10 +30539,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
             return new Buffer(arg, arguments[1]);
           return new Buffer(arg);
         }
-        if (!Buffer.TYPED_ARRAY_SUPPORT) {
-          this.length = 0;
-          this.parent = undefined;
-        }
+        this.length = 0;
+        this.parent = undefined;
         if (typeof arg === 'number') {
           return fromNumber(this, arg);
         }
@@ -30633,9 +30641,6 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         Buffer.prototype.__proto__ = Uint8Array.prototype;
         Buffer.__proto__ = Uint8Array;
-      } else {
-        Buffer.prototype.length = undefined;
-        Buffer.prototype.parent = undefined;
       }
       function allocate(that, length) {
         if (Buffer.TYPED_ARRAY_SUPPORT) {
@@ -30766,6 +30771,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
         }
       }
       Buffer.byteLength = byteLength;
+      Buffer.prototype.length = undefined;
+      Buffer.prototype.parent = undefined;
       function slowToString(encoding, start, end) {
         var loweredCase = false;
         start = start | 0;
@@ -31796,16 +31803,10 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
   }, {
     "base64-js": 19,
-    "ieee754": 25,
-    "isarray": 22
+    "ieee754": 24,
+    "isarray": 27
   }],
   22: [function(require, module, exports) {
-    var toString = {}.toString;
-    module.exports = Array.isArray || function(arr) {
-      return toString.call(arr) == '[object Array]';
-    };
-  }, {}],
-  23: [function(require, module, exports) {
     (function(Buffer) {
       function isArray(arg) {
         if (Array.isArray) {
@@ -31871,8 +31872,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
         return Object.prototype.toString.call(o);
       }
     }).call(this, {"isBuffer": require("../../is-buffer/index.js")});
-  }, {"../../is-buffer/index.js": 27}],
-  24: [function(require, module, exports) {
+  }, {"../../is-buffer/index.js": 26}],
+  23: [function(require, module, exports) {
     function EventEmitter() {
       this._events = this._events || {};
       this._maxListeners = this._maxListeners || undefined;
@@ -32087,7 +32088,7 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       return arg === void 0;
     }
   }, {}],
-  25: [function(require, module, exports) {
+  24: [function(require, module, exports) {
     exports.read = function(buffer, offset, isLE, mLen, nBytes) {
       var e,
           m;
@@ -32165,7 +32166,7 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       buffer[offset + i - d] |= s * 128;
     };
   }, {}],
-  26: [function(require, module, exports) {
+  25: [function(require, module, exports) {
     if (typeof Object.create === 'function') {
       module.exports = function inherits(ctor, superCtor) {
         ctor.super_ = superCtor;
@@ -32186,9 +32187,14 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       };
     }
   }, {}],
-  27: [function(require, module, exports) {
+  26: [function(require, module, exports) {
     module.exports = function(obj) {
       return !!(obj != null && (obj._isBuffer || (obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj))));
+    };
+  }, {}],
+  27: [function(require, module, exports) {
+    module.exports = Array.isArray || function(arr) {
+      return Object.prototype.toString.call(arr) == '[object Array]';
     };
   }, {}],
   28: [function(require, module, exports) {
@@ -32204,15 +32210,15 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
           root[name] = factory(root);
       }((typeof global !== "undefined" ? global : (typeof window !== "undefined" ? window : this)), "PEGUtil", function() {
         var PEGUtil = {};
-        PEGUtil.makeAST = function makeAST(location, options) {
+        PEGUtil.makeAST = function makeAST(line, column, offset, options) {
           return function() {
-            return options.util.__makeAST.call(null, location().start.line, location().start.column, location().start.offset, arguments);
+            return options.util.__makeAST.call(null, line(), column(), offset(), arguments);
           };
         };
-        PEGUtil.makeUnroll = function(location, options) {
+        PEGUtil.makeUnroll = function(line, column, offset, SyntaxError) {
           return function(first, list, take) {
             if ((typeof list === 'undefined' ? 'undefined' : $traceurRuntime.typeof(list)) !== "object" || !(list instanceof Array))
-              throw new options.util.__SyntaxError("unroll: invalid list argument for unrolling", ((typeof list === 'undefined' ? 'undefined' : $traceurRuntime.typeof(list))), "Array", location());
+              throw new SyntaxError("unroll: invalid list argument for unrolling", ((typeof list === 'undefined' ? 'undefined' : $traceurRuntime.typeof(list))), "Array", offset(), line(), column());
             if (typeof take !== "undefined") {
               if (typeof take === "number")
                 take = [take];
@@ -32279,11 +32285,11 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
             if (typeof options.makeAST === "function")
               makeAST = options.makeAST;
             else {
-              makeAST = function(location, args) {
+              makeAST = function(line, column, offset, args) {
                 return {
-                  line: location().start.line,
-                  column: location().start.column,
-                  offset: location().start.offset,
+                  line: line,
+                  column: column,
+                  offset: offset,
                   args: args
                 };
               };
@@ -32291,8 +32297,7 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
             var opts = {util: {
                 makeUnroll: PEGUtil.makeUnroll,
                 makeAST: PEGUtil.makeAST,
-                __makeAST: makeAST,
-                __SyntaxError: parser.SyntaxError
+                __makeAST: makeAST
               }};
             if (typeof options.startRule === "string")
               opts.startRule = options.startRule;
@@ -32300,28 +32305,17 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
             result.error = null;
           } catch (e) {
             result.ast = null;
-            if (e instanceof parser.SyntaxError) {
-              var definedOrElse = function(value, fallback) {
-                return (typeof value !== "undefined" ? value : fallback);
-              };
-              result.error = {
-                line: definedOrElse(e.location.start.line, 0),
-                column: definedOrElse(e.location.start.column, 0),
-                message: e.message,
-                found: definedOrElse(e.found, ""),
-                expected: definedOrElse(e.expected, ""),
-                location: excerpt(txt, definedOrElse(e.location.start.offset, 0))
-              };
-            } else {
-              result.error = {
-                line: 0,
-                column: 0,
-                message: e.message,
-                found: "",
-                expected: "",
-                location: excerpt("", 0)
-              };
-            }
+            var definedOrElse = function(value, fallback) {
+              return (typeof value !== "undefined" ? value : fallback);
+            };
+            result.error = {
+              line: definedOrElse(e.line, 0),
+              column: definedOrElse(e.column, 0),
+              message: e.message,
+              found: definedOrElse(e.found, ""),
+              expected: definedOrElse(e.expected, ""),
+              location: excerpt(txt, definedOrElse(e.offset, 0))
+            };
           }
           return result;
         };
@@ -32736,8 +32730,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     };
     module.exports.Formatter = Formatter;
   }, {
-    "stream": 43,
-    "util": 47
+    "stream": 42,
+    "util": 46
   }],
   30: [function(require, module, exports) {
     (function(process) {
@@ -32851,9 +32845,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     'use strict';
     var objectKeys = Object.keys || function(obj) {
       var keys = [];
-      for (var key in obj) {
+      for (var key in obj)
         keys.push(key);
-      }
       return keys;
     };
     module.exports = Duplex;
@@ -32900,8 +32893,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
   }, {
     "./_stream_readable": 35,
     "./_stream_writable": 37,
-    "core-util-is": 23,
-    "inherits": 26,
+    "core-util-is": 22,
+    "inherits": 25,
     "process-nextick-args": 30
   }],
   34: [function(require, module, exports) {
@@ -32921,8 +32914,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     };
   }, {
     "./_stream_transform": 36,
-    "core-util-is": 23,
-    "inherits": 26
+    "core-util-is": 22,
+    "inherits": 25
   }],
   35: [function(require, module, exports) {
     (function(process) {
@@ -32944,12 +32937,12 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
           if (!Stream)
             Stream = require('events').EventEmitter;
         }
-      })();
+      }());
       var Buffer = require('buffer').Buffer;
       var util = require('core-util-is');
       util.inherits = require('inherits');
       var debugUtil = require('util');
-      var debug = undefined;
+      var debug;
       if (debugUtil && debugUtil.debuglog) {
         debug = debugUtil.debuglog('stream');
       } else {
@@ -32957,16 +32950,15 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       }
       var StringDecoder;
       util.inherits(Readable, Stream);
-      var Duplex;
       function ReadableState(options, stream) {
-        Duplex = Duplex || require('./_stream_duplex');
+        var Duplex = require('./_stream_duplex');
         options = options || {};
         this.objectMode = !!options.objectMode;
         if (stream instanceof Duplex)
           this.objectMode = this.objectMode || !!options.readableObjectMode;
         var hwm = options.highWaterMark;
         var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-        this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
+        this.highWaterMark = (hwm || hwm === 0) ? hwm : defaultHwm;
         this.highWaterMark = ~~this.highWaterMark;
         this.buffer = [];
         this.length = 0;
@@ -32980,7 +32972,6 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
         this.needReadable = false;
         this.emittedReadable = false;
         this.readableListening = false;
-        this.resumeScheduled = false;
         this.defaultEncoding = options.defaultEncoding || 'utf8';
         this.ranOut = false;
         this.awaitDrain = 0;
@@ -32994,9 +32985,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
           this.encoding = options.encoding;
         }
       }
-      var Duplex;
       function Readable(options) {
-        Duplex = Duplex || require('./_stream_duplex');
+        var Duplex = require('./_stream_duplex');
         if (!(this instanceof Readable))
           return new Readable(options);
         this._readableState = new ReadableState(options, this);
@@ -33038,26 +33028,21 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
             var e = new Error('stream.unshift() after end event');
             stream.emit('error', e);
           } else {
-            var skipAdd;
-            if (state.decoder && !addToFront && !encoding) {
+            if (state.decoder && !addToFront && !encoding)
               chunk = state.decoder.write(chunk);
-              skipAdd = !state.objectMode && chunk.length === 0;
-            }
             if (!addToFront)
               state.reading = false;
-            if (!skipAdd) {
-              if (state.flowing && state.length === 0 && !state.sync) {
-                stream.emit('data', chunk);
-                stream.read(0);
-              } else {
-                state.length += state.objectMode ? 1 : chunk.length;
-                if (addToFront)
-                  state.buffer.unshift(chunk);
-                else
-                  state.buffer.push(chunk);
-                if (state.needReadable)
-                  emitReadable(stream);
-              }
+            if (state.flowing && state.length === 0 && !state.sync) {
+              stream.emit('data', chunk);
+              stream.read(0);
+            } else {
+              state.length += state.objectMode ? 1 : chunk.length;
+              if (addToFront)
+                state.buffer.unshift(chunk);
+              else
+                state.buffer.push(chunk);
+              if (state.needReadable)
+                emitReadable(stream);
             }
             maybeReadMore(stream, state);
           }
@@ -33177,7 +33162,7 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       };
       function chunkInvalid(state, chunk) {
         var er = null;
-        if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
+        if (!(Buffer.isBuffer(chunk)) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
           er = new TypeError('Invalid non-string/buffer chunk');
         }
         return er;
@@ -33364,9 +33349,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
           state.pipes = null;
           state.pipesCount = 0;
           state.flowing = false;
-          for (var _i = 0; _i < len; _i++) {
-            dests[_i].emit('unpipe', this);
-          }
+          for (var i = 0; i < len; i++)
+            dests[i].emit('unpipe', this);
           return this;
         }
         var i = indexOf(state.pipes, dest);
@@ -33384,7 +33368,7 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
         if (ev === 'data' && false !== this._readableState.flowing) {
           this.resume();
         }
-        if (ev === 'readable' && !this._readableState.endEmitted) {
+        if (ev === 'readable' && this.readable) {
           var state = this._readableState;
           if (!state.readableListening) {
             state.readableListening = true;
@@ -33584,12 +33568,12 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     "./_stream_duplex": 33,
     "_process": 31,
     "buffer": 21,
-    "core-util-is": 23,
-    "events": 24,
-    "inherits": 26,
-    "isarray": 38,
+    "core-util-is": 22,
+    "events": 23,
+    "inherits": 25,
+    "isarray": 27,
     "process-nextick-args": 30,
-    "string_decoder/": 44,
+    "string_decoder/": 43,
     "util": 20
   }],
   36: [function(require, module, exports) {
@@ -33607,7 +33591,6 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       this.transforming = false;
       this.writecb = null;
       this.writechunk = null;
-      this.writeencoding = null;
     }
     function afterTransform(stream, er, data) {
       var ts = stream._transformState;
@@ -33619,7 +33602,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       ts.writecb = null;
       if (data !== null && data !== undefined)
         stream.push(data);
-      cb(er);
+      if (cb)
+        cb(er);
       var rs = stream._readableState;
       rs.reading = false;
       if (rs.needReadable || rs.length < rs.highWaterMark) {
@@ -33689,384 +33673,349 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     }
   }, {
     "./_stream_duplex": 33,
-    "core-util-is": 23,
-    "inherits": 26
+    "core-util-is": 22,
+    "inherits": 25
   }],
   37: [function(require, module, exports) {
-    (function(process) {
-      'use strict';
-      module.exports = Writable;
-      var processNextTick = require('process-nextick-args');
-      var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
-      var Buffer = require('buffer').Buffer;
-      Writable.WritableState = WritableState;
-      var util = require('core-util-is');
-      util.inherits = require('inherits');
-      var internalUtil = {deprecate: require('util-deprecate')};
-      var Stream;
-      (function() {
-        try {
-          Stream = require('st' + 'ream');
-        } catch (_) {} finally {
-          if (!Stream)
-            Stream = require('events').EventEmitter;
-        }
-      })();
-      var Buffer = require('buffer').Buffer;
-      util.inherits(Writable, Stream);
-      function nop() {}
-      function WriteReq(chunk, encoding, cb) {
-        this.chunk = chunk;
-        this.encoding = encoding;
-        this.callback = cb;
-        this.next = null;
+    'use strict';
+    module.exports = Writable;
+    var processNextTick = require('process-nextick-args');
+    var Buffer = require('buffer').Buffer;
+    Writable.WritableState = WritableState;
+    var util = require('core-util-is');
+    util.inherits = require('inherits');
+    var internalUtil = {deprecate: require('util-deprecate')};
+    var Stream;
+    (function() {
+      try {
+        Stream = require('st' + 'ream');
+      } catch (_) {} finally {
+        if (!Stream)
+          Stream = require('events').EventEmitter;
       }
-      var Duplex;
-      function WritableState(options, stream) {
-        Duplex = Duplex || require('./_stream_duplex');
-        options = options || {};
-        this.objectMode = !!options.objectMode;
-        if (stream instanceof Duplex)
-          this.objectMode = this.objectMode || !!options.writableObjectMode;
-        var hwm = options.highWaterMark;
-        var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-        this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
-        this.highWaterMark = ~~this.highWaterMark;
-        this.needDrain = false;
-        this.ending = false;
-        this.ended = false;
-        this.finished = false;
-        var noDecode = options.decodeStrings === false;
-        this.decodeStrings = !noDecode;
-        this.defaultEncoding = options.defaultEncoding || 'utf8';
-        this.length = 0;
-        this.writing = false;
-        this.corked = 0;
-        this.sync = true;
-        this.bufferProcessing = false;
-        this.onwrite = function(er) {
-          onwrite(stream, er);
-        };
-        this.writecb = null;
-        this.writelen = 0;
-        this.bufferedRequest = null;
-        this.lastBufferedRequest = null;
-        this.pendingcb = 0;
-        this.prefinished = false;
-        this.errorEmitted = false;
-        this.bufferedRequestCount = 0;
-        this.corkedRequestsFree = new CorkedRequest(this);
-        this.corkedRequestsFree.next = new CorkedRequest(this);
-      }
-      WritableState.prototype.getBuffer = function writableStateGetBuffer() {
-        var current = this.bufferedRequest;
-        var out = [];
-        while (current) {
-          out.push(current);
-          current = current.next;
-        }
-        return out;
+    }());
+    var Buffer = require('buffer').Buffer;
+    util.inherits(Writable, Stream);
+    function nop() {}
+    function WriteReq(chunk, encoding, cb) {
+      this.chunk = chunk;
+      this.encoding = encoding;
+      this.callback = cb;
+      this.next = null;
+    }
+    function WritableState(options, stream) {
+      var Duplex = require('./_stream_duplex');
+      options = options || {};
+      this.objectMode = !!options.objectMode;
+      if (stream instanceof Duplex)
+        this.objectMode = this.objectMode || !!options.writableObjectMode;
+      var hwm = options.highWaterMark;
+      var defaultHwm = this.objectMode ? 16 : 16 * 1024;
+      this.highWaterMark = (hwm || hwm === 0) ? hwm : defaultHwm;
+      this.highWaterMark = ~~this.highWaterMark;
+      this.needDrain = false;
+      this.ending = false;
+      this.ended = false;
+      this.finished = false;
+      var noDecode = options.decodeStrings === false;
+      this.decodeStrings = !noDecode;
+      this.defaultEncoding = options.defaultEncoding || 'utf8';
+      this.length = 0;
+      this.writing = false;
+      this.corked = 0;
+      this.sync = true;
+      this.bufferProcessing = false;
+      this.onwrite = function(er) {
+        onwrite(stream, er);
       };
-      (function() {
-        try {
-          Object.defineProperty(WritableState.prototype, 'buffer', {get: internalUtil.deprecate(function() {
-              return this.getBuffer();
-            }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.')});
-        } catch (_) {}
-      })();
-      var Duplex;
-      function Writable(options) {
-        Duplex = Duplex || require('./_stream_duplex');
-        if (!(this instanceof Writable) && !(this instanceof Duplex))
-          return new Writable(options);
-        this._writableState = new WritableState(options, this);
-        this.writable = true;
-        if (options) {
-          if (typeof options.write === 'function')
-            this._write = options.write;
-          if (typeof options.writev === 'function')
-            this._writev = options.writev;
-        }
-        Stream.call(this);
+      this.writecb = null;
+      this.writelen = 0;
+      this.bufferedRequest = null;
+      this.lastBufferedRequest = null;
+      this.pendingcb = 0;
+      this.prefinished = false;
+      this.errorEmitted = false;
+    }
+    WritableState.prototype.getBuffer = function writableStateGetBuffer() {
+      var current = this.bufferedRequest;
+      var out = [];
+      while (current) {
+        out.push(current);
+        current = current.next;
       }
-      Writable.prototype.pipe = function() {
-        this.emit('error', new Error('Cannot pipe. Not readable.'));
-      };
-      function writeAfterEnd(stream, cb) {
-        var er = new Error('write after end');
+      return out;
+    };
+    (function() {
+      try {
+        Object.defineProperty(WritableState.prototype, 'buffer', {get: internalUtil.deprecate(function() {
+            return this.getBuffer();
+          }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.')});
+      } catch (_) {}
+    }());
+    function Writable(options) {
+      var Duplex = require('./_stream_duplex');
+      if (!(this instanceof Writable) && !(this instanceof Duplex))
+        return new Writable(options);
+      this._writableState = new WritableState(options, this);
+      this.writable = true;
+      if (options) {
+        if (typeof options.write === 'function')
+          this._write = options.write;
+        if (typeof options.writev === 'function')
+          this._writev = options.writev;
+      }
+      Stream.call(this);
+    }
+    Writable.prototype.pipe = function() {
+      this.emit('error', new Error('Cannot pipe. Not readable.'));
+    };
+    function writeAfterEnd(stream, cb) {
+      var er = new Error('write after end');
+      stream.emit('error', er);
+      processNextTick(cb, er);
+    }
+    function validChunk(stream, state, chunk, cb) {
+      var valid = true;
+      if (!(Buffer.isBuffer(chunk)) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
+        var er = new TypeError('Invalid non-string/buffer chunk');
         stream.emit('error', er);
         processNextTick(cb, er);
+        valid = false;
       }
-      function validChunk(stream, state, chunk, cb) {
-        var valid = true;
-        if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
-          var er = new TypeError('Invalid non-string/buffer chunk');
-          stream.emit('error', er);
-          processNextTick(cb, er);
-          valid = false;
-        }
-        return valid;
+      return valid;
+    }
+    Writable.prototype.write = function(chunk, encoding, cb) {
+      var state = this._writableState;
+      var ret = false;
+      if (typeof encoding === 'function') {
+        cb = encoding;
+        encoding = null;
       }
-      Writable.prototype.write = function(chunk, encoding, cb) {
-        var state = this._writableState;
-        var ret = false;
-        if (typeof encoding === 'function') {
-          cb = encoding;
-          encoding = null;
-        }
-        if (Buffer.isBuffer(chunk))
-          encoding = 'buffer';
-        else if (!encoding)
-          encoding = state.defaultEncoding;
-        if (typeof cb !== 'function')
-          cb = nop;
-        if (state.ended)
-          writeAfterEnd(this, cb);
-        else if (validChunk(this, state, chunk, cb)) {
-          state.pendingcb++;
-          ret = writeOrBuffer(this, state, chunk, encoding, cb);
-        }
-        return ret;
-      };
-      Writable.prototype.cork = function() {
-        var state = this._writableState;
-        state.corked++;
-      };
-      Writable.prototype.uncork = function() {
-        var state = this._writableState;
-        if (state.corked) {
-          state.corked--;
-          if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest)
-            clearBuffer(this, state);
-        }
-      };
-      Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
-        if (typeof encoding === 'string')
-          encoding = encoding.toLowerCase();
-        if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1))
-          throw new TypeError('Unknown encoding: ' + encoding);
-        this._writableState.defaultEncoding = encoding;
-      };
-      function decodeChunk(state, chunk, encoding) {
-        if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
-          chunk = new Buffer(chunk, encoding);
-        }
-        return chunk;
+      if (Buffer.isBuffer(chunk))
+        encoding = 'buffer';
+      else if (!encoding)
+        encoding = state.defaultEncoding;
+      if (typeof cb !== 'function')
+        cb = nop;
+      if (state.ended)
+        writeAfterEnd(this, cb);
+      else if (validChunk(this, state, chunk, cb)) {
+        state.pendingcb++;
+        ret = writeOrBuffer(this, state, chunk, encoding, cb);
       }
-      function writeOrBuffer(stream, state, chunk, encoding, cb) {
-        chunk = decodeChunk(state, chunk, encoding);
-        if (Buffer.isBuffer(chunk))
-          encoding = 'buffer';
-        var len = state.objectMode ? 1 : chunk.length;
-        state.length += len;
-        var ret = state.length < state.highWaterMark;
-        if (!ret)
-          state.needDrain = true;
-        if (state.writing || state.corked) {
-          var last = state.lastBufferedRequest;
-          state.lastBufferedRequest = new WriteReq(chunk, encoding, cb);
-          if (last) {
-            last.next = state.lastBufferedRequest;
-          } else {
-            state.bufferedRequest = state.lastBufferedRequest;
-          }
-          state.bufferedRequestCount += 1;
+      return ret;
+    };
+    Writable.prototype.cork = function() {
+      var state = this._writableState;
+      state.corked++;
+    };
+    Writable.prototype.uncork = function() {
+      var state = this._writableState;
+      if (state.corked) {
+        state.corked--;
+        if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest)
+          clearBuffer(this, state);
+      }
+    };
+    Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
+      if (typeof encoding === 'string')
+        encoding = encoding.toLowerCase();
+      if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1))
+        throw new TypeError('Unknown encoding: ' + encoding);
+      this._writableState.defaultEncoding = encoding;
+    };
+    function decodeChunk(state, chunk, encoding) {
+      if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
+        chunk = new Buffer(chunk, encoding);
+      }
+      return chunk;
+    }
+    function writeOrBuffer(stream, state, chunk, encoding, cb) {
+      chunk = decodeChunk(state, chunk, encoding);
+      if (Buffer.isBuffer(chunk))
+        encoding = 'buffer';
+      var len = state.objectMode ? 1 : chunk.length;
+      state.length += len;
+      var ret = state.length < state.highWaterMark;
+      if (!ret)
+        state.needDrain = true;
+      if (state.writing || state.corked) {
+        var last = state.lastBufferedRequest;
+        state.lastBufferedRequest = new WriteReq(chunk, encoding, cb);
+        if (last) {
+          last.next = state.lastBufferedRequest;
         } else {
-          doWrite(stream, state, false, len, chunk, encoding, cb);
+          state.bufferedRequest = state.lastBufferedRequest;
         }
-        return ret;
+      } else {
+        doWrite(stream, state, false, len, chunk, encoding, cb);
       }
-      function doWrite(stream, state, writev, len, chunk, encoding, cb) {
-        state.writelen = len;
-        state.writecb = cb;
-        state.writing = true;
-        state.sync = true;
-        if (writev)
-          stream._writev(chunk, state.onwrite);
-        else
-          stream._write(chunk, encoding, state.onwrite);
-        state.sync = false;
-      }
-      function onwriteError(stream, state, sync, er, cb) {
-        --state.pendingcb;
-        if (sync)
-          processNextTick(cb, er);
-        else
-          cb(er);
-        stream._writableState.errorEmitted = true;
-        stream.emit('error', er);
-      }
-      function onwriteStateUpdate(state) {
-        state.writing = false;
-        state.writecb = null;
-        state.length -= state.writelen;
-        state.writelen = 0;
-      }
-      function onwrite(stream, er) {
-        var state = stream._writableState;
-        var sync = state.sync;
-        var cb = state.writecb;
-        onwriteStateUpdate(state);
-        if (er)
-          onwriteError(stream, state, sync, er, cb);
-        else {
-          var finished = needFinish(state);
-          if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
-            clearBuffer(stream, state);
-          }
-          if (sync) {
-            asyncWrite(afterWrite, stream, state, finished, cb);
-          } else {
-            afterWrite(stream, state, finished, cb);
-          }
+      return ret;
+    }
+    function doWrite(stream, state, writev, len, chunk, encoding, cb) {
+      state.writelen = len;
+      state.writecb = cb;
+      state.writing = true;
+      state.sync = true;
+      if (writev)
+        stream._writev(chunk, state.onwrite);
+      else
+        stream._write(chunk, encoding, state.onwrite);
+      state.sync = false;
+    }
+    function onwriteError(stream, state, sync, er, cb) {
+      --state.pendingcb;
+      if (sync)
+        processNextTick(cb, er);
+      else
+        cb(er);
+      stream._writableState.errorEmitted = true;
+      stream.emit('error', er);
+    }
+    function onwriteStateUpdate(state) {
+      state.writing = false;
+      state.writecb = null;
+      state.length -= state.writelen;
+      state.writelen = 0;
+    }
+    function onwrite(stream, er) {
+      var state = stream._writableState;
+      var sync = state.sync;
+      var cb = state.writecb;
+      onwriteStateUpdate(state);
+      if (er)
+        onwriteError(stream, state, sync, er, cb);
+      else {
+        var finished = needFinish(state);
+        if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
+          clearBuffer(stream, state);
         }
-      }
-      function afterWrite(stream, state, finished, cb) {
-        if (!finished)
-          onwriteDrain(stream, state);
-        state.pendingcb--;
-        cb();
-        finishMaybe(stream, state);
-      }
-      function onwriteDrain(stream, state) {
-        if (state.length === 0 && state.needDrain) {
-          state.needDrain = false;
-          stream.emit('drain');
-        }
-      }
-      function clearBuffer(stream, state) {
-        state.bufferProcessing = true;
-        var entry = state.bufferedRequest;
-        if (stream._writev && entry && entry.next) {
-          var l = state.bufferedRequestCount;
-          var buffer = new Array(l);
-          var holder = state.corkedRequestsFree;
-          holder.entry = entry;
-          var count = 0;
-          while (entry) {
-            buffer[count] = entry;
-            entry = entry.next;
-            count += 1;
-          }
-          doWrite(stream, state, true, state.length, buffer, '', holder.finish);
-          state.pendingcb++;
-          state.lastBufferedRequest = null;
-          state.corkedRequestsFree = holder.next;
-          holder.next = null;
+        if (sync) {
+          processNextTick(afterWrite, stream, state, finished, cb);
         } else {
-          while (entry) {
-            var chunk = entry.chunk;
-            var encoding = entry.encoding;
-            var cb = entry.callback;
-            var len = state.objectMode ? 1 : chunk.length;
-            doWrite(stream, state, false, len, chunk, encoding, cb);
-            entry = entry.next;
-            if (state.writing) {
-              break;
-            }
-          }
-          if (entry === null)
-            state.lastBufferedRequest = null;
-        }
-        state.bufferedRequestCount = 0;
-        state.bufferedRequest = entry;
-        state.bufferProcessing = false;
-      }
-      Writable.prototype._write = function(chunk, encoding, cb) {
-        cb(new Error('not implemented'));
-      };
-      Writable.prototype._writev = null;
-      Writable.prototype.end = function(chunk, encoding, cb) {
-        var state = this._writableState;
-        if (typeof chunk === 'function') {
-          cb = chunk;
-          chunk = null;
-          encoding = null;
-        } else if (typeof encoding === 'function') {
-          cb = encoding;
-          encoding = null;
-        }
-        if (chunk !== null && chunk !== undefined)
-          this.write(chunk, encoding);
-        if (state.corked) {
-          state.corked = 1;
-          this.uncork();
-        }
-        if (!state.ending && !state.finished)
-          endWritable(this, state, cb);
-      };
-      function needFinish(state) {
-        return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
-      }
-      function prefinish(stream, state) {
-        if (!state.prefinished) {
-          state.prefinished = true;
-          stream.emit('prefinish');
+          afterWrite(stream, state, finished, cb);
         }
       }
-      function finishMaybe(stream, state) {
-        var need = needFinish(state);
-        if (need) {
-          if (state.pendingcb === 0) {
-            prefinish(stream, state);
-            state.finished = true;
-            stream.emit('finish');
-          } else {
-            prefinish(stream, state);
-          }
-        }
-        return need;
+    }
+    function afterWrite(stream, state, finished, cb) {
+      if (!finished)
+        onwriteDrain(stream, state);
+      state.pendingcb--;
+      cb();
+      finishMaybe(stream, state);
+    }
+    function onwriteDrain(stream, state) {
+      if (state.length === 0 && state.needDrain) {
+        state.needDrain = false;
+        stream.emit('drain');
       }
-      function endWritable(stream, state, cb) {
-        state.ending = true;
-        finishMaybe(stream, state);
-        if (cb) {
-          if (state.finished)
-            processNextTick(cb);
-          else
-            stream.once('finish', cb);
+    }
+    function clearBuffer(stream, state) {
+      state.bufferProcessing = true;
+      var entry = state.bufferedRequest;
+      if (stream._writev && entry && entry.next) {
+        var buffer = [];
+        var cbs = [];
+        while (entry) {
+          cbs.push(entry.callback);
+          buffer.push(entry);
+          entry = entry.next;
         }
-        state.ended = true;
-        stream.writable = false;
-      }
-      function CorkedRequest(state) {
-        var _this = this;
-        this.next = null;
-        this.entry = null;
-        this.finish = function(err) {
-          var entry = _this.entry;
-          _this.entry = null;
-          while (entry) {
-            var cb = entry.callback;
+        state.pendingcb++;
+        state.lastBufferedRequest = null;
+        doWrite(stream, state, true, state.length, buffer, '', function(err) {
+          for (var i = 0; i < cbs.length; i++) {
             state.pendingcb--;
-            cb(err);
-            entry = entry.next;
+            cbs[i](err);
           }
-          if (state.corkedRequestsFree) {
-            state.corkedRequestsFree.next = _this;
-          } else {
-            state.corkedRequestsFree = _this;
+        });
+      } else {
+        while (entry) {
+          var chunk = entry.chunk;
+          var encoding = entry.encoding;
+          var cb = entry.callback;
+          var len = state.objectMode ? 1 : chunk.length;
+          doWrite(stream, state, false, len, chunk, encoding, cb);
+          entry = entry.next;
+          if (state.writing) {
+            break;
           }
-        };
+        }
+        if (entry === null)
+          state.lastBufferedRequest = null;
       }
-    }).call(this, require('_process'));
+      state.bufferedRequest = entry;
+      state.bufferProcessing = false;
+    }
+    Writable.prototype._write = function(chunk, encoding, cb) {
+      cb(new Error('not implemented'));
+    };
+    Writable.prototype._writev = null;
+    Writable.prototype.end = function(chunk, encoding, cb) {
+      var state = this._writableState;
+      if (typeof chunk === 'function') {
+        cb = chunk;
+        chunk = null;
+        encoding = null;
+      } else if (typeof encoding === 'function') {
+        cb = encoding;
+        encoding = null;
+      }
+      if (chunk !== null && chunk !== undefined)
+        this.write(chunk, encoding);
+      if (state.corked) {
+        state.corked = 1;
+        this.uncork();
+      }
+      if (!state.ending && !state.finished)
+        endWritable(this, state, cb);
+    };
+    function needFinish(state) {
+      return (state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing);
+    }
+    function prefinish(stream, state) {
+      if (!state.prefinished) {
+        state.prefinished = true;
+        stream.emit('prefinish');
+      }
+    }
+    function finishMaybe(stream, state) {
+      var need = needFinish(state);
+      if (need) {
+        if (state.pendingcb === 0) {
+          prefinish(stream, state);
+          state.finished = true;
+          stream.emit('finish');
+        } else {
+          prefinish(stream, state);
+        }
+      }
+      return need;
+    }
+    function endWritable(stream, state, cb) {
+      state.ending = true;
+      finishMaybe(stream, state);
+      if (cb) {
+        if (state.finished)
+          processNextTick(cb);
+        else
+          stream.once('finish', cb);
+      }
+      state.ended = true;
+    }
   }, {
     "./_stream_duplex": 33,
-    "_process": 31,
     "buffer": 21,
-    "core-util-is": 23,
-    "events": 24,
-    "inherits": 26,
+    "core-util-is": 22,
+    "events": 23,
+    "inherits": 25,
     "process-nextick-args": 30,
-    "util-deprecate": 45
+    "util-deprecate": 44
   }],
   38: [function(require, module, exports) {
-    arguments[4][22][0].apply(exports, arguments);
-  }, {"dup": 22}],
-  39: [function(require, module, exports) {
     module.exports = require("./lib/_stream_passthrough.js");
   }, {"./lib/_stream_passthrough.js": 34}],
-  40: [function(require, module, exports) {
+  39: [function(require, module, exports) {
     var Stream = (function() {
       try {
         return require('st' + 'ream');
@@ -34086,13 +34035,13 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
     "./lib/_stream_transform.js": 36,
     "./lib/_stream_writable.js": 37
   }],
-  41: [function(require, module, exports) {
+  40: [function(require, module, exports) {
     module.exports = require("./lib/_stream_transform.js");
   }, {"./lib/_stream_transform.js": 36}],
-  42: [function(require, module, exports) {
+  41: [function(require, module, exports) {
     module.exports = require("./lib/_stream_writable.js");
   }, {"./lib/_stream_writable.js": 37}],
-  43: [function(require, module, exports) {
+  42: [function(require, module, exports) {
     module.exports = Stream;
     var EE = require('events').EventEmitter;
     var inherits = require('inherits');
@@ -34166,15 +34115,15 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       return dest;
     };
   }, {
-    "events": 24,
-    "inherits": 26,
+    "events": 23,
+    "inherits": 25,
     "readable-stream/duplex.js": 32,
-    "readable-stream/passthrough.js": 39,
-    "readable-stream/readable.js": 40,
-    "readable-stream/transform.js": 41,
-    "readable-stream/writable.js": 42
+    "readable-stream/passthrough.js": 38,
+    "readable-stream/readable.js": 39,
+    "readable-stream/transform.js": 40,
+    "readable-stream/writable.js": 41
   }],
-  44: [function(require, module, exports) {
+  43: [function(require, module, exports) {
     var Buffer = require('buffer').Buffer;
     var isBufferEncoding = Buffer.isEncoding || function(encoding) {
       switch (encoding && encoding.toLowerCase()) {
@@ -34308,7 +34257,7 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       this.charLength = this.charReceived ? 3 : 0;
     }
   }, {"buffer": 21}],
-  45: [function(require, module, exports) {
+  44: [function(require, module, exports) {
     (function(global) {
       module.exports = deprecate;
       function deprecate(fn, msg) {
@@ -34345,12 +34294,12 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       }
     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
   }, {}],
-  46: [function(require, module, exports) {
+  45: [function(require, module, exports) {
     module.exports = function isBuffer(arg) {
       return arg && (typeof arg === 'undefined' ? 'undefined' : $traceurRuntime.typeof(arg)) === 'object' && typeof arg.copy === 'function' && typeof arg.fill === 'function' && typeof arg.readUInt8 === 'function';
     };
   }, {}],
-  47: [function(require, module, exports) {
+  46: [function(require, module, exports) {
     (function(process, global) {
       var formatRegExp = /%[sdj%]/g;
       exports.format = function(f) {
@@ -34775,8 +34724,8 @@ System.get("traceur-runtime@0.0.93/src/runtime/polyfills/polyfills.js" + '');
       }
     }).call(this, require('_process'), typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
   }, {
-    "./support/isBuffer": 46,
+    "./support/isBuffer": 45,
     "_process": 31,
-    "inherits": 26
+    "inherits": 25
   }]
 }, {}, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
