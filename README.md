@@ -304,7 +304,12 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ cin.get now works as expected
 	- Dev
 		+ Update dev dependencies
-* v2.0.5 (-)
+* v2.0.5 (4.6)
+	- New
+		+ ctime library
+	- Fix
+		+ Supports functions returning pointer type
+* v2.0.6 (-)
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
