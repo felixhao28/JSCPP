@@ -21,6 +21,7 @@
     "Felix Hao <felixhao28@gmail.com>"
   ],
   "scripts": {
+    "build": "grunt build",
     "test": "grunt test",
     "prepublish": "grunt build"
   },
