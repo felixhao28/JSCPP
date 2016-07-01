@@ -232,3 +232,7 @@
           cpp: "random.cpp"
           in: "5"
           out: "498872264\n1418600064\n831731783"
+    printf:
+      cases:
+        cpp: "printf.cpp"
+        out: "boo\n  -42\n  +42\n00042\n42   \n42.90\n042.90\n\x7f\na\n\"\n10%\n+hello+\n$"

@@ -20,10 +20,11 @@ format_type_map = (rt, ctrl) ->
       rt.raiseException "%n is not supported"
 
 
-validate_format = (format, params...) ->
+validate_format = (rt, format, params...) ->
   i = 0
-  while (ctrl = /(?:(?!%).)%([diuoxXfFeEgGaAcspn])/.exec format)?
-    type = format_type_map ctrl[1]
+  re = /%(?:[-+ #0])?(?:[0-9]+|\*)?(?:\.(?:[0-9]+|\*))?([diuoxXfFeEgGaAcspn])/g
+  while (ctrl = re.exec format)?
+    type = format_type_map rt, ctrl[1]
     if params.length <= i
       rt.raiseException "insufficient arguments (at least #{i+1} is required)"
     target = params[i++]
@@ -41,8 +42,8 @@ module.exports =
 
     __printf = (format, params...) ->
       if rt.isStringType format.t
-        format = format.v.target
-        parsed_params = validate_format format, params...
+        format = rt.getStringFromCharArray format
+        parsed_params = validate_format rt, format, params...
         retval = printf format, parsed_params...
         rt.makeCharArrayFromString retval
       else
@@ -57,6 +58,7 @@ module.exports =
 
     _printf = (rt, _this, format, params...) ->
       retval = __printf(format, params...)
+      retval= rt.getStringFromCharArray retval
       stdio.write retval
       rt.val(rt.intTypeLiteral, retval.length)
 

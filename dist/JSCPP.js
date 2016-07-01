@@ -12354,12 +12354,13 @@ format_type_map = function(rt, ctrl) {
 };
 
 validate_format = function() {
-  var casted, ctrl, format, i, params, results, target, type, val;
-  format = arguments[0], params = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+  var casted, ctrl, format, i, params, re, results, rt, target, type, val;
+  rt = arguments[0], format = arguments[1], params = 3 <= arguments.length ? slice.call(arguments, 2) : [];
   i = 0;
+  re = /%(?:[-+ #0])?(?:[0-9]+|\*)?(?:\.(?:[0-9]+|\*))?([diuoxXfFeEgGaAcspn])/g;
   results = [];
-  while ((ctrl = /(?:(?!%).)%([diuoxXfFeEgGaAcspn])/.exec(format)) != null) {
-    type = format_type_map(ctrl[1]);
+  while ((ctrl = re.exec(format)) != null) {
+    type = format_type_map(rt, ctrl[1]);
     if (params.length <= i) {
       rt.raiseException("insufficient arguments (at least " + (i + 1) + " is required)");
     }
@@ -12384,8 +12385,8 @@ module.exports = {
       var format, params, parsed_params, retval;
       format = arguments[0], params = 2 <= arguments.length ? slice.call(arguments, 1) : [];
       if (rt.isStringType(format.t)) {
-        format = format.v.target;
-        parsed_params = validate_format.apply(null, [format].concat(slice.call(params)));
+        format = rt.getStringFromCharArray(format);
+        parsed_params = validate_format.apply(null, [rt, format].concat(slice.call(params)));
         retval = printf.apply(null, [format].concat(slice.call(parsed_params)));
         return rt.makeCharArrayFromString(retval);
       } else {
@@ -12404,6 +12405,7 @@ module.exports = {
       var _this, format, params, retval, rt;
       rt = arguments[0], _this = arguments[1], format = arguments[2], params = 4 <= arguments.length ? slice.call(arguments, 3) : [];
       retval = __printf.apply(null, [format].concat(slice.call(params)));
+      retval = rt.getStringFromCharArray(retval);
       stdio.write(retval);
       return rt.val(rt.intTypeLiteral, retval.length);
     };
@@ -18924,10 +18926,13 @@ module.exports = (function() {
 
     function addPositionInfo(r){
         var posDetails = peg$computePosDetails(peg$currPos);
-        r.line = posDetails.line;
-        r.column = posDetails.column;
-        r.begin = peg$savedPos;
-        r.end = peg$currPos;
+        r.eLine = posDetails.line;
+        r.eColumn = posDetails.column;
+        r.eOffset = peg$currPos;
+        posDetails = peg$computePosDetails(peg$savedPos);
+        r.sLine = posDetails.line;
+        r.sColumn = posDetails.column;
+        r.sOffset = peg$savedPos;
         return r;
     }
 
@@ -19404,7 +19409,7 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
             var dts, i, newTs, ok, optionalArgs;
             dts = regArgInfo.args;
             optionalArgs = regArgInfo.optionalArgs;
-            if (dts[dts.length - 1] === "?" && dts.length < ts.length) {
+            if (dts[dts.length - 1] === "?" && dts.length - 1 <= ts.length) {
               newTs = ts.slice(0, dts.length - 1);
               dts = dts.slice(0, -1);
             } else {
@@ -19422,7 +19427,7 @@ CRuntime.prototype.getCompatibleFunc = function(lt, name, args) {
                 i++;
               }
               if (ok) {
-                compatibles.push(t[name][_this.makeParametersSignature(dts)]);
+                compatibles.push(t[name][_this.makeParametersSignature(regArgInfo.args)]);
               }
             }
           };
@@ -19822,13 +19827,7 @@ CRuntime.prototype.cast = function(type, value) {
       }
     }
   } else if (this.isPointerType(type)) {
-    if (this.isFunctionType(type)) {
-      if (this.isFunctionType(value.t)) {
-        return this.val(value.t, value.v);
-      } else {
-        this.raiseException("cannot cast a regular pointer to a function");
-      }
-    } else if (this.isArrayType(value.t)) {
+    if (this.isArrayType(value.t)) {
       if (this.isNormalPointerType(type)) {
         if (this.isTypeEqualTo(type.targetType, value.t.eleType)) {
           return value;
@@ -19860,6 +19859,12 @@ CRuntime.prototype.cast = function(type, value) {
       } else {
         this.raiseException("cannot cast a function to a regular pointer");
       }
+    }
+  } else if (this.isFunctionType(type)) {
+    if (this.isFunctionType(value.t)) {
+      return this.val(value.t, value.v);
+    } else {
+      this.raiseException("cannot cast a regular pointer to a function");
     }
   } else if (this.isClassType(type)) {
     this.raiseException("not implemented");
@@ -19931,12 +19936,14 @@ CRuntime.prototype.isTypeEqualTo = function(type1, type2) {
         if (this.isTypeEqualTo(type1.retType, type2.retType) && type1.signature.length === type2.signature.length) {
           _this = this;
           return type1.signature.every(function(type, index, arr) {
-            return _this.isTypeEqualTo(type, type2.signature[index]);
+            var x;
+            x = _this.isTypeEqualTo(type, type2.signature[index]);
+            return x;
           });
         }
     }
   }
-  return false;
+  return type1 === type2;
 };
 
 CRuntime.prototype.isBoolType = function(type) {
@@ -22394,7 +22401,7 @@ module.exports = function (obj) {
 (function (global){
 /*
 **  pegjs-util -- Utility Class for PEG.js
-**  Copyright (c) 2014-2015 Ralf S. Engelschall <rse@engelschall.com>
+**  Copyright (c) 2014-2016 Ralf S. Engelschall <rse@engelschall.com>
 **
 **  Permission is hereby granted, free of charge, to any person obtaining
 **  a copy of this software and associated documentation files (the
@@ -22531,17 +22538,13 @@ module.exports = function (obj) {
                     };
                 };
             }
-            var opts = {
-                util: {
-                    makeUnroll:    PEGUtil.makeUnroll,
-                    makeAST:       PEGUtil.makeAST,
-                    __makeAST:     makeAST,
-                    __SyntaxError: parser.SyntaxError
-                }
+            options.util = {
+                makeUnroll:    PEGUtil.makeUnroll,
+                makeAST:       PEGUtil.makeAST,
+                __makeAST:     makeAST,
+                __SyntaxError: parser.SyntaxError
             };
-            if (typeof options.startRule === "string")
-                opts.startRule = options.startRule;
-            result.ast = parser.parse(txt, opts);
+            result.ast = parser.parse(txt, options);
             result.error = null;
         }
         catch (e) {
@@ -22605,7 +22608,7 @@ var tokenize = function(/*String*/ str, /*RegExp*/ re, /*Function?*/ parseDelim,
   //    Used as the "this' instance when calling parseDelim
   var tokens = [];
   var match, content, lastIndex = 0;
-  while(match = re.exec(str)){
+  while((match = re.exec(str))){
     content = str.slice(lastIndex, re.lastIndex - match[0].length);
     if(content.length){
       tokens.push(content);
@@ -22627,14 +22630,14 @@ var tokenize = function(/*String*/ str, /*RegExp*/ re, /*Function?*/ parseDelim,
     tokens.push(content);
   }
   return tokens;
-}
+};
 
 var Formatter = function(/*String*/ format){
   var tokens = [];
   this._mapped = false;
   this._format = format;
   this._tokens = tokenize(format, this._re, this._parseDelim, this);
-}
+};
 
 Formatter.prototype._re = /\%(?:\(([\w_]+)\)|([1-9]\d*)\$)?([0 +\-\#]*)(\*|\d+)?(\.)?(\*|\d+)?[hlL]?([\%bscdeEfFgGioOuxX])/g;
 Formatter.prototype._parseDelim = function(mapping, intmapping, flags, minWidth, period, precision, specifier){
@@ -22731,7 +22734,7 @@ Formatter.prototype.format = function(/*mixed...*/ filler){
   var position = 0;
   for(var i = 0, token; i < this._tokens.length; i++){
     token = this._tokens[i];
-    
+
     if(typeof token == 'string'){
       str += token;
     }else{
@@ -22806,7 +22809,7 @@ Formatter.prototype.format = function(/*mixed...*/ filler){
         if(mixins.extend){
           var s = this._specifiers[mixins.extend];
           for(var k in s){
-            mixins[k] = s[k]
+            mixins[k] = s[k];
           }
           delete mixins.extend;
         }
@@ -22862,7 +22865,7 @@ Formatter.prototype.format = function(/*mixed...*/ filler){
         if(token.period != '.'){
           token.precision = 6;
         }
-        this.formatDouble(token); 
+        this.formatDouble(token);
       }else if(token.isObject){
         this.formatObject(token);
       }
@@ -22891,7 +22894,7 @@ Formatter.prototype.formatInt = function(token) {
   // otherwise, (-10).toString(16) is '-a' instead of 'fffffff6'
   if(i < 0 && (token.isUnsigned || token.base != 10)){
     i = 0xffffffff + i + 1;
-  } 
+  }
 
   if(i < 0){
     token.arg = (- i).toString(token.base);
@@ -22938,11 +22941,11 @@ Formatter.prototype.formatDouble = function(token) {
 
   switch(token.doubleNotation) {
     case 'e': {
-      token.arg = f.toExponential(token.precision); 
+      token.arg = f.toExponential(token.precision);
       break;
     }
     case 'f': {
-      token.arg = f.toFixed(token.precision); 
+      token.arg = f.toFixed(token.precision);
       break;
     }
     case 'g': {
@@ -22953,12 +22956,12 @@ Formatter.prototype.formatDouble = function(token) {
         //print('forcing exponential notation for f=' + f);
         token.arg = f.toExponential(token.precision > 0 ? token.precision - 1 : token.precision);
       }else{
-        token.arg = f.toPrecision(token.precision); 
+        token.arg = f.toPrecision(token.precision);
       }
 
       // In C, unlike 'f', 'gG' removes trailing 0s from fractional part, unless alternative format flag ('#').
       // But ECMAScript formats toPrecision as 0.00100000. So remove trailing 0s.
-      if(!token.alternative){ 
+      if(!token.alternative){
         //print('replacing trailing 0 in \'' + s + '\'');
         token.arg = token.arg.replace(/(\..*[^0])0*e/, '$1e');
         // if fractional part is entirely 0, remove it and decimal point
@@ -23052,7 +23055,6 @@ module.exports = function(){
 };
 
 module.exports.Formatter = Formatter;
-
 
 },{"stream":43,"util":47}],30:[function(require,module,exports){
 (function (process){

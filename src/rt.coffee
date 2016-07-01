@@ -148,7 +148,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
         t[name]["reg"].forEach (regArgInfo) =>
           dts = regArgInfo.args
           optionalArgs = regArgInfo.optionalArgs
-          if dts[dts.length - 1] is "?" and dts.length < ts.length
+          if dts[dts.length - 1] is "?" and dts.length - 1 <= ts.length
             newTs = ts.slice(0, dts.length - 1)
             dts = dts.slice(0, -1)
           else
@@ -163,7 +163,7 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
               ok = @castable(newTs[i], optionalArgs[i - dts.length].type)
               i++
             if ok
-              compatibles.push t[name][@makeParametersSignature(dts)]
+              compatibles.push t[name][@makeParametersSignature(regArgInfo.args)]
           return
         if compatibles.length is 0
           if "#default" of t[name]
@@ -463,12 +463,7 @@ CRuntime::cast = (type, value) ->
         else
           @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
   else if @isPointerType(type)
-    if @isFunctionType(type)
-      if @isFunctionType(value.t)
-        return @val(value.t, value.v)
-      else
-        @raiseException "cannot cast a regular pointer to a function"
-    else if @isArrayType(value.t)
+    if @isArrayType(value.t)
       if @isNormalPointerType(type)
         if @isTypeEqualTo(type.targetType, value.t.eleType)
           return value
@@ -494,6 +489,11 @@ CRuntime::cast = (type, value) ->
           @raiseException "array element type " + @makeTypeString(type.eleType) + " is not equal to " + @makeTypeString(value.t.eleType)
       else
         @raiseException "cannot cast a function to a regular pointer"
+  else if @isFunctionType(type)
+    if @isFunctionType(value.t)
+      return @val(value.t, value.v)
+    else
+      @raiseException "cannot cast a regular pointer to a function"
   else if @isClassType(type)
     @raiseException "not implemented"
   else if @isClassType(value.t)
@@ -547,9 +547,10 @@ CRuntime::isTypeEqualTo = (type1, type2) ->
         if @isTypeEqualTo(type1.retType, type2.retType) and type1.signature.length is type2.signature.length
           _this = this
           return type1.signature.every((type, index, arr) ->
-            _this.isTypeEqualTo type, type2.signature[index]
+            x = _this.isTypeEqualTo type, type2.signature[index]
+            x
           )
-  return false
+  return type1 is type2
 
 CRuntime::isBoolType = (type) ->
   if typeof type is "string"
