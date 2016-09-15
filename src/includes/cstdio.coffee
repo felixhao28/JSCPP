@@ -36,9 +36,10 @@ validate_format = (rt, format, params...) ->
 
 module.exports =
   load: (rt) ->
-    rt.include "cstring"
     pchar = rt.normalPointerType(rt.charTypeLiteral)
     stdio = rt.config.stdio;
+
+    _strcpy = require "./shared/cstring_strcpy"
 
     __printf = (format, params...) ->
       if rt.isStringType format.t
@@ -51,7 +52,7 @@ module.exports =
 
     _sprintf = (rt, _this, target, format, params...) ->
       retval = __printf(format, params...)
-      rt.getFunc("global", "strcpy", [pchar, pchar])(rt, null, [target, retval])
+      _strcpy(rt, null, [target, retval])
       rt.val(rt.intTypeLiteral, retval.length)
 
     rt.regFunc(_sprintf, "global", "sprintf", [pchar, pchar, "?"], rt.intTypeLiteral)
