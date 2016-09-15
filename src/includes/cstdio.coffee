@@ -114,6 +114,18 @@ module.exports =
 
     rt.regFunc( _gets, "global" , "gets" , [pchar] , pchar)
 
+    _putchar = (rt, _this, char) ->
+      ##this implementation is dependent on printf implementation
+      ##but on the original c this behavior is not present
+      ##for general purposes the result will be the same
+      ##but maybe could be a good idea to make this implementation
+      ##indenpendent
+      print_mask = rt.makeCharArrayFromString "%c"
+      _printf(rt,null ,print_mask,char)
+      rt.val(rt.intTypeLiteral,0)
+
+    rt.regFunc( _putchar, "global" , "putchar" , [rt.charTypeLiteral] , rt.intTypeLiteral)
+
 
 
     

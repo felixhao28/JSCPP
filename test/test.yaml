@@ -244,5 +244,9 @@
     gets:
       cases:
         cpp: "gets.cpp"
-        in: "hello\n12345678    \n!@#$%^&*("
-        out: "hello12345678    !@#$%^&*("
+        in: "hello\n12345678    \n!@#$%^&*('~&\n"
+        out: "hello12345678    !@#$%^&*('~&\n"
+    putchar:
+      cases:
+        cpp: "putchar.cpp"
+        out: "hello\n12345678    \n!@#$%^&*('~&\n"
