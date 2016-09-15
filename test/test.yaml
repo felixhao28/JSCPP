@@ -250,3 +250,7 @@
       cases:
         cpp: "putchar.cpp"
         out: "hello\n12345678    \n!@#$%^&*('~&\n"
+    puts:
+          cases:
+            cpp: "puts.cpp"
+            out: "Hello world!"

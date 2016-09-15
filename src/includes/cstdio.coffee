@@ -40,7 +40,6 @@ module.exports =
   load: (rt) ->
     rt.include "cstring"
     pchar = rt.normalPointerType(rt.charTypeLiteral)
-    pvoid = rt.voidPointerType;
     stdio = rt.config.stdio;
     input_stream = stdio.drain();
     input_stream_position = 0;
@@ -114,18 +113,23 @@ module.exports =
 
     rt.regFunc( _gets, "global" , "gets" , [pchar] , pchar)
 
+    ##DEPENDENT ON PRINTF##
+    ##these implementations is dependent on printf implementation
+    ##but on the original c this behavior is not present
+    ##for general purposes the result will be the same
+    ##but maybe could be a good idea to make this implementation
+    ##indenpendent
     _putchar = (rt, _this, char) ->
-      ##this implementation is dependent on printf implementation
-      ##but on the original c this behavior is not present
-      ##for general purposes the result will be the same
-      ##but maybe could be a good idea to make this implementation
-      ##indenpendent
       print_mask = rt.makeCharArrayFromString "%c"
       _printf(rt,null ,print_mask,char)
       rt.val(rt.intTypeLiteral,0)
 
     rt.regFunc( _putchar, "global" , "putchar" , [rt.charTypeLiteral] , rt.intTypeLiteral)
 
+    _puts = (rt, _this , charPtr) ->
+      print_mask = rt.makeCharArrayFromString "%s"
+      _printf(rt,null ,print_mask, charPtr)
+      rt.val(rt.intTypeLiteral,0)
 
-
-    
+    rt.regFunc( _puts, "global" , "puts" , [pchar] , rt.intTypeLiteral)
+    ##DEPENDENT ON PRINTF##
