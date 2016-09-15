@@ -34,11 +34,33 @@ validate_format = (rt, format, params...) ->
     else
       val = casted.v
 
+
+
 module.exports =
   load: (rt) ->
     rt.include "cstring"
     pchar = rt.normalPointerType(rt.charTypeLiteral)
+    pvoid = rt.voidPointerType;
     stdio = rt.config.stdio;
+    input_stream = stdio.drain();
+    input_stream_position = 0;
+
+    _consume_next_char = ()->
+      if input_stream_position < input_stream.length
+        return input_stream[input_stream_position++];
+      else
+        throw "EOF"
+
+    _consume_next_line = ()->
+      current_input_stream = input_stream.substr(input_stream_position,input_stream.length)
+      next_line_break = current_input_stream.indexOf('\n');
+      if next_line_break > -1
+        retval = current_input_stream.substr(0,next_line_break)
+        input_stream_position+=next_line_break+1
+      else
+        retval = current_input_stream
+        input_stream_position = input_stream.length
+      retval
 
     __printf = (format, params...) ->
       if rt.isStringType format.t
@@ -63,4 +85,35 @@ module.exports =
       rt.val(rt.intTypeLiteral, retval.length)
 
     rt.regFunc(_printf, "global", "printf", [pchar, "?"], rt.intTypeLiteral)
+
+
+    _getchar = (rt, _this) ->
+      try
+        char = _consume_next_char()
+        rt.val(rt.intTypeLiteral,char.charCodeAt(0))
+      catch error
+      #TODO: return EOF
+        rt.val(rt.intTypeLiteral,0)
+
+    rt.regFunc(_getchar, "global" , "getchar", [], rt.intTypeLiteral)
+
+    _gets = (rt, _this, charPtr ) ->
+      retval = _consume_next_line()
+      destArray = charPtr.v.target
+
+      for i in [0..retval.length]
+        try
+          destArray[i] = rt.val(rt.charTypeLiteral, retval.charCodeAt(i))
+        catch
+          destArray[i] = rt.val(rt.charTypeLiteral, 0)
+
+      destArray[retval.length] = rt.val(rt.charTypeLiteral, 0)
+
+      rt.val(pchar,charPtr)
+
+
+    rt.regFunc( _gets, "global" , "gets" , [pchar] , pchar)
+
+
+
     
