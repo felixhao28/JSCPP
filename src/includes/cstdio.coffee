@@ -1,4 +1,5 @@
 printf = require "printf"
+scanf = require "./scanf"
 
 format_type_map = (rt, ctrl) ->
   switch ctrl
@@ -60,6 +61,9 @@ module.exports =
         retval = current_input_stream
         input_stream_position = input_stream.length
       retval
+
+    _get_current_input = ()->
+      input_stream
 
     __printf = (format, params...) ->
       if rt.isStringType format.t
@@ -133,3 +137,13 @@ module.exports =
 
     rt.regFunc( _puts, "global" , "puts" , [pchar] , rt.intTypeLiteral)
     ##DEPENDENT ON PRINTF##
+
+    _scanf = (rt, _this, pchar, args...) ->
+      format = rt.getStringFromCharArray(pchar)
+      a = scanf(format,_get_current_input())
+      console.log(a)
+      for val,i in a
+        args[i].v.target.v = val
+
+    rt.regFunc( _scanf , "global" , "scanf" , [pchar, "?"] , rt.intTypeLiteral);
+
