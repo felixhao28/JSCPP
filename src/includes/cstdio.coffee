@@ -293,7 +293,7 @@ module.exports =
 
     _get_integer = (pre,next)->
 
-      text = _get_input(pre, next , '[-]?[A-Za-z0-9]')
+      text = _get_input(pre, next , '[-]?[A-Za-z0-9]+')
 
       if !text
         return null
@@ -323,9 +323,8 @@ module.exports =
         text = _strip_slashes text
       return text
 
-      #TODO test to see if this is working
     _get_char = (pre,next) ->
-      text = _get_input pre, next, '*', 'STR'
+      text = _get_input pre, next, '.', 'STR'
       if /\\/.test text
         text = _strip_slashes text
       return text
@@ -374,6 +373,31 @@ module.exports =
 
       return ret
 
+    _set_pointer_value = (pointer,value)->
+      try
+        switch pointer.t.ptrType
+          when "normal"
+            if rt.isNumericType(pointer.t.targetType)
+              new_value = rt.val(pointer.t.targetType,value,true)
+              pointer.v.target.v = new_value.v
+            else
+              new_value = rt.val(pointer.t.targetType,value.charCodeAt(0),true)
+              pointer.v.target.v = new_value.v
+          when "array"
+            src_array = rt.makeCharArrayFromString value
+            if src_array.v.target.length > pointer.v.target.length
+              rt.raiseException "Not enough memory on pointer"
+            else
+              for i in [0..src_array.v.target.length]
+                try
+                  pointer.v.target[i] = src_array.v.target[i]
+                catch
+                  rt.raiseException "Not enough memory on pointer"
+          else
+           rt.raiseException "Invalid Pointer Type"
+      catch
+        rt.raiseException "Memory overflow"
+
 
     __scanf = (format)->
       re = new RegExp('[^%]*%[A-Za-z][^%]*','g')
@@ -381,36 +405,32 @@ module.exports =
       _deal_type(val) for val in selectors
     #############################SCANF IMPL#####################################
 
-    #TODO check for mismatching pointers
-    #TODO check character macthing
     _scanf = (rt, _this, pchar, args...) ->
+
       format = rt.getStringFromCharArray(pchar)
       matched_values = __scanf(format)
+
       for val,i in matched_values
-        args[i].v.target.v = val
+        _set_pointer_value args[i], val
 
       rt.val rt.intTypeLiteral,matched_values.length
 
 
     rt.regFunc( _scanf , "global" , "scanf" , [char_pointer, "?"] , rt.intTypeLiteral)
 
-    #TODO change this function to pass the string to __scanf instead of playing with
-    #current stream
+    #TODO change this function to pass the string to __scanf instead of playing with current stream
     _sscanf = (rt, _this , original_string_pointer , format_pointer, args...) ->
+
       format = rt.getStringFromCharArray format_pointer
       original_string = rt.getStringFromCharArray original_string_pointer
-
       original_input_stream = input_stream
-
       input_stream = original_string
-
       matched_values = __scanf(format)
 
       for val,i in matched_values
-        args[i].v.target.v = val
+        _set_pointer_value args[i], val
 
       input_stream = original_input_stream
-
       rt.val rt.intTypeLiteral,matched_values.length
 
     rt.regFunc(_sscanf , "global" ,"sscanf", [char_pointer,char_pointer,"?"], rt.intTypeLiteral)

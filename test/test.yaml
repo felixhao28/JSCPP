@@ -256,13 +256,23 @@
         out: "Hello world!"
     scanf:
       cases:
-        cpp: "scanf_formats.cpp"
-        in: "4"
-        out: "4"
+        -
+          cpp: "scanf_wrong_type.cpp"
+          in: "invalid_val"
+          exception: "Memory overflow"
+        -
+          cpp: "scanf_overflow.cpp"
+          in: "012345678912345567"
+          exception: "Memory overflow"
+        -
+          cpp: "scanf_formats.cpp"
+          in: "603 43.89 testing -908 -33.58"
+          out: "603 43.89 testing -908 -33.58"
+
     sscanf:
       cases:
         cpp: "sscanf.cpp"
-        out: "March 25, 1989 = Saturday"
+        out: "March 25,1989 = Saturday"
 
 
 

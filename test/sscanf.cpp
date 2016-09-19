@@ -8,7 +8,7 @@ int main()
 
    sscanf( "Saturday March 25 1989\n" , "%s %s %d  %d", weekday, month, &day, &year );
 
-   printf("%s %d, %d = %s\n", month, day, year, weekday );
+   printf("%s %d,%d = %s\n", month, day, year, weekday );
 
    return(0);
 }
