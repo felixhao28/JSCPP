@@ -236,7 +236,7 @@
       cases:
         cpp: "printf.cpp"
         out: "boo\n  -42\n  +42\n00042\n42   \n42.90\n042.90\n\x7f\na\n\"\n10%\n+hello+\n$"
-    scanf:
+    getchar:
       cases:
           cpp: "getchar.cpp"
           in: "abc123!@#$% ';[]+_="
@@ -251,6 +251,18 @@
         cpp: "putchar.cpp"
         out: "hello\n12345678    \n!@#$%^&*('~&\n"
     puts:
-          cases:
-            cpp: "puts.cpp"
-            out: "Hello world!"
+      cases:
+        cpp: "puts.cpp"
+        out: "Hello world!"
+    scanf:
+      cases:
+        cpp: "scanf_formats.cpp"
+        in: "4"
+        out: "4"
+    sscanf:
+      cases:
+        cpp: "sscanf.cpp"
+        out: "March 25, 1989 = Saturday"
+
+
+

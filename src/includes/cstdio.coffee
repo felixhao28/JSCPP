@@ -1,5 +1,6 @@
 printf = require "printf"
-
+EOF = 0;
+NULL = -1;
 
 format_type_map = (rt, ctrl) ->
   switch ctrl
@@ -40,26 +41,31 @@ validate_format = (rt, format, params...) ->
 module.exports =
   load: (rt) ->
     rt.include "cstring"
-    pchar = rt.normalPointerType(rt.charTypeLiteral)
+    char_pointer = rt.normalPointerType(rt.charTypeLiteral)
     stdio = rt.config.stdio;
     input_stream = stdio.drain();
-    input_stream_position = 0;
+
 
     _consume_next_char = ()->
-      if input_stream_position < input_stream.length
-        return input_stream[input_stream_position++];
+      char_return = ""
+      if input_stream.length > 0
+        char_return = input_stream[0]
+        input_stream = input_stream.substr(1)
+        char_return
       else
         throw "EOF"
 
     _consume_next_line = ()->
-      current_input_stream = input_stream.substr(input_stream_position,input_stream.length)
-      next_line_break = current_input_stream.indexOf('\n');
+      input_stream
+      next_line_break = input_stream.indexOf('\n');
+
       if next_line_break > -1
-        retval = current_input_stream.substr(0,next_line_break)
-        input_stream_position+=next_line_break+1
+        retval = input_stream.substr(0,next_line_break)
+        input_stream = input_stream.replace("#{retval}\n",'')
       else
-        retval = current_input_stream
-        input_stream_position = input_stream.length
+        retval = input_stream
+        input_stream = ""
+
       retval
 
 
@@ -74,10 +80,10 @@ module.exports =
 
     _sprintf = (rt, _this, target, format, params...) ->
       retval = __printf(format, params...)
-      rt.getFunc("global", "strcpy", [pchar, pchar])(rt, null, [target, retval])
+      rt.getFunc("global", "strcpy", [char_pointer, char_pointer])(rt, null, [target, retval])
       rt.val(rt.intTypeLiteral, retval.length)
 
-    rt.regFunc(_sprintf, "global", "sprintf", [pchar, pchar, "?"], rt.intTypeLiteral)
+    rt.regFunc(_sprintf, "global", "sprintf", [char_pointer, char_pointer, "?"], rt.intTypeLiteral)
 
     _printf = (rt, _this, format, params...) ->
       retval = __printf(format, params...)
@@ -85,35 +91,34 @@ module.exports =
       stdio.write retval
       rt.val(rt.intTypeLiteral, retval.length)
 
-    rt.regFunc(_printf, "global", "printf", [pchar, "?"], rt.intTypeLiteral)
-
+    rt.regFunc(_printf, "global", "printf", [char_pointer, "?"], rt.intTypeLiteral)
 
     _getchar = (rt, _this) ->
       try
         char = _consume_next_char()
         rt.val(rt.intTypeLiteral,char.charCodeAt(0))
       catch error
-      #TODO: return EOF
-        rt.val(rt.intTypeLiteral,0)
+        rt.val(rt.intTypeLiteral,EOF)
 
     rt.regFunc(_getchar, "global" , "getchar", [], rt.intTypeLiteral)
 
     _gets = (rt, _this, charPtr ) ->
-      retval = _consume_next_line()
+
+      return_value = _consume_next_line()
       destArray = charPtr.v.target
 
-      for i in [0..retval.length]
+      for i in [0..return_value.length]
         try
-          destArray[i] = rt.val(rt.charTypeLiteral, retval.charCodeAt(i))
+          destArray[i] = rt.val rt.charTypeLiteral, return_value.charCodeAt(i)
         catch
-          destArray[i] = rt.val(rt.charTypeLiteral, 0)
+          destArray[i] = rt.val rt.charTypeLiteral, 0
 
-      destArray[retval.length] = rt.val(rt.charTypeLiteral, 0)
+      destArray[return_value.length] = rt.val rt.charTypeLiteral, 0
 
-      rt.val(pchar,charPtr)
+      rt.val(char_pointer,charPtr)
 
 
-    rt.regFunc( _gets, "global" , "gets" , [pchar] , pchar)
+    rt.regFunc( _gets, "global" , "gets" , [char_pointer] , char_pointer)
 
     ##DEPENDENT ON PRINTF##
     ##these implementations is dependent on printf implementation
@@ -124,16 +129,16 @@ module.exports =
     _putchar = (rt, _this, char) ->
       print_mask = rt.makeCharArrayFromString "%c"
       _printf(rt,null ,print_mask,char)
-      rt.val(rt.intTypeLiteral,0)
+      char
 
     rt.regFunc( _putchar, "global" , "putchar" , [rt.charTypeLiteral] , rt.intTypeLiteral)
 
     _puts = (rt, _this , charPtr) ->
       print_mask = rt.makeCharArrayFromString "%s"
       _printf(rt,null ,print_mask, charPtr)
-      rt.val(rt.intTypeLiteral,0)
+      rt.val(rt.intTypeLiteral,1)
 
-    rt.regFunc( _puts, "global" , "puts" , [pchar] , rt.intTypeLiteral)
+    rt.regFunc( _puts, "global" , "puts" , [char_pointer] , rt.intTypeLiteral)
     ##DEPENDENT ON PRINTF##
 
     #####################HELPER FUNCTION TO SCANF ###############################
@@ -176,9 +181,7 @@ module.exports =
         else
           throw  new Error("Ivalid ascii [#{c}]")
 
-        #TODO USE MATH.POW
-        while digit--
-          ret*=16
+        num *= Math.pow 16,digit
 
         ret
 
@@ -204,9 +207,7 @@ module.exports =
       else
         throw new Error "invalid char at [#{c}]"
 
-      #TODO USE MATH.POW
-      while digit--
-        num*=8
+      num *= Math.pow 8,digit
 
       return num
 
@@ -253,6 +254,7 @@ module.exports =
 
 
     #####################HELPER FUNCTION TO SCANF ###############################
+
     #############################SCANF IMPL######################################
 
 
@@ -283,7 +285,7 @@ module.exports =
 
       result = m[1]
 
-      input_stream = input.substr(input.indexOf(result)).replace(result, '').replace(next, '')
+      input_stream = input_stream.substr(input_stream.indexOf(result)).replace(result, '').replace(next, '')
 
       #returing result
       result
@@ -321,6 +323,13 @@ module.exports =
         text = _strip_slashes text
       return text
 
+      #TODO test to see if this is working
+    _get_char = (pre,next) ->
+      text = _get_input pre, next, '*', 'STR'
+      if /\\/.test text
+        text = _strip_slashes text
+      return text
+
     _get_line = (pre,next)->
       text = _get_input pre, next, '[^\n\r]*'
       if /\\/.test text
@@ -348,8 +357,9 @@ module.exports =
       switch type
         when "%d", "%ld","%llu","%lu","%u"
           ret = _get_integer pre,next
-        #TODO getchar
-        when "%s", "%c"
+        when "%c"
+          ret = _get_char pre, next
+        when "%s"
           ret = _get_string pre, next
         when "%S"
           ret = _get_line pre,next
@@ -371,15 +381,37 @@ module.exports =
       _deal_type(val) for val in selectors
     #############################SCANF IMPL#####################################
 
+    #TODO check for mismatching pointers
+    #TODO check character macthing
     _scanf = (rt, _this, pchar, args...) ->
       format = rt.getStringFromCharArray(pchar)
-      a = __scanf(format)
-      console.log(a)
-      for val,i in a
+      matched_values = __scanf(format)
+      for val,i in matched_values
         args[i].v.target.v = val
 
+      rt.val rt.intTypeLiteral,matched_values.length
 
 
+    rt.regFunc( _scanf , "global" , "scanf" , [char_pointer, "?"] , rt.intTypeLiteral)
 
-    rt.regFunc( _scanf , "global" , "scanf" , [pchar, "?"] , rt.intTypeLiteral);
+    #TODO change this function to pass the string to __scanf instead of playing with
+    #current stream
+    _sscanf = (rt, _this , original_string_pointer , format_pointer, args...) ->
+      format = rt.getStringFromCharArray format_pointer
+      original_string = rt.getStringFromCharArray original_string_pointer
+
+      original_input_stream = input_stream
+
+      input_stream = original_string
+
+      matched_values = __scanf(format)
+
+      for val,i in matched_values
+        args[i].v.target.v = val
+
+      input_stream = original_input_stream
+
+      rt.val rt.intTypeLiteral,matched_values.length
+
+    rt.regFunc(_sscanf , "global" ,"sscanf", [char_pointer,char_pointer,"?"], rt.intTypeLiteral)
 

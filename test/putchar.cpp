@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+
 int main()
 {
     char* inputs = "hello\n12345678    \n!@#$%^&*('~&\n\0";
