@@ -240,3 +240,40 @@
       cases:
         cpp: "cstdio_cstring_conflict.cpp"
         out: "test - ok"
+    getchar:
+      cases:
+          cpp: "getchar.cpp"
+          in: "abc123!@#$% ';[]+_="
+          out: "abc123!@#$% ';[]+_="
+    gets:
+      cases:
+        cpp: "gets.cpp"
+        in: "hello\n12345678    \n!@#$%^&*('~&\n"
+        out: "hello12345678    !@#$%^&*('~&\n"
+    putchar:
+      cases:
+        cpp: "putchar.cpp"
+        out: "hello\n12345678    \n!@#$%^&*('~&\n"
+    puts:
+      cases:
+        cpp: "puts.cpp"
+        out: "Hello world!"
+    scanf:
+      cases:
+        -
+          cpp: "scanf_wrong_type.cpp"
+          in: "invalid_val"
+          exception: "Memory overflow"
+        -
+          cpp: "scanf_overflow.cpp"
+          in: "012345678912345567"
+          exception: "Memory overflow"
+        -
+          cpp: "scanf_formats.cpp"
+          in: "603 43.89 testing -908 -33.58"
+          out: "603 43.89 testing -908 -33.58"
+
+    sscanf:
+      cases:
+        cpp: "sscanf.cpp"
+        out: "March 25,1989 = Saturday"
