@@ -322,6 +322,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Fixed printf function
 	- Dev
 		+ Update dependencies to latest
+* v2.0.7 (-)
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
