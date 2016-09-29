@@ -644,14 +644,19 @@ CRuntime::newClass = (classname, members) ->
   sig = @getTypeSignature(clsType)
   if sig of @types
     @raiseException @makeTypeString(clsType) + " is already defined"
-  @types[sig] = "#constructor": (rt, _this, initMembers) ->
-    _this.v.members = {}
-    i = 0
-    while i < members.length
-      member = members[i]
-      _this.v.members[member.name] = initMembers[member.name]
-      i++
-    return
+  @types[sig] =
+    "#constructor": (rt, _this) ->
+      _this.v.members = {}
+      i = 0
+      while i < members.length
+        member = members[i]
+        _this.v.members[member.name] = if member.initialize?
+            member.initialize(rt, _this)
+          else
+            rt.defaultValue(member.t, true)
+        i++
+      return
+    "#members": members
   clsType
 
 CRuntime::primitiveType = (type) ->
@@ -779,7 +784,9 @@ CRuntime::defaultValue = (type, left) ->
     if @isNumericType(type)
       return @val(type, 0, left)
   else if type.type is "class"
-    @raiseException "no default value for object"
+    ret = @val(type, {}, left)
+    @types[@getTypeSignature(type)]["#constructor"](this, ret)
+    return ret
   else if type.type is "pointer"
     if type.ptrType is "normal"
       return @val(type, @nullPointerValue, left)

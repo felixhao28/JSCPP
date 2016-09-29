@@ -312,17 +312,19 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 * v2.0.6 (9.29)
 	- New
 		+ Implemented following methods from cstdlib, thanks to [victorrseloy](https://github.com/victorrseloy):
-			* int getchar(void)
-			* char *gets(char *str)
-			* int putchar(int char)
-			* int puts(const char *str)
-			* int scanf(const char *format, ...)
-			* int sscanf(const char *str, const char *format, ...)
+			* `int getchar(void)`
+			* `char *gets(char *str)`
+			* `int putchar(int char)`
+			* `int puts(const char *str)`
+			* `int scanf(const char *format, ...)`
+			* `int sscanf(const char *str, const char *format, ...)`
 	- Fix
 		+ Fixed printf function
 	- Dev
 		+ Update dependencies to latest
 * v2.0.7 (-)
+	- New
+		+ Support some basic class usages (see `test\class_basics.cpp`).
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

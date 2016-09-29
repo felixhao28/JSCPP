@@ -272,8 +272,11 @@
           cpp: "scanf_formats.cpp"
           in: "603 43.89 testing -908 -33.58"
           out: "603 43.89 testing -908 -33.58"
-
     sscanf:
       cases:
         cpp: "sscanf.cpp"
         out: "March 25,1989 = Saturday"
+    class_basics:
+      cases:
+        cpp: "class_basics.cpp"
+        out: "2,-2\n7\n"
