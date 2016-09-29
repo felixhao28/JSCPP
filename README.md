@@ -309,7 +309,19 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ ctime library
 	- Fix
 		+ Supports functions returning pointer type
-* v2.0.6 (-)
+* v2.0.6 (9.29)
+	- New
+		+ Implemented following methods from cstdlib, thanks to [victorrseloy](https://github.com/victorrseloy):
+			* int getchar(void)
+			* char *gets(char *str)
+			* int putchar(int char)
+			* int puts(const char *str)
+			* int scanf(const char *format, ...)
+			* int sscanf(const char *str, const char *format, ...)
+	- Fix
+		+ Fixed printf function
+	- Dev
+		+ Update dependencies to latest
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
