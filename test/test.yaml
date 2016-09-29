@@ -236,3 +236,7 @@
       cases:
         cpp: "printf.cpp"
         out: "boo\n  -42\n  +42\n00042\n42   \n42.90\n042.90\n\x7f\na\n\"\n10%\n+hello+\n$"
+    library_conflicts:
+      cases:
+        cpp: "cstdio_cstring_conflict.cpp"
+        out: "test - ok"
