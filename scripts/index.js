@@ -5,11 +5,11 @@ setCookie = function(cname, cvalue) {
 };
 
 getCookie = function(cname) {
-  var c, ca, name, _i, _len;
+  var c, ca, j, len, name;
   name = encodeURIComponent(cname) + "=";
   ca = document.cookie.split(';');
-  for (_i = 0, _len = ca.length; _i < _len; _i++) {
-    c = ca[_i];
+  for (j = 0, len = ca.length; j < len; j++) {
+    c = ca[j];
     while (c.charAt(0) === ' ') {
       c = c.substring(1);
     }
@@ -22,12 +22,12 @@ getCookie = function(cname) {
 VariablePanel = React.createClass({
   displayName: "VariablePanel",
   render: function() {
-    var i, last, lastVar, lastVars, lastVarsMap, mydebugger, updated, v, vars, _i, _len, _ref;
+    var i, j, last, lastVar, lastVars, lastVarsMap, len, mydebugger, ref, updated, v, vars;
     mydebugger = this.props["debugger"];
-    _ref = this.props, vars = _ref.vars, lastVars = _ref.lastVars;
+    ref = this.props, vars = ref.vars, lastVars = ref.lastVars;
     lastVarsMap = {};
-    for (_i = 0, _len = lastVars.length; _i < _len; _i++) {
-      lastVar = lastVars[_i];
+    for (j = 0, len = lastVars.length; j < len; j++) {
+      lastVar = lastVars[j];
       lastVarsMap[lastVar.name] = lastVar;
     }
     return React.createElement(Table, {
@@ -35,18 +35,18 @@ VariablePanel = React.createClass({
       "bordered": true,
       "hover": true
     }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Name"), React.createElement("th", null, "Value"), React.createElement("th", null, "Type"))), React.createElement("tbody", null, (function() {
-      var _j, _len1, _results;
-      _results = [];
-      for (i = _j = 0, _len1 = vars.length; _j < _len1; i = ++_j) {
+      var k, len1, results;
+      results = [];
+      for (i = k = 0, len1 = vars.length; k < len1; i = ++k) {
         v = vars[i];
         last = lastVarsMap[v.name];
         updated = (last == null) || last.value !== v.value || last.type !== v.type;
-        _results.push(React.createElement("tr", {
+        results.push(React.createElement("tr", {
           "key": v.name,
           "className": (updated ? "updated-variable-item" : void 0)
         }, React.createElement("td", null, v.name), React.createElement("td", null, v.value), React.createElement("td", null, v.type)));
       }
-      return _results;
+      return results;
     })()));
   }
 });
@@ -125,8 +125,8 @@ Main = React.createClass({
       try {
         this["debugger"] = JSCPP.run(code, input, config);
         return this.startDebug();
-      } catch (_error) {
-        e = _error;
+      } catch (error) {
+        e = error;
         this.handleError(e);
         return this.debug_stop();
       }
@@ -135,8 +135,8 @@ Main = React.createClass({
       try {
         exitCode = JSCPP.run(code, input, config);
         return this.postRun(exitCode);
-      } catch (_error) {
-        e = _error;
+      } catch (error) {
+        e = error;
         this.handleError(e);
         return this.setState({
           status: "editing"
@@ -191,8 +191,8 @@ Main = React.createClass({
       } else {
         return this.updateMarkers();
       }
-    } catch (_error) {
-      e = _error;
+    } catch (error) {
+      e = error;
       this.handleError(e);
       return this.debug_stop();
     }
@@ -285,8 +285,8 @@ Main = React.createClass({
     }
   },
   render: function() {
-    var brand, code, debugging, editing, input, lastVars, markers, output, running, status, vars, _ref;
-    _ref = this.state, code = _ref.code, input = _ref.input, output = _ref.output, status = _ref.status, markers = _ref.markers, vars = _ref.vars, lastVars = _ref.lastVars;
+    var brand, code, debugging, editing, input, lastVars, markers, output, ref, running, status, vars;
+    ref = this.state, code = ref.code, input = ref.input, output = ref.output, status = ref.status, markers = ref.markers, vars = ref.vars, lastVars = ref.lastVars;
     debugging = status === "debugging";
     editing = status === "editing";
     running = status === "running";
@@ -337,7 +337,7 @@ Main = React.createClass({
     }), "Debug"))), React.createElement(Grid, null, (debugging ? React.createElement(Row, {
       "className": "debug-toolbar"
     }, React.createElement(Col, {
-      "md": 12.
+      "md": 12
     }, React.createElement(ButtonGroup, null, React.createElement(Button, {
       "disabled": true,
       "onClick": this.debug_continue
@@ -365,7 +365,7 @@ Main = React.createClass({
       "readOnly": !editing,
       "markers": markers
     })), (debugging ? React.createElement(Col, {
-      "md": 4.
+      "md": 4
     }, React.createElement(VariablePanel, {
       "mydebugger": this["debugger"],
       "vars": vars,
@@ -373,23 +373,23 @@ Main = React.createClass({
     })) : void 0)), React.createElement(Row, {
       "className": "io-row"
     }, React.createElement(Col, {
-      "md": 6.
+      "md": 6
     }, React.createElement(Input, {
       "ref": "input",
       "className": "input-area",
       "type": "textarea",
       "label": "Standard Input",
-      "rows": 5.,
+      "rows": 5,
       "value": input,
       "onChange": this.onChangeInput
     })), React.createElement(Col, {
-      "md": 6.
+      "md": 6
     }, React.createElement(Input, {
       "ref": "output",
       "className": "output-area",
       "type": "textarea",
       "label": "Standard Output",
-      "rows": 5.,
+      "rows": 5,
       "value": output,
       "onChange": this.onChangeOutput
     })))));

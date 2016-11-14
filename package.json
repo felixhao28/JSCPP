@@ -6,7 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "grunt": "^1.0.1",
-    "grunt-coffee-react": "^2.4.1",
+    "grunt-coffee-react": "^5.0.2",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-newer": "^1.1.2",
     "load-grunt-tasks": "^3.4.1"

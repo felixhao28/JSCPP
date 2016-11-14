@@ -32,7 +32,7 @@ AceEditor = React.createClass({
     }
   },
   componentWillReceiveProps: function(nextProps) {
-    var fontSize, highlightActiveLine, marker, markerid, markers, maxLines, mode, name, onLoad, readOnly, setShowPrintMargin, showGutter, theme, value, _i, _j, _len, _len1, _ref;
+    var fontSize, highlightActiveLine, i, j, len, len1, marker, markerid, markers, maxLines, mode, name, onLoad, readOnly, ref, setShowPrintMargin, showGutter, theme, value;
     markers = nextProps.markers, name = nextProps.name, mode = nextProps.mode, theme = nextProps.theme, fontSize = nextProps.fontSize, maxLines = nextProps.maxLines, readOnly = nextProps.readOnly, highlightActiveLine = nextProps.highlightActiveLine, setShowPrintMargin = nextProps.setShowPrintMargin, value = nextProps.value, showGutter = nextProps.showGutter, onLoad = nextProps.onLoad;
     this.editor = ace.edit(name);
     this.editor.getSession().setMode("ace/mode/" + mode);
@@ -48,14 +48,14 @@ AceEditor = React.createClass({
       enableLiveAutocompletion: true
     });
     this.editor.setShowPrintMargin(setShowPrintMargin);
-    _ref = this.markerIds;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      markerid = _ref[_i];
+    ref = this.markerIds;
+    for (i = 0, len = ref.length; i < len; i++) {
+      markerid = ref[i];
       this.editor.getSession().removeMarker(markerid);
     }
     this.markerIds = [];
-    for (_j = 0, _len1 = markers.length; _j < _len1; _j++) {
-      marker = markers[_j];
+    for (j = 0, len1 = markers.length; j < len1; j++) {
+      marker = markers[j];
       this.markerIds.push(this.editor.getSession().addMarker(marker, "debug-highlight", "fullLine"));
     }
     if (this.editor.getValue() !== value) {
@@ -71,8 +71,8 @@ AceEditor = React.createClass({
     }
   },
   render: function() {
-    var className, name, _ref;
-    _ref = this.props, name = _ref.name, className = _ref.className;
+    var className, name, ref;
+    ref = this.props, name = ref.name, className = ref.className;
     return React.createElement("div", {
       "id": name,
       "className": className
