@@ -145,7 +145,9 @@ CRuntime::getCompatibleFunc = (lt, name, args) ->
         ret = t[name][sig]
       else
         compatibles = []
-        t[name]["reg"].forEach (regArgInfo) =>
+        reg = t[name]["reg"]
+        Object.keys(reg).forEach (signature) =>
+          regArgInfo = reg[signature]
           dts = regArgInfo.args
           optionalArgs = regArgInfo.optionalArgs
           if dts[dts.length - 1] is "?" and dts.length - 1 <= ts.length
@@ -253,7 +255,7 @@ CRuntime::regFuncPrototype = (lt, name, args, retType, optionalArgs) ->
     if name not of t
       t[name] = {}
     if "reg" not of t[name]
-      t[name]["reg"] = []
+      t[name]["reg"] = {}
     sig = @makeParametersSignature(args)
     if sig of t[name]
       @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
@@ -261,7 +263,7 @@ CRuntime::regFuncPrototype = (lt, name, args, retType, optionalArgs) ->
     if lt is "global"
       @defVar name, type, @val(type, @makeFunctionPointerValue(null, name, lt, args, retType))
     t[name][sig] = null
-    t[name]["reg"].push
+    t[name]["reg"][sig] ?=
       args: args
       optionalArgs: optionalArgs
   else
@@ -276,7 +278,7 @@ CRuntime::regFunc = (f, lt, name, args, retType, optionalArgs) ->
     if name not of t
       t[name] = {}
     if "reg" not of t[name]
-      t[name]["reg"] = []
+      t[name]["reg"] = {}
     sig = @makeParametersSignature(args)
     if sig of t[name] and t[name][sig]?
       @raiseException "method " + name + " with parameters (" + sig + ") is already defined"
@@ -291,7 +293,7 @@ CRuntime::regFunc = (f, lt, name, args, retType, optionalArgs) ->
       else
         @defVar name, type, @val(type, @makeFunctionPointerValue(f, name, lt, args, retType))
     t[name][sig] = f
-    t[name]["reg"].push
+    t[name]["reg"][sig] =
       args: args
       optionalArgs: optionalArgs
   else

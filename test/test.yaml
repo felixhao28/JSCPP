@@ -75,7 +75,7 @@
           out: "10\n50\n105\n15 0\n5 10"
         -
           cpp: "function_prototypes.cpp"
-          exitcode: 20
+          exitcode: 40
         -
           cpp: "function_prototypes_fail.cpp"
           exception: "8:9 function func does not seem to be implemented"

@@ -4,9 +4,11 @@ int func(int x);
 
 int main() {
     int a = 10;
-    int b = 0;    
+    int b = 0;
+    int c;
     b = func(a);
-    return b;
+    c = func(10);
+    return b + c;
 }
 
 int func(int x){
