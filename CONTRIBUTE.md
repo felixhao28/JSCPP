@@ -161,6 +161,8 @@ _Normal pointer_
 * v:
     - target: {target}
 
+A _Void pointer_ is a _Normal pointer_ with its ptrType set to "void".
+
 _Array pointer_
 
 * t:
@@ -184,3 +186,41 @@ _Function_
     - defineType: {class type}
     - args: {signature(rt.makeParametersSigniture)}
     - retType: {return type}
+
+___Class types___
+
+* t:
+    - type: "class"
+    - name: {class name}
+* v:
+    - members: {a <name, value> dictionary}
+
+### Functions and operators
+
+All functions are registered in `rt.types` (rt is an instance of CRuntime). Every function can be called like this:
+`rt.types[{type signature}][{function name}][{function signature}](rt, _this, args...)`
+
+Type signature is the signature of the type that the function is defined upon. It can be retrieved with `rt.getTypeSignature`. When it is a global function, the type signature is "global".
+
+Funtion signature contains the information on the return type and parameter types of a function. It can be retrieved with `rt.getTypeSignature`.
+
+Operators behave exactly like functions, except that their signatures should be retrieved with `rt.makeOperatorFuncName`.
+
+There are some special cases of function names:
+
+___Class___
+
+* #constructor: {f(rt, _this)}
+* #members:
+    - name: name of the property
+    - initialize (optional): {f(rt, _this)}, initializer function for this member
+
+There are some special cases of function signature
+
+___Function___
+
+* reg: this is a dictionary <function signiture, function type> that are declared under this name of this type.
+
+___Function and operator___
+
+* #default: {f(rt, _this, args...)} this gets called (if exists) when no other signature matches the actual parameters. Useful for variable length functions and parameters having uncertain types.
