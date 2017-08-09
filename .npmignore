@@ -35,3 +35,4 @@ node_modules
 /pegjs/
 /src/
 /test/
+/dist/
