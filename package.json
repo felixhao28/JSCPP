@@ -25,12 +25,13 @@
     "test": "grunt test",
     "prepublish": "grunt build"
   },
-  "main": "main.js",
+  "main": "lib/main.js",
   "dependencies": {
+    "pegjs-util": "^1.4.0",
     "printf": "^0.2.5"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.1.1",
     "coffee-script": "^1.11.1",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
@@ -39,7 +40,7 @@
     "grunt-contrib-coffee": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-test": "^0.13.2",
     "grunt-newer": "^1.2.0",
@@ -50,7 +51,6 @@
     "minimist": "^1.2.0",
     "mocha": "^3.1.2",
     "pegjs": "^0.10.0",
-    "pegjs-util": "^1.4.0",
     "traceur": "0.0.111"
   },
   "repository": {
