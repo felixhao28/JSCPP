@@ -63,7 +63,7 @@ module.exports = (grunt) ->
         options:
           reporter: "spec",
           captureFile: "test.log"
-          require: "coffee-script/register"
+          require: "coffeescript/register"
 
         src: ["test/**/*.coffee"]
 
