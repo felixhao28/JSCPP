@@ -18,7 +18,7 @@ Currently, it is mainly for educational uses for a MOOC course I am running (and
 
 ## Prerequisites
 
-* NodeJS versoin >= 0.11
+* NodeJS version >= 0.11
 * A modern browser
 
 ## How to use
