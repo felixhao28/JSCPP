@@ -1,7 +1,7 @@
 module.exports = (grunt) ->
   require("load-grunt-tasks")(grunt)
   grunt.registerTask "build", "to build", ["clean", "copy", "coffee", "peg", "dist"]
-  grunt.registerTask "dist", "to make distribution version", ["browserify", "shell", "concat", "uglify"]
+  grunt.registerTask "dist", "to make distribution version", ["browserify", "babel", "concat", "uglify"]
   grunt.registerTask "default", "to watch & compile", ["build", "watch"]
   grunt.registerTask "test", "to test", ["mochaTest"]
   pkg = grunt.file.readJSON "package.json"
@@ -47,9 +47,13 @@ module.exports = (grunt) ->
         files:
           "dist/JSCPP.es5.min.js": ["dist/JSCPP.es5.js"]
 
-    shell:
-      dist:
-        command: "node node_modules/traceur/traceur --out dist/JSCPP.es5.js --script dist/JSCPP.js"
+    babel:
+        options:
+          sourceMap: true,
+          presets: ['@babel/preset-env']
+        dist:
+          files:
+            'dist/JSCPP.es5.js': 'dist/JSCPP.js'
 
     concat:
       options:
