@@ -280,3 +280,7 @@
       cases:
         cpp: "class_basics.cpp"
         out: "2,-2\n7\n"
+    infinite_loop:
+      cases:
+        cpp: "infinite_loop.cpp"
+        exception: "Time limit exceeded."
