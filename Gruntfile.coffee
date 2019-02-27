@@ -62,15 +62,6 @@ module.exports = (grunt) ->
         src: ["node_modules/traceur/bin/traceur-runtime.js", "dist/JSCPP.es5.js"]
         dest: "dist/JSCPP.es5.js"
 
-    mochaTest:
-      test:
-        options:
-          reporter: "spec",
-          captureFile: "test.log"
-          require: "coffeescript/register"
-
-        src: ["test/**/*.coffee"]
-
     peg:
       build:
         cwd: "pegjs"
