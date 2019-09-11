@@ -178,7 +178,7 @@ If you do not provide a customized `write` method for `stdio` configuration, con
 ### Run tests
 
 ```
-npm test
+npm run test
 ```
 
 ## Q&A
