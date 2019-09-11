@@ -143,7 +143,7 @@ A full interactive example is available in *demo/debug.coffee*. Use `node -harmo
 
 ### With a modern browser
 
-There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, use `grunt build` to generate one.
+There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, use `npm run build` to generate one.
 
 Then you can add it to your html. The exported global name for this package is "JSCPP".
 
