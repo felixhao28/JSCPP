@@ -694,9 +694,10 @@ Interpreter::visit = (interp, s, param) ->
     @rt.raiseException "untyped syntax structure"
   return ret
 
-Interpreter::run = (tree) ->
+Interpreter::run = (tree, source, param) ->
   @rt.interp = this
-  yield from @visit this, tree
+  @source = source
+  yield from @visit this, tree, param
 
 Interpreter::arrayInit = (dimensions, init, level, type, param) ->
   arr = undefined

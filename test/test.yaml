@@ -284,3 +284,12 @@
       cases:
         cpp: "strcat.cpp"
         out: "strcat( str1, str2): 111222"
+    uninitialized:
+      cases:
+        -
+          cpp: "uninitialized.cpp"
+          out: "1.000000,"
+          exception: "7:9 uninitialized value when using printf"
+        -
+          cpp: "uninitialized_pointer.cpp"
+          exception: "3:12 you cannot dereference an unitialized pointer"

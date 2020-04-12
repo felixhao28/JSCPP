@@ -325,6 +325,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 * v2.0.7 (-)
 	- New
 		+ Support some basic class usages (see `test\class_basics.cpp`).
+		+ Uses special uninitialized numeric and poitner value.
 	- Fix
 		+ Fixed some string-related methods.
 

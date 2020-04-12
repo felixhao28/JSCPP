@@ -103,7 +103,7 @@ CRuntime::defFunc = (lt, name, retType, argTypes, argNames, stmts, interp, optio
         else
           argValue = yield from interp.visit(interp, optionalArg.expression)
           rt.defVar optionalArg.name, optionalArg.type, rt.cast(optionalArg.type, argValue)
-      ret = yield from interp.run(stmts, scope: "function")
+      ret = yield from interp.run(stmts, interp.source, scope: "function")
       if not rt.isTypeEqualTo(retType, rt.voidTypeLiteral)
         if ret instanceof Array and ret[0] is "return"
           ret = rt.cast(retType, ret[1])
@@ -361,7 +361,7 @@ CRuntime::defVar = (varname, type, initval) ->
     @raiseException "variable " + varname + " already defined"
   vc = @scope[@scope.length - 1]
   # logger.log("defining variable: %j, %j", varname, type);
-  initval = @clone(@cast(type, initval))
+  initval = @clone(@cast(type, initval), true)
   if initval is undefined
     vc[varname] = @defaultValue(type)
     vc[varname].left = true
@@ -505,8 +505,8 @@ CRuntime::cast = (type, value) ->
     @raiseException "cast failed from type " + @makeTypeString(type) + " to " + @makeTypeString(value.t)
   return
 
-CRuntime::clone = (v) ->
-  @val v.t, v.v
+CRuntime::clone = (v, isInitializing) ->
+  @val v.t, v.v, false, isInitializing
 
 CRuntime::enterScope = (scopename) ->
   @scope.push "$name": scopename
@@ -520,9 +520,17 @@ CRuntime::exitScope = (scopename) ->
       break
   return
 
-CRuntime::val = (type, v, left) ->
-  if @isNumericType(type) and not @inrange(type, v)
-    @raiseException "overflow of #{@makeValString({t:type, v:v})}"
+CRuntime::val = (type, v, left, isInitializing) ->
+  if @isNumericType(type)
+    if isInitializing
+      if isNaN v
+        checkRange = false
+      else
+        checkRange = true
+    else
+      checkRange = true
+    if checkRange and not @inrange(type, v)
+      @raiseException "overflow of #{@makeValString({t:type, v:v})}"
   if left is undefined
     left = false
   {
@@ -784,14 +792,14 @@ CRuntime::makeValString = (l) ->
 CRuntime::defaultValue = (type, left) ->
   if type.type is "primitive"
     if @isNumericType(type)
-      return @val(type, 0, left)
+      return @val(type, NaN, left, true)
   else if type.type is "class"
     ret = @val(type, {}, left)
     @types[@getTypeSignature(type)]["#constructor"](this, ret)
     return ret
   else if type.type is "pointer"
     if type.ptrType is "normal"
-      return @val(type, @nullPointerValue, left)
+      return @val(type, @makeNormalPointerValue(NaN), left)
     else if type.ptrType is "array"
       init = []
       for i in [0...type.size]

@@ -424,6 +424,8 @@ module.exports = ->
   @types["pointer_normal"] =
     "o(*)": "#default": (rt, l, r) ->
       if r == undefined
+        if typeof(l.v.target) is "number" and isNaN(l.v.target)
+          rt.raiseException "you cannot dereference an unitialized pointer"
         return l.v.target
       else
         rt.raiseException "you cannot multiply a pointer"

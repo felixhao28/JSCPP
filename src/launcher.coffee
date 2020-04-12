@@ -64,7 +64,7 @@ module.exports =
     if result.error?
       throw "ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true)
     interpreter = new Interpreter(rt)
-    defGen = interpreter.run result.ast
+    defGen = interpreter.run result.ast, code
     loop
       step = defGen.next()
       break if step.done

@@ -1,7 +1,7 @@
 module.exports = (grunt) ->
   require("load-grunt-tasks")(grunt)
   grunt.registerTask "build", "to build", ["clean", "copy", "coffee", "peg", "dist"]
-  grunt.registerTask "dist", "to make distribution version", ["browserify", "babel", "concat", "uglify"]
+  grunt.registerTask "dist", "to make distribution version", ["browserify", "babel", "uglify"]
   grunt.registerTask "default", "to watch & compile", ["build", "watch"]
   grunt.registerTask "test", "to test", ["mochaTest"]
   pkg = grunt.file.readJSON "package.json"

@@ -34,6 +34,8 @@ validate_format = (rt, format, params...) ->
     if rt.isStringType casted.t
       val = rt.getStringFromCharArray casted
     else
+      if isNaN(casted.v)
+        rt.raiseException "uninitialized value when using printf"
       val = casted.v
 
 
