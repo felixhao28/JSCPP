@@ -40,23 +40,24 @@ module.exports = load: (rt) ->
         i = src.v.position
         j = dest.v.position
         if i < j
-          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ src ]).v
+          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, src).v
           if i + lensrc + 1 >= j
             rt.raiseException "overlap is not allowed"
         else
-          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ src ]).v
-          lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ dest ]).v
+          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, src).v
+          lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, dest).v
           if j + lensrc + lendest + 1 >= i
             rt.raiseException "overlap is not allowed"
-      lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ dest ]).v
-      newDest = rt.val(pchar, rt.makeArrayPointerValue(dest.v.target, dest.v.position + lendest))
+      lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, dest).v
+      pCharArr = rt.arrayPointerType(rt.charTypeLiteral, dest.t.size)
+      newDest = rt.val(pCharArr, rt.makeArrayPointerValue(dest.v.target, dest.v.position + lendest))
       return rt.getFunc("global", "strcpy", [
         pchar
         pchar
-      ])(rt, null, [
+      ])(rt, null,
         newDest
         src
-      ])
+      )
     else
       rt.raiseException "destination or source is not an array"
     dest
@@ -72,29 +73,29 @@ module.exports = load: (rt) ->
         i = src.v.position
         j = dest.v.position
         if i < j
-          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ src ]).v
+          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, src).v
           if lensrc > num
             lensrc = num
           if i + lensrc + 1 >= j
             rt.raiseException "overlap is not allowed"
         else
-          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ src ]).v
+          lensrc = rt.getFunc("global", "strlen", [ pchar ])(rt, null, src).v
           if lensrc > num
             lensrc = num
-          lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ dest ]).v
+          lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, dest).v
           if j + lensrc + lendest + 1 >= i
             rt.raiseException "overlap is not allowed"
-      lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, [ dest ]).v
+      lendest = rt.getFunc("global", "strlen", [ pchar ])(rt, null, dest).v
       newDest = rt.val(pchar, rt.makeArrayPointerValue(dest.v.target, dest.v.position + lendest))
       return rt.getFunc("global", "strncpy", [
         pchar
         pchar
         sizet
-      ])(rt, null, [
+      ])(rt, null, 
         newDest
         src
         num
-      ])
+      )
     else
       rt.raiseException "destination or source is not an array"
     dest

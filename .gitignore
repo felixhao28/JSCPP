@@ -33,3 +33,4 @@ node_modules
 /dist/
 /lib/
 /demo/*.js
+/demo/*.js.map

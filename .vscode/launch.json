@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/demo/debug.coffee",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            // "args": ["-f", "test\\string_sizeof.cpp"],
+            "console": "integratedTerminal"
+        }
+    ]
+}

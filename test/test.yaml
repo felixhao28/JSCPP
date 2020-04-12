@@ -280,3 +280,7 @@
       cases:
         cpp: "class_basics.cpp"
         out: "2,-2\n7\n"
+    strcat:
+      cases:
+        cpp: "strcat.cpp"
+        out: "strcat( str1, str2): 111222"

@@ -15,17 +15,17 @@ if process.argv.length > 2
     input = argv.i or argv.in
 
   if argv.f or argv.file
-    code = fs.readFileSync(argv.f or argv.file)
+    code = fs.readFileSync(argv.f or argv.file, "utf-8")
     input or= ""
   else
-    tests = yaml.safeLoad fs.readFileSync "test/test.yaml"
+    tests = yaml.safeLoad fs.readFileSync("test/test.yaml", "utf-8")
     cases = tests.tests[testName].cases
     if Array.isArray cases
       cases = cases[0]
     cppFile = cases.cpp
     input = cases.in or ""
 
-    code = fs.readFileSync("./test/" + cppFile)
+    code = fs.readFileSync("./test/" + cppFile, "utf-8")
 
   if not config.debug
     exitcode = JSCPP.run(code, input, config)

@@ -10,6 +10,13 @@ function addPositionInfo(r){
     r.sOffset = peg$savedPos;
     return r;
 }
+
+function handleConstant(input, r) {
+    if (r.eOffset == null) {
+        return r;
+    }
+    return input.substring(r.sOffset, r.eOffset);
+}
 }
 
 //-------------------------------------------------------------------------
@@ -208,6 +215,10 @@ COMPLEX   = a:"_Complex"   !IdChar Spacing {return a;};
 STDCALL   = a:"_stdcall"   !IdChar Spacing {return a;};
 DECLSPEC  = a:"__declspec" !IdChar Spacing {return a;};
 ATTRIBUTE = a:"__attribute__" !IdChar Spacing {return a;};
+NAMESPACE = a:"namespace"     !IdChar Spacing {return a;};
+USING     = a:"using"         !IdChar Spacing {return a;};
+TRUE      = a:"true"          !IdChar Spacing {return a;};
+FALSE      = a:"false"          !IdChar Spacing {return a;};
 
 Keyword
     = a:( "auto"
@@ -268,8 +279,8 @@ SeperatorArgs = a:(Keyword / !IdNondigit ![\r\n,)] a:_ {return a;}) b:InlineSpac
     return {type: 'Seperator', val:a, space:b}
 };
 
-Seperator = a:(Keyword / !IdNondigit ![\r\n] a:_ {return a;}) b:InlineSpacing {
-    return {type: 'Seperator', val:a, space:b}
+Seperator = a:(Keyword / Constant / StringLiteral / !IdNondigit ![\r\n] a:_ {return a;}) b:InlineSpacing {
+    return {type: 'Seperator', val:handleConstant(input, a), space:b}
 };
 
 IdNondigit
@@ -303,6 +314,151 @@ HexQuad = a:(HexDigit HexDigit HexDigit HexDigit) {
 
 HexDigit        = [a-f] / [A-F] / [0-9] ;
 
+
+//-------------------------------------------------------------------------
+//  A.1.5  Constants
+//-------------------------------------------------------------------------
+
+Constant
+    = a:(FloatConstant 
+    / IntegerConstant 
+    / EnumerationConstant 
+    / CharacterConstant
+    / BooleanConstant) {return a;}
+    ;
+
+BooleanConstant
+    = a:(TRUE / FALSE) {
+      return a;
+    }
+
+IntegerConstant
+    = a:( BinaryConstant
+      / DecimalConstant
+      / HexConstant
+      / OctalConstant
+      )
+    b:IntegerSuffix? {return a;}
+    ;
+
+DecimalConstant = a:[1-9] b:[0-9]* {return addPositionInfo({type:'DecimalConstant', value:a + b.join("")});};
+
+OctalConstant   = "0" a:[0-7]* {
+  if (a.length>0)
+    return addPositionInfo({type:'OctalConstant', value:a.join("")});
+  else
+    return addPositionInfo({type:'OctalConstant', value:'0'});
+};
+
+HexConstant     = HexPrefix a:HexDigit+ {return addPositionInfo({type:'HexConstant', value:a.join("")});};
+
+HexPrefix       = "0x" / "0X" ;
+
+HexDigit        = [a-f] / [A-F] / [0-9] ;
+
+BinaryPrefix    = "0b" ;
+
+BinaryDigit     = [0-1] ;
+
+BinaryConstant  = BinaryPrefix a:BinaryDigit+ {return addPositionInfo({type:'BinaryConstant', value:a.join("")});};
+
+IntegerSuffix
+    = [uU] Lsuffix?
+    / Lsuffix [uU]?
+    ;
+
+Lsuffix
+    = "ll"
+    / "LL"
+    / [lL]
+    ;
+
+FloatConstant
+    = a:( DecimalFloatConstant
+      / HexFloatConstant
+      )
+    b:FloatSuffix? Spacing {
+      if (b)
+        return addPositionInfo({type:'FloatConstant', Expression:a});
+      else
+        return a;
+    }
+    ;
+
+DecimalFloatConstant
+    = a:Fraction b:Exponent? {return addPositionInfo({type:'DecimalFloatConstant', value:a+b||''});}
+    / a:[0-9]+ b:Exponent {return addPositionInfo({type:'DecimalFloatConstant', value:a.join('')+b});}
+    ;
+
+HexFloatConstant
+    = a:HexPrefix b:HexFraction c:BinaryExponent? {return addPositionInfo({type:'HexFloatConstant', value:a+b+c||''});}
+    / a:HexPrefix b:HexDigit+ c:BinaryExponent {return addPositionInfo({type:'HexFloatConstant', value:a+b.join('')+c});}
+    ;
+
+Fraction
+    = a:[0-9]* "." b:[0-9]+ {return a.join('')+'.'+b.join('');}
+    / a:[0-9]+ "." {return a.join('');}
+    ;
+
+HexFraction
+    = a:HexDigit* "." b:HexDigit+ {return a.join('')+'.'+b.join('');}
+    / a:HexDigit+ "." {return a.join('')+'.';}
+    ;
+
+Exponent = a:[eE] b:[+\-]? c:[0-9]+ {return a+(b||"")+c.join('');};
+
+BinaryExponent = a:[pP][+\-]? b:[0-9]+ {return a+b.join('');};
+
+FloatSuffix = a:[flFL] {return a;};
+
+EnumerationConstant = a:Identifier {return addPositionInfo({type:'EnumerationConstant', Identifier:a});};
+
+CharacterConstant = "L"? "'" a:Char* "'" Spacing {
+  return addPositionInfo({type:'CharacterConstant', Char: a});
+};
+
+Char = a:Escape {return a;} / !['\n\\] a:_ {return a;};
+
+Escape
+    = a:(SimpleEscape
+    / OctalEscape
+    / HexEscape
+    / UniversalCharacter) {return a;}
+    ;
+
+SimpleEscape = a:"\\" b:['\"?\\abfnrtv] {return eval('"' + a + b +'"');};
+OctalEscape  = a:"\\" b:[0-7] c:[0-7]? d:[0-7]? {
+  var ret = "\"";
+  ret += a;
+  ret += b;
+  if (c)
+    ret += c;
+  if (d)
+    ret += d;
+  ret += "\"";
+  return eval(ret);
+};
+HexEscape    = a:"\\x" b:HexDigit+ {return eval('"'+a+b.join('')+'"');};
+
+//-------------------------------------------------------------------------
+//  A.1.6  String Literals
+//-------------------------------------------------------------------------
+
+StringLiteral = a:("L" / "u8" / "u" / "U")? b:(RawStringLiteral / EscapedStringLiteral) {
+  return addPositionInfo({type: 'StringLiteral', prefix:a, value:b});
+};
+
+RawStringLiteral = "R" a:(["] a:RawStringChar* ["] Spacing {return a.join('');})+ {
+  return a.join('');
+};
+
+EscapedStringLiteral = a:(["] a:StringChar* ["] Spacing {return a.join('');})+ {
+  return a.join('');
+};
+
+RawStringChar = ![\"\n] a:_ {return a;};
+
+StringChar = Escape / ![\"\n\\] a:_ {return a;};
 
 //-------------------------------------------------------------------------
 //  A.1.7  Punctuators

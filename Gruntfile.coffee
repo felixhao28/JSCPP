@@ -23,6 +23,7 @@ module.exports = (grunt) ->
       build:
         options:
           bare: true
+          sourceMap: true
         files: [
             expand: true
             cwd: "src"

@@ -750,8 +750,8 @@ IdChar
 //-------------------------------------------------------------------------
 
 UniversalCharacter
-    = "\\u" HexQuad
-    / "\\U" HexQuad HexQuad
+    = "\\u" a:HexQuad { return eval('"\\u' + a.join('') + '"'); }
+    / "\\U" a:HexQuad b:HexQuad { return eval('"\\U' + a.join('') + b.join('') + '"'); }
     ;
 
 HexQuad = HexDigit HexDigit HexDigit HexDigit ;

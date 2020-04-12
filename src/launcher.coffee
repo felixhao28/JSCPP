@@ -68,7 +68,7 @@ module.exports =
     loop
       step = defGen.next()
       break if step.done
-    mainGen = rt.getFunc("global", "main", [])(rt, null, [])
+    mainGen = rt.getFunc("global", "main", [])(rt, null)
     if _config.debug
       mydebugger.start(rt, mainGen)
       mydebugger
