@@ -325,6 +325,8 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 * v2.0.7 (-)
 	- New
 		+ Support some basic class usages (see `test\class_basics.cpp`).
+	- Fix
+		+ Fixed some string-related methods.
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP
