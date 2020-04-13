@@ -37,6 +37,10 @@ cd JSCPP
 npm install .
 ```
 
+Or you can download the minified single JS file directly from here:
+
+https://raw.githubusercontent.com/felixhao28/JSCPP/gh-pages/dist/JSCPP.es5.min.js
+
 ### With NodeJS
 
 ```js
