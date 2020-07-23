@@ -332,6 +332,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Uses special uninitialized numeric and poitner value.
 	- Fix
 		+ Fixed some string-related methods.
+		+ Fixed `pow` in `<cmath>`, thanks to [Clemenard](https://github.com/Clemenard).
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

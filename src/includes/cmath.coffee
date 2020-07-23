@@ -52,8 +52,8 @@ module.exports =
         rt.val(tDouble, Math.log10(x.v))
     ), g, "log10", [ tDouble ], tDouble
     rt.regFunc ((rt, _this, x, y) ->
-        x.v ** y.v
-    ), g, "pow", [ tDouble ], tDouble
+        rt.val(tDouble, x.v ** y.v)
+    ), g, "pow", [ tDouble, tDouble ], tDouble
     rt.regFunc ((rt, _this, x) ->
         rt.val(tDouble, Math.sqrt(x.v))
     ), g, "sqrt", [ tDouble ], tDouble

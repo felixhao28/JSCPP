@@ -25,5 +25,6 @@ int main() {
     cout << floor(123.456) << endl;
     cout << fabs(123.456) << endl;
     cout << abs(123.456) << endl;
+    cout << pow(123.456, 2.2) << endl;
     return 0;
 }
