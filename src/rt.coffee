@@ -377,6 +377,23 @@ CRuntime::inrange = (type, value) ->
   else
     true
 
+CRuntime::do_overflow = (type, value, caller) ->
+  if @isPrimitiveType(type)
+    limit = @config.limits[type.name]
+    limit_diff = limit.max - limit.min + 1
+    value_old = value
+    while value < limit.min
+      value += limit_diff
+    while value > limit.max
+      value -= limit_diff
+    if value_old != value
+      @send_notice("overflow during " + caller)
+  value
+
+CRuntime::send_notice = (notice) ->
+  # TODO show notice in GUI
+  console.log "notice: " + notice
+
 CRuntime::isNumericType = (type) ->
   @isFloatType(type) or @isIntegerType(type)
 
@@ -528,9 +545,14 @@ CRuntime::val = (type, v, left, isInitializing) ->
       else
         checkRange = true
     else
-      checkRange = true
+      # overflow at runtime can be intentional
+      checkRange = false
     if checkRange and not @inrange(type, v)
       @raiseException "overflow of #{@makeValString({t:type, v:v})}"
+
+  # TODO do overflow on init? how strict should we be?
+  #v = @do_overflow(type, v, "cr.val")
+
   if left is undefined
     left = false
   {
