@@ -378,6 +378,7 @@ CRuntime::inrange = (type, value) ->
     true
 
 CRuntime::do_overflow = (type, value, caller) ->
+  # TODO handle float overflow?
   if @isPrimitiveType(type)
     limit = @config.limits[type.name]
     limit_diff = limit.max - limit.min + 1
@@ -452,10 +453,8 @@ CRuntime::cast = (type, value) ->
     else if type.name in ["float", "double"]
       if not @isNumericType(value.t)
         @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
-      if @inrange(type, value.v)
-        return @val(type, value.v)
-      else
-        @raiseException "overflow when casting " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
+      value.v = @do_overflow(type, value.v, "cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type))
+      return @val(type, value.v)
     else
       if type.name.slice(0, 8) is "unsigned"
         if not @isNumericType(value.t)
@@ -472,15 +471,11 @@ CRuntime::cast = (type, value) ->
         @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
       if value.t.name is "float" or value.t.name is "double"
         v = if value.v > 0 then Math.floor(value.v) else Math.ceil(value.v)
-        if @inrange(type, v)
-          return @val(type, v)
-        else
-          @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
+        v = @do_overflow(type, v, "cast " + @makeValString(value) + " to " + @makeTypeString(type))
+        return @val(type, v)
       else
-        if @inrange(type, value.v)
-          return @val(type, value.v)
-        else
-          @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
+        value.v = @do_overflow(type, value.v, "cast " + @makeValString(value) + " to " + @makeTypeString(type))
+        return @val(type, value.v)
   else if @isPointerType(type)
     if @isArrayType(value.t)
       if @isNormalPointerType(type)
