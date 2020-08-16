@@ -220,7 +220,7 @@ If you want to run C++ programs effciently, compile your C++ code to [LLVM-bitco
 
 ### Which libraries are supported?
 
-See current progress in [_includes_](https://github.com/felixhao28/JSCPP/blob/master/includes) folder.
+See current progress in [_includes_](src/includes) folder.
 
 * iostream (only cin and cout and endl)
 * cmath
