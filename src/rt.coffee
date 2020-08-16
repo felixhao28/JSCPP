@@ -370,12 +370,35 @@ CRuntime::defVar = (varname, type, initval) ->
     vc[varname].left = true
   return
 
-CRuntime::inrange = (type, value) ->
+CRuntime::inrange = (type, value, errorMsg) ->
   if @isPrimitiveType(type)
     limit = @config.limits[type.name]
-    value <= limit.max and value >= limit.min
+    overflow = not (value <= limit.max and value >= limit.min)
+    if errorMsg and overflow
+      if @isUnsignedType(type)
+        if @config.unsigned_overflow is "error"
+          @raiseException errorMsg
+          return false
+        else if @config.unsigned_overflow is "warn"
+          console.error errorMsg
+          return true
+        else
+          return true
+      else
+        @raiseException errorMsg
+    return not overflow
   else
     true
+
+CRuntime::ensureUnsigned = (type, value) ->
+  if @isUnsignedType(type)
+    limit = @config.limits[type.name]
+    period = limit.max - limit.min
+    if value < limit.min
+      value += period * Math.ceil((limit.min - value) / period)
+    if value > limit.max
+      value = (value - limit.min) % period + limit.min
+  value
 
 CRuntime::isNumericType = (type) ->
   @isFloatType(type) or @isIntegerType(type)
@@ -435,10 +458,9 @@ CRuntime::cast = (type, value) ->
     else if type.name in ["float", "double"]
       if not @isNumericType(value.t)
         @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
-      if @inrange(type, value.v)
+      if @inrange(type, value.v, "overflow when casting " + @makeTypeString(value.t) + " to " + @makeTypeString(type))
+        value.v = @ensureUnsigned(type, value.v)
         return @val(type, value.v)
-      else
-        @raiseException "overflow when casting " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
     else
       if type.name.slice(0, 8) is "unsigned"
         if not @isNumericType(value.t)
@@ -446,24 +468,21 @@ CRuntime::cast = (type, value) ->
         else if value.v < 0
           {bytes} = @config.limits[type.name]
           newValue = value.v & ((1<<8*bytes)-1) # truncates
-          if not @inrange(type, newValue)
-            @raiseException "cannot cast negative value #{newValue} to " + @makeTypeString(type)
-          else
+          if @inrange(type, newValue, "cannot cast negative value #{newValue} to " + @makeTypeString(type))
+            newValue = @ensureUnsigned(type, newValue)
             # unsafe! bitwise truncation is platform dependent
             return @val(type, newValue)
       if not @isNumericType(value.t)
         @raiseException "cannot cast " + @makeTypeString(value.t) + " to " + @makeTypeString(type)
       if value.t.name is "float" or value.t.name is "double"
         v = if value.v > 0 then Math.floor(value.v) else Math.ceil(value.v)
-        if @inrange(type, v)
+        if @inrange(type, v, "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type))
+          v = @ensureUnsigned(type, v)
           return @val(type, v)
-        else
-          @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
       else
-        if @inrange(type, value.v)
+        if @inrange(type, value.v, "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type))
+          value.v = @ensureUnsigned(type, value.v)
           return @val(type, value.v)
-        else
-          @raiseException "overflow when casting " + @makeValString(value) + " to " + @makeTypeString(type)
   else if @isPointerType(type)
     if @isArrayType(value.t)
       if @isNormalPointerType(type)
@@ -529,8 +548,9 @@ CRuntime::val = (type, v, left, isInitializing) ->
         checkRange = true
     else
       checkRange = true
-    if checkRange and not @inrange(type, v)
-      @raiseException "overflow of #{@makeValString({t:type, v:v})}"
+    if checkRange
+      @inrange(type, v, "overflow of #{@makeValString({t:type, v:v})}")
+      v = @ensureUnsigned(type, v)
   if left is undefined
     left = false
   {

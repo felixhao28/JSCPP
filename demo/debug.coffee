@@ -10,6 +10,9 @@ if process.argv.length > 2
   testName = argv._[0]
   if argv.d or argv.debug
     config.debug = true
+  
+  if argv.unsigned_overflow
+    config.unsigned_overflow = argv.unsigned_overflow
 
   if argv.i or argv.in
     input = argv.i or argv.in

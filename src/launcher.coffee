@@ -51,6 +51,7 @@ module.exports =
           process.stdout.write s
           return
       includes: self.includes
+      unsigned_overflow: "error"
     mergeConfig _config, config
     rt = new CRuntime(_config)
     code = code.toString()

@@ -293,3 +293,13 @@
         -
           cpp: "uninitialized_pointer.cpp"
           exception: "3:12 you cannot dereference an unitialized pointer"
+    overflow:
+      cases:
+        -
+          cpp: "overflow.cpp"
+          exception: "5:5 overflow during post-decrement"
+        -
+          cpp: "overflow.cpp"
+          config:
+            unsigned_overflow: "ignore"
+          out: "254\n"

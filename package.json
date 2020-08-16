@@ -28,13 +28,13 @@
   },
   "main": "lib/main.js",
   "dependencies": {
-    "npm-check-updates": "^7.0.2",
+    "npm-check-updates": "^7.1.1",
     "pegjs-util": "^1.4.19",
     "printf": "^0.5.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "coffeescript": "^2.5.1",
@@ -54,7 +54,7 @@
     "js-yaml": "^3.14.0",
     "load-grunt-tasks": "^5.1.0",
     "minimist": "^1.2.5",
-    "mocha": "^8.0.1",
+    "mocha": "^8.1.1",
     "pegjs": "^0.10.0",
     "traceur": "0.0.111"
   },

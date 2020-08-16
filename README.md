@@ -170,7 +170,8 @@ Then you can add it to your html. The exported global name for this package is "
 			write: function(s) {
 				output += s;
 			}
-		}
+		},
+		unsigned_overflow: "error" // can be "error"(default), "warn" or "ignore"
 	};
 	var exitCode = JSCPP.run(code, input, config);
 	alert(output + "\nprogram exited with code " + exitCode);
@@ -330,6 +331,7 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 	- New
 		+ Support some basic class usages (see `test\class_basics.cpp`).
 		+ Uses special uninitialized numeric and poitner value.
+		+ Adds an "unsigned_overflow" option to treat unsigned numeric overflow as "error"(default), "warn" or "ignore". Overflow on signed types will always throw an error.
 	- Fix
 		+ Fixed some string-related methods.
 		+ Fixed `pow` in `<cmath>`, thanks to [Clemenard](https://github.com/Clemenard).

@@ -49,19 +49,21 @@ doCases = (cases, cb) ->
         expected = prepareOutput(sample.out)
         except = prepareOutput(sample.exception)
         exitcode = sample.exitcode
+        config = sample.config
         _describe "#{cppFile}", ->
-            doSample code, input, expected, except, exitcode, (result) ->
+            doSample code, input, expected, except, exitcode, config, (result) ->
                 success = success and result
     cb success
 
-doSample = (code, input, expected, except, exp_exitcode, cb) ->
+doSample = (code, input, expected, except, exp_exitcode, config, cb) ->
     outputBuffer = ""
 
-    config =
+    config = Object.assign(Object.assign({}, config),
         stdio:
             write: (str) ->
                 outputBuffer += str
                 str.length
+    )
     try
         exitcode = JSCPP.run(code, input, config)
     catch e

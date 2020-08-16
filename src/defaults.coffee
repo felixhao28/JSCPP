@@ -304,14 +304,14 @@ module.exports = ->
       if dummy
         b = l.v
         l.v = l.v + 1
-        if rt.inrange(l.t, l.v)
+        if rt.inrange(l.t, l.v, "overflow during post-increment #{rt.makeValString(l)}")
+          l.v = rt.ensureUnsigned(l.t, l.v)
           return rt.val(l.t, b)
-        rt.raiseException "overflow during post-increment #{rt.makeValString(l)}"
       else
         l.v = l.v + 1
-        if rt.inrange(l.t, l.v)
+        if rt.inrange(l.t, l.v, "overflow during pre-increment #{rt.makeValString(l)}")
+          l.v = rt.ensureUnsigned(l.t, l.v)
           return l
-        rt.raiseException "overflow during pre-increment #{rt.makeValString(l)}"
       return
     "o(--)": "#default": (rt, l, dummy) ->
       if not rt.isNumericType(l.t)
@@ -321,15 +321,15 @@ module.exports = ->
       if dummy
         b = l.v
         l.v = l.v - 1
-        if rt.inrange(l.t, l.v)
+        if rt.inrange(l.t, l.v, "overflow during post-decrement")
+          l.v = rt.ensureUnsigned(l.t, l.v)
           return rt.val(l.t, b)
-        rt.raiseException "overflow during post-decrement"
       else
         l.v = l.v - 1
         b = l.v
-        if rt.inrange(l.t, l.v)
+        if rt.inrange(l.t, l.v, "overflow during pre-decrement")
+          l.v = rt.ensureUnsigned(l.t, l.v)
           return l
-        rt.raiseException "overflow during pre-decrement"
       return
     "o(~)": "#default": (rt, l, dummy) ->
       if not rt.isIntegerType(l.t)
