@@ -300,6 +300,13 @@ Main = React.createClass
                             theme="monokai"
                             readOnly={not editing}
                             markers={markers}
+                            onLoad={(editorInstance) ->
+                              editorInstance.container.style.resize = "both"
+                              # mouseup = css resize end
+                              document.addEventListener("mouseup", (e) -> (
+                                editorInstance.resize()
+                              ))
+                            }
                         />
                     </Col>
                     {
