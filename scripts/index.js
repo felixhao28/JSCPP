@@ -363,7 +363,13 @@ Main = React.createClass({
       "onChange": this.onChange,
       "theme": "monokai",
       "readOnly": !editing,
-      "markers": markers
+      "markers": markers,
+      "onLoad": (function(editorInstance) {
+        editorInstance.container.style.resize = "both";
+        return document.addEventListener("mouseup", function(e) {
+          return editorInstance.resize();
+        });
+      })
     })), (debugging ? React.createElement(Col, {
       "md": 4
     }, React.createElement(VariablePanel, {
