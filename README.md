@@ -10,7 +10,7 @@ Try it out [on github.io](https://felixhao28.github.io/JSCPP/)!
 [![devDependency Status](https://david-dm.org/felixhao28/JSCPP/dev-status.svg)](https://david-dm.org/felixhao28/JSCPP#info=devDependencies)
 ## Purpose of the project
 
-As far as I know, every public online C++ excuting environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
+As far as I know, every public online C++ excecution environment requires backend servers to compile and run the produced executable. A portable and lightweight interpreter that can be run in browsers can be a fine substitute for those who do not intend to pay for such services.
 
 I also want to make a strict interpreter. The reason being C++ has too many undefined and platform-dependent behaviors and popular C++ compilers tend to be an "over-caring mother" who tries to ignore or even justify the undocumented usages. The abuse of them should be avoided as much as possible IMO. For example, I do not want my students to take it as guaranteed that `sizeof int` produces `4`, because on Arduino Uno, an `int` is a 2-byte value.
 
