@@ -74,7 +74,10 @@ module.exports =
       mydebugger.start(rt, mainGen)
       mydebugger
     else
+      startTime = Date.now()
       loop
         step = mainGen.next()
         break if step.done
+        if _config.maxTimeout && Date.now() - startTime > _config.maxTimeout
+          throw "Time limit exceeded."
       step.value.v

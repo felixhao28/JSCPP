@@ -63,6 +63,7 @@ doSample = (code, input, expected, except, exp_exitcode, config, cb) ->
             write: (str) ->
                 outputBuffer += str
                 str.length
+        maxTimeout: 5000
     )
     try
         exitcode = JSCPP.run(code, input, config)

@@ -303,3 +303,7 @@
           config:
             unsigned_overflow: "ignore"
           out: "254\n"
+    infinite_loop:
+      cases:
+        cpp: "infinite_loop.cpp"
+        exception: "Time limit exceeded."
