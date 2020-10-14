@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "outDir": "lib",
+        "lib": [
+            "es6"
+        ],
+        "sourceMap": true,
+        "rootDirs": [
+            "src",
+            "test"
+        ],
+        "allowJs": true,
+        "noImplicitAny": true
+    },
+    "exclude": [
+        "node_modules",
+        "lib",
+        "dist",
+        ".vscode-test",
+        ".eslintrc.js",
+        "Gruntfile.js"
+    ],
+    "include": [
+        "src",
+        "test"
+    ]
+}

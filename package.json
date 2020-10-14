@@ -23,10 +23,26 @@
   "scripts": {
     "build": "grunt build",
     "watch": "grunt",
-    "test": "mocha --require coffeescript/register test/*.coffee",
+    "test": "ts-mocha test/test.ts",
     "prepublish": "grunt build"
   },
-  "main": "lib/main.js",
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "text"
+    ],
+    "all": true
+  },
+  "main": "lib/launcher.js",
   "dependencies": {
     "pegjs-util": "^1.4.19",
     "printf": "^0.6.0"
@@ -34,9 +50,25 @@
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
+    "@types/chai": "^4.2.13",
+    "@types/js-yaml": "^3.12.5",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.11.8",
+    "@types/pegjs": "^0.10.2",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/eslint-plugin-tslint": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
+    "coffee-coverage": "^3.0.1",
     "coffeescript": "^2.5.1",
+    "eslint": "^7.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.6.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "grunt": "^1.3.0",
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "^5.3.0",
@@ -50,12 +82,18 @@
     "grunt-newer": "^1.3.0",
     "grunt-peg": "^2.0.1",
     "grunt-shell": "^3.0.1",
+    "grunt-ts": "^6.0.0-beta.22",
     "js-yaml": "^3.14.0",
     "load-grunt-tasks": "^5.1.0",
     "minimist": "^1.2.5",
     "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
     "pegjs": "^0.10.0",
-    "traceur": "0.0.111"
+    "source-map-support": "^0.5.19",
+    "traceur": "0.0.111",
+    "ts-mocha": "^7.0.0",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.3"
   },
   "repository": {
     "type": "git",
