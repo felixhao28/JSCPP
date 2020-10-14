@@ -30,6 +30,14 @@ export class BaseInterpreter {
     }
 }
 
+function isIterable(obj: any) {
+    // checks for null and undefined
+    if (obj == null) {
+        return false;
+    }
+    return typeof obj[Symbol.iterator] === 'function';
+}
+
 export class Interpreter extends BaseInterpreter {
     visitors: { [name: string]: (interp: Interpreter, s: any, param?: any) => any };
     constructor(rt: CRuntime) {
@@ -224,7 +232,7 @@ export class Interpreter extends BaseInterpreter {
                     rt
                 } = interp);
                 const basetype = rt.simpleType(s.DeclarationSpecifiers);
-                for (const dec of s.InitDeclaratorList.length) {
+                for (const dec of s.InitDeclaratorList) {
                     let init = dec.Initializers;
                     if ((dec.Declarator.right.length > 0) && (dec.Declarator.right[0].type === "DirectDeclarator_modifier_array")) {
                         const dimensions = [];
@@ -972,7 +980,7 @@ export class Interpreter extends BaseInterpreter {
         const {
             rt
         } = interp;
-        // console.log "#{s.sLine}: visiting #{s.type}"
+        // console.log(`${s.sLine}: visiting ${s.type}`);
         if ("type" in s) {
             if (param === undefined) {
                 param = { scope: "global" };
@@ -982,7 +990,16 @@ export class Interpreter extends BaseInterpreter {
             if (s.type in this.visitors) {
                 const f = this.visitors[s.type];
                 if (isGeneratorFunction(f)) {
-                    ret = yield* f(interp, s, param);
+                    const x = f(interp, s, param);
+                    if (x != null) {
+                        if (isIterable(x)) {
+                            ret = yield* x;
+                        } else {
+                            ret = yield x;
+                        }
+                    } else {
+                        ret = yield null;
+                    }
                 } else {
                     yield (ret = f(interp, s, param));
                 }
@@ -1004,7 +1021,6 @@ export class Interpreter extends BaseInterpreter {
     };
 
     *arrayInit(dimensions: number[], init: any, level: number, type: VariableType, param: any): Generator<void, Variable, any> {
-        ;
         if (dimensions.length > level) {
             let val;
             const curDim = dimensions[level];

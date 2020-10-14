@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { CRuntime, IntVariable, ObjectVariable, Variable } from "../rt";
 
-export default {
+export = {
     load(rt: CRuntime) {
         const type = rt.newClass("Foo", [{
             name: "x",

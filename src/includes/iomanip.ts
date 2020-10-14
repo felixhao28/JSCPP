@@ -1,22 +1,8 @@
 /* eslint-disable no-shadow */
-import { CRuntime, IntVariable, ObjectValue, ObjectVariable, Variable } from "../rt";
-import { Cout } from "./iostream";
+import { CRuntime, IntVariable, Variable } from "../rt";
+import { IomanipOperator, IomanipConfig, Cout } from "./shared/iomanip_types";
 
-export interface IomanipConfig {
-    setprecision?: number;
-    fixed?: boolean;
-    setw?: number;
-    setfill?: string;
-}
-
-export interface IomanipOperator extends ObjectVariable {
-    v: ObjectValue & {
-        name: string;
-        f(config: IomanipConfig): void;
-    }
-}
-
-export default {
+export = {
     load(rt: CRuntime) {
         const type = rt.newClass("iomanipulator", []);
         const oType = rt.simpleType("ostream");
@@ -35,14 +21,12 @@ export default {
         });
         rt.regFunc(_setprecesion, "global", "setprecision", [rt.intTypeLiteral], type);
 
-        const _fixed: any = {
+        const _fixed: IomanipOperator = {
             t: type,
             v: {
-                members: {
-                    name: "fixed",
-                    f(config: IomanipConfig) {
-                        config.fixed = true;
-                    }
+                name: "fixed",
+                f(config: IomanipConfig) {
+                    config.fixed = true;
                 }
             }
         };

@@ -1,2 +1,2 @@
 require("babel-polyfill");
-window.JSCPP = require('./main');
+window.JSCPP = require('./launcher');

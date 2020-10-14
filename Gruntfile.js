@@ -65,7 +65,7 @@ module.exports = function (grunt) {
       build: {
         cwd: "pegjs",
         src: ["**/*.pegjs"],
-        dest: "lib",
+        dest: "src",
         ext: ".js",
         expand: true
       }
@@ -79,20 +79,16 @@ module.exports = function (grunt) {
           rootDir: "src",
           additionalFlags: "--downlevelIteration"
         }
-      },
+      }
     },
 
     watch: {
-      ts: {
-        files: ["src/**/*.ts", "test/test.ts"],
-        tasks: ["newer:ts"]
-      },
       peg: {
         files: "pegjs/**/*.pegjs",
         tasks: ["newer:peg"]
       },
       copy: {
-        files: ["src/**", "!src/**/*.coffee"],
+        files: ["src/**/*.js"],
         tasks: ["newer:copy"]
       }
     }

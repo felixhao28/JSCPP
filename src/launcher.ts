@@ -3,9 +3,10 @@ import { CRuntime, IncludeModule, JSCPPConfig, mergeConfig } from "./rt";
 
 import { Interpreter } from "./interpreter";
 const ast = require("./ast");
-import * as preprocessor from "./preprocessor";
-import Debugger from "./debugger";
-import PEGUtil from "pegjs-util";
+const preprocessor = require("./preprocessor");
+import Debugger from "./debugger"
+// @ts-ignore;
+import * as PEGUtil from "pegjs-util";
 
 const includes: { [fileName: string]: IncludeModule } = {
     iostream: require("./includes/iostream"),

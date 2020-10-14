@@ -4,6 +4,40 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Run single test",
+            "program": "${workspaceFolder}/lib/debug.js",
+            "args": [
+                "uninitialized"
+            ],
+            "console": "integratedTerminal",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--bail",
+                "--require",
+                "ts-node/register",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/test/test.ts"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "protocol": "inspector",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug",
             "skipFiles": [
                 "<node_internals>/**"
@@ -12,7 +46,11 @@
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ],
-            // "args": ["-f", "test\\string_sizeof.cpp"],
+            "args": [
+                "-f",
+                "test\\overflow.cpp",
+                "--unsigned_overflow=warn"
+            ],
             "console": "integratedTerminal"
         }
     ]

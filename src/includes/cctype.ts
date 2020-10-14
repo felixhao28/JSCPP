@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { CRuntime } from "../rt";
 
-export default {
+export = {
     load(rt: CRuntime) {
         rt.regFunc((function (rt, _this, x) {
             const c = rt.getFunc("global", "isdigit", [rt.intTypeLiteral])(rt, _this, x);

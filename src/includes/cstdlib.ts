@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { ArrayElementVariable, ArrayVariable, CRuntime, FunctionPointerVariable, IntVariable, NormalPointerType, NormalPointerVariable, Variable } from "../rt";
 
-export default {
+export = {
     load(rt: CRuntime) {
         let m_w = 123456789;
         let m_z = 987654321;

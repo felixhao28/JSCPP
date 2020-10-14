@@ -22,8 +22,10 @@
   ],
   "scripts": {
     "build": "grunt build",
-    "watch": "grunt",
-    "test": "ts-mocha test/test.ts",
+    "watch-tsc": "tsc --watch",
+    "watch-other": "grunt watch",
+    "watch": "npx concurrently 'npm:watch-*'",
+    "test": "ts-mocha test/test.ts --bail",
     "prepublish": "grunt build"
   },
   "nyc": {
@@ -44,6 +46,7 @@
   },
   "main": "lib/launcher.js",
   "dependencies": {
+    "lodash": "^4.17.20",
     "pegjs-util": "^1.4.19",
     "printf": "^0.6.0"
   },
@@ -52,6 +55,7 @@
     "@babel/preset-env": "^7.11.5",
     "@types/chai": "^4.2.13",
     "@types/js-yaml": "^3.12.5",
+    "@types/lodash": "^4.14.162",
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.11.8",
     "@types/pegjs": "^0.10.2",
@@ -62,6 +66,7 @@
     "chai": "^4.2.0",
     "coffee-coverage": "^3.0.1",
     "coffeescript": "^2.5.1",
+    "concurrently": "^5.3.0",
     "eslint": "^7.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.1",

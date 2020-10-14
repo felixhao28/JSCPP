@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { CRuntime, IntVariable, Variable } from "../rt";
 
-export default {
+export = {
     load(rt: CRuntime) {
 
         const _time = function (rt: CRuntime, _this: Variable, i: IntVariable) {

@@ -1,6 +1,6 @@
 import { CRuntime, Variable } from "../../rt";
 
-export default function (rt: CRuntime, _this: Variable, dest: Variable, src: Variable) {
+export = function (rt: CRuntime, _this: Variable, dest: Variable, src: Variable) {
 
     if (rt.isArrayType(dest) && rt.isArrayType(src)) {
         const srcarr = src.v.target;

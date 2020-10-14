@@ -1,5 +1,4 @@
 import * as defaults from "./defaults";
-import * as peg from "pegjs";
 import { BaseInterpreter, Interpreter } from "./interpreter";
 export type Specifier = "const" | "inline" | "_stdcall" | "extern" | "static" | "auto" | "register";
 export type CCharType = "char" | "signed char" | "unsigned char" | "wchar_t" | "unsigned wchar_t" | "char16_t" | "unsigned char16_t" | "char32_t" | "unsigned char32_t";
@@ -266,10 +265,10 @@ export class CRuntime {
     interp: BaseInterpreter;
 
     constructor(config: JSCPPConfig) {
-        this.config = defaults.config;
+        this.config = defaults.getDefaultConfig();
         mergeConfig(this.config, config);
         this.numericTypeOrder = defaults.numericTypeOrder;
-        this.types = defaults.types;
+        this.types = defaults.getDefaultTypes();
 
         this.intTypeLiteral = this.primitiveType("int") as IntType;
         this.unsignedintTypeLiteral = this.primitiveType("unsigned int") as IntType;
@@ -332,11 +331,11 @@ export class CRuntime {
         if (this.isClassType(l)) {
             const ltsig = this.getTypeSignature(lt);
             if (this.types.hasOwnProperty(ltsig)) {
-                const t = this.types[ltsig];
+                const t = this.types[ltsig].handlers;
                 if (t.hasOwnProperty(r)) {
                     return {
                         t: {
-                            type: "function"
+                            type: "function",
                         },
                         v: {
                             defineType: lt,
@@ -416,16 +415,16 @@ export class CRuntime {
         let ret;
         const ltsig = this.getTypeSignature(lt);
         if (ltsig in this.types) {
-            const t = this.types[ltsig];
+            const t = this.types[ltsig].handlers;
             if (name in t) {
                 // logger.info("method found");
                 const ts = args.map(v => v.t);
                 const sig = this.makeParametersSignature(ts);
-                if (sig in t.handlers[name].functions) {
-                    ret = t.handlers[name].functions[sig];
+                if (sig in t[name].functions) {
+                    ret = t[name].functions[sig];
                 } else {
                     const compatibles: CFunction[] = [];
-                    const reg = t.handlers[name].reg;
+                    const reg = t[name].reg;
                     Object.keys(reg).forEach(signature => {
                         let newTs: (VariableType | "dummy")[];
                         const regArgInfo = reg[signature];
@@ -453,13 +452,13 @@ export class CRuntime {
                                 i++;
                             }
                             if (ok) {
-                                compatibles.push(t.handlers[name].functions[this.makeParametersSignature(regArgInfo.args)]);
+                                compatibles.push(t[name].functions[this.makeParametersSignature(regArgInfo.args)]);
                             }
                         }
                     });
                     if (compatibles.length === 0) {
-                        if ("#default" in t.handlers[name]) {
-                            ret = t.handlers[name].functions["#default"];
+                        if ("#default" in t[name]) {
+                            ret = t[name].functions["#default"];
                         } else {
                             const argsStr = ts.map(v => {
                                 return this.makeTypeString(v);
@@ -507,15 +506,15 @@ export class CRuntime {
                 f = "pointer_normal";
             }
             let t = null;
-            if (name in this.types[f]) {
+            if (name in this.types[f].handlers) {
                 t = this.types[f].handlers;
-            } else if (name in this.types["pointer"]) {
+            } else if (name in this.types["pointer"].handlers) {
                 t = this.types["pointer"].handlers;
             }
             if (t) {
                 const sig = this.makeParametersSignature(args);
                 let method;
-                if (sig in t[name].functions) {
+                if (t[name].functions != null && sig in t[name].functions) {
                     return t[name].functions[sig];
                 } else if ((method = this.matchVarArg(t[name], sig)) !== null) {
                     return method;
@@ -532,7 +531,7 @@ export class CRuntime {
             if (name in t) {
                 const sig = this.makeParametersSignature(args);
                 let method;
-                if (sig in t[name]) {
+                if (t[name].functions != null && sig in t[name].functions) {
                     return t[name].functions[sig];
                 } else if ((method = this.matchVarArg(t[name], sig)) !== null) {
                     return method;
@@ -603,8 +602,15 @@ export class CRuntime {
                     reg: {},
                 };
             }
+            if (t[name].functions == null) {
+                t[name].functions = {};
+            }
+            if (t[name].reg == null) {
+                t[name].reg = {};
+            }
             const sig = this.makeParametersSignature(args);
-            if (t[name].functions[sig] != null || t[name].reg[sig] != null) {
+            // console.log("regFunc " + name + "(" + sig + ")");
+            if (t[name].functions[sig] != null && t[name].reg[sig] != null) {
                 this.raiseException("method " + name + " with parameters (" + sig + ") is already defined");
             }
             const type = this.functionType(retType, args);
@@ -1028,7 +1034,10 @@ export class CRuntime {
         } as Variable;
     };
 
-    isTypeEqualTo(type1: VariableType, type2: VariableType): boolean {
+    isTypeEqualTo(type1: (VariableType | "?"), type2: (VariableType | "?")): boolean {
+        if (type1 === "?" || type2 === "?") {
+            return type1 === type2;
+        }
         if (type1.type === type2.type) {
             switch (type1.type) {
                 case "primitive":
@@ -1055,7 +1064,7 @@ export class CRuntime {
                     break;
                 case "function":
                     if (this.isTypeEqualTo(type1.retType, (type2 as FunctionType).retType) && (type1.signature.length === (type2 as FunctionType).signature.length)) {
-                        return type1.signature.every(function (type, index, arr) {
+                        return type1.signature.every((type, index, arr) => {
                             const x = this.isTypeEqualTo(type, (type2 as FunctionType).signature[index]);
                             return x;
                         });
@@ -1196,6 +1205,13 @@ export class CRuntime {
     };
 
     normalPointerType(targetType: VariableType): PointerType {
+        if (targetType.type === "function") {
+            return {
+                type: "pointer",
+                ptrType: "function",
+                targetType,
+            }
+        }
         return {
             type: "pointer",
             ptrType: "normal",
@@ -1439,6 +1455,8 @@ export class CRuntime {
                     init[i] = this.defaultValue(type.eleType, true);
                 }
                 return this.val(type, this.makeArrayPointerValue(init, 0), left);
+            } else if (type.ptrType === "function") {
+                return this.val(this.functionPointerType(type.targetType.retType, type.targetType.signature), this.makeFunctionPointerValue(null, null, null, type.targetType.signature, type.targetType.retType));
             }
         }
     };

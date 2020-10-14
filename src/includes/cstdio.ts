@@ -43,7 +43,7 @@ const validate_format = function (rt: CRuntime, format: string, ...params: Varia
             if (rt.isStringType(casted)) {
                 result.push(rt.getStringFromCharArray(casted));
             } else {
-                if (casted.v == null) {
+                if (casted.v == null || (typeof (casted.v) === "number" && isNaN(casted.v))) {
                     rt.raiseException("uninitialized value when using printf");
                 }
                 result.push(casted.v);
@@ -55,7 +55,7 @@ const validate_format = function (rt: CRuntime, format: string, ...params: Varia
 
 
 
-export default {
+export = {
     load(rt: CRuntime) {
         const char_pointer = rt.normalPointerType(rt.charTypeLiteral);
         const {

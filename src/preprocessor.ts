@@ -1,11 +1,6 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const prepast = require("./prepast");
-import PEGUtil from "pegjs-util";
+// @ts-ignore
+import * as PEGUtil from "pegjs-util";
 import { BaseInterpreter } from "./interpreter";
 import { CRuntime } from "./rt";
 

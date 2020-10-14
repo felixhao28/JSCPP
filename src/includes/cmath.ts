@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { CRuntime, FloatVariable } from "../rt";
 
-export default {
+export = {
     load(rt: CRuntime) {
         const tDouble = rt.doubleTypeLiteral;
         const g = "global";

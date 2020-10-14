@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { ArrayVariable, CRuntime, IntVariable, Variable } from "../rt";
 
-export default {
+export = {
     load(rt: CRuntime) {
         const pchar = rt.normalPointerType(rt.charTypeLiteral);
         const sizet = rt.primitiveType("unsigned int");

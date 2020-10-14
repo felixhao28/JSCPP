@@ -1,11 +1,10 @@
 type Callback = (result: boolean) => void;
 import { strict as assert } from 'assert';
 import * as fs from "fs";
-import JSCPP from "./launcher";
+import JSCPP from "../src/launcher";
 import * as chai from "chai";
 import * as yaml from "js-yaml";
 import * as Mocha from "mocha";
-import { JSCPPConfig } from './rt';
 
 let _describe: Mocha.SuiteFunction | ((title: string, cb: () => void) => void);
 let _it: Mocha.TestFunction | ((title: string, cb: () => void) => void);
@@ -20,7 +19,7 @@ interface SingleTestCase {
     out?: string;
     exception?: string;
     exitcode?: number;
-    config?: JSCPPConfig;
+    config?: any;
     after?: string[];
 }
 
@@ -94,7 +93,7 @@ function doCases(cases: SingleTestCase[], cb: Callback) {
     cb(success);
 };
 
-function doSample(code: string, input: string, expected: string, except: string, exp_exitcode: number, config: JSCPPConfig, cb: Callback) {
+function doSample(code: string, input: string, expected: string, except: string, exp_exitcode: number, config: any, cb: Callback) {
     let exitcode: number;
     let outputBuffer = "";
 
@@ -109,17 +108,18 @@ function doSample(code: string, input: string, expected: string, except: string,
         maxTimeout: 5000
     };
     try {
-        return exitcode = JSCPP.run(code, input, config);
+        exitcode = JSCPP.run(code, input, config);
     } catch (e) {
         if (except) {
-            return _it("expected exception", function () {
+            _it("expected exception", function () {
                 const eStr = prepareOutput(e.toString());
                 const ok = eStr.match(except);
                 assert.ok(ok);
                 cb(ok != null);
             });
         } else {
-            return _it("an error occurred", function () {
+            _it("an error occurred", function () {
+                console.log(e);
                 assert.ok(false);
                 cb(false);
             });
@@ -141,12 +141,12 @@ function doSample(code: string, input: string, expected: string, except: string,
     }
 };
 
-const tests = yaml.safeLoad(fs.readFileSync(testFolder + "test.yaml", "utf-8")) as { [testName: string]: TestCase };
+const tests = yaml.safeLoad(fs.readFileSync(testFolder + "test.yaml", "utf-8")) as { tests: { [testName: string]: TestCase } };
 
 const todolist: Test[] = [];
 
-for (const testName of Object.keys(tests)) {
-    const test = tests[testName];
+for (const testName of Object.keys(tests.tests)) {
+    const test = tests.tests[testName];
     todolist.push({
         name: testName,
         test
@@ -181,12 +181,12 @@ const tryAddTest = function (testName: string, test: TestCase) {
         if (!pendingTests.has(waitingFor)) {
             pendingTests.set(waitingFor, []);
         }
-        return pendingTests.get(waitingFor).push({
+        pendingTests.get(waitingFor).push({
             name: testName,
             test
         });
     } else {
-        return _describe(testName, () => doTest(test, testFinished(testName)));
+        _describe(testName, () => doTest(test, testFinished(testName)));
     }
 };
 
@@ -228,7 +228,7 @@ function testFinished(testName: string) {
             if (pendingTests.size > 0) {
                 console.warn(`circular task dependency detected ${(() => {
                     const result1: string[] = [];
-                    for (const t of Object.entries(pendingTests)) {
+                    for (const t of pendingTests.entries()) {
                         result1.push(t[0]);
                     }
                     return result1;
@@ -236,7 +236,7 @@ function testFinished(testName: string) {
             }
 
             if ((failedTest.length + passedTest.length + skippedTest.length) === totalNum) {
-                return skippedTest.map((skipped) =>
+                skippedTest.map((skipped) =>
                     console.warn(`${skipped.name} is skipped because ${skipped.reason}`));
             }
         }
@@ -244,6 +244,6 @@ function testFinished(testName: string) {
 };
 
 let task: Test;
-while ((task = todolist.pop())) {
+while ((task = todolist.shift())) {
     tryAddTest(task.name, task.test);
 }

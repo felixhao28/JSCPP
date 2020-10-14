@@ -36,3 +36,5 @@ node_modules
 /demo/*.js
 /demo/*.js.map
 .tscache
+src/ast.js
+src/prepast.js

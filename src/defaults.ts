@@ -1,6 +1,7 @@
-import { CRuntime, CCharType, CFloatType, CIntType, JSCPPConfig, TypeSignature, Variable, OpHandlerMap, CBasicType, BasicValue, ArrayElementVariable } from "./rt";
+import _ = require("lodash");
+import { CCharType, CFloatType, CIntType, JSCPPConfig, Variable, OpHandlerMap, ArrayElementVariable } from "./rt";
 
-export const config: JSCPPConfig = {
+const config: JSCPPConfig = {
     specifiers: ["const", "inline", "_stdcall", "extern", "static", "auto", "register"],
     charTypes: ["char", "signed char", "unsigned char", "wchar_t",
         "unsigned wchar_t", "char16_t", "unsigned char16_t",
@@ -121,6 +122,11 @@ export const config: JSCPPConfig = {
     },
     loadedLibraries: []
 };
+
+export function getDefaultConfig() {
+    return _.cloneDeep(config);
+}
+
 config.limits["short int"] = config.limits["short"];
 config.limits["signed short"] = config.limits["short"];
 config.limits["signed short int"] = config.limits["short"];
@@ -494,7 +500,7 @@ const defaultOpHandler: OpHandlerMap = {
             }
         },
         "o(~)": {
-            default(rt, l, dummy) {
+            default(rt, l) {
                 if (!rt.isIntegerType(l.t)) {
                     rt.raiseException(rt.makeTypeString(l.t) + " does not support ~ on itself");
                 }
@@ -504,7 +510,7 @@ const defaultOpHandler: OpHandlerMap = {
             }
         },
         "o(!)": {
-            default(rt, l, dummy) {
+            default(rt, l) {
                 if (!rt.isIntegerType(l.t)) {
                     rt.raiseException(rt.makeTypeString(l.t) + " does not support ! on itself");
                 }
@@ -516,11 +522,16 @@ const defaultOpHandler: OpHandlerMap = {
     }
 };
 
-export const types: { [typeSignature: string]: OpHandlerMap } = {
+const types: { [typeSignature: string]: OpHandlerMap } = {
     "global": {
         handlers: {},
     }
 };
+
+export function getDefaultTypes() {
+    return _.cloneDeep(types);
+}
+
 types["(char)"] = defaultOpHandler;
 types["(signed char)"] = defaultOpHandler;
 types["(unsigned char)"] = defaultOpHandler;
@@ -646,7 +657,7 @@ types["function"] = {
                         const lt = l.t;
                         if ("retType" in lt) {
                             const t = rt.functionPointerType(lt.retType, lt.signature);
-                            return rt.val(t, rt.makeNormalPointerValue(l));
+                            return rt.val(t, rt.makeFunctionPointerValue(l, l.v.name, l.v.defineType, lt.signature, lt.retType));
                         } else {
                             rt.raiseException(rt.makeTypeString(lt) + " is an operator function");
                         }

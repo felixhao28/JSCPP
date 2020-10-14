@@ -1,0 +1,13 @@
+{
+    "editor.snippetSuggestions": "bottom",
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        ".nyc_output": true,
+    },
+    "files.associations": {
+        "ostream": "cpp"
+    }
+}

@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
-import { ArrayType, ArrayVariable, CRuntime, IntVariable, ObjectValue, ObjectVariable, Variable, VariableType } from "../rt";
-import { IomanipConfig } from "./iomanip";
+import { ArrayVariable, CRuntime, IntVariable, Variable, VariableType } from "../rt";
+import { Cin, Cout } from "./shared/iomanip_types";
 
 const _skipSpace = function (s: string) {
     const r = /^\s*/.exec(s);
@@ -20,29 +20,7 @@ const _read = function (rt: CRuntime, reg: RegExp, buf: string, type: VariableTy
     }
 };
 
-export interface Cin extends ObjectVariable {
-    v: ObjectValue & {
-        buf: string;
-        eofbit: boolean;
-        failbit: boolean;
-    }
-}
-
-export interface Cout extends ObjectVariable {
-    v: ObjectValue & {
-        ostream: {
-            drain?: () => string;
-            write: (s: string) => void;
-        }
-    },
-    manipulators?: {
-        config: IomanipConfig;
-        active: { [iomanipName: string]: (config: IomanipConfig) => void };
-        use(o: Variable): Variable;
-    }
-}
-
-export default {
+export = {
     load(rt: CRuntime) {
         const {
             stdio
