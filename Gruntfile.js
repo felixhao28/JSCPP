@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
   require("load-grunt-tasks")(grunt);
-  grunt.registerTask("build", "to build", ["clean", "copy", "peg", "ts", "dist"]);
+  grunt.registerTask("build", "to build", ["clean", "peg", "copy", "ts", "dist"]);
   grunt.registerTask("dist", "to make distribution version", ["browserify", "babel", "uglify"]);
   grunt.registerTask("default", "to watch & compile", ["build", "watch"]);
   grunt.registerTask("test", "to test", ["mochaTest"]);
