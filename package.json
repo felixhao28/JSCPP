@@ -44,7 +44,7 @@
     ],
     "all": true
   },
-  "main": "lib/launcher.js",
+  "main": "lib/commonjs.js",
   "dependencies": {
     "lodash": "^4.17.20",
     "pegjs-util": "^1.4.19",
