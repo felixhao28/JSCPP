@@ -74,20 +74,7 @@ module.exports = function (grunt) {
     ts: {
       default: {
         src: ["src/**/*.ts"],
-        outDir: "lib/",
-        options: {
-          rootDir: "src",
-          additionalFlags: "--downlevelIteration",
-          module: "commonjs",
-          target: "es6",
-          outDir: "lib",
-          lib: [
-              "es6"
-          ],
-          sourceMap: true,
-          allowJs: true,
-          noImplicitAny: true
-        }
+        tsconfig: './tsconfig.json'
       }
     },
 
