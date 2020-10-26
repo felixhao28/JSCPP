@@ -26,7 +26,7 @@ module.exports = function (grunt) {
     browserify: {
       dist: {
         files: {
-          "dist/JSCPP.js": ["lib/**/*.js"]
+          "dist/JSCPP.js": ["babel-polyfill", "lib/index.js"]
         }
       }
     },
@@ -77,7 +77,16 @@ module.exports = function (grunt) {
         outDir: "lib/",
         options: {
           rootDir: "src",
-          additionalFlags: "--downlevelIteration"
+          additionalFlags: "--downlevelIteration",
+          module: "commonjs",
+          target: "es6",
+          outDir: "lib",
+          lib: [
+              "es6"
+          ],
+          sourceMap: true,
+          allowJs: true,
+          noImplicitAny: true
         }
       }
     },
