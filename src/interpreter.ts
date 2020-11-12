@@ -99,7 +99,7 @@ export class Interpreter extends BaseInterpreter {
                                         }
                                         dimensions.push(dim);
                                     }
-                                    _type = interp.arrayType(dimensions, 0, _type);
+                                    _type = interp.arrayType(dimensions, _type);
                                 }
                             } else {
                                 _type = _basetype;
@@ -125,7 +125,7 @@ export class Interpreter extends BaseInterpreter {
                         }
                         dimensions.push(dim);
                     }
-                    basetype = interp.arrayType(dimensions, 0, basetype);
+                    basetype = interp.arrayType(dimensions, basetype);
                 }
 
                 if (s.left.type === "Identifier") {
@@ -207,7 +207,7 @@ export class Interpreter extends BaseInterpreter {
                             dimensions.push(dim);
                             j++;
                         }
-                        _type = interp.arrayType(dimensions, 0, _type);
+                        _type = interp.arrayType(dimensions, _type);
                     }
                     if (_init != null) {
                         optionalArgs.push({
@@ -264,7 +264,9 @@ export class Interpreter extends BaseInterpreter {
                             }
                             dimensions.push(dim);
                         }
-                        init = yield* interp.arrayInit(dimensions, init, 0, basetype, param);
+                        param.node = init;
+                        init = yield* interp.arrayInit(dimensions, init, basetype, param);
+                        delete param.node;
                         const _basetype = param.basetype;
                         param.basetype = basetype;
                         const { name, type } = yield* interp.visit(interp, dec.Declarator, param);
@@ -1020,12 +1022,12 @@ export class Interpreter extends BaseInterpreter {
         return yield* this.visit(this, tree, param);
     };
 
-    *arrayInit(dimensions: number[], init: any, level: number, type: VariableType, param: any): Generator<void, Variable, any> {
-        if (dimensions.length > level) {
+    *arrayInit(dimensions: number[], init: any, type: VariableType, param: any): Generator<void, Variable, any> {
+        if (dimensions.length > 0) {
             let val;
-            const curDim = dimensions[level];
+            const curDim = dimensions[0];
             if (init) {
-                if ((init.type === "Initializer_array") && (curDim >= init.Initializers.length) && ((init.Initializers.length === 0) || (init.Initializers[0].type === "Initializer_expr"))) {
+                if ((init.type === "Initializer_array") && (init.Initializers != null && curDim >= init.Initializers.length)) {
                     // last level, short hand init
                     if (init.Initializers.length === 0) {
                         const arr = new Array(curDim);
@@ -1073,10 +1075,19 @@ export class Interpreter extends BaseInterpreter {
                             if ("shorthand" in _init) {
                                 initval = _init;
                             } else {
-                                initval = {
-                                    type: "Initializer_expr",
-                                    shorthand: (yield* this.visit(this, _init.Expression, param))
-                                };
+                                if (_init.type === "Initializer_expr") {
+                                    initval = {
+                                        type: "Initializer_expr",
+                                        shorthand: (yield* this.visit(this, _init.Expression, param))
+                                    };
+                                } else if (_init.type === "Initializer_array") {
+                                    initval = {
+                                        type: "Initializer_expr",
+                                        shorthand: (yield* this.arrayInit(dimensions.slice(1), _init, type, param))
+                                    };
+                                } else {
+                                    this.rt.raiseException("Not implemented initializer type: " + _init.type);
+                                }
                             }
                             arr[i] = initval;
                             i++;
@@ -1085,7 +1096,7 @@ export class Interpreter extends BaseInterpreter {
                         while (i < curDim) {
                             arr[i] = {
                                 type: "Initializer_expr",
-                                shorthand: this.rt.defaultValue(type)
+                                shorthand: this.rt.defaultValue(this.arrayType(dimensions.slice(1), type))
                             };
                             i++;
                         }
@@ -1098,8 +1109,7 @@ export class Interpreter extends BaseInterpreter {
                     } else {
                         initializer = yield* this.visit(this, init, param);
                     }
-                    if (this.rt.isCharType(type) && this.rt.isArrayType(initializer) && this.rt.isCharType(initializer.t.eleType)) {
-                        // string init
+                    if (this.rt.isArrayType(initializer) && this.rt.isTypeEqualTo(type, initializer.t.eleType)) {
                         init = {
                             type: "Initializer_array",
                             Initializers: initializer.v.target.map(e => ({
@@ -1108,21 +1118,21 @@ export class Interpreter extends BaseInterpreter {
                             }))
                         };
                     } else {
-                        this.rt.raiseException("cannot initialize an array to " + this.rt.makeValString(initializer), init);
+                        this.rt.raiseException("cannot initialize an array to " + this.rt.makeValString(initializer), param.node);
                     }
                 } else {
-                    this.rt.raiseException("dimensions do not agree, " + curDim + " != " + init.Initializers.length);
+                    this.rt.raiseException("dimensions do not agree, " + curDim + " != " + init.Initializers.length, param.node);
                 }
             }
             {
                 const arr: Variable[] = [];
-                const ret = this.rt.val(this.arrayType(dimensions, level, type), this.rt.makeArrayPointerValue(arr, 0), true);
+                const ret = this.rt.val(this.arrayType(dimensions, type), this.rt.makeArrayPointerValue(arr, 0), true);
                 let i = 0;
                 while (i < curDim) {
                     if (init && (i < init.Initializers.length)) {
-                        arr[i] = yield* this.arrayInit(dimensions, init.Initializers[i], level + 1, type, param);
+                        arr[i] = yield* this.arrayInit(dimensions.slice(1), init.Initializers[i], type, param);
                     } else {
-                        arr[i] = yield* this.arrayInit(dimensions, null, level + 1, type, param);
+                        arr[i] = yield* this.arrayInit(dimensions.slice(1), null, type, param);
                     }
                     i++;
                 }
@@ -1130,7 +1140,7 @@ export class Interpreter extends BaseInterpreter {
             }
         } else {
             if (init && (init.type !== "Initializer_expr")) {
-                this.rt.raiseException("dimensions do not agree, too few initializers", init);
+                this.rt.raiseException("dimensions do not agree, too few initializers", param.node);
             }
             let initval;
             if (init) {
@@ -1142,15 +1152,15 @@ export class Interpreter extends BaseInterpreter {
             } else {
                 initval = this.rt.defaultValue(type);
             }
-            const ret = this.rt.cast(type, initval);
+            const ret = this.rt.cast(this.arrayType(dimensions, type), initval);
             ret.left = true;
             return ret;
         }
     };
 
-    arrayType(dimensions: number[], level: number, type: any): ArrayType {
-        if (dimensions.length > level) {
-            return this.rt.arrayPointerType(this.arrayType(dimensions, level + 1, type), dimensions[level]);
+    arrayType(dimensions: number[], type: any): ArrayType {
+        if (dimensions.length > 0) {
+            return this.rt.arrayPointerType(this.arrayType(dimensions.slice(1), type), dimensions[0]);
         } else {
             return type;
         }

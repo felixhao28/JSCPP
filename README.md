@@ -236,50 +236,48 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 
 ## Changelog
 
-* v1.0.0 (2015.3.31)
-	- Formal release of this project.
-* v1.0.1 (3.31)
-	- This release is a mistake.
-* v1.0.2 (3.31)
-	- New examples.
-	- Update README.
-	- Renamed runtime and interpreter to start with upper case.
-	- (dev-side) Grunt.
-* v1.0.3 (4.1)
-	- (dev-side) Fix dev-dependency on coffee-script.
-	- (dev-side) Grunt watches.
-	- (dev-side) Port to coffeescript
-	- (dev-side) Refactoring
-	- (dev-side) Reworked testing, now all tests are defined in `test.json`
-	- Fixed a bug related to a.push(b).concat(c) in syntax parser (#1).
-	- Added new tests
-* v1.1.0 (4.2)
-	- Fixed array initialization with 0 issue
-	- Added support for reading string with cin
-	- Member function should not be registered globally
-	- Added new tests
-	- Basic debugging support
-* v1.1.1 (4.3)
-	- Split debugger from example
-	- (dev-side) Grunt only watches newer
-	- Fix debug prev command
-* v2.0.0 (4.11)
+* v2.0.7 (-)
 	- New
-		+ **Real debugger!**
-	- Change
-		+ API: Now `JSCPP.run` is all you need
-		+ Runtime: The project uses es6, please use V8 with harmony flag
-		+ Deprecated: Removed old legacy profiling-replay debugging
-		+ Misc: Many other small changes
-	- Dev
-		+ Major refactoring on interpreter using es6
-* v2.0.1 (6.24)
+		+ Support some basic class usages (see `test\class_basics.cpp`).
+		+ Uses special uninitialized numeric and poitner value.
+		+ Adds an "unsigned_overflow" option to treat unsigned numeric overflow as "error"(default), "warn" or "ignore". Overflow on signed types will always throw an error.
 	- Fix
-		+ Debugger variable scope issue
-		+ Readme example
-		+ An issue on Chrome Canary
-		+ Integer type promotion issue
-		+ Many small fixes
+		+ Fixed some string-related methods.
+		+ Fixed `pow` in `<cmath>`, thanks to [Clemenard](https://github.com/Clemenard).
+		+ Fixed multi-dimensional array declaration with initializers, thanks to [rodrigorgs](https://github.com/rodrigorgs).
+* v2.0.6 (9.29)
+	- New
+		+ Implemented following methods from cstdlib, thanks to [victorrseloy](https://github.com/victorrseloy):
+			* `int getchar(void)`
+			* `char *gets(char *str)`
+			* `int putchar(int char)`
+			* `int puts(const char *str)`
+			* `int scanf(const char *format, ...)`
+			* `int sscanf(const char *str, const char *format, ...)`
+	- Fix
+		+ Fixed printf function
+	- Dev
+		+ Update dependencies to latest
+* v2.0.5 (4.6)
+	- New
+		+ ctime library
+	- Fix
+		+ Supports functions returning pointer type
+* v2.0.4 (12.10)
+	- New
+		+ Function default arguments support
+	- Fix
+		+ cin.get now works as expected
+	- Dev
+		+ Update dev dependencies
+* v2.0.3 (10.15)
+	- New
+		+ Function pointer support
+		+ typedef support
+	- Dev
+		+ Testing now uses `test/test.coffee` directly
+		+ Update PEG.js from 0.8.0 to 0.9.0
+		+ Please use NodeJS v4.0.0+
 * v2.0.2 (7.31)
 	- New
 		+ Wide char support (русский язык)
@@ -294,47 +292,50 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 		+ Online site uses minified es5 version now
 		+ A few dependencies have been updated
 		+ Added linux helper for running and debugging (bin/run & bin/debug)
-* v2.0.3 (10.15)
+* v2.0.1 (6.24)
+	- Fix
+		+ Debugger variable scope issue
+		+ Readme example
+		+ An issue on Chrome Canary
+		+ Integer type promotion issue
+		+ Many small fixes
+* v2.0.0 (4.11)
 	- New
-		+ Function pointer support
-		+ typedef support
+		+ **Real debugger!**
+	- Change
+		+ API: Now `JSCPP.run` is all you need
+		+ Runtime: The project uses es6, please use V8 with harmony flag
+		+ Deprecated: Removed old legacy profiling-replay debugging
+		+ Misc: Many other small changes
 	- Dev
-		+ Testing now uses `test/test.coffee` directly
-		+ Update PEG.js from 0.8.0 to 0.9.0
-		+ Please use NodeJS v4.0.0+
-* v2.0.4 (12.10)
-	- New
-		+ Function default arguments support
-	- Fix
-		+ cin.get now works as expected
-	- Dev
-		+ Update dev dependencies
-* v2.0.5 (4.6)
-	- New
-		+ ctime library
-	- Fix
-		+ Supports functions returning pointer type
-* v2.0.6 (9.29)
-	- New
-		+ Implemented following methods from cstdlib, thanks to [victorrseloy](https://github.com/victorrseloy):
-			* `int getchar(void)`
-			* `char *gets(char *str)`
-			* `int putchar(int char)`
-			* `int puts(const char *str)`
-			* `int scanf(const char *format, ...)`
-			* `int sscanf(const char *str, const char *format, ...)`
-	- Fix
-		+ Fixed printf function
-	- Dev
-		+ Update dependencies to latest
-* v2.0.7 (-)
-	- New
-		+ Support some basic class usages (see `test\class_basics.cpp`).
-		+ Uses special uninitialized numeric and poitner value.
-		+ Adds an "unsigned_overflow" option to treat unsigned numeric overflow as "error"(default), "warn" or "ignore". Overflow on signed types will always throw an error.
-	- Fix
-		+ Fixed some string-related methods.
-		+ Fixed `pow` in `<cmath>`, thanks to [Clemenard](https://github.com/Clemenard).
+		+ Major refactoring on interpreter using es6
+* v1.1.1 (4.3)
+	- Split debugger from example
+	- (dev-side) Grunt only watches newer
+	- Fix debug prev command
+* v1.1.0 (4.2)
+	- Fixed array initialization with 0 issue
+	- Added support for reading string with cin
+	- Member function should not be registered globally
+	- Added new tests
+	- Basic debugging support
+* v1.0.3 (4.1)
+	- (dev-side) Fix dev-dependency on coffee-script.
+	- (dev-side) Grunt watches.
+	- (dev-side) Port to coffeescript
+	- (dev-side) Refactoring
+	- (dev-side) Reworked testing, now all tests are defined in `test.json`
+	- Fixed a bug related to a.push(b).concat(c) in syntax parser (#1).
+	- Added new tests
+* v1.0.2 (3.31)
+	- New examples.
+	- Update README.
+	- Renamed runtime and interpreter to start with upper case.
+	- (dev-side) Grunt.
+* v1.0.1 (3.31)
+	- This release is a mistake.
+* v1.0.0 (2015.3.31)
+	- Formal release of this project.
 
 [build-badge]: https://travis-ci.org/felixhao28/JSCPP.svg
 [build]: https://travis-ci.org/felixhao28/JSCPP

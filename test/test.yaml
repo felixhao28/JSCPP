@@ -307,3 +307,7 @@
       cases:
         cpp: "infinite_loop.cpp"
         exception: "Time limit exceeded."
+    matrix_initialization:
+      cases:
+        cpp: "matrix_initialization.cpp"
+        exitcode: 3
