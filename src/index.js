@@ -112,7 +112,7 @@ if (testEnv()) {
         }
     })();
 
-    AsyncWebWorkerHelper = function (srcPath) {
+    var AsyncWebWorkerHelper = function (srcPath) {
         this.helper = new WebWorkerHelper(srcPath);
         this.worker = this.helper.worker;
         return this;
