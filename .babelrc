@@ -2,7 +2,10 @@
     "sourceMaps": "inline",
     "presets": [
         "@babel/preset-react",
-        "@babel/preset-env"
+        ["@babel/preset-env", {
+            "useBuiltIns": "entry",
+            "corejs": "3.7"
+        }]
     ],
     "plugins": [
         "@babel/syntax-class-properties",
