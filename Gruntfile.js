@@ -19,7 +19,7 @@ module.exports = function (grunt) {
 
     clean: {
       build: {
-        src: ["lib", "dist"]
+        src: ["lib", "dist/JSCPP.*"]
       }
     },
 
