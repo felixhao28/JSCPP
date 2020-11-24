@@ -183,7 +183,7 @@ int main() {
             debug
         };
         if ((this.worker == null)) {
-            this.debugger = new JSCPP.AsyncWebWorkerHelper("./dist/JSCPP.js");
+            this.debugger = new JSCPP.AsyncWebWorkerHelper("./dist/JSCPP.es5.min.js");
         }
         if (debug) {
             this.preDebug();
