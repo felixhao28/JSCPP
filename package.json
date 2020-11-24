@@ -20,9 +20,9 @@
   "homepage": "https://github.com/felixhao28/JSCPP",
   "devDependencies": {
     "@babel/cli": "^7.12.8",
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.12.8",
     "@babel/plugin-syntax-class-properties": "^7.12.1",
-    "@babel/preset-react": "^7.12.1",
+    "@babel/preset-react": "^7.12.7",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-react-app": "^10.0.0",
     "cross-env": "^7.0.2"
