@@ -1,0 +1,11 @@
+{
+    "sourceMaps": "inline",
+    "presets": [
+        "@babel/preset-react",
+        "@babel/preset-env"
+    ],
+    "plugins": [
+        "@babel/syntax-class-properties",
+        "transform-async-to-generator"
+    ]
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <script src="./JSCPP.js"></script>
+</head>
+
+<body>
+    <label>Output: </label><br>
+    <span id="output"></span><br><br><br>
+    <label>WebWorker Output: </label><br>
+    <span id="output-webworker"></span><br><br><br>
+    <label>AsyncWebWorker Output: </label><br>
+    <span id="output-asyncwebworker"></span><br><br><br>
+    <label>Debug AsyncWebWorker Output: </label><br>
+    <span id="output-debug-asyncwebworker"></span><br><br><br>
+    <script>
+//         (function () {
+//             var output = document.getElementById("output");
+//             var t = Date.now();
+//             try {
+//                 var returnCode = JSCPP.run(`#include <iostream>
+// using namespace std;
+// int main() {
+//     int a;
+//     cin >> a;
+//     a += 7;
+//     cout << a*10 << endl;
+//     return 0;
+// }`, "5", {
+//                     stdio: {
+//                         write: (s) => {
+//                             output.innerText += s;
+//                         }
+//                     }
+//                 });
+//                 output.innerText += "\n\n======\nProgram exited in " + (Date.now() - t) + "ms with code " + returnCode;
+//             } catch (err) {
+//                 output.innerText += "\n\n======\nAn error occurred: " + (err.message || err);
+//             }
+//         })();
+//         (function () {
+//             var helper = new JSCPP.WebWorkerHelper("./JSCPP.js");
+//             var output = document.getElementById("output-asyncwebworker");
+//             var t = Date.now();
+//             function handler(err, returnCode) {
+//                 if (err) {
+//                     output.innerText += "\n\n======\nAn error occurred: " + (err.message || err);
+//                 } else {
+//                     output.innerText += "\n\n======\nProgram exited in " + (Date.now() - t) + "ms with code " + returnCode;
+//                 }
+//             }
+
+//             helper.run(`#include <iostream>
+// using namespace std;
+// int main() {
+//     int a;
+//     cin >> a;
+//     a += 7;
+//     cout << a*10 << endl;
+//     return 0;
+// }`, "5", {
+//                 stdio: {
+//                     write: (s) => {
+//                         output.innerText += s;
+//                     }
+//                 }
+//             }, handler);
+//         })();
+        (async function () {
+            var helper = new JSCPP.AsyncWebWorkerHelper("./JSCPP.js");
+            var output = document.getElementById("output-debug-asyncwebworker");
+            var t = Date.now();
+            try {
+                await helper.run(`#include <iostream>
+using namespace std;
+int main() {
+    int a;
+    cin >> a;
+    a += 7;
+    cout << a*10 << endl;
+    return 0;
+}`, "5", {
+                    stdio: {
+                        write: (s) => {
+                            output.innerText += s;
+                        }
+                    },
+                    debug: true
+                });
+                let done = false;
+                while (done === false) {
+                    try {
+                        var v = await helper.variable("a");
+                        output.innerText += ">>> a = " + JSON.stringify(v) + "\n";
+                    } catch (error) {
+                        output.innerText += ">>> a is not defined \n";
+                    }
+                    output.innerText += "Next line: " + (await helper.nextLine()) + "\n";
+                    done = await helper.continue();
+                }
+                output.innerText += "\n\n======\nProgram exited in " + (Date.now() - t) + "ms with code " + done.v;
+            } catch (err) {
+                output.innerText += "\n\n======\nAn error occurred: " + (err.message || err);
+            }
+        })();
+        (async function() {
+            var helper = new JSCPP.AsyncWebWorkerHelper("./JSCPP.js");
+            var output = document.getElementById("output-webworker");
+        })();
+    </script>
+</body>
+
+</html>

@@ -3,16 +3,10 @@
   "version": "0.0.0",
   "description": "ghpage for JSCPP",
   "main": "index.js",
-  "dependencies": {},
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-coffee-react": "^5.0.2",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-newer": "^1.1.2",
-    "load-grunt-tasks": "^3.4.1"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cross-env NODE_ENV=development babel src --out-dir scripts",
+    "watch": "cross-env NODE_ENV=development babel --watch src --out-dir scripts"
   },
   "repository": {
     "type": "git",
@@ -23,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/felixhao28/JSCPP/issues"
   },
-  "homepage": "https://github.com/felixhao28/JSCPP"
+  "homepage": "https://github.com/felixhao28/JSCPP",
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-syntax-class-properties": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-react-app": "^10.0.0",
+    "cross-env": "^7.0.2"
+  }
 }
