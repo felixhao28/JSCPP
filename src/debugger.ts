@@ -5,7 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-import { CRuntime } from "./rt";
+import { CRuntime, IntVariable } from "./rt";
 
 interface AstNode {
     type: string;
@@ -17,10 +17,13 @@ interface AstNode {
     sOffset: number;
 }
 
-type BreakpointConditionPredicate = (prevNode: AstNode, newStmt: AstNode) => boolean;
+type PromiseOrNot<T> = PromiseLike<T> | T;
+
+type BreakpointConditionPredicate = (prevNode: AstNode, newStmt: AstNode) => PromiseOrNot<boolean>;
 
 export default class Debugger {
     src: string;
+    srcByLines: string[];
     prevNode: AstNode;
     done: boolean;
     conditions: {
@@ -30,9 +33,10 @@ export default class Debugger {
         [condition: string]: boolean;
     };
     rt: CRuntime;
-    gen: Generator<any, number | false, any>;
-    constructor() {
-        this.src = "";
+    gen: Generator<any, IntVariable | false, any>;
+    constructor(src?: string, oldSrc?: string) {
+        this.src = src || "";
+        this.srcByLines = (oldSrc || src || "").split("\n");
         this.prevNode = null;
         this.done = false;
         this.conditions = {
@@ -54,10 +58,31 @@ export default class Debugger {
         };
     }
 
-    start(rt: CRuntime, gen: Generator<any, number | false, any>) {
+    setStopConditions(stopConditions: {
+        [condition: string]: boolean;
+    }) {
+        this.stopConditions = stopConditions;
+    }
+
+    setCondition(name: string, callback: BreakpointConditionPredicate) {
+        this.conditions[name] = callback;
+    }
+
+    disableCondition(name: string) {
+        this.stopConditions[name] = false;
+    }
+    enableCondition(name: string) {
+        this.stopConditions[name] = true;
+    }
+
+    getSource() {
+        return this.src;
+    }
+
+    start(rt: CRuntime, gen: Generator<any, IntVariable | false, any>) {
         this.rt = rt;
         return this.gen = gen;
-    };
+    }
 
     continue() {
         while (true) {
@@ -73,7 +98,7 @@ export default class Debugger {
                 }
             }
         }
-    };
+    }
 
     next() {
         this.prevNode = this.nextNode();
@@ -84,16 +109,22 @@ export default class Debugger {
         } else {
             return false;
         }
-    };
+    }
 
     nextLine() {
         const s = this.nextNode();
-        return this.src.slice(s.sOffset, s.eOffset).trim();
-    };
+        return s ? this.srcByLines[s.sLine - 1] : this.srcByLines[0];
+    }
 
-    nextNode() {
+    nextNodeText() {
+        const s = this.nextNode();
+        return s ? this.src.slice(s.sOffset, s.eOffset).trim() : "";
+    }
+
+    nextNode(): AstNode {
         if (this.done) {
             return {
+                type: null,
                 sOffset: -1,
                 sLine: -1,
                 sColumn: -1,
@@ -104,9 +135,9 @@ export default class Debugger {
         } else {
             return this.rt.interp.currentNode;
         }
-    };
+    }
 
-    variable(name: string) {
+    variable(name?: string) {
         if (name) {
             const v = this.rt.readVar(name);
             return {
@@ -117,7 +148,7 @@ export default class Debugger {
             const usedName = new Set();
             const ret = [];
             for (let scopeIndex = this.rt.scope.length - 1; scopeIndex >= 0; scopeIndex--) {
-                for (name of Object.keys(this.rt.scope[scopeIndex])) {
+                for (name of Object.keys(this.rt.scope[scopeIndex].variables)) {
                     const val = this.rt.scope[scopeIndex].variables[name];
                     if ((typeof val === "object") && "t" in val && "v" in val) {
                         if (!usedName.has(name)) {
@@ -133,5 +164,5 @@ export default class Debugger {
             }
             return ret;
         }
-    };
+    }
 }

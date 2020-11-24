@@ -1,8 +1,9 @@
 import JSCPP from "./launcher";
 import * as yaml from "js-yaml";
 import * as fs from "fs";
-import { JSCPPConfig } from "./rt";
+import { IntVariable, JSCPPConfig } from "./rt";
 import * as readline from "readline";
+import Debugger from "./debugger";
 
 function startDebug() {
     const argv = require("minimist")(process.argv.slice(2));
@@ -49,10 +50,10 @@ function startDebug() {
         }
 
         if (!config.debug) {
-            const exitcode = JSCPP.run(code, input, config);
+            const exitcode = JSCPP.run(code, input, config) as number;
             console.info(`\nprogram exited with code ${exitcode}`);
         } else {
-            const mydebugger = JSCPP.run(code, input, config);
+            const mydebugger = JSCPP.run(code, input, config) as Debugger;
 
             console.log(`\
     Available commands:
@@ -100,16 +101,12 @@ function startDebug() {
             const lastOutputPos = 0;
 
             rl.on("line", function (line) {
-                let done;
+                let done: false | IntVariable = false;
                 try {
-                    done = false;
                     const cmds = line.trim().split(" ");
                     switch (cmds[0]) {
                         case "n": case "next":
                             done = mydebugger.continue();
-                            break;
-                        case "t": case "type":
-                            console.log(mydebugger.type(cmds[1]));
                             break;
                         case "v": case "var": case "variable":
                             console.log(mydebugger.variable(cmds[1]));

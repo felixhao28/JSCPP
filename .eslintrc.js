@@ -14,7 +14,8 @@ Happy linting! 💖
 module.exports = {
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "browser": true,
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -135,7 +136,9 @@ module.exports = {
         "no-invalid-this": "off",
         "no-new-func": "error",
         "no-new-wrappers": "error",
-        "no-redeclare": "error",
+        // note you must disable the base rule as it can report incorrect errors
+        "no-redeclare": "off",
+        "@typescript-eslint/no-redeclare": ["error"],
         "no-return-await": "error",
         "no-sequences": "error",
         "no-shadow": [

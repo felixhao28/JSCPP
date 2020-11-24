@@ -34,59 +34,60 @@ for (const alias of Object.keys(headerAlias)) {
     includes[alias] = includes[realName];
 }
 
+
+function run(code: string, input: string, config: JSCPPConfig): Debugger | number {
+    let step;
+    let inputbuffer = input.toString();
+    const _config: JSCPPConfig = {
+        stdio: {
+            drain() {
+                const x = inputbuffer;
+                inputbuffer = null;
+                return x;
+            },
+            write(s) {
+                process.stdout.write(s);
+            }
+        },
+        includes: this.includes,
+        unsigned_overflow: "error"
+    };
+    mergeConfig(_config, config);
+    const rt = new CRuntime(_config);
+    code = code.toString();
+    const oldCode = code;
+    code = preprocessor.parse(rt, code);
+
+    const mydebugger = new Debugger(code, oldCode);
+
+    const result = PEGUtil.parse(ast, code);
+    if (result.error != null) {
+        throw new Error("ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true));
+    }
+    const interpreter = new Interpreter(rt);
+    const defGen = interpreter.run(result.ast, code);
+    while (true) {
+        step = defGen.next();
+        if (step.done) { break; }
+    }
+    const mainGen = rt.getFunc("global", "main", [])(rt, null);
+    if (_config.debug) {
+        mydebugger.start(rt, mainGen);
+        return mydebugger;
+    } else {
+        const startTime = Date.now();
+        while (true) {
+            step = mainGen.next();
+            if (step.done) { break; }
+            if (_config.maxTimeout && ((Date.now() - startTime) > _config.maxTimeout)) {
+                throw new Error("Time limit exceeded.");
+            }
+        }
+        return step.value.v as number;
+    }
+}
+
 export default {
     includes,
-    run(code: string, input: string, config: JSCPPConfig) {
-        let step;
-        let inputbuffer = input.toString();
-        const _config: JSCPPConfig = {
-            stdio: {
-                drain() {
-                    const x = inputbuffer;
-                    inputbuffer = null;
-                    return x;
-                },
-                write(s) {
-                    process.stdout.write(s);
-                }
-            },
-            includes: this.includes,
-            unsigned_overflow: "error"
-        };
-        mergeConfig(_config, config);
-        const rt = new CRuntime(_config);
-        code = code.toString();
-        code = preprocessor.parse(rt, code);
-
-        const mydebugger = new Debugger();
-        if (_config.debug) {
-            mydebugger.src = code;
-        }
-
-        const result = PEGUtil.parse(ast, code);
-        if (result.error != null) {
-            throw new Error("ERROR: Parsing Failure:\n" + PEGUtil.errorMessage(result.error, true));
-        }
-        const interpreter = new Interpreter(rt);
-        const defGen = interpreter.run(result.ast, code);
-        while (true) {
-            step = defGen.next();
-            if (step.done) { break; }
-        }
-        const mainGen = rt.getFunc("global", "main", [])(rt, null);
-        if (_config.debug) {
-            mydebugger.start(rt, mainGen);
-            return mydebugger;
-        } else {
-            const startTime = Date.now();
-            while (true) {
-                step = mainGen.next();
-                if (step.done) { break; }
-                if (_config.maxTimeout && ((Date.now() - startTime) > _config.maxTimeout)) {
-                    throw new Error("Time limit exceeded.");
-                }
-            }
-            return step.value.v;
-        }
-    }
+    run,
 };

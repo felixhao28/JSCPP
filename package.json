@@ -25,7 +25,7 @@
     "watch-tsc": "tsc --watch",
     "watch-other": "grunt watch",
     "watch": "npx concurrently 'npm:watch-*'",
-    "test": "mocha --require ts-node/register test/test.ts --bail",
+    "test": "mocha --require ts-node/register test/test.ts test/test-debugger.ts --bail",
     "prepublish": "grunt build"
   },
   "nyc": {

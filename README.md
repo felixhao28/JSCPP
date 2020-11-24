@@ -98,27 +98,27 @@ var done = mydebugger.next();
 // if you have an active breakpoint condition, you can just continue
 var done = mydebugger.continue();
 // by default, debugger pauses at every new line, but you can change it
-mydebugger.stopConditions = {
+mydebugger.setStopConditions({
     isStatement: true
     positionChanged: true
     lineChanged: false
-};
+});
 // so that debugger only stops at a statement of a new position
 // or you can add your own condition, i.e. stops at line 10
-mydebugger.conditions["line10"] = function (prevNode, nextNode) {
-	if (nextNode.sLine=== 10) {
+mydebugger.setCondition("line10", function (prevNode, nextNode) {
+	if (nextNode.sLine === 10) {
 		// disable itself so that it only triggers once on line 10
-		mydebugger.stopConditions["line10"] = false
+		mydebugger.disableCondition("line10");
 		return true;
 	} else {
 		return false;
 	}
-};
+});
 // then enable it
-mydebugger.stopConditions["line10"] = true
+mydebugger.enableCondition("line10");
 // we need to explicitly use "false" because exit code can be 0
 if (done !== false) {
-	console.log("program exited with code " + done);
+	console.log("program exited with code " + done.v);
 }
 // the AST node to be executed next
 var s = mydebugger.nextNode();
@@ -130,7 +130,7 @@ while ((s = mydebugger.nextNode()) == null) {
 // the content of the statement to be executed next
 var nextLine = mydebugger.nextLine();
 // it is essentially same as
-nextLine = mydebugger.src.slice(s.sOffset, s.eOffset).trim()
+nextLine = mydebugger.getSource().slice(s.sOffset, s.eOffset).trim()
 
 console.log("from " + s.sLine + ":" + s.sColumn + "(" + s.sOffset + ")");
 console.log("to " + s.eLine + ":" + s.eColumn + "(" + s.eOffset + ")");
@@ -145,9 +145,9 @@ mydebugger.variable();
 
 A full interactive example is available in *demo/debug.coffee*. Use `node -harmony demo/debug A+B -debug` to debug "A+B" test.
 
-### With a modern browser
+### With a browser
 
-There should be a newest version of _JSCPP.js_ in _dist_ ready for you. If not, use `npm run build` to generate one.
+There should be a newest version of _JSCPP.js_ or _JSCPP.es5.js_ in _dist_ ready for you. If not, use `npm run build` to generate one.
 
 Then you can add it to your html. The exported global name for this package is "JSCPP".
 
@@ -179,6 +179,76 @@ Then you can add it to your html. The exported global name for this package is "
 ```
 
 If you do not provide a customized `write` method for `stdio` configuration, console output will not be correctly shown. See _demo/demo.html_ for example.
+
+### Running in WebWorker
+
+There are two Helper classes to make JSCPP easier to run in WebWorkers. One is `JSCPP.WebWorkerHelper` in an old callback style and `JSCPP.AsyncWebWorkerHelper` in a modern Promise/async-await style.
+
+```html
+<script src="JSCPP.es5.min.js"></script>
+<script type="text/javascript">
+	var helper = new JSCPP.WebWorkerHelper("./JSCPP.es5.min.js"); // it is a class
+	var output = "";
+	helper.run(`#include <iostream>
+		using namespace std;
+		int main() {
+		int a;
+		cin >> a;
+		a += 7;
+		cout << a*10 << endl;
+		return 0;
+	}`, "5", {
+		stdio: {
+			write: function(s) {
+				output += s;
+			}
+		}
+	}, function (err, returnCode) {
+		if (err) {
+			alert("An error occurred: " + (err.message || err));
+		} else {
+			alert("Program exited with code " + returnCode);
+		}
+	});
+
+	helper.worker.terminate(); // directly control the Worker instance
+</script>
+```
+
+
+```html
+<script src="JSCPP.es5.min.js"></script>
+<script type="text/javascript">
+	async function asyncWrapper() {
+		var helper = new JSCPP.AsyncWebWorkerHelper("./JSCPP.es5.min.js"); // it is a class
+		var output = "";
+		try {
+			var returnCode = await helper.run(`#include <iostream>
+				using namespace std;
+				int main() {
+				int a;
+				cin >> a;
+				a += 7;
+				cout << a*10 << endl;
+				return 0;
+			}`, "5", {
+				stdio: {
+					write: function(s) {
+						output += s;
+					}
+				}
+			});
+			alert("Program exited with code " + returnCode);
+		} catch (err) {
+			alert("An error occurred: " + (err.message || err));
+		}
+		helper.worker.terminate(); // directly control the Worker instance
+	}
+	asyncWrapper();
+</script>
+```
+
+The helper classes are implemented in `src/index.js`, and a test page is available in `dist/index.html`.
 
 ### Run tests
 
