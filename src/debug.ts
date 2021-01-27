@@ -36,7 +36,7 @@ function startDebug() {
             code = fs.readFileSync(argv.f || argv.file, "utf-8");
             if (!input) { input = ""; }
         } else {
-            const tests = yaml.safeLoad(fs.readFileSync("test/test.yaml", "utf-8")) as any;
+            const tests = yaml.load(fs.readFileSync("test/test.yaml", "utf-8")) as any;
             let {
                 cases
             } = tests.tests[testName];
@@ -65,7 +65,10 @@ function startDebug() {
     \
     `
             );
-            const rl = readline.createInterface(process.stdin, process.stdout);
+            const rl = readline.createInterface({
+                input: process.stdin as any,
+                output: process.stdout as any,
+            });
             rl.setPrompt("\ndebug> ");
 
             const srcLines = mydebugger.src.split("\n");

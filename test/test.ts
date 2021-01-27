@@ -141,7 +141,7 @@ function doSample(code: string, input: string, expected: string, except: string,
     }
 };
 
-const tests = yaml.safeLoad(fs.readFileSync(testFolder + "test.yaml", "utf-8")) as { tests: { [testName: string]: TestCase } };
+const tests = yaml.load(fs.readFileSync(testFolder + "test.yaml", "utf-8")) as { tests: { [testName: string]: TestCase } };
 
 const todolist: Test[] = [];
 
