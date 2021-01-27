@@ -6,23 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
     <script src="./JSCPP.js"></script>
+    <style>
+        pre {
+            background-color: #eee;
+        }
+    </style>
 </head>
 
 <body>
-    <label>Output: </label><br>
-    <span id="output"></span><br><br><br>
-    <label>WebWorker Output: </label><br>
-    <span id="output-webworker"></span><br><br><br>
-    <label>AsyncWebWorker Output: </label><br>
-    <span id="output-asyncwebworker"></span><br><br><br>
-    <label>Debug AsyncWebWorker Output: </label><br>
-    <span id="output-debug-asyncwebworker"></span><br><br><br>
+    <label>Output: </label>
+    <pre id="output"></pre>
+    <label>WebWorker Output: </label>
+    <pre id="output-webworker"></pre>
+    <label>AsyncWebWorker Output: </label>
+    <pre id="output-asyncwebworker"></pre>
+    <label>Debug AsyncWebWorker Output: </label>
+    <pre id="output-debug-asyncwebworker"></pre>
     <script>
         (function () {
             var output = document.getElementById("output");
             var t = Date.now();
             try {
                 var returnCode = JSCPP.run(`#include <iostream>
+using namespace std;
+int main() {
+    int a;
+    cin >> a;
+    a += 7;
+    cout << a*10 << endl;
+    return 0;
+}`, "5", {
+                    stdio: {
+                        write: (s) => {
+                            output.innerText += s;
+                        }
+                    }
+                });
+                output.innerText += "\n\n======\nProgram exited in " + (Date.now() - t) + "ms with code " + returnCode;
+            } catch (err) {
+                output.innerText += "\n\n======\nAn error occurred: " + (err.message || err);
+            }
+        })();
+        (async function() {
+            var helper = new JSCPP.AsyncWebWorkerHelper("./JSCPP.js");
+            var output = document.getElementById("output-webworker");
+            var t = Date.now();
+            try {
+                var returnCode = await helper.run(`#include <iostream>
 using namespace std;
 int main() {
     int a;
@@ -106,10 +136,6 @@ int main() {
             } catch (err) {
                 output.innerText += "\n\n======\nAn error occurred: " + (err.message || err);
             }
-        })();
-        (async function() {
-            var helper = new JSCPP.AsyncWebWorkerHelper("./JSCPP.js");
-            var output = document.getElementById("output-webworker");
         })();
     </script>
 </body>

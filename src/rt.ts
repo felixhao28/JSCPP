@@ -463,7 +463,7 @@ export class CRuntime {
                             const argsStr = ts.map(v => {
                                 return this.makeTypeString(v);
                             }).join(",");
-                            this.raiseException("no method " + name + " in " + lt + " accepts " + argsStr);
+                            this.raiseException("no method " + name + " in " + this.makeTypeString(lt) + " accepts " + argsStr);
                         }
                     } else if (compatibles.length > 1) {
                         this.raiseException("ambiguous method invoking, " + compatibles.length + " compatible methods");
