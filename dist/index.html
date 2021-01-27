@@ -49,7 +49,7 @@ int main() {
         })();
         (async function() {
             var helper = new JSCPP.AsyncWebWorkerHelper("./JSCPP.js");
-            var output = document.getElementById("output-webworker");
+            var output = document.getElementById("output-asyncwebworker");
             var t = Date.now();
             try {
                 var returnCode = await helper.run(`#include <iostream>
@@ -74,7 +74,7 @@ int main() {
         })();
         (function () {
             var helper = new JSCPP.WebWorkerHelper("./JSCPP.js");
-            var output = document.getElementById("output-asyncwebworker");
+            var output = document.getElementById("output-webworker");
             var t = Date.now();
             function handler(err, returnCode) {
                 if (err) {

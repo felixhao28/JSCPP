@@ -306,7 +306,13 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 
 ## Changelog
 
-* v2.0.7 (-)
+* v2.0.9 (2021.1.27)
+	- New
+		+ WebWorker support (check `dist/index.html` for examples).
+	- Fix
+		+ Fixed an error message
+
+* v2.0.7
 	- New
 		+ Support some basic class usages (see `test\class_basics.cpp`).
 		+ Uses special uninitialized numeric and poitner value.

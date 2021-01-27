@@ -31,10 +31,11 @@ node_modules
 
 *.exe
 
-/dist/
-/lib/
-/demo/*.js
-/demo/*.js.map
+dist/*.js
+dist/*.js.map
+lib/
+demo/*.js
+demo/*.js.map
 .tscache
 src/ast.js
 src/prepast.js
