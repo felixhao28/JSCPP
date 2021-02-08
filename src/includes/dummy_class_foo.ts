@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { CRuntime, IntVariable, ObjectVariable, Variable } from "../rt";
+import { CRuntime, FunctionPointerVariable, IntVariable, ObjectVariable, Variable } from "../rt";
 
 export = {
     load(rt: CRuntime) {
@@ -21,6 +21,17 @@ export = {
             return rt.val(rt.intTypeLiteral, newValue, false);
         };
 
-        return rt.regFunc(_plusX, type, "plusX", [rt.intTypeLiteral], rt.intTypeLiteral);
+        rt.regFunc(_plusX, type, "plusX", [rt.intTypeLiteral], rt.intTypeLiteral);
+
+        const _callback = function (rt: CRuntime, _this: ObjectVariable, f: FunctionPointerVariable, v: IntVariable) {
+            const r = f.v.target.v.target(rt, null, v);
+            return r;
+        }
+        rt.regFunc(_callback, type, "callback", [
+            rt.functionPointerType(rt.intTypeLiteral, [
+                rt.normalPointerType(rt.intTypeLiteral)
+            ]),
+            rt.normalPointerType(rt.intTypeLiteral)
+        ], rt.intTypeLiteral);
     }
 };

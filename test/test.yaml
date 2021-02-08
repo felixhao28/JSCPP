@@ -279,7 +279,7 @@
     class_basics:
       cases:
         cpp: "class_basics.cpp"
-        out: "2,-2\n7\n"
+        out: "2,-2\n7\nf:123\nfoo.callback:126\n"
     strcat:
       cases:
         cpp: "strcat.cpp"
