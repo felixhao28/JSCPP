@@ -306,6 +306,10 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 
 ## Changelog
 
+* v2.0.10
+	- New
+		+ Added experimental support for passing a function pointer as parameter.
+
 * v2.0.9 (2021.1.27)
 	- New
 		+ WebWorker support (check `dist/index.html` for examples).

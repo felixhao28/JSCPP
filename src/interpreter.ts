@@ -151,63 +151,64 @@ export class Interpreter extends BaseInterpreter {
                 }
                 param.basetype = _basetype;
             },
-            *FunctionDefinition(interp, s, param) {
-                ({
-                    rt
-                } = interp);
-                const {
-                    scope
-                } = param;
-                const name = s.Declarator.left.Identifier;
-                let basetype = rt.simpleType(s.DeclarationSpecifiers);
-                const pointer = s.Declarator.Pointer;
-                basetype = interp.buildRecursivePointerType(pointer, basetype, 0);
+            *ParameterTypeList(interp, s, param) {
                 const argTypes = [];
                 const argNames = [];
                 const optionalArgs = [];
-                let ptl;
-                let varargs;
-                if (s.Declarator.right.type === "DirectDeclarator_modifier_ParameterTypeList") {
-                    ptl = s.Declarator.right.ParameterTypeList;
-                    ({
-                        varargs
-                    } = ptl);
-                } else if ((s.Declarator.right.type === "DirectDeclarator_modifier_IdentifierList") && (s.Declarator.right.IdentifierList === null)) {
-                    ptl = { ParameterList: [] };
-                    varargs = false;
-                } else {
-                    rt.raiseException("unacceptable argument list", s.Declarator.right);
-                }
                 let i = 0;
-                while (i < ptl.ParameterList.length) {
-                    const _param = ptl.ParameterList[i];
-                    if ((_param.Declarator == null)) {
-                        rt.raiseException("missing declarator for argument", _param);
-                    }
-                    const _init = _param.Declarator.Initializers;
-                    const _pointer = _param.Declarator.Declarator.Pointer;
-                    const _basetype = rt.simpleType(_param.DeclarationSpecifiers);
-                    let _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
-                    const _name = _param.Declarator.Declarator.left.Identifier;
-                    if (_param.Declarator.Declarator.right.length > 0) {
-                        const dimensions = [];
-                        let j = 0;
-                        while (j < _param.Declarator.Declarator.right.length) {
-                            let dim = _param.Declarator.Declarator.right[j];
-                            if (dim.type !== "DirectDeclarator_modifier_array") {
-                                rt.raiseException("unacceptable array initialization", dim);
-                            }
-                            if (dim.Expression !== null) {
-                                dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
-                            } else if (j > 0) {
-                                rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
-                            } else {
-                                dim = -1;
-                            }
-                            dimensions.push(dim);
-                            j++;
+                while (i < s.ParameterList.length) {
+                    const _param = s.ParameterList[i];
+                    let _type;
+                    let _init = null;
+                    let _name = null;
+                    if (param.insideDirectDeclarator_modifier_ParameterTypeList) {
+                        const _basetype = rt.simpleType(_param.DeclarationSpecifiers);
+                        _type = _basetype;
+                    } else {
+                        if (_param.Declarator == null) {
+                            rt.raiseException("missing declarator for argument", _param);
                         }
-                        _type = interp.arrayType(dimensions, _type);
+                        _init = _param.Declarator.Initializers;
+                        const _pointer = _param.Declarator.Declarator.Pointer;
+                        const _basetype = rt.simpleType(_param.DeclarationSpecifiers);
+                        _type = interp.buildRecursivePointerType(_pointer, _basetype, 0);
+                        if (_param.Declarator.Declarator.left.type === "DirectDeclarator") {
+                            const __basetype = param.basetype;
+                            param.basetype = _basetype;
+                            const { name, type } = yield* interp.visit(interp, _param.Declarator.Declarator.left, param);
+                            param.basetype = __basetype;
+                            _name = name;
+                        } else {
+                            _name = _param.Declarator.Declarator.left.Identifier;
+                        }
+                        if (_param.Declarator.Declarator.right.length > 0) {
+                            if (_param.Declarator.Declarator.right[0].type === "DirectDeclarator_modifier_ParameterTypeList") {
+                                const dim = _param.Declarator.Declarator.right[0];
+                                param.insideDirectDeclarator_modifier_ParameterTypeList = true;
+                                const {argTypes: _argTypes , argNames: _argNames, optionalArgs: _optionalArgs} = yield* interp.visit(interp, dim.ParameterTypeList, param);
+                                param.insideDirectDeclarator_modifier_ParameterTypeList = false;
+                                _type = rt.functionPointerType(_type, _argTypes);
+                            } else {
+                                const dimensions = [];
+                                let j = 0;
+                                while (j < _param.Declarator.Declarator.right.length) {
+                                    let dim = _param.Declarator.Declarator.right[j];
+                                    if (dim.type !== "DirectDeclarator_modifier_array") {
+                                        rt.raiseException("unacceptable array initialization", dim);
+                                    }
+                                    if (dim.Expression !== null) {
+                                        dim = rt.cast(rt.intTypeLiteral, (yield* interp.visit(interp, dim.Expression, param))).v;
+                                    } else if (j > 0) {
+                                        rt.raiseException("multidimensional array must have bounds for all dimensions except the first", dim);
+                                    } else {
+                                        dim = -1;
+                                    }
+                                    dimensions.push(dim);
+                                    j++;
+                                }
+                                _type = interp.arrayType(dimensions, _type);
+                            }
+                        }
                     }
                     if (_init != null) {
                         optionalArgs.push({
@@ -224,6 +225,33 @@ export class Interpreter extends BaseInterpreter {
                     }
                     i++;
                 }
+                return {argTypes , argNames, optionalArgs};
+            },
+            *FunctionDefinition(interp, s, param) {
+                ({
+                    rt
+                } = interp);
+                const {
+                    scope
+                } = param;
+                const name = s.Declarator.left.Identifier;
+                let basetype = rt.simpleType(s.DeclarationSpecifiers);
+                const pointer = s.Declarator.Pointer;
+                basetype = interp.buildRecursivePointerType(pointer, basetype, 0);
+                let ptl;
+                let varargs;
+                if (s.Declarator.right.type === "DirectDeclarator_modifier_ParameterTypeList") {
+                    ptl = s.Declarator.right.ParameterTypeList;
+                    ({
+                        varargs
+                    } = ptl);
+                } else if ((s.Declarator.right.type === "DirectDeclarator_modifier_IdentifierList") && (s.Declarator.right.IdentifierList === null)) {
+                    ptl = { ParameterList: [] };
+                    varargs = false;
+                } else {
+                    rt.raiseException("unacceptable argument list", s.Declarator.right);
+                }
+                const {argTypes , argNames, optionalArgs} = yield* interp.visit(interp, ptl, param);
                 const stat = s.CompoundStatement;
                 rt.defFunc(scope, name, basetype, argTypes, argNames, stat, interp, optionalArgs);
             },

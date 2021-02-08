@@ -311,3 +311,8 @@
       cases:
         cpp: "matrix_initialization.cpp"
         exitcode: 3
+    function_callback:
+      cases:
+        cpp: "function_callback.cpp"
+        in: "1 2"
+        out: "3\n6\n"

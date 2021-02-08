@@ -725,6 +725,9 @@ export class CRuntime {
     };
 
     defVar(varname: string, type: VariableType, initval: Variable) {
+        if (varname == null) {
+            this.raiseException("cannot define a variable without name");
+        }
         if (this.varAlreadyDefined(varname)) {
             this.raiseException("variable " + varname + " already defined");
         }
@@ -965,6 +968,15 @@ export class CRuntime {
                         }
                     } else {
                         this.raiseException(this.makeTypeString(value.t) + " is not a normal porinter");
+                    }
+                } else if (this.isFunctionPointerType(type)) {
+                    if (this.isFunctionPointerType(value.t)) {
+                        if (!this.isTypeEqualTo(type, value.t)) {
+                            this.raiseException("Function pointers do not share the same signature");
+                        }
+                        return value;
+                    } else {
+                        this.raiseException("cannot cast a regular/array pointer to a function pointer");
                     }
                 } else {
                     this.raiseException("cannot cast a function to a regular pointer");
