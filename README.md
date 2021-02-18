@@ -61,7 +61,197 @@ console.info("program exited with code " + exitcode);
 
 See _demo/example.coffee_ for example.
 
-Use __debugger__
+**Main API**: `JSCPP.run(code, input, config)`:
+
+- **code**: *string* The C++ source code to be interpreted.
+- **input**: *string* The text to be sent into standard input (can be overriden with `config.stdio`).
+- **config**: *&lt;optional&gt; JSCPPConfig* The configuration object. All configuration items have default value. So you only need to set the ones you want different from the defaults.
+  + **specifiers**: *&lt;optional&gt; string[]*
+    * Allowed specifiers. By default all specifiers are allowed.
+    * Default: `["const", "inline", "_stdcall", "extern", "static", "auto", "register"]`
+  + **charTypes**: *&lt;optional&gt; string[]*
+    * Allowed char types. By default all char types are allowed.
+    * Default: `["char", "signed char", "unsigned char", "wchar_t",
+        "unsigned wchar_t", "char16_t", "unsigned char16_t",
+        "char32_t", "unsigned char32_t"]`
+  + **intTypes**: *&lt;optional&gt; string[]*
+    * Allowed integer types. By default all integer types are allowed.
+    * Default: `["short", "short int", "signed short", "signed short int",
+        "unsigned short", "unsigned short int", "int", "signed int",
+        "unsigned", "unsigned int", "long", "long int", "long int",
+        "signed long", "signed long int", "unsigned long",
+        "unsigned long int", "long long", "long long int",
+        "long long int", "signed long long", "signed long long int",
+        "unsigned long long", "unsigned long long int", "bool"]`
+  + **limits**: *&lt;optional&gt; {[type: string]: { max: number, min: number, bytes: number}}*
+    * The minimal and the maximum value on number types. You can just set a subset of all the types, and the unset types will use the default limits.
+    * Default:
+    ```js
+    {
+        "char": {
+            max: 0x7f,
+            min: 0x00,
+            bytes: 1
+        },
+        "signed char": {
+            max: 0x7f,
+            min: -0x80,
+            bytes: 1
+        },
+        "unsigned char": {
+            max: 0xff,
+            min: 0x00,
+            bytes: 1
+        },
+        "wchar_t": {
+            max: 0x7fffffff,
+            min: -0x80000000,
+            bytes: 4
+        },
+        "unsigned wchar_t": {
+            max: 0xffffffff,
+            min: 0x00000000,
+            bytes: 4
+        },
+        "char16_t": {
+            max: 0x7fff,
+            min: -0x8000,
+            bytes: 4
+        },
+        "unsigned char16_t": {
+            max: 0xffff,
+            min: 0x0000,
+            bytes: 4
+        },
+        "char32_t": {
+            max: 0x7fffffff,
+            min: -0x80000000,
+            bytes: 4
+        },
+        "unsigned char32_t": {
+            max: 0xffffffff,
+            min: 0x00000000,
+            bytes: 4
+        },
+        "short": {
+            max: 0x7fff,
+            min: -0x8000,
+            bytes: 2
+        },
+        "unsigned short": {
+            max: 0xffff,
+            min: 0x0000,
+            bytes: 2
+        },
+        "int": {
+            max: 0x7fffffff,
+            min: -0x80000000,
+            bytes: 4
+        },
+        "unsigned": {
+            max: 0xffffffff,
+            min: 0x00000000,
+            bytes: 4
+        },
+        "long": {
+            max: 0x7fffffff,
+            min: -0x80000000,
+            bytes: 4
+        },
+        "unsigned long": {
+            max: 0xffffffff,
+            min: 0x00000000,
+            bytes: 4
+        },
+        "long long": {
+            max: 0x7fffffffffffffff,
+            min: -0x8000000000000000,
+            bytes: 8
+        },
+        "unsigned long long": {
+            max: 0xffffffffffffffff,
+            min: 0x0000000000000000,
+            bytes: 8
+        },
+        "float": {
+            max: 3.40282346638529e+038,
+            min: -3.40282346638529e+038,
+            bytes: 4
+        },
+        "double": {
+            max: 1.79769313486232e+308,
+            min: -1.79769313486232e+308,
+            bytes: 8
+        },
+        "pointer": {
+            max: undefined,
+            min: undefined,
+            bytes: 4
+        },
+        "bool": {
+            max: 1,
+            min: 0,
+            bytes: 1
+        }
+    }
+    ```
+  + **includes**: *&lt;optional&gt; { [fileName: string]: IncludeModule }*
+    * Define additional include files. This is extremely useful if you are defining new types, variables or functions to be used in the C++ source code.
+    * `IncludeModule` is an object that has a `load(rt: CRuntime): void` member function. For example,
+      ```js
+      {
+        "myheader.h": {
+          load: function(rt) {
+            rt.regFunc(function(rt, _this, x, y) {
+              var firstValue = x.v;
+              var secondValue = y.v;
+              var returnType = x.t;
+              return rt.val(returnType, firstValue + secondValue);
+            }, "global", "myfunction", [rt.intTypeLiteral, rt.intTypeLiteral], rt.intTypeLiteral);
+          }
+        }
+      }
+      ```
+      will register a global function equivalent to the following, **before** interpreting the source code:
+      ```c++
+      // C++ code
+      int myfunction(int x, int y) {
+        return x + y;
+      }
+      ```
+      so that user C++ code like this can be interpreted:
+      ```c++
+      // C++ code
+      #include "myheader.h"
+      int main() {
+        return myfunction(1, 2); // will return 3
+      }
+      ```
+      For more examples on writing a custom `IncludeModule`, including how to properly use types, values and variables, please take a look at the files inside [src/includes](src/includes). For custom classes (experimental), please take a look at [src/includes/dummy_class_foo.ts](src/includes/dummy_class_foo.ts) and [test/class_basics.cpp](test/class_basics.cpp).
+  + **loadedLibraries**: *&lt;optional&gt; string[]*
+    * **loadedLibraries** keeps track of loaded headers. It can also be used to skip loading certain headers if given initial value.
+  + **stdio**: *&lt;optional if in NodeJS&gt; string[]* `{
+       drain?: () => string;
+       write: (s: string) => void;
+    }`
+    * This controls the behavior of standard input/output. This is **required** if you are running JSCPP on webpages, since the default behavior of writing to standard output stream is to print to the console, which is invisible to end users.
+    * **drain**: *&lt;optional&gt; () => string*
+      - Executed whenever the standard input buffer needs new content. The returned string will be concatenated to the existing buffer. If `drain` is set, `drain` will be favored over `input`. This is useful if the standard input is extremely large or is not immediately available at the start but only available later during the interpretation, for example, debugging. You don't normally need to set `drain`.
+    * **write**: *(s: string) => void*
+      - Write the string `s` to standard output stream. By default it is implemeted as `(s) => process.stdout.write(s);`. You need to override this if you want to capture the console output and do something with it.
+
+  + **unsigned_overflow**: *&lt;optional&gt; "error" (default) | "warn" | "ignore"*
+    * Overflowing an unsigned type is an undefined behavior. This configuration controls what to do if a such overflow happens.
+      - "error": immediately throw an exception.
+      - "warn": print a warning to standard error stream.
+      - "ignore": ignore the overflow and carry on interpreting.
+  + **maxTimeout**: *&lt;optional&gt; number*
+    * If set, JSCPP will throw an exception if the milliseconds since the beginnig of execution exceeds `maxTimeout`. This is not used in debug mode.
+  + **debug**: *&lt;optional&gt; boolean*
+    * If `false` (default), JSCPP will run normally and the return value of `JSCPP.run` will be the exit code of the C++ program.
+    * If `true`, JSCPP will enter debug mode, break on the first AST node and an debugger instance will be immediately returned instead. Please refer to the "Using __debugger__" part of this document for further details.
+
+Using __debugger__
 
 As of 2.0.0, there is a simple but functional real debugger available.
 
@@ -92,7 +282,7 @@ A list of debugger API:
 
 ```js
 var JSCPP = require("JSCPP")
-var mydebugger = JSCPP.run(code, input);
+var mydebugger = JSCPP.run(code, input, { debug: true });
 // continue to the next interpreting operation
 var done = mydebugger.next();
 // if you have an active breakpoint condition, you can just continue
