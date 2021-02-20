@@ -11,6 +11,7 @@ import * as PEGUtil from "pegjs-util";
 const includes: { [fileName: string]: IncludeModule } = {
     iostream: require("./includes/iostream"),
     cctype: require("./includes/cctype"),
+    climits: require("./includes/climits"),
     cstring: require("./includes/cstring"),
     cmath: require("./includes/cmath"),
     cstdio: require("./includes/cstdio"),
@@ -22,6 +23,7 @@ const includes: { [fileName: string]: IncludeModule } = {
 
 const headerAlias: { [filename: string]: string } = {
     "ctype.h": "cctype",
+    "limits.h": "climits",
     "string.h": "cstring",
     "math.h": "cmath",
     "stdio.h": "cstdio",
