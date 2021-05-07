@@ -157,6 +157,9 @@ export = {
                     i++;
                     j++;
                 }
+                if (i >= srcarr.length && j >= srcarr.length) {
+                    return rt.val(rt.intTypeLiteral, 0);
+                }
                 return rt.val(rt.intTypeLiteral, (destarr[i].v as number) - (srcarr[i].v as number));
             } else {
                 return rt.raiseException("str1 or str2 is not an array");

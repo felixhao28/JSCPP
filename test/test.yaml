@@ -322,3 +322,7 @@
         cpp: "function_callback.cpp"
         in: "1 2"
         out: "3\n6\n"
+    strcmp:
+      cases:
+        cpp: "strcmp.cpp"
+        out: "yes\nyes\n"

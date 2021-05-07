@@ -499,6 +499,8 @@ Post it on [Issues](https://github.com/felixhao28/JSCPP/issues).
 * v2.0.10
 	- New
 		+ Added experimental support for passing a function pointer as parameter.
+	- Fix
+		+ Fixed `strcmp` comparing two identical strings.
 
 * v2.0.9 (2021.1.27)
 	- New
